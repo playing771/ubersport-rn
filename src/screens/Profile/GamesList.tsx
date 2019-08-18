@@ -58,8 +58,9 @@ const ProfileGamesList: React.FC<Props> = ({
                   )}
                 />
               ) : (
-                <Text>{emptyText}</Text>
+                <Text style={_style.emptyText}>{emptyText}</Text>
               )}
+              
             </View>
           </>
         );
@@ -69,7 +70,13 @@ const ProfileGamesList: React.FC<Props> = ({
 };
 
 const _style = StyleSheet.create({
-  container: { flexDirection: 'row', flexWrap: 'wrap' },
+  container: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap' 
+  },
+  emptyText: {
+    paddingHorizontal: 20
+  },
   header: {
     fontSize: 22,
     fontWeight: '700',
