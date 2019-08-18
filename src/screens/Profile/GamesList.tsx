@@ -74,6 +74,7 @@ const _style = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     color: '#9CA0AC',
+    paddingHorizontal: 20,
     paddingVertical: 20
   }
 });
