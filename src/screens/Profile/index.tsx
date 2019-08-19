@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
   subContainer: {
     backgroundColor: '#E9E9EF',
     height: '100%',
-    paddingHorizontal: 20,
     paddingBottom: 15
   }
 });
