@@ -27,27 +27,27 @@ import { AsyncStorage } from 'react-native';
 const sports: { [key: string]: ISport } = {
 	Football: {
 		name: 'Football',
-		id: '5b9396d521a69fd62c5e0208'
+		id: 1
 	},
 	Basketball: {
 		name: 'Basketball',
-		id: '5b9397ac74eeb4d64ebd5371'
+		id: 2
 	},
 	Volleyball: {
 		name: 'Volleyball',
-		id: '5b93a86baa1eafd95ad6ac27'
+		id: 3
 	},
 	Paintball: {
 		name: 'Paintball',
-		id: '5b93b52f1e3eafe3a17fd304'
+		id: 4
 	},
 	Tennis: {
 		name: 'Tennis',
-		id: '5bdf354c05dfdb084bb1e36a'
+		id: 5
 	},
 	Bicycle: {
 		name: 'Bicycle',
-		id: '5bdf35c005dfdb084bb1e36b'
+		id: 6
 	}
 };
 
