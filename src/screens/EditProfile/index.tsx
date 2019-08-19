@@ -16,10 +16,11 @@ const EditProfileScreen = (props: IProps) => {
   console.log('SETPARMAS');
   console.log(' props.navigation', props.navigation);
 
-  props.navigation.setParams({ test: 'test' });
+  // props.navigation.setParams({ test: 'test' });
   // setParams({ save: () => undefined });
 
-  return <UserForm id={user.id} />;
+  // return <UserForm id={user.id} />;
+  return null;
 };
 
 EditProfileScreen.navigationOptions = props => {
