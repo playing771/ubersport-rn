@@ -1,31 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useAppContext from '../../hooks/useAppContext';
 import UserForm from './UserForm';
 import UButton from '../../components/UButton';
 import { Ionicons } from '@expo/vector-icons';
 import Colors, { HEADER_BACKGROUND } from '../../constants/Colors';
+import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
-import { withNavigation, NavigationScreenProps } from 'react-navigation';
 
 interface IProps extends NavigationScreenProps {}
 
 const EditProfileScreen = (props: IProps) => {
   const { user } = useAppContext();
-  // const { setParams } = useNavigation();
-  // console.log('USER', user);
-  console.log('SETPARMAS');
-  console.log(' props.navigation', props.navigation);
+  const { setParams } = useNavigation();
 
-  // props.navigation.setParams({ test: 'test' });
-  // setParams({ save: () => undefined });
+  useEffect(() => {
+    setParams({ test: 'test' });
+  }, []);
 
-  // return <UserForm id={user.id} />;
-  return null;
+  return <UserForm id={user.id} />;
 };
 
-EditProfileScreen.navigationOptions = props => {
-  // console.log('props', props);
-  // console.log(props.navigation.getParam('test'));
+EditProfileScreen.navigationOptions = ({ navigation }) => {
+  const clickHandle = () => {
+    navigation.getParam('test');
+  };
 
   return {
     headerStyle: {
@@ -33,11 +31,11 @@ EditProfileScreen.navigationOptions = props => {
     },
     headerTitleStyle: { color: 'white' },
     headerBackTitleStyle: { color: 'white' },
-    headerRight: <HeaderRightButton />,
+    headerRight: <HeaderRightButton onPress={clickHandle} />,
   };
 };
 
-function HeaderRightButton() {
+function HeaderRightButton({ onPress }: { onPress: () => void }) {
   // const { getParam } = useNavigation();
 
   // const pressHandle = () => {
@@ -45,11 +43,10 @@ function HeaderRightButton() {
 
   // 	console.log(getParam('save'));
   // };
-  console.log('HeaderRightButton');
 
   return (
     <UButton
-      onPress={() => console.log('CLICK')}
+      onPress={onPress}
       // iconStyle={{ width: 20, height: 20 }}
       backgroundColor="transparent"
       style={{ marginRight: 12 }}
@@ -59,4 +56,4 @@ function HeaderRightButton() {
   );
 }
 
-export default withNavigation(EditProfileScreen);
+export default EditProfileScreen;

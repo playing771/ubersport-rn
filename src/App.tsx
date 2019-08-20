@@ -15,8 +15,6 @@ import { createAppContainer } from 'react-navigation';
 import ISport from './api/sports/Sport.type';
 import { IUserWithToken } from './api/user/types';
 import { AsyncStorage } from 'react-native';
-import { Provider } from 'react-redux';
-import store from './store';
 
 //  TODO: поменять на динамическую загрузку с сервера данны по видам
 // спорта
@@ -134,12 +132,10 @@ export default class App extends React.Component<IProps, IAppState> {
               setUser: this.setLoggedInUserHandle,
             }}
           >
-            <Provider store={store}>
-              <View style={styles.container}>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <NavigatorWrapper />
-              </View>
-            </Provider>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <NavigatorWrapper />
+            </View>
           </AppContextProvider>
         </ApolloProvider>
       );
