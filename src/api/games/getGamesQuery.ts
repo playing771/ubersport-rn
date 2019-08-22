@@ -10,65 +10,56 @@ const fragments = `
   ${fullGameInfoFragment}
 `;
 export const GET_GAMES_GQL = gql`
-	query getGamesWithFilters(
-		$sportIds: [String]
-		$authorId: String
-		$status: GameStatus
-		$participantsIds: [String!]
-	) {
-		games(
-			filters: {
-				sportIds: $sportIds
-				authorId: $authorId
-				status: $status
-				participantsIds: $participantsIds
-			}
-		) {
-			count
-			games {
-				...fullGameInfoFragment
-			}
-		}
-	}
-	${fragments}
+  query getGamesWithFilters(
+    $sportIds: [Float]
+    $authorId: String
+    $status: GameStatus
+    $participantsIds: [String!]
+  ) {
+    games(
+      filters: {
+        sportIds: $sportIds
+        authorId: $authorId
+        status: $status
+        participantsIds: $participantsIds
+      }
+    ) {
+      count
+      games {
+        ...fullGameInfoFragment
+      }
+    }
+  }
+  ${fragments}
 `;
 
 interface GetGamesQueryVariables {
-	sportIds?: number[];
-	authorId?: string;
-	status?: GameStatus;
-	participantsIds?: string[];
+  sportIds?: number[];
+  authorId?: string;
+  status?: GameStatus;
+  participantsIds?: string[];
 }
 
 interface InputProps extends Variables, IGamesListProps {}
 
 type Variables = {
-	// sportId: String;
-	// authorId: String;
-	status: GameStatus;
-	// participantsIds: string[];
+  // sportId: String;
+  // authorId: String;
+  status: GameStatus;
+  // participantsIds: string[];
 };
 
-export type GetGameByIdChildProps = ChildDataProps<
-	InputProps,
-	IGetGamesResult,
-	Variables
->;
+export type GetGameByIdChildProps = ChildDataProps<InputProps, IGetGamesResult, Variables>;
 
-export class GamesQuery extends Query<
-	IGetGamesResult,
-	GetGamesQueryVariables
-> {}
+export class GamesQuery extends Query<IGetGamesResult, GetGamesQueryVariables> {}
 
-const withGamesQuery = graphql<
-	InputProps,
-	Response,
-	Variables,
-	GetGameByIdChildProps
->(GET_GAMES_GQL, {
-	options: ({ status }) => ({
-		variables: { status }
-	})
-});
+const withGamesQuery = graphql<InputProps, Response, Variables, GetGameByIdChildProps>(
+  GET_GAMES_GQL,
+  {
+    options: ({ status }) => ({
+      variables: { status },
+    }),
+  }
+);
 
 export default withGamesQuery;

@@ -1,7 +1,7 @@
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import { IGetActiveUserGamesResult, GameStatus } from "./types";
-import { fullGameInfoFragment } from "../fragments";
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { IGetActiveUserGamesResult, GameStatus } from './types';
+import { fullGameInfoFragment } from '../fragments';
 
 // TODO: добавить Participant count в схему
 const fragments = `
@@ -9,7 +9,7 @@ ${fullGameInfoFragment}`;
 
 export const GET_USER_ACTIVE_GAMES_GQL = gql`
   query getUserActiveGames(
-    $sportIds: [String]
+    $sportIds: [Float]
     $authorId: String
     $status: GameStatus
     $participantsIds: [String!]
@@ -32,7 +32,7 @@ export const GET_USER_ACTIVE_GAMES_GQL = gql`
 `;
 
 interface IGetUserActiveGamesVariables {
-  sportIds?: string[];
+  sportIds?: number[];
   authorId?: string;
   status?: GameStatus;
   participantsIds?: Array<string>;
