@@ -12,20 +12,20 @@ import { Text, Dimensions, StyleSheet } from 'react-native';
 interface IProps<T extends Route> {
   currentNavState: NavigationState<T>;
   onIndexChange: (index: number) => void;
-  scenes: {
+  tabs: {
     [key: string]: React.ComponentType;
   };
 }
 
 export default function UTabsView<T extends Route>({
   currentNavState,
-  scenes,
+  tabs,
   onIndexChange,
 }: IProps<T>) {
   return (
     <TabView
       navigationState={currentNavState}
-      renderScene={SceneMap(scenes)}
+      renderScene={SceneMap(tabs)}
       renderTabBar={renderTabBar}
       onIndexChange={onIndexChange}
       initialLayout={{ width: Dimensions.get('window').width }}

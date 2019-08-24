@@ -9,47 +9,66 @@ import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
 import UTabsView from '../../components/UTabView';
 import ChangePasswordTab from './tabs/ChangePassword';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useQuery } from 'react-apollo';
+import {
+  IGetUserInfoResult,
+  IGetUserInfoVariables,
+  GET_USER_INFO_GQL,
+} from '../../api/user/withUserInfoQuery';
+import { ApolloError } from 'apollo-client';
+import ULoader from '../../components/ULoader';
+import ErrorCard from '../../components/ErrorCard';
+import handleApoloError from '../../other/handleApoloError';
 
 interface IProps extends NavigationScreenProps {}
+
+const initialNavState = {
+  index: 0,
+  routes: [
+    { key: '1', title: 'Личное' },
+    { key: '2', title: 'Cпорт' },
+    { key: '3', title: 'Пароль' },
+  ],
+};
 
 const EditProfileScreen = (props: IProps) => {
   const { user } = useAppContext();
   const { setParams } = useNavigation();
-  const [currentNavState, setTabState] = useState({
-    index: 0,
-    routes: [
-      { key: '1', title: 'Личное' },
-      { key: '2', title: 'Cпорт' },
-      { key: '3', title: 'Пароль' },
-    ],
-  });
+  const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
+    GET_USER_INFO_GQL
+    // { variables: { id: user.id } }
+  );
 
-  const selectTabHandle = (index: number) => {
-    setTabState({ ...currentNavState, index });
-  };
-
+  const [currentNavState, setTabState] = useState(initialNavState);
   const [sports, setSports] = useState<number[]>([]);
+
+  const tabs = {
+    1: () => (!loading ? <UserInfoTab id={user.id} /> : <ULoader />),
+    2: () =>
+      !loading ? <FavouriteSportsTab changeSportsHandle={changeSportsHandle} /> : <ULoader />,
+    3: () => (!loading ? <ChangePasswordTab /> : <ULoader />),
+  };
 
   useEffect(() => {
     setParams({ test: 'test' });
     // setSports(getUser.favoriteSports.map(sport => sport.id));
   }, []);
 
+  if (error) {
+    return <ErrorCard error={handleApoloError(error)} position="BOTTOM" />;
+  }
+
   const changeSportsHandle = (sportIds: number[]) => {
     setSports(sportIds);
   };
 
+  const selectTabHandle = (index: number) => {
+    setTabState({ ...currentNavState, index });
+  };
+
   return (
-    <UTabsView
-      currentNavState={currentNavState}
-      onIndexChange={selectTabHandle}
-      scenes={{
-        1: () => <UserInfoTab id={user.id} />,
-        2: () => <FavouriteSportsTab changeSportsHandle={changeSportsHandle} />,
-        3: () => <ChangePasswordTab />,
-      }}
-    />
+    <UTabsView currentNavState={currentNavState} onIndexChange={selectTabHandle} tabs={tabs} />
   );
 };
 

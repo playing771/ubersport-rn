@@ -1,22 +1,32 @@
 import { ApolloError } from 'apollo-client';
 
-export default function handleApoloError(err: ApolloError) {
+/**
+ *  из объекта ApolloError достает текст ошибки
+ * @param {ApolloError} err
+ * @returns {string}
+ */
+export default function handleApoloError(err: ApolloError): string {
+  let errString: string = '';
   if (err.graphQLErrors) {
     err.graphQLErrors.forEach(gError => {
-      console.log(gError.message);
+      errString += gError.message;
+      console.warn(gError.message);
     });
   }
   if (err.networkError && (err.networkError as any).error) {
     (err.networkError as any).result.errors.forEach((error: any) => {
-      console.log(error.message);
+      errString += error.message;
+      console.warn(error.message);
     });
   }
 
   if (err.networkError && (err.networkError as any).result) {
     (err.networkError as any).result.errors.forEach((gError: any) => {
-      console.log(gError.message);
+      errString += gError.message;
+      console.warn(gError.message);
     });
   } else {
-    console.log(err);
+    console.warn(err);
   }
+  return errString;
 }
