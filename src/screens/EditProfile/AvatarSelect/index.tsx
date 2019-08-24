@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
@@ -13,6 +13,7 @@ import ProfileAvatar from './ProfileAvatar';
 import getFormData from '../../../other/getFormData';
 
 interface IProps {
+  wrapperStyle?: ViewStyle;
   // onPress:()=>void≥
 }
 
@@ -22,7 +23,7 @@ const PICTURE_SIZE = 150;
 
 const ClickableView = withModal(withTouch(View));
 
-const AvatarSelect = (props: IProps) => {
+const AvatarSelect = ({ wrapperStyle }: IProps) => {
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const { user } = useAppContext();
 
@@ -30,10 +31,7 @@ const AvatarSelect = (props: IProps) => {
     const { status } =
       type === 'GALLERY'
         ? await Permissions.askAsync(Permissions.CAMERA_ROLL)
-        : await Permissions.askAsync(
-            Permissions.CAMERA,
-            Permissions.CAMERA_ROLL
-          );
+        : await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
     if (status !== 'granted') {
       alert('Sorry, we need  permissions to make this work!');
     } else {
@@ -47,12 +45,12 @@ const AvatarSelect = (props: IProps) => {
         ? await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3]
+            aspect: [4, 3],
           })
         : await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3]
+            aspect: [4, 3],
           });
 
     if (!result.cancelled) {
@@ -73,31 +71,33 @@ const AvatarSelect = (props: IProps) => {
   };
 
   return (
-    <ClickableView
-      style={styles.mainContainer}
-      modal={({ toggleModal }) => (
-        <AvatarSelectModal
-          avatar={avatar}
-          useGaleryHandle={() => getImageHandle('GALLERY', toggleModal)}
-          useCameraHandle={() => getImageHandle('CAMERA', toggleModal)}
-          deleteImageHandle={() => deleteImageHandle(toggleModal)}
-        />
-      )}
-    >
-      <ProfileAvatar avatarSrc={avatar} />
-      <Text style={styles.text}>Изменить аватар</Text>
-    </ClickableView>
+    <View style={[styles.wrapper, wrapperStyle]}>
+      <ClickableView
+        style={styles.mainContainer}
+        modal={({ toggleModal }) => (
+          <AvatarSelectModal
+            avatar={avatar}
+            useGaleryHandle={() => getImageHandle('GALLERY', toggleModal)}
+            useCameraHandle={() => getImageHandle('CAMERA', toggleModal)}
+            deleteImageHandle={() => deleteImageHandle(toggleModal)}
+          />
+        )}
+      >
+        <ProfileAvatar avatarSrc={avatar} />
+        <Text style={styles.text}>Изменить аватар</Text>
+      </ClickableView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: { paddingTop: 12, backgroundColor: '#F1F1F5' },
   mainContainer: { alignSelf: 'center' },
   avatarContainer: {
-    backgroundColor: '#D2D5DB',
     width: PICTURE_SIZE,
     height: PICTURE_SIZE,
     borderRadius: PICTURE_SIZE,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   avatarIcon: { alignSelf: 'center' },
   text: {
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 16,
     fontWeight: '600',
-    color: '#56BBBC'
-  }
+    color: '#56BBBC',
+  },
 });
 
 export default AvatarSelect;

@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Platform, StatusBar, AppRegistry } from 'react-native';
 
 import { ApolloClient } from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
+// import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import AppNavigator from './navigation/AppNavigator';

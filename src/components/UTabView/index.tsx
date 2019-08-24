@@ -53,7 +53,7 @@ function renderTabBar<T extends Route>(
 
 const styles = StyleSheet.create({
   tabBar: { backgroundColor: 'white' },
-  tabContent: { height: 40, alignItems: 'center' },
+  tabContent: { height: 45, alignItems: 'center' },
   tabIndicator: { backgroundColor: '#71B9BB' },
   labelText: { color: '#71B9BB', fontWeight: '600' },
 });

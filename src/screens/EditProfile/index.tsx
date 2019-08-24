@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../../hooks/useAppContext';
-import UserForm from './UserForm';
+import UserInfoTab from './tabs/UserInfo';
+import FavouriteSportsTab from './tabs/FavouriteSports';
 import UButton from '../../components/UButton';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
-import Colors, {
-  HEADER_BACKGROUND,
-  GREEN_BUTTON_BACKGROUND,
-  MAIN_TITLE_COLOR,
-} from '../../constants/Colors';
+
+import { HEADER_BACKGROUND } from '../../constants/Colors';
 import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Animated, Text } from 'react-native';
-import SportsList from '../../components/SportsList';
 import UTabsView from '../../components/UTabView';
+import ChangePasswordTab from './tabs/ChangePassword';
+import { StyleSheet } from 'react-native';
 
 interface IProps extends NavigationScreenProps {}
-
-const FirstRoute = userId => <UserForm id={userId} />;
-
-const SecondRoute = () => <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />;
 
 const EditProfileScreen = (props: IProps) => {
   const { user } = useAppContext();
   const { setParams } = useNavigation();
-  const [currentTabState, setTabState] = useState({
+  const [currentNavState, setTabState] = useState({
     index: 0,
     routes: [
       { key: '1', title: 'Личное' },
@@ -32,6 +24,10 @@ const EditProfileScreen = (props: IProps) => {
       { key: '3', title: 'Пароль' },
     ],
   });
+
+  const selectTabHandle = (index: number) => {
+    setTabState({ ...currentNavState, index });
+  };
 
   const [sports, setSports] = useState<number[]>([]);
 
@@ -46,38 +42,14 @@ const EditProfileScreen = (props: IProps) => {
 
   return (
     <UTabsView
-      currentNavState={currentTabState}
-      onIndexChange={index => setTabState({ ...currentTabState, index })}
+      currentNavState={currentNavState}
+      onIndexChange={selectTabHandle}
       scenes={{
-        1: () => <UserForm id={user.id} />,
-        2: () => (
-          <>
-            <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
-            <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
-          </>
-        ),
-        3: SecondRoute,
+        1: () => <UserInfoTab id={user.id} />,
+        2: () => <FavouriteSportsTab changeSportsHandle={changeSportsHandle} />,
+        3: () => <ChangePasswordTab />,
       }}
     />
-    // <View style={{ flex: 1 }}>
-    //   <TabView
-    //     navigationState={currentTabState}
-    // renderScene={SceneMap({
-    //   1: () => <UserForm id={user.id} />,
-    //   2: () => (
-    //     <>
-    //       <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
-    //       <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
-    //     </>
-    //   ),
-    //   3: SecondRoute,
-    // })}
-    //     renderTabBar={_renderTabBar}
-    //     onIndexChange={index => setTabState({ ...currentTabState, index })}
-    //     initialLayout={{ width: Dimensions.get('window').width }}
-    //     // style={{ flex: 1 }}
-    //   />
-    // </View>
   );
 };
 
@@ -121,31 +93,6 @@ function HeaderRightButton({ onPress }: { onPress: () => void }) {
   );
 }
 
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
-  tabBar: {
-    flexDirection: 'row',
-    // paddingTop: Constants.statusBarHeight,
-  },
-  tabItem: {
-    // flex: 1,
-    width: 50,
-    alignItems: 'center',
-    padding: 16,
-  },
-  sportsListTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#404F7A',
-    paddingBottom: 12,
-    paddingTop: 24,
-  },
-  sportsList: {
-    // paddingTop:
-  },
-});
+const styles = StyleSheet.create({});
 
 export default EditProfileScreen;

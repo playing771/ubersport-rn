@@ -4,24 +4,32 @@ import { View, Text, StyleSheet } from 'react-native';
 import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
 import getRandomUser from '../../other/getRandomUser';
 import getAgeFromBirthday from '../../other/getAgeFromBirthday';
-import { withNavigation } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
-import withUserInfoQuery from '../../api/user/withUserInfoQuery';
 import ULoader from '../../components/ULoader/index';
 import handleApoloError from '../../other/handleApoloError';
 import useNavigation from '../../hooks/useNavigation';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { ISex } from '../../api/user/types';
+import { useQuery } from 'react-apollo';
+import {
+  IGetUserInfoResult,
+  IGetUserInfoVariables,
+  GET_USER_INFO_GQL,
+} from '../../api/user/withUserInfoQuery';
 
 // type IProps = {} & Partial<IGetUserResult> & NavigationScreenProps;
+interface IProps {
+  id: string;
+}
 
-const ProfileInfo = withUserInfoQuery(({ data }) => {
-  // const { avatar } = this.props;
-  // const {n} = data
-  // console.log('data', data);
+export default function ProfileInfo({ id }: IProps) {
+  const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
+    GET_USER_INFO_GQL,
+    { variables: { id } }
+  );
 
-  const { getUser, loading, error } = data;
+  const { getUser } = data;
   const { navigate } = useNavigation();
   console.log('ProfileInfo', getUser, loading);
 
@@ -31,7 +39,7 @@ const ProfileInfo = withUserInfoQuery(({ data }) => {
 
   if (error) {
     console.log(handleApoloError(error));
-    return <Text>ERORR</Text>;
+    return <Text>ERROR</Text>;
   }
 
   if (loading || !getUser) {
@@ -45,11 +53,7 @@ const ProfileInfo = withUserInfoQuery(({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topInfo}>
-        <UserAvatar
-          src={getRandomUser('large')}
-          size={140}
-          imageBorderWidthRatio={0.95}
-        />
+        <UserAvatar src={getRandomUser('large')} size={140} imageBorderWidthRatio={0.95} />
       </View>
       <View style={styles.botInfo}>
         <View style={styles.infoGroup}>
@@ -60,12 +64,10 @@ const ProfileInfo = withUserInfoQuery(({ data }) => {
         <Text style={styles.mainText}>{`${lastName} ${firstName}`}</Text>
         <Text style={styles.subText}>{getUserAge(dateOfBirth)} - Moscow</Text>
       </View>
-      <View style={styles.moreInfo}>
-        {/* <Ionicons name="arrow-forward" size={24} /> */}
-      </View>
+      <View style={styles.moreInfo}>{/* <Ionicons name="arrow-forward" size={24} /> */}</View>
     </View>
   );
-});
+}
 
 function getUserAge(birthday?: number): string {
   let age: string;
@@ -88,34 +90,28 @@ function SexIcon({ sex }: { sex: ISex }) {
   );
 }
 
-function FemaleIcon() {
-  return (
-    <Ionicons
-      name="ios-female"
-      size={18}
-      style={[styles.sexicon, { color: Colors.purle }]}
-    />
-  );
-}
+// function FemaleIcon() {
+//   return <Ionicons name="ios-female" size={18} style={[styles.sexicon, { color: Colors.purle }]} />;
+// }
 
 const styles = StyleSheet.create({
   container: {
     padding: 2,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   topInfo: {
     // flex: 3,
     borderColor: '#f00',
     marginTop: 10,
     marginBottom: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   reliability: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
     // paddingRight: 20
   },
   rating: {
@@ -123,7 +119,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
     // paddingLeft: 20
   },
   botInfo: {
@@ -132,26 +128,24 @@ const styles = StyleSheet.create({
     // flexDirection: "column",
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   infoGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   mainText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fbfdfc',
-    paddingTop: 10
+    paddingTop: 10,
   },
   moreInfo: {
-    flex: 1
+    flex: 1,
   },
   subText: {
     color: '#cfd9e1',
-    marginTop: 5
+    marginTop: 5,
   },
   subMinText: { color: '#7B8EA4' },
-  sexicon: { fontWeight: '800', marginLeft: 6 }
+  sexicon: { fontWeight: '800', marginLeft: 6 },
 });
-
-export default ProfileInfo;
