@@ -27,11 +27,13 @@ type Props = {
   gql: object;
   title: string;
   variables: any;
+  rounded?: boolean;
+  icon?: string;
 } & Partial<typeof defaultProps>;
 
 const defaultProps = {
   disabled: false,
-  backgroundColor: Colors.green
+  backgroundColor: Colors.green,
 };
 
 const defaultstate: State = {};
@@ -43,7 +45,7 @@ class SubmitButton extends React.Component<Props, State> {
   state = defaultstate;
 
   public render() {
-    const { variables, refetchQueries, backgroundColor } = this.props;
+    const { variables, refetchQueries, backgroundColor, rounded, icon } = this.props;
     return (
       <Mutation
         mutation={this.props.gql}
@@ -58,16 +60,13 @@ class SubmitButton extends React.Component<Props, State> {
             <UButton
               title={this.props.title}
               onPress={() => mutate({ variables, refetchQueries })}
-              style={[
-                _styles.container,
-                error ? _styles.error : undefined,
-                this.props.style
-              ]}
+              style={[styles.container, error ? styles.error : undefined, this.props.style]}
               backgroundColor={backgroundColor}
-              textStyle={[_styles.title, this.props.textStyle]}
+              textStyle={[styles.title, this.props.textStyle]}
               disabled={this.props.disabled}
               loading={loading}
-              icon={error ? 'ios-close-circle' : undefined}
+              icon={icon ? icon : error ? 'ios-close-circle' : undefined}
+              rounded={rounded}
             />
           );
         }}
@@ -76,7 +75,7 @@ class SubmitButton extends React.Component<Props, State> {
   }
 }
 
-const _styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: 50,
@@ -86,12 +85,12 @@ const _styles = StyleSheet.create({
     //   TAB_DEFAULT_HEIGHT +
     //   (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) +
     //   10,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   error: {
-    backgroundColor: '#f44336'
+    backgroundColor: '#f44336',
   },
-  title: { color: 'white', fontWeight: '600', fontSize: 16 }
+  title: { color: 'white', fontWeight: '600', fontSize: 16 },
 });
 
 export default SubmitButton;

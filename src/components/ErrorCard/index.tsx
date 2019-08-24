@@ -1,17 +1,17 @@
 import React from 'react';
 import Card from '../GeneralCard/index';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ViewStyle } from 'react-native';
 import { useState, useEffect } from 'react';
 import { View as AnimatedView } from 'react-native-animatable';
 
-interface IProps {
+export type IErrorCardPosition = 'TOP' | 'BOTTOM' | 'CENTER';
+export interface IErrorCardProps {
   error: string;
   show?: boolean;
-  position?: 'TOP' | 'BOTTOM';
-  // toggleCard: ()=> void;
+  position?: IErrorCardPosition;
 }
 
-const ErrorCard = ({ error, show = true, position }: IProps) => {
+const ErrorCard = ({ error, show = true, position }: IErrorCardProps) => {
   const [visible, toggle] = useState(true);
 
   const hide = () => {
@@ -26,13 +26,7 @@ const ErrorCard = ({ error, show = true, position }: IProps) => {
     <AnimatedView
       animation="fadeIn"
       duration={300}
-      style={
-        position
-          ? position === 'TOP'
-            ? { top: 0, position: 'absolute' }
-            : { position: 'absolute', bottom: 0 }
-          : undefined
-      }
+      style={getContainerPosition(position)}
       useNativeDriver={true}
     >
       <Card wrapperStyle={styles.card} onPress={hide}>
@@ -47,15 +41,30 @@ const ErrorCard = ({ error, show = true, position }: IProps) => {
   );
 };
 
+function getContainerPosition(position?: IErrorCardPosition): ViewStyle {
+  switch (position) {
+    case 'TOP':
+      return { marginBottom: 'auto' };
+    case 'CENTER':
+      return { marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto' };
+    case 'BOTTOM':
+      return {
+        marginTop: 'auto',
+      };
+    default:
+      return undefined;
+  }
+}
+
 const styles = StyleSheet.create({
   card: {
     height: 90,
-    width: '90%',
+    // width: '100%',
     alignSelf: 'center',
     backgroundColor: '#ff5722',
     padding: 18,
     borderRadius: 8,
-    marginBottom: 12,
+    marginVertical: 12,
   },
   textMain: {
     color: 'white',

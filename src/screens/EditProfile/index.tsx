@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../../hooks/useAppContext';
-import UserInfoTab from './tabs/UserInfo';
+import UserInfoTab from './tabs/UserInfo/';
 import FavouriteSportsTab from './tabs/FavouriteSports';
 import UButton from '../../components/UButton';
 
-import { HEADER_BACKGROUND } from '../../constants/Colors';
+import Colors, { HEADER_BACKGROUND } from '../../constants/Colors';
 import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
 import UTabsView from '../../components/UTabView';
-import ChangePasswordTab from './tabs/ChangePassword';
+import ChangePasswordTab from './tabs/ChangePassword/';
 import { StyleSheet, View } from 'react-native';
 import { useQuery } from 'react-apollo';
 import {
@@ -16,10 +16,10 @@ import {
   IGetUserInfoVariables,
   GET_USER_INFO_GQL,
 } from '../../api/user/withUserInfoQuery';
-import { ApolloError } from 'apollo-client';
+
 import ULoader from '../../components/ULoader';
-import ErrorCard from '../../components/ErrorCard';
-import handleApoloError from '../../other/handleApoloError';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import { Ionicons } from '@expo/vector-icons';
 
 interface IProps extends NavigationScreenProps {}
 
@@ -36,8 +36,8 @@ const EditProfileScreen = (props: IProps) => {
   const { user } = useAppContext();
   const { setParams } = useNavigation();
   const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
-    GET_USER_INFO_GQL
-    // { variables: { id: user.id } }
+    GET_USER_INFO_GQL,
+    { variables: { id: user.id } }
   );
 
   const [currentNavState, setTabState] = useState(initialNavState);
@@ -56,7 +56,7 @@ const EditProfileScreen = (props: IProps) => {
   }, []);
 
   if (error) {
-    return <ErrorCard error={handleApoloError(error)} position="BOTTOM" />;
+    return <ErrorGqlCard error={error} position="BOTTOM" />;
   }
 
   const changeSportsHandle = (sportIds: number[]) => {
@@ -102,10 +102,10 @@ function HeaderRightButton({ onPress }: { onPress: () => void }) {
       // iconStyle={{ width: 20, height: 20 }}
       backgroundColor="transparent"
       style={{ marginRight: 12 }}
-      title="Cохранить"
+      // title="Cохранить"
       textStyle={{ fontSize: 14 }}
     >
-      {/* <Ionicons name="ios-log-out" size={30} color={Colors.purle} /> */}
+      <Ionicons name="ios-log-out" size={30} color={Colors.purle} />
       {/* <Ionicons name="ios-save" size={30} color={'white'} /> */}
       {/* <AntDesign size={24} color={'white'} name="save"></AntDesign>  */}
     </UButton>
