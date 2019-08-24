@@ -6,7 +6,7 @@ import SportsList from '../../../components/SportsList/index';
 
 interface IProps extends IActiveStepInjectedProps {}
 
-const initialState: string[] = [];
+const initialState: number[] = [];
 
 const SELECTION_LIMIT = 3;
 
@@ -25,7 +25,7 @@ const favoriteSportsActive = ({ onSubmit, index }: IProps) => {
   //   setSelected(_selected);
   // };s
 
-  const onChangeHandle = (sports: string[]) => {
+  const onChangeHandle = (sports: number[]) => {
     setSelected(sports);
   };
 
@@ -41,20 +41,13 @@ const favoriteSportsActive = ({ onSubmit, index }: IProps) => {
         useNativeDriver={true}
         style={[styles.titleContainer, styles.userInfoContainer]}
       >
-        <Text style={styles.mainText}>
-          Выберите до трех видов спорта, которые вы предпочитаете
-        </Text>
+        <Text style={styles.mainText}>Выберите до трех видов спорта, которые вы предпочитаете</Text>
         {/* <Text style={styles.subText}>Не более трех видов спорта</Text> */}
       </AnimatedView>
-      <AnimatedView
-        animation="fadeIn"
-        useNativeDriver={true}
-        duration={500}
-        delay={100}
-      >
+      <AnimatedView animation="fadeIn" useNativeDriver={true} duration={500} delay={100}>
         <View style={styles.inputsContainer}>
           <SportsList
-            // selectedItems={selected}
+            selectedItems={selected}
             // itemPressHandle={toggleSelection}
             onChange={onChangeHandle}
             style={styles.sportsList}
@@ -79,7 +72,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 14,
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 0,
   },
   mainText: { color: 'white', fontWeight: '600' },
   subText: { color: '#CBD6F2', marginTop: 6 },
@@ -91,7 +84,7 @@ const styles = StyleSheet.create({
     lineHeight: 42,
     // borderRadius: 6,
     // paddingHorizontal: 6,
-    color: '#5F6B8D'
+    color: '#5F6B8D',
   },
   userInfoContainer: { marginTop: 12, paddingRight: 24 },
   sportsList: {
@@ -99,10 +92,10 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 16,
     borderTopLeftRadius: 0,
-    borderTopRightRadius: 0
+    borderTopRightRadius: 0,
   },
   sportText: { color: '#5F6B8D' },
-  sportTextNonSelected: { color: '#CBD6F2' }
+  sportTextNonSelected: { color: '#CBD6F2' },
 });
 
 export default favoriteSportsActive;

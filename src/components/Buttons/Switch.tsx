@@ -5,16 +5,29 @@ import UButton from '../UButton/index';
 interface IProps {
   label?: string;
   options: [string, string];
-  onChange?: (optionsState: any) => void;
+  onChange?: (optionsState: string) => void;
 }
 
 export function USwitch({ label, options, onChange }: IProps) {
-  const [optionsState, setOptionsState] = useState({ FIRST: true, SECOND: false });
+  const [optionsState, setOptionsState] = useState({ [options[0]]: true, [options[1]]: false });
 
-  const handleChangeState = () => {
-    setOptionsState({ FIRST: !optionsState.FIRST, SECOND: !optionsState.SECOND });
-    if (onChange) {
-      onChange(optionsState);
+  const handleChangeState = (index: number) => {
+    if (!optionsState[index]) {
+      if (index === 0) {
+        setOptionsState({
+          [options[0]]: true,
+          [options[1]]: false,
+        });
+      } else {
+        setOptionsState({
+          [options[1]]: true,
+          [options[0]]: false,
+        });
+      }
+
+      if (onChange) {
+        onChange(options[0] ? options[0] : options[1]);
+      }
     }
   };
 
@@ -22,8 +35,16 @@ export function USwitch({ label, options, onChange }: IProps) {
     <View style={styles.mainContainer}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.btnsContainer}>
-        <SwitchBtn active={optionsState.FIRST} title={options[0]} onPress={handleChangeState} />
-        <SwitchBtn active={optionsState.SECOND} title={options[1]} onPress={handleChangeState} />
+        <SwitchBtn
+          active={optionsState[options[0]]}
+          title={options[0]}
+          onPress={() => handleChangeState(0)}
+        />
+        <SwitchBtn
+          active={optionsState[options[1]]}
+          title={options[1]}
+          onPress={() => handleChangeState(1)}
+        />
       </View>
     </View>
   );

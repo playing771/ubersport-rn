@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, FlatList } from 'react-native';
-import {
-	AppContext,
-	IAppContextInjectedProp
-} from '../../other/context/sports';
+import { AppContext, IAppContextInjectedProp } from '../../other/context/sports';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import { gradient } from '../../constants/generalStyles';
@@ -17,116 +14,116 @@ import SportsList from '../../components/SportsList';
 interface IProps extends IAppContextInjectedProp {}
 
 interface IState {
-	selected: number[];
+  selected: number[];
 }
 
 @withAppContext
 class SportFilters extends React.PureComponent<IProps, IState> {
-	static navigationOptions = {
-		title: 'Информация об игре',
-		headerTitleStyle: {
-			color: '#fff',
-			fontWeight: '400'
-		},
-		headerTransparent: true // TODO: fix
-	};
+  static navigationOptions = {
+    title: 'Информация об игре',
+    headerTitleStyle: {
+      color: '#fff',
+      fontWeight: '400',
+    },
+    headerTransparent: true, // TODO: fix
+  };
 
-	state: IState = { selected: [] };
+  state: IState = { selected: [] };
 
-	// private onError = (err: ApolloError) => {
-	//   if (err.networkError && (err.networkError as any).error) {
-	//     (err.networkError as any).result.errors.forEach((error: any) => {
-	//       console.log(error.message);
-	//     });
-	//   } else {
-	//     console.log(err);
-	//   }
-	// };
+  public render() {
+    const { favoriteSports } = this.props.ctx.user;
+    return (
+      <ScrollView style={styles.container}>
+        <Header>Избранные виды</Header>
+        <FlatList
+          data={favoriteSports}
+          extraData={this.state.selected}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
+        <Header>Прочие виды</Header>
+        <SportsList
+          exclude={favoriteSports}
+          selectedItems={this.state.selected}
+          // itemPressHandle={this.toggleSelection}
+          onChange={this.toggleSelectionHandle}
+        />
+      </ScrollView>
+    );
+  }
 
-	private toggleSelection = (id: number) => {
-		console.log(id);
+  // private onError = (err: ApolloError) => {
+  //   if (err.networkError && (err.networkError as any).error) {
+  //     (err.networkError as any).result.errors.forEach((error: any) => {
+  //       console.log(error.message);
+  //     });
+  //   } else {
+  //     console.log(err);
+  //   }
+  // };
 
-		const selected = [...this.state.selected];
-		console.log(selected);
+  private toggleSelection = (id: number) => {
+    console.log(id);
 
-		const itemIndex = selected.findIndex(s => s === id);
-		if (itemIndex > -1) {
-			selected.splice(itemIndex, 1);
-		} else {
-			selected.push(id);
-		}
+    const selected = [...this.state.selected];
+    console.log(selected);
 
-		this.setState({ selected });
-	};
+    const itemIndex = selected.findIndex(s => s === id);
+    if (itemIndex > -1) {
+      selected.splice(itemIndex, 1);
+    } else {
+      selected.push(id);
+    }
 
-	private keyExtractor = (item: ISport, index: number) => String(item.id);
+    this.setState({ selected });
+  };
 
-	private renderItem = ({ item }: { item: ISport }) => {
-		return (
-			<ToggleableItem
-				key={item.id}
-				active={this.isSelected(item.id)}
-				style={styles.item}
-				textStyle={styles.itemText}
-				onPress={this.toggleSelection}
-				itemId={item.id}
-				indicatorStyle={{ fontSize: 34 }}
-			>
-				{item.name}
-			</ToggleableItem>
-		);
-	};
+  private keyExtractor = (item: ISport, index: number) => String(item.id);
 
-	private isSelected(id: number) {
-		return this.state.selected.some(s => s === id);
-	}
+  private renderItem = ({ item }: { item: ISport }) => {
+    return (
+      <ToggleableItem
+        key={item.id}
+        active={this.isSelected(item.id)}
+        style={styles.item}
+        textStyle={styles.itemText}
+        onPress={this.toggleSelection}
+        itemId={item.id}
+        indicatorStyle={{ fontSize: 34 }}
+      >
+        {item.name}
+      </ToggleableItem>
+    );
+  };
 
-	private toggleSelectionHandle = (sports: number[]) => {
-		this.setState({ selected: sports });
-	};
+  private isSelected(id: number) {
+    return this.state.selected.some(s => s === id);
+  }
 
-	public render() {
-		const { favoriteSports } = this.props.ctx.user;
-		return (
-			<ScrollView style={styles.container}>
-				<Header>Избранные виды</Header>
-				<FlatList
-					data={favoriteSports}
-					extraData={this.state.selected}
-					keyExtractor={this.keyExtractor}
-					renderItem={this.renderItem}
-				/>
-				<Header>Прочие виды</Header>
-				<SportsList
-					exclude={favoriteSports}
-					// selectedItems={this.state.selected}
-					// itemPressHandle={this.toggleSelection}
-					onChange={this.toggleSelectionHandle}
-				/>
-			</ScrollView>
-		);
-	}
+  private toggleSelectionHandle = (sports: number[]) => {
+    this.setState({ selected: sports });
+  };
 }
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#FAFAFA',
-		// paddingVertical: 12,
-		flex: 1,
-		paddingHorizontal: 18
-	},
-	item: {
-		minHeight: 50
-	},
-	itemText: {
-		fontSize: 16
-	}
+  container: {
+    backgroundColor: '#FAFAFA',
+    // paddingVertical: 12,
+    flex: 1,
+    paddingHorizontal: 18,
+  },
+  item: {
+    minHeight: 50,
+  },
+  itemText: {
+    fontSize: 16,
+  },
 });
 
 const screenOptions: IAdaptiveScreenOptions = {
-	transparentHeader: true,
-	gradient: gradient,
-	barStyle: 'light-content'
-	// style: styles.mainContainer
+  transparentHeader: true,
+  gradient,
+  barStyle: 'light-content',
+  // style: styles.mainContainer
 };
 
 export default withAdaptiveScreen(SportFilters, screenOptions);

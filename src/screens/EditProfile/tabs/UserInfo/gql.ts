@@ -3,8 +3,8 @@ import { useQuery } from 'react-apollo';
 import { IEditProfileUserInfo } from '.';
 
 export const EDIT_PROFILE_USER_INFO_QUERY = gql`
-  query getUser($id: String!) {
-    getUser(id: $id) {
+  query getUserInfo($id: String!) {
+    getUserInfo: getUser(id: $id) {
       nickname
       firstName
       lastName
@@ -18,10 +18,10 @@ export interface IEditProfileUserInfoVarialbles {
 }
 
 export interface IEditProfileUserInfoResult {
-  getUser: IEditProfileUserInfo;
+  getUserInfo: IEditProfileUserInfo;
 }
 
-export function useProfileUserInfoQuery(variables: IEditProfileUserInfoVarialbles) {
+export function useEditProfileInfoQuery(variables: IEditProfileUserInfoVarialbles) {
   return useQuery<IEditProfileUserInfoResult, IEditProfileUserInfoVarialbles>(
     EDIT_PROFILE_USER_INFO_QUERY,
     { variables }

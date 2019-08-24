@@ -1,130 +1,140 @@
 import React, { useState } from 'react';
-import withAvaliableSportsQuery from '../../api/sports/withAvaliableSportsQuery';
+import withAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 import { FlatList } from 'react-native-gesture-handler';
 import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
-import {
-	Text,
-	StyleSheet,
-	StyleProp,
-	ViewStyle,
-	TextStyle,
-	View
-} from 'react-native';
+import { Text, StyleSheet, StyleProp, ViewStyle, TextStyle, View } from 'react-native';
 import ISport from '../../api/sports/Sport.type';
 import ToggleableItem from '../ToggleableItem';
 import ULoader from '../ULoader/index';
+import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
+import ErrorGqlCard from '../ErrorCard/ErrorGqlCard';
 
 interface IStyleProps {
-	style?: StyleProp<ViewStyle>;
-	itemStyle?: StyleProp<ViewStyle>;
-	itemTextStyle?: StyleProp<TextStyle>;
-	itemNonSelectedTextStyle?: StyleProp<TextStyle>;
-	selectionLimit?: number;
+  style?: StyleProp<ViewStyle>;
+  itemStyle?: StyleProp<ViewStyle>;
+  itemTextStyle?: StyleProp<TextStyle>;
+  itemNonSelectedTextStyle?: StyleProp<TextStyle>;
+  selectionLimit?: number;
+  initialValues?: number[];
 }
 
-export interface ISportsFilterListProps extends IStyleProps {
-	exclude?: ISport[];
-	// selectedItems: string[];
-	onChange: (selected: number[]) => void;
+export interface IProps extends IStyleProps {
+  exclude?: ISport[];
+  selectedItems?: number[];
+  onChange?: (selected: number[]) => void;
+  loading?: boolean;
 }
 
-const SportsList = withAvaliableSportsQuery(
-	({
-		data: { error, loading, sports },
-		// selectedItems,
-		onChange,
-		exclude,
-		style,
-		itemStyle,
-		itemTextStyle,
-		itemNonSelectedTextStyle,
-		selectionLimit
-	}) => {
-		const [selectedSports, setSports] = useState<number[]>([]);
+const SportsList = ({
+  onChange,
+  exclude,
+  style,
+  itemStyle,
+  itemTextStyle,
+  itemNonSelectedTextStyle,
+  selectionLimit,
+  loading,
+  initialValues = [],
+}: IProps) => {
+  const { data, loading: avaliableSportsLoading, error } = useAvaliableSportsQuery();
+  const [selectedSports, setSelectedSports] = useState<number[]>(initialValues);
 
-		const onChangeHandle = (selectedId: number) => {
-			const selected = [...selectedSports];
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
 
-			const itemIndex = selected.findIndex(sel => sel === selectedId);
-			if (itemIndex > -1) {
-				selected.splice(itemIndex, 1);
-			} else {
-				selected.push(selectedId);
-			}
-			setSports(selected);
-			onChange(selected);
-		};
+  if (avaliableSportsLoading || loading) {
+    return <ULoader />;
+  }
 
-		const renderItem = ({ item }: { item: ISport }) => {
-			const active = selectedSports.some(si => item.id === si);
-			const exceedMaximum =
-				selectionLimit && selectionLimit === selectedSports.length;
+  const onChangeHandle = (selectedId: number) => {
+    console.log('onChangeHandle', selectedId);
 
-			const onPressHandle = (itemId: number) => {
-				// отменяем, если превышен selection-лимит
-				// активные элементы всегда нажимаются
-				if (exceedMaximum && !active) {
-					return;
-				} else {
-					onChangeHandle(itemId);
-				}
-			};
+    const selected = [...selectedSports];
 
-			function getStyle() {
-				const _styles = [styles.itemText, itemTextStyle];
-				// если элемент неактивен и лимит превышен, применяем стиль itemNonSelectedTextStyle
+    const itemIndex = selected.findIndex(sel => sel === selectedId);
+    if (itemIndex > -1) {
+      selected.splice(itemIndex, 1);
+    } else {
+      console.log('push', selectedId);
+      selected.push(selectedId);
+    }
 
-				if (!active && exceedMaximum) {
-					_styles.push(itemNonSelectedTextStyle);
-				}
-				return _styles;
-			}
+    setSelectedSports([...selected]);
+    console.log('setSports', selectedSports, selected);
+    if (onChange) {
+      onChange(selectedSports);
+    }
+  };
 
-			return (
-				<ToggleableItem
-					key={item.id}
-					active={active}
-					style={[styles.item, itemStyle]}
-					textStyle={getStyle()}
-					onPress={onPressHandle}
-					itemId={item.id}
-					indicatorStyle={styles.indicator}
-				>
-					{item.name}
-				</ToggleableItem>
-			);
-		};
+  const renderItem = ({ item }: { item: ISport }) => {
+    const active = selectedSports.some(si => item.id === si);
+    const exceedMaximum = selectionLimit && selectionLimit === selectedSports.length;
 
-		if (error) {
-			return <Text>{error.message}(</Text>;
-		}
+    const onPressHandle = (itemId: number) => {
+      // отменяем, если превышен selection-лимит
+      // активные элементы всегда нажимаются
+      if (exceedMaximum && !active) {
+        return;
+      } else {
+        onChangeHandle(itemId);
+      }
+    };
+    console.log('active', active, item.id);
 
-		return sports && !loading ? (
-			<FlatList
-				style={style}
-				data={exclude ? onlyUniqFromArrays(sports, exclude) : sports}
-				keyExtractor={keyExtractor}
-				renderItem={renderItem}
-			/>
-		) : (
-			<View style={[style, styles.loader]}>
-				<ULoader color="#667286" size="small" />
-			</View>
-		);
-	}
-);
+    return (
+      <ToggleableItem
+        key={item.id}
+        active={active}
+        style={[styles.item, itemStyle]}
+        textStyle={getStyle(active, exceedMaximum, itemTextStyle, itemNonSelectedTextStyle)}
+        onPress={onPressHandle}
+        itemId={item.id}
+        indicatorStyle={styles.indicator}
+      >
+        {item.name}
+      </ToggleableItem>
+    );
+  };
+
+  const { sports } = data;
+
+  return (
+    <FlatList
+      style={style}
+      data={exclude ? onlyUniqFromArrays(sports, exclude) : sports}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+    />
+  );
+};
 
 const keyExtractor = (item: ISport, index: number) => String(item.id);
 
 const styles = StyleSheet.create({
-	item: {
-		minHeight: 50
-	},
-	itemText: {
-		fontSize: 16
-	},
-	indicator: { fontSize: 28 },
-	loader: { minHeight: 350, alignItems: 'center' }
+  item: {
+    minHeight: 50,
+  },
+  itemText: {
+    fontSize: 16,
+  },
+  indicator: { fontSize: 28 },
+  loader: { minHeight: 350, alignItems: 'center' },
 });
+
+function getStyle(
+  active: boolean,
+  exceedMaximum: boolean,
+  itemTextStyle?: StyleProp<TextStyle>,
+  itemNonSelectedTextStyle?: StyleProp<TextStyle>
+) {
+  const _styles = [styles.itemText, itemTextStyle];
+  // если элемент неактивен и лимит превышен, применяем стиль itemNonSelectedTextStyle
+
+  if (!active && exceedMaximum) {
+    _styles.push(itemNonSelectedTextStyle);
+  }
+  return _styles;
+}
 
 export default SportsList;

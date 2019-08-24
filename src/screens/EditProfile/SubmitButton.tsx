@@ -1,16 +1,14 @@
 import React from 'react';
 import SubmitButton from '../../components/SubmitButton';
-import { EDIT_USER_MUTATION } from './gql';
 import handleApoloError from '../../other/handleApoloError';
 import { ViewStyle } from 'react-native';
+import { IEditProfileVariables } from './gql';
 
 interface IProps<T> {
-  variables: T;
-  gql: any;
+  variables: IEditProfileVariables;
+  gql: object;
   style?: ViewStyle;
 }
-
-// EDIT_USER_MUTATION
 
 export function EditProfileSubmitButton<T>({ gql, variables, style }: IProps<T>) {
   return (

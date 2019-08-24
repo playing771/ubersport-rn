@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAppContext from '../../hooks/useAppContext';
 import UserInfoTab from './tabs/UserInfo/';
-import FavouriteSportsTab from './tabs/FavouriteSports';
+import FavouriteSportsTab from './tabs/FavouriteSports/index';
 import UButton from '../../components/UButton';
 
 import Colors, { HEADER_BACKGROUND } from '../../constants/Colors';
@@ -41,12 +41,10 @@ const EditProfileScreen = (props: IProps) => {
   );
 
   const [currentNavState, setTabState] = useState(initialNavState);
-  const [sports, setSports] = useState<number[]>([]);
 
   const tabs = {
     1: () => (!loading ? <UserInfoTab id={user.id} /> : <ULoader />),
-    2: () =>
-      !loading ? <FavouriteSportsTab changeSportsHandle={changeSportsHandle} /> : <ULoader />,
+    2: () => (!loading ? <FavouriteSportsTab userId={user.id} /> : <ULoader />),
     3: () => (!loading ? <ChangePasswordTab /> : <ULoader />),
   };
 
@@ -58,10 +56,6 @@ const EditProfileScreen = (props: IProps) => {
   if (error) {
     return <ErrorGqlCard error={error} position="BOTTOM" />;
   }
-
-  const changeSportsHandle = (sportIds: number[]) => {
-    setSports(sportIds);
-  };
 
   const selectTabHandle = (index: number) => {
     setTabState({ ...currentNavState, index });
