@@ -3,7 +3,11 @@ import useAppContext from '../../hooks/useAppContext';
 import UserForm from './UserForm';
 import UButton from '../../components/UButton';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
-import Colors, { HEADER_BACKGROUND, GREEN_BUTTON_BACKGROUND } from '../../constants/Colors';
+import Colors, {
+  HEADER_BACKGROUND,
+  GREEN_BUTTON_BACKGROUND,
+  MAIN_TITLE_COLOR,
+} from '../../constants/Colors';
 import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -22,14 +26,9 @@ const EditProfileScreen = (props: IProps) => {
   const [currentTabState, setTabState] = useState({
     index: 0,
     routes: [
-      { key: 'first', title: 'Мои данные' },
-      { key: 'second', title: 'Cпорт' },
-      { key: 'third', title: 'Прочее' },
-      { key: '4', title: 'Тест4' },
-      { key: '5', title: 'Тест5' },
-      { key: '6', title: 'Тест5' },
-      { key: '7', title: 'Тест5' },
-      { key: '8', title: 'Тест5' },
+      { key: '1', title: 'Личное' },
+      { key: '2', title: 'Cпорт' },
+      { key: '3', title: 'Пароль' },
     ],
   });
 
@@ -46,19 +45,16 @@ const EditProfileScreen = (props: IProps) => {
 
   const _renderTabBar = props => {
     return (
-      // <View style={styles.tabBar}>
-      <TabBar {...props} scrollEnabled={true}>
-        {props.navigationState.routes.map((route, index) => {
-          return (
-            <TouchableOpacity
-              style={styles.tabItem}
-              onPress={() => setTabState({ ...currentTabState, index })}
-            >
-              <Animated.Text>{route.title}</Animated.Text>
-            </TouchableOpacity>
-          );
-        })}
-      </TabBar>
+      <TabBar
+        {...props}
+        style={{ backgroundColor: 'white' }}
+        contentContainerStyle={{ height: 40, alignItems: 'center' }}
+        // labelStyle={{ color: '#71B9BB', fontWeight: '600', textTransform: 'lowercase' }}
+        indicatorStyle={{ backgroundColor: '#71B9BB' }}
+        renderLabel={({ route, focused }) => {
+          return <Text style={{ color: '#71B9BB', fontWeight: '600' }}>{route.title}</Text>;
+        }}
+      ></TabBar>
     );
   };
 
@@ -67,24 +63,19 @@ const EditProfileScreen = (props: IProps) => {
       <TabView
         navigationState={currentTabState}
         renderScene={SceneMap({
-          first: () => <UserForm id={user.id} />,
-          second: () => (
+          1: () => <UserForm id={user.id} />,
+          2: () => (
             <>
               <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
               <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
             </>
           ),
-          third: SecondRoute,
-          4: SecondRoute,
-          5: SecondRoute,
-          6: SecondRoute,
-          7: SecondRoute,
-          8: SecondRoute,
+          3: SecondRoute,
         })}
         renderTabBar={_renderTabBar}
         onIndexChange={index => setTabState({ ...currentTabState, index })}
         initialLayout={{ width: Dimensions.get('window').width }}
-        style={{ flex: 1 }}
+        // style={{ flex: 1 }}
       />
     </View>
   );
@@ -121,7 +112,7 @@ function HeaderRightButton({ onPress }: { onPress: () => void }) {
       backgroundColor="transparent"
       style={{ marginRight: 12 }}
       title="Cохранить"
-      textStyle={{ fontSize: 18 }}
+      textStyle={{ fontSize: 14 }}
     >
       {/* <Ionicons name="ios-log-out" size={30} color={Colors.purle} /> */}
       {/* <Ionicons name="ios-save" size={30} color={'white'} /> */}
@@ -139,7 +130,8 @@ const styles = StyleSheet.create({
     // paddingTop: Constants.statusBarHeight,
   },
   tabItem: {
-    flex: 1,
+    // flex: 1,
+    width: 50,
     alignItems: 'center',
     padding: 16,
   },
