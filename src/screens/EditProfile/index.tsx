@@ -13,6 +13,7 @@ import useNavigation from '../../hooks/useNavigation';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Animated, Text } from 'react-native';
 import SportsList from '../../components/SportsList';
+import UTabsView from '../../components/UTabView';
 
 interface IProps extends NavigationScreenProps {}
 
@@ -43,41 +44,40 @@ const EditProfileScreen = (props: IProps) => {
     setSports(sportIds);
   };
 
-  const _renderTabBar = props => {
-    return (
-      <TabBar
-        {...props}
-        style={{ backgroundColor: 'white' }}
-        contentContainerStyle={{ height: 40, alignItems: 'center' }}
-        // labelStyle={{ color: '#71B9BB', fontWeight: '600', textTransform: 'lowercase' }}
-        indicatorStyle={{ backgroundColor: '#71B9BB' }}
-        renderLabel={({ route, focused }) => {
-          return <Text style={{ color: '#71B9BB', fontWeight: '600' }}>{route.title}</Text>;
-        }}
-      ></TabBar>
-    );
-  };
-
   return (
-    <View style={{ flex: 1 }}>
-      <TabView
-        navigationState={currentTabState}
-        renderScene={SceneMap({
-          1: () => <UserForm id={user.id} />,
-          2: () => (
-            <>
-              <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
-              <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
-            </>
-          ),
-          3: SecondRoute,
-        })}
-        renderTabBar={_renderTabBar}
-        onIndexChange={index => setTabState({ ...currentTabState, index })}
-        initialLayout={{ width: Dimensions.get('window').width }}
-        // style={{ flex: 1 }}
-      />
-    </View>
+    <UTabsView
+      currentNavState={currentTabState}
+      onIndexChange={index => setTabState({ ...currentTabState, index })}
+      scenes={{
+        1: () => <UserForm id={user.id} />,
+        2: () => (
+          <>
+            <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
+            <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
+          </>
+        ),
+        3: SecondRoute,
+      }}
+    />
+    // <View style={{ flex: 1 }}>
+    //   <TabView
+    //     navigationState={currentTabState}
+    // renderScene={SceneMap({
+    //   1: () => <UserForm id={user.id} />,
+    //   2: () => (
+    //     <>
+    //       <Text style={styles.sportsListTitle}>Избранные виды спорта</Text>
+    //       <SportsList onChange={changeSportsHandle} style={styles.sportsList} />
+    //     </>
+    //   ),
+    //   3: SecondRoute,
+    // })}
+    //     renderTabBar={_renderTabBar}
+    //     onIndexChange={index => setTabState({ ...currentTabState, index })}
+    //     initialLayout={{ width: Dimensions.get('window').width }}
+    //     // style={{ flex: 1 }}
+    //   />
+    // </View>
   );
 };
 
