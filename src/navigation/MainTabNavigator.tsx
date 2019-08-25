@@ -1,9 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import {
-  createStackNavigator,
-  createBottomTabNavigator
-} from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import FindGameScreen from '../screens/FindGame';
@@ -30,7 +27,7 @@ const ProfileStack = createStackNavigator({
   [NavigationRoot.EditGame]: EditGameScreen,
   [NavigationRoot.EditLocation]: EditLocationScreen,
   [NavigationRoot.EditProfile]: EditProfileScreen,
-  [NavigationRoot.NotAuthorized]: NotAuthorizedScreen
+  [NavigationRoot.NotAuthorized]: NotAuthorizedScreen,
 });
 
 const FindGameStack = createStackNavigator({
@@ -39,13 +36,13 @@ const FindGameStack = createStackNavigator({
   [NavigationRoot.GameInfo]: GameInfoScreen,
   [NavigationRoot.Participants]: ParticipantsScreen,
   // [NavigationRoot.Location]: GameLocationScreen,
-  [NavigationRoot.UserInfo]: UserInfoScreen
+  [NavigationRoot.UserInfo]: UserInfoScreen,
 });
 
 const NewGameStack = createStackNavigator({
   [NavigationRoot.ChooseGameType]: ChooseGameTypeScreen,
   [NavigationRoot.EditGame]: EditGameScreen,
-  [NavigationRoot.EditLocation]: EditLocationScreen
+  [NavigationRoot.EditLocation]: EditLocationScreen,
 });
 
 FindGameStack.navigationOptions = findGameBottomNav;
@@ -60,7 +57,7 @@ ProfileStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-person` : 'md-information-circle'}
     />
-  )
+  ),
 };
 
 NewGameStack.navigationOptions = {
@@ -69,7 +66,7 @@ NewGameStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-add-circle-outline` : 'md-options'}
     />
-  )
+  ),
 };
 
 export default createBottomTabNavigator(
@@ -77,11 +74,11 @@ export default createBottomTabNavigator(
   {
     tabBarOptions: {
       style: {
-        height: 45
+        height: 45,
       },
-      showLabel: false
+      showLabel: false,
       // inactiveBackgroundColor: '#102044',
       // activeBackgroundColor: '#102044'
-    }
+    },
   }
 );

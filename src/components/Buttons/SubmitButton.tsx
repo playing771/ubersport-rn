@@ -18,7 +18,7 @@ type Props = {
   onComplete?: (result: any) => void;
   onUpdate?: (cache: any, { data: data }: any) => void;
   onError?: (err: ApolloError) => void;
-  refetchQueries?: Array<string>;
+  refetchQueries?: string[];
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   backgroundColor?: string;
@@ -27,6 +27,7 @@ type Props = {
   variables: any;
   rounded?: boolean;
   icon?: string;
+  onPress?: () => void;
 } & Partial<typeof defaultProps>;
 
 const defaultProps = {
@@ -43,7 +44,7 @@ class SubmitButton extends React.Component<Props, State> {
   state = defaultstate;
 
   public render() {
-    const { variables, refetchQueries, backgroundColor, rounded, icon } = this.props;
+    const { variables, refetchQueries, backgroundColor, rounded, icon, onPress } = this.props;
     return (
       <Mutation
         mutation={this.props.gql}
@@ -57,7 +58,7 @@ class SubmitButton extends React.Component<Props, State> {
           ) : (
             <UButton
               title={this.props.title}
-              onPress={() => mutate({ variables, refetchQueries })}
+              onPress={onPress ? onPress : () => mutate({ variables, refetchQueries })}
               style={[styles.container, error ? styles.error : undefined, this.props.style]}
               backgroundColor={backgroundColor}
               textStyle={[styles.title, this.props.textStyle]}

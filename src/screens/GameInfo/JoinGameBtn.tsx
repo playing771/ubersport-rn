@@ -9,6 +9,9 @@ import { ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import { BOTTOM_BIG_NOTCH, BOTTOM_SM_NOTCH } from '../../components/AdaptiveScreen/index';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import SubmitButton from '../../components/Buttons/SubmitButton';
+import useAuthCheck from '../../hooks/useAuthCheck';
+import UButton from '../../components/UButton';
+import { NavigationRoot } from '../../navigation/roots';
 
 type IProps = {
   variables: JoinGameMutationVariables;
@@ -17,6 +20,8 @@ type IProps = {
 } & NavigationInjectedProps;
 
 const JoinGameBtn = ({ variables, disabled, navigation, style }: IProps) => {
+  const { authCheck } = useAuthCheck();
+
   const onUpdate = (cache: any, { data: { joinGame } }: { data: IJoinGameResult }) => {
     try {
       const queryVariables = {
@@ -58,6 +63,7 @@ const JoinGameBtn = ({ variables, disabled, navigation, style }: IProps) => {
       onError={onError}
       style={[styles.mainContainer, style]}
       disabled={disabled}
+      onPress={authCheck() ? undefined : () => navigation.navigate(NavigationRoot.NotAuthorized)}
     />
   );
 };

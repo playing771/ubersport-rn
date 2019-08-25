@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { isIphoneX } from 'react-native-iphone-x-helper';
-import {
-  Platform,
-  StatusBar,
-  StyleProp,
-  ViewStyle,
-  StatusBarProps
-} from 'react-native';
+import { Platform, StatusBar, StyleProp, ViewStyle, StatusBarProps } from 'react-native';
 import { Header, SafeAreaView } from 'react-navigation';
 import Constants from 'expo-constants';
 import GradientWrapper from './GradientWrapper';
@@ -15,7 +9,7 @@ import { IGradientWrapperParams } from './types';
 export const TAB_DEFAULT_HEIGHT = 49;
 export const TAB_COMPACT_HEIGHT = 29;
 export const BOTTOM_BIG_NOTCH = 40;
-export const BOTTOM_SM_NOTCH = 10;
+export const BOTTOM_SM_NOTCH = 51;
 export const TOP_NOTCH = 25;
 
 export interface IAdaptiveScreenProps extends StatusBarProps {
@@ -60,10 +54,10 @@ function _getHeaderInset() {
 
   return Platform.select({
     ios: {
-      top: HEADER_HEIGHT
+      top: HEADER_HEIGHT,
     },
     android: {
-      paddingTop: HEADER_HEIGHT
-    }
+      paddingTop: HEADER_HEIGHT,
+    },
   });
 }

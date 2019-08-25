@@ -10,6 +10,7 @@ import { IGame } from '../../api/games/types';
 import JoinGameBtn from './JoinGameBtn';
 import IUser from '../../api/user/types';
 import LeaveGameBtn from './LeaveGameBtn';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 export type IGameDetailsProps = {
   id: string;
@@ -19,28 +20,18 @@ export type IGameDetailsProps = {
 };
 
 const GameDetails = withGameInfoQuery(
-  ({
-    data: { loading, game, error },
-    ctx,
-    onPressEdit,
-    onPressParticipants
-  }) => {
+  ({ data: { loading, game, error }, ctx, onPressEdit, onPressParticipants }) => {
     if (loading) {
       return <ULoader />;
     }
     if (error) {
-      return <Text>ERROR</Text>;
+      return <ErrorGqlCard error={error}></ErrorGqlCard>;
     }
     return game ? (
       <View style={styles.mainContainer}>
-        {isAuthor(ctx.user.id, game) && (
-          <InfoCard onPressEditBtn={() => onPressEdit(game)} />
-        )}
+        {isAuthor(ctx.user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />}
         <Card disabled={true} wrapperStyle={styles.card}>
-          <GeneralGameInfo
-            game={game}
-            onPressParticipants={onPressParticipants}
-          />
+          <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
         </Card>
         {!isParticipant(ctx.user.id, game.participants) ? (
           <JoinGameBtn variables={{ gameId: game.id, userId: ctx.user.id }} />
@@ -73,8 +64,9 @@ const styles = StyleSheet.create({
     borderColor: '#CCCCCC',
     overflow: 'hidden',
     borderWidth: 0.5,
-    flex: 1
-  }
+    flex: 1,
+    marginBottom: 110,
+  },
 });
 
 export default GameDetails;

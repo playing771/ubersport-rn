@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { View, StyleSheet } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -10,7 +10,7 @@ import { deepOmit } from '../../other/helpers';
 import { IGameEditData } from '../EditGame/index';
 import { NavigationRoot } from '../../navigation/roots';
 import withAdaptiveScreen, {
-  IAdaptiveScreenOptions
+  IAdaptiveScreenOptions,
 } from '../../components/hocs/WithAdaptiveScreen';
 import withAppContext from '../../components/hocs/WithAppContext';
 
@@ -24,9 +24,9 @@ class GameInfoScreen extends React.Component<IProps, IState> {
     title: 'Информация об игре',
     headerTitleStyle: {
       color: '#fff',
-      fontWeight: '400'
+      fontWeight: '400',
     },
-    headerTransparent: true // TODO: fix
+    headerTransparent: true, // TODO: fix
   };
 
   // private isParticipant = (
@@ -49,7 +49,7 @@ class GameInfoScreen extends React.Component<IProps, IState> {
       maxParticipants: _game.maxParticipants,
       ageLimit: _game.ageLimit,
       sportId: _game.sport.id,
-      id: _game.id
+      id: _game.id,
     };
 
     this.props.navigation.navigate(NavigationRoot.EditGame, { gameEditData });
@@ -58,7 +58,7 @@ class GameInfoScreen extends React.Component<IProps, IState> {
   onPressParticipants = () => {
     const { navigation } = this.props;
     navigation.navigate(NavigationRoot.Participants, {
-      gameId: navigation.getParam('gameId')
+      gameId: navigation.getParam('gameId'),
     });
   };
 
@@ -82,13 +82,13 @@ class GameInfoScreen extends React.Component<IProps, IState> {
 const screenOptions: IAdaptiveScreenOptions = {
   transparentHeader: true,
   gradient: gradient,
-  barStyle: 'light-content'
+  barStyle: 'light-content',
 };
 
 export default withAdaptiveScreen(GameInfoScreen, screenOptions);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

@@ -17,27 +17,22 @@ interface State {
 const params = {
   size: 60,
   iconColorActive: 'white',
-  color: '#999a9b'
+  color: '#999a9b',
 };
 
 @withAppContext
-export default class ChooseGameTypeScreen extends React.Component<
-  Props,
-  State
-> {
+export default class ChooseGameTypeScreen extends React.Component<Props, State> {
   // static navigationOptions = {
   //   title: "Новая игра"
   // };
 
   state = {
-    activeSport: undefined
+    activeSport: undefined,
   };
 
   getTextIconColor = (sport: string): string => {
     // console.log(sport, this.state.activeSport);
-    return this.state.activeSport === sport
-      ? params.iconColorActive
-      : params.color;
+    return this.state.activeSport === sport ? params.iconColorActive : params.color;
   };
 
   onCardPress = (sport: CardNameObj): void => {
@@ -86,28 +81,28 @@ const s = StyleSheet.create({
     // backgroundColor: "#E7EAEE",
     // backgroundColor: "#61c037",
     paddingHorizontal: 12,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   header: {
     color: '#333',
     fontSize: 28,
     fontFamily: 'Avenir',
     fontWeight: '900',
-    paddingVertical: 20
+    paddingVertical: 20,
     // paddingHorizontal: 5
   },
   cardContainer: {
     // flexDirection: 'row',
 
     justifyContent: 'center',
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   card: {
     height: 150,
     minWidth: 100,
     flex: 1,
     marginBottom: 5,
-    marginRight: 10
+    marginRight: 10,
   },
-  cardTitle: { color: params.color }
+  cardTitle: { color: params.color },
 });
