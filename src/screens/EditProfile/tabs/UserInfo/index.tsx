@@ -27,11 +27,11 @@ export interface IEditProfileUserInfo {
   avatar: string | null;
 }
 
-const initialUserInfo: IEditProfileUserInfo | null = null;
+const newInfoInitial: IEditProfileUserInfo | null = null;
 
 export default function UserInfoTab({ id }: IProps) {
   const { data, loading, error } = useEditProfileInfoQuery({ id });
-  const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(initialUserInfo);
+  const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(newInfoInitial);
 
   if (error) {
     return <ErrorGqlCard error={error} position="BOTTOM" />;
@@ -57,6 +57,7 @@ export default function UserInfoTab({ id }: IProps) {
 
   const changeAvatarHandle = (newAvatar: string | null) => {
     // console.log('changeAvatarHandle', newAvatar);
+    console.log('newAvatar', newAvatar);
 
     setNewInfo({ ...newInfo, avatar: newAvatar });
   };
@@ -70,16 +71,12 @@ export default function UserInfoTab({ id }: IProps) {
     userInput: deepOmit(newInfo, '__typename'),
   };
 
-  // console.log('UserInfoTab', getUserInfo);
-
-  // console.log('mutationVariables', mutationVariables);
-
   return (
     <FormContainer>
       <AvatarSelect
         wrapperStyle={styles.avatarWrapper}
         onChange={changeAvatarHandle}
-        value={data.getUserInfo.avatar}
+        value={getAvatarSrc(newInfo, data.getUserInfo.avatar)}
       />
       <UTextInput
         label="Имя"
@@ -109,10 +106,21 @@ export default function UserInfoTab({ id }: IProps) {
       />
     </FormContainer>
   );
-  {
+}
+
+function getAvatarSrc(info: IEditProfileUserInfo | null, fetchedAvatar: string | null) {
+  if (info === null) {
+    // если аватар не выбран, то показываем аватара с сервера или пустой аватар
+    return fetchedAvatar ? fetchedAvatar : null;
   }
+
+  if (info.avatar === null) {
+    return null;
+  }
+  // если выбран аватар, покащываем его
+  return info.avatar ? info.avatar : fetchedAvatar;
 }
 
 const styles = StyleSheet.create({
-  avatarWrapper: { marginHorizontal: -24 },
+  avatarWrapper: { marginLeft: -24, marginRight: -24 },
 });
