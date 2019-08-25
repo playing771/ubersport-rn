@@ -17,6 +17,7 @@ import {
   IGetUserInfoVariables,
   GET_USER_INFO_GQL,
 } from '../../api/user/withUserInfoQuery';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 // type IProps = {} & Partial<IGetUserResult> & NavigationScreenProps;
 interface IProps {
@@ -24,23 +25,22 @@ interface IProps {
 }
 
 export default function ProfileInfo({ id }: IProps) {
+  const { navigate } = useNavigation();
   const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
     GET_USER_INFO_GQL,
     { variables: { id } }
   );
 
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
+
   const { getUser } = data;
-  const { navigate } = useNavigation();
   console.log('ProfileInfo', getUser, loading);
 
   const editProfileHandle = () => {
     navigate(NavigationRoot.EditProfile);
   };
-
-  if (error) {
-    console.log(handleApoloError(error));
-    return <Text>ERROR</Text>;
-  }
 
   if (loading || !getUser) {
     return <ULoader loading={loading} />;
