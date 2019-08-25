@@ -2,12 +2,10 @@ import * as React from 'react';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IEditGameResult } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
-import SubmitButton from '../../components/SubmitButton';
-import {
-  EditGameMutationVariables,
-  EDIT_GAME_GQL
-} from '../../api/games/editGameMutation';
+
+import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../api/games/editGameMutation';
 import handleApoloError from '../../other/handleApoloError';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 interface Props {
   variables: EditGameMutationVariables;
@@ -17,11 +15,11 @@ interface Props {
 const EditGameBtn: React.FC<Props & NavigationInjectedProps> = ({
   variables,
   disabled,
-  navigation
+  navigation,
 }) => {
   const onComplete = (data: IEditGameResult) => {
     navigation.navigate(NavigationRoot.GameInfo, {
-      gameId: data.editGame.id
+      gameId: data.editGame.id,
     });
   };
 

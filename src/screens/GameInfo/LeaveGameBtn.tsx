@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import {
-  LeaveGameMutationVariables,
-  LEAVE_GAME_GQL
-} from '../../api/games/leaveGameMutation';
-import SubmitButton from '../../components/SubmitButton';
-4;
+import { LeaveGameMutationVariables, LEAVE_GAME_GQL } from '../../api/games/leaveGameMutation';
 import { ILeaveGameResult } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
 import { withNavigation } from 'react-navigation';
 import { isIphoneX } from 'react-native-iphone-x-helper';
-import {
-  BOTTOM_BIG_NOTCH,
-  BOTTOM_SM_NOTCH
-} from '../../components/AdaptiveScreen';
+import { BOTTOM_BIG_NOTCH, BOTTOM_SM_NOTCH } from '../../components/AdaptiveScreen';
 import { StyleSheet } from 'react-native';
 import UButton from '../../components/UButton';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 type Props = {
   variables: LeaveGameMutationVariables;
@@ -28,14 +21,14 @@ const UButtonWithSubmit = withSubmitModal(UButton);
 const LeaveGameBtn = ({
   variables,
   disabled,
-  navigation
+  navigation,
 }: Props & Partial<NavigationInjectedProps>) => {
   const onComplete = (data: ILeaveGameResult): void => {
     console.log('COMPLETE leave', data);
 
     if (navigation) {
       navigation.navigate(NavigationRoot.FindGame, {
-        gameId: data.leaveGame.id
+        gameId: data.leaveGame.id,
       });
     }
   };
@@ -125,9 +118,9 @@ const styles = StyleSheet.create({
     height: 50,
     position: 'absolute',
     bottom: (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) + 13,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  title: { color: 'white', fontWeight: '600', fontSize: 16 }
+  title: { color: 'white', fontWeight: '600', fontSize: 16 },
 });
 
 export default withNavigation(LeaveGameBtn);

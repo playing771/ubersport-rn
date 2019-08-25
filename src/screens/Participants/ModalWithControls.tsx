@@ -3,11 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import withTouch from '../../components/hocs/WIthTouch';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
 
-import {
-  LEAVE_GAME_GQL,
-  LeaveGameMutationVariables
-} from '../../api/games/leaveGameMutation';
-import SubmitButton from '../../components/SubmitButton';
+import { LEAVE_GAME_GQL, LeaveGameMutationVariables } from '../../api/games/leaveGameMutation';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 interface IProps {
   gameId: string;
@@ -19,11 +16,7 @@ interface IProps {
 
 const SelectionItem = withTouch(
   ({ title, deleteBtn = false }: { title: string; deleteBtn?: boolean }) => {
-    return (
-      <Text style={[styles.itemText, deleteBtn ? styles.deleteBtn : undefined]}>
-        {title}
-      </Text>
-    );
+    return <Text style={[styles.itemText, deleteBtn ? styles.deleteBtn : undefined]}>{title}</Text>;
   }
 );
 
@@ -34,11 +27,11 @@ const ModalWithControls = ({
   openProfileHandle,
   kickParticipantHandle,
   isAuthor,
-  gameId
+  gameId,
 }: IProps) => {
   const variables: LeaveGameMutationVariables = {
     userId: participantId,
-    gameId
+    gameId,
   };
 
   console.log('variables', variables);
@@ -80,12 +73,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 4,
     paddingHorizontal: 18,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   itemText: {
     color: '#6F6F6F',
     fontWeight: '700',
-    fontSize: 14
+    fontSize: 14,
   },
   header: {
     color: '#5F6B8D',
@@ -93,17 +86,17 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
     fontSize: 16,
     fontWeight: '500',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   item: {
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   deleteBtn: {
-    color: '#e57373'
-  }
+    color: '#e57373',
+  },
 });
 
 export default ModalWithControls;

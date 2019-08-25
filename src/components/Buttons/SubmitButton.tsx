@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import { Mutation, MutationFn } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { ApolloError, OperationVariables } from 'apollo-client';
-import UButton from './UButton';
-import Colors from '../constants/Colors';
+
+import UButton from '../UButton';
+import Colors from '../../constants/Colors';
 // import {
 //   TAB_DEFAULT_HEIGHT,
 //   BOTTOM_BIG_NOTCH,
@@ -13,10 +14,7 @@ import Colors from '../constants/Colors';
 // import { isIphoneX } from 'react-native-iphone-x-helper';
 
 type Props = {
-  renderBtn?: (
-    mutateFn: MutationFn<any, OperationVariables>,
-    toggleModal?: (cb?: Function) => void
-  ) => JSX.Element;
+  renderBtn?: (mutateFn: any, toggleModal?: (cb?: Function) => void) => JSX.Element;
   onComplete?: (result: any) => void;
   onUpdate?: (cache: any, { data: data }: any) => void;
   onError?: (err: ApolloError) => void;

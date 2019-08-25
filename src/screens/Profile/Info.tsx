@@ -6,7 +6,6 @@ import getRandomUser from '../../other/getRandomUser';
 import getAgeFromBirthday from '../../other/getAgeFromBirthday';
 import { NavigationRoot } from '../../navigation/roots';
 import ULoader from '../../components/ULoader/index';
-import handleApoloError from '../../other/handleApoloError';
 import useNavigation from '../../hooks/useNavigation';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
@@ -36,7 +35,6 @@ export default function ProfileInfo({ id }: IProps) {
   }
 
   const { getUser } = data;
-  console.log('ProfileInfo', getUser, loading);
 
   const editProfileHandle = () => {
     navigate(NavigationRoot.EditProfile);
@@ -48,12 +46,10 @@ export default function ProfileInfo({ id }: IProps) {
 
   const { nickname, lastName, firstName, dateOfBirth, sex } = getUser;
 
-  console.log(nickname, lastName, firstName, dateOfBirth);
-
   return (
     <View style={styles.container}>
       <View style={styles.topInfo}>
-        <UserAvatar src={getRandomUser('large')} size={140} imageBorderWidthRatio={0.95} />
+        <UserAvatar src={getUser.avatar} size={140} imageBorderWidthRatio={0.95} />
       </View>
       <View style={styles.botInfo}>
         <View style={styles.infoGroup}>

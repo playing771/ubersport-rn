@@ -21,38 +21,36 @@ const ParticipantItem = ({ item }: { item: IParticipantWithAuthorState }) => (
 
 const keyExtractor = (item: IParticipantWithAuthorState) => item.id;
 
-const ParticipantsList = withParticipantsQuery(
-  ({ data: { loading, error, game }, gameId }) => {
-    if (loading || !game) {
-      return <ULoader />;
-    }
-
-    if (error) {
-      return <Text>ERROR</Text>;
-    }
-    return (
-      game && (
-        <AppContextConsumer>
-          {ctx => (
-            <ScrollView style={styles.container}>
-              <FlatList
-                style={styles.list}
-                data={getParticipantsWithAuthorState(
-                  game.participants,
-                  game.author.id,
-                  ctx.user.id,
-                  gameId
-                )}
-                renderItem={ParticipantItem}
-                keyExtractor={keyExtractor}
-              />
-            </ScrollView>
-          )}
-        </AppContextConsumer>
-      )
-    );
+const ParticipantsList = withParticipantsQuery(({ data: { loading, error, game }, gameId }) => {
+  if (loading || !game) {
+    return <ULoader />;
   }
-);
+
+  if (error) {
+    return <Text>ERROR</Text>;
+  }
+  return (
+    game && (
+      <AppContextConsumer>
+        {ctx => (
+          <ScrollView style={styles.container}>
+            <FlatList
+              style={styles.list}
+              data={getParticipantsWithAuthorState(
+                game.participants,
+                game.author.id,
+                ctx.user.id,
+                gameId
+              )}
+              renderItem={ParticipantItem}
+              keyExtractor={keyExtractor}
+            />
+          </ScrollView>
+        )}
+      </AppContextConsumer>
+    )
+  );
+});
 
 export default ParticipantsList;
 
@@ -67,7 +65,7 @@ function getParticipantsWithAuthorState(
     const participantWithAuthorState: IParticipantWithAuthorState = {
       ...participant,
       isAuthor: authorId === userId,
-      gameId
+      gameId,
     };
     return participantWithAuthorState;
   });
@@ -75,5 +73,5 @@ function getParticipantsWithAuthorState(
 
 const styles = StyleSheet.create({
   container: { paddingTop: 20 },
-  list: { paddingTop: 20 }
+  list: { paddingTop: 20 },
 });

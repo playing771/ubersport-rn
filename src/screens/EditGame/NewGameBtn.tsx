@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import {
-  CreateGameMutationVariables,
-  CREATE_GAME_GQL
-} from '../../api/games/createGameMutation';
+import { CreateGameMutationVariables, CREATE_GAME_GQL } from '../../api/games/createGameMutation';
 import { ICreateGameResult } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
-import SubmitButton from '../../components/SubmitButton';
+
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import handleApoloError from '../../other/handleApoloError';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 interface Props {
   variables: CreateGameMutationVariables | EditGameMutationVariables;
@@ -18,11 +16,11 @@ interface Props {
 const NewGameBtn: React.FC<Props & NavigationInjectedProps> = ({
   variables,
   disabled,
-  navigation
+  navigation,
 }) => {
   const onComplete = (data: ICreateGameResult) => {
     navigation.navigate(NavigationRoot.GameInfo, {
-      gameId: data.createGame.id
+      gameId: data.createGame.id,
     });
   };
 

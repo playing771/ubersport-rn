@@ -1,14 +1,8 @@
-import * as React from 'react';
-import {
-  View,
-  Image,
-  ViewStyle,
-  ImageStyle,
-  StyleSheet,
-  Text,
-  TextStyle,
-  StyleProp,
-} from 'react-native';
+import React from 'react';
+import { View, ViewStyle, ImageStyle, StyleSheet, Text, TextStyle, StyleProp } from 'react-native';
+import UImage from '../UImage';
+import ULoader from '../ULoader';
+import { FILES_URL } from '../../constants/Api';
 
 type UserAvatarProps = {
   src?: string;
@@ -31,16 +25,16 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
   imageBorderWidthRatio,
 }) => {
   const s = getStyle(size, counterColor, imageBorderWidthRatio);
-  console.log('SRC', src);
 
   return (
     <View style={[s.imageContainer, style]}>
       {src ? (
-        <Image
+        <UImage
+          indicator={() => <ULoader color="#434E77"></ULoader>}
           borderRadius={(size * 0.9) / 2}
           style={s.image}
           source={{
-            uri: `https://ubersport.ru/file/${src}`,
+            uri: `${FILES_URL}/${src}`,
           }}
         />
       ) : (

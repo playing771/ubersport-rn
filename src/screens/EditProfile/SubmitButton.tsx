@@ -1,17 +1,18 @@
 import React from 'react';
-import SubmitButton from '../../components/SubmitButton';
+
 import handleApoloError from '../../other/handleApoloError';
 import { ViewStyle } from 'react-native';
 import { IEditProfileVariables } from './gql';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
-interface IProps<T> {
+interface IProps {
   variables: IEditProfileVariables;
   gql: object;
   style?: ViewStyle;
   disabled?: boolean;
 }
 
-export function EditProfileSubmitButton<T>({ gql, variables, style, disabled }: IProps<T>) {
+export function EditProfileSubmitButton({ gql, variables, style, disabled }: IProps) {
   return (
     <SubmitButton
       gql={gql}

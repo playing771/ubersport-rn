@@ -1,23 +1,14 @@
 import * as React from 'react';
 
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import {
-  JoinGameMutationVariables,
-  JOIN_GAME_GQL
-} from '../../api/games/joinGameMutation';
-import SubmitButton from '../../components/SubmitButton';
-import {
-  IJoinGameResult,
-  GameStatus,
-  IGetActiveUserGamesResult
-} from '../../api/games/types';
+import { JoinGameMutationVariables, JOIN_GAME_GQL } from '../../api/games/joinGameMutation';
+
+import { IJoinGameResult, GameStatus, IGetActiveUserGamesResult } from '../../api/games/types';
 import { GET_USER_ACTIVE_GAMES_GQL } from '../../api/games/getUserActiveGames';
 import { ViewStyle, StyleProp, StyleSheet } from 'react-native';
-import {
-  BOTTOM_BIG_NOTCH,
-  BOTTOM_SM_NOTCH
-} from '../../components/AdaptiveScreen/index';
+import { BOTTOM_BIG_NOTCH, BOTTOM_SM_NOTCH } from '../../components/AdaptiveScreen/index';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 type IProps = {
   variables: JoinGameMutationVariables;
@@ -26,21 +17,16 @@ type IProps = {
 } & NavigationInjectedProps;
 
 const JoinGameBtn = ({ variables, disabled, navigation, style }: IProps) => {
-  const onUpdate = (
-    cache: any,
-    { data: { joinGame } }: { data: IJoinGameResult }
-  ) => {
+  const onUpdate = (cache: any, { data: { joinGame } }: { data: IJoinGameResult }) => {
     try {
       const queryVariables = {
         participantsIds: [variables.userId],
-        status: GameStatus.Pending
+        status: GameStatus.Pending,
       };
-      const getActiveUserGamesResult: IGetActiveUserGamesResult = cache.readQuery(
-        {
-          query: GET_USER_ACTIVE_GAMES_GQL,
-          variables: queryVariables
-        }
-      );
+      const getActiveUserGamesResult: IGetActiveUserGamesResult = cache.readQuery({
+        query: GET_USER_ACTIVE_GAMES_GQL,
+        variables: queryVariables,
+      });
 
       const { games } = getActiveUserGamesResult;
       const updatedGames = [...games.games];
@@ -48,15 +34,15 @@ const JoinGameBtn = ({ variables, disabled, navigation, style }: IProps) => {
         games: {
           count: games.count + 1,
           games: updatedGames,
-          __typename: 'Games'
-        }
+          __typename: 'Games',
+        },
       };
       updatedActiveUSerGamesResult.games.games.push(joinGame);
 
       cache.writeQuery({
         query: GET_USER_ACTIVE_GAMES_GQL,
         variables: queryVariables,
-        data: updatedActiveUSerGamesResult
+        data: updatedActiveUSerGamesResult,
       });
     } catch (error) {
       console.log(error);
@@ -91,8 +77,8 @@ function onError(err: any) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    bottom: (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) + 13
-  }
+    bottom: (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) + 13,
+  },
 });
 
 export default withNavigation(JoinGameBtn);

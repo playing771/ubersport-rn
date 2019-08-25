@@ -1,18 +1,11 @@
 import * as React from 'react';
-import {
-  LeaveGameMutationVariables,
-  LEAVE_GAME_GQL
-} from '../../api/games/leaveGameMutation';
-import SubmitButton from '../../components/SubmitButton';
-import {
-  ILeaveGameResult,
-  GameStatus,
-  IGetActiveUserGamesResult
-} from '../../api/games/types';
+import { LeaveGameMutationVariables, LEAVE_GAME_GQL } from '../../api/games/leaveGameMutation';
+import { ILeaveGameResult, GameStatus, IGetActiveUserGamesResult } from '../../api/games/types';
 import UButton from '../../components/UButton';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
 import { StyleSheet } from 'react-native';
 import { GET_USER_ACTIVE_GAMES_GQL } from '../../api/games/getUserActiveGames';
+import SubmitButton from '../../components/Buttons/SubmitButton';
 
 type Props = {
   variables: LeaveGameMutationVariables;
@@ -22,21 +15,16 @@ type Props = {
 const UButtonWithSubmit = withSubmitModal(UButton);
 
 const RemoveParticipantBtn: React.FC<Props> = ({ variables, disabled }) => {
-  const onUpdate = (
-    cache: any,
-    { data: { leaveGame } }: { data: ILeaveGameResult }
-  ) => {
+  const onUpdate = (cache: any, { data: { leaveGame } }: { data: ILeaveGameResult }) => {
     try {
       const queryVariables = {
         participantsIds: [variables.userId],
-        status: GameStatus.Pending
+        status: GameStatus.Pending,
       };
-      const getActiveUserGamesResult: IGetActiveUserGamesResult = cache.readQuery(
-        {
-          query: GET_USER_ACTIVE_GAMES_GQL,
-          variables: queryVariables
-        }
-      );
+      const getActiveUserGamesResult: IGetActiveUserGamesResult = cache.readQuery({
+        query: GET_USER_ACTIVE_GAMES_GQL,
+        variables: queryVariables,
+      });
       const { games } = getActiveUserGamesResult;
       // const { games, count } = getGames;
       const updatedGames = games.games.filter(g => g.id !== leaveGame.id);
@@ -46,7 +34,7 @@ const RemoveParticipantBtn: React.FC<Props> = ({ variables, disabled }) => {
       cache.writeQuery({
         query: GET_USER_ACTIVE_GAMES_GQL,
         variables: queryVariables,
-        data: getActiveUserGamesResult
+        data: getActiveUserGamesResult,
       });
     } catch (error) {
       console.log(error);
@@ -84,6 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f3f3f3',
     borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0
-  }
+    borderTopLeftRadius: 0,
+  },
 });

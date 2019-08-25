@@ -24,7 +24,7 @@ const ProfileGamesList: React.FC<Props> = ({
   emptyText,
   query,
 }) => {
-  console.log('ProfileGamesList', { participantsIds: [userId], status });
+  // console.log('ProfileGamesList', { participantsIds: [userId], status });
 
   return (
     // <GamesQuery query={query} variables={{ participantsIds: [userId], status }}>

@@ -56,7 +56,7 @@ export default function UserInfoTab({ id }: IProps) {
   };
 
   const changeAvatarHandle = (newAvatar: string | null) => {
-    console.log('changeAvatarHandle', newAvatar);
+    // console.log('changeAvatarHandle', newAvatar);
 
     setNewInfo({ ...newInfo, avatar: newAvatar });
   };
@@ -70,9 +70,9 @@ export default function UserInfoTab({ id }: IProps) {
     userInput: deepOmit(newInfo, '__typename'),
   };
 
-  console.log('UserInfoTab', getUserInfo);
+  // console.log('UserInfoTab', getUserInfo);
 
-  console.log('mutationVariables', mutationVariables);
+  // console.log('mutationVariables', mutationVariables);
 
   return (
     <FormContainer>
