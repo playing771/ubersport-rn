@@ -21,6 +21,7 @@ export const userInfoFragment = `
     lastName
     nickname
     dateOfBirth
+    avatar
   }
 `;
 

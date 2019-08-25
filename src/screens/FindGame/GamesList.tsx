@@ -7,6 +7,7 @@ import { IGame } from '../../api/games/types';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
 import handleApoloError from '../../other/handleApoloError';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 const keyExtractor = (item: IGame) => item.id;
 
@@ -21,8 +22,7 @@ const GamesList = withGamesQuery(
     }
 
     if (error) {
-      handleApoloError(error);
-      return <Text>ERROR</Text>;
+      return <ErrorGqlCard error={error}></ErrorGqlCard>;
     }
     return (
       games && (
@@ -30,9 +30,7 @@ const GamesList = withGamesQuery(
           data={games.games}
           // extraData={data!.getGames.games}
           // style={{ marginBottom: 120 }}
-          contentContainerStyle={
-            isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined
-          }
+          contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined}
           keyExtractor={keyExtractor}
           renderItem={({ item }) => {
             return (
@@ -55,9 +53,9 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: '#FAFAFA',
     paddingHorizontal: 12,
-    paddingVertical: 12
+    paddingVertical: 12,
   },
-  card: { marginBottom: 8, borderBottomColor: '#9B9B9B' }
+  card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
 });
 
 export default GamesList;

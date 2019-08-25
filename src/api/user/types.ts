@@ -10,6 +10,7 @@ export default interface IUser {
   dateOfBirth: number;
   favoriteSports: ISport[];
   sex: ISex;
+  avatar: string | null;
 }
 
 export interface IUserWithToken extends IUser {

@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { Ionicons } from "@expo/vector-icons";
 import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
-import getRandomUser from '../../other/getRandomUser';
 import getAgeFromBirthday from '../../other/getAgeFromBirthday';
 import { NavigationRoot } from '../../navigation/roots';
 import ULoader from '../../components/ULoader/index';

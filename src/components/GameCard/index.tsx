@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  StyleProp,
-  ViewStyle,
-  GestureResponderEvent
-} from 'react-native';
+import { StyleSheet, View, Text, StyleProp, ViewStyle, GestureResponderEvent } from 'react-native';
 import GameDetailsCardHeader from './Header';
 
 import GameTitle from './GameTitle';
@@ -30,13 +23,7 @@ type IProps = {
 
 const textColor = '#242223';
 
-const GameDetailsCard = ({
-  game,
-  simple,
-  style,
-  onPress,
-  navigation
-}: IProps) => {
+const GameDetailsCard = ({ game, simple, style, onPress, navigation }: IProps) => {
   const _onPress = (): void => {
     if (onPress) {
       onPress(game.id);
@@ -45,17 +32,14 @@ const GameDetailsCard = ({
   const _onParticipantsPress = (): void => {
     navigation.navigate(NavigationRoot.Participants, {
       gameId: game.id,
-      authorId: game.author.id
+      authorId: game.author.id,
     });
   };
   const _onGameLocationPress = (): void => {
     navigation.navigate(NavigationRoot.Location, { location: game.location });
   };
   return (
-    <Card
-      wrapperStyle={[_styles.card, style]}
-      onPress={onPress ? _onPress : undefined}
-    >
+    <Card wrapperStyle={[_styles.card, style]} onPress={onPress ? _onPress : undefined}>
       <>
         <CardPart bordered={false}>
           <GameDetailsCardHeader
@@ -63,6 +47,7 @@ const GameDetailsCard = ({
             author={game.author.firstName + ' ' + game.author.lastName}
             team="fcpunlimited"
             sport={game.sport.name}
+            avatar={game.author.avatar}
           />
         </CardPart>
         <CardPart bordered={false}>
@@ -90,20 +75,13 @@ const GameDetailsCard = ({
             />
           </CardPart>
         )}
-        <View
-          style={
-            simple ? _styles.subCardContainerSimple : _styles.subCardContainer
-          }
-        >
+        <View style={simple ? _styles.subCardContainerSimple : _styles.subCardContainer}>
           <SubCard
             icon="ios-pin"
             mainText={game.location.address}
             subText="д. 7 к.1"
             textColor={textColor}
-            style={[
-              _styles.border,
-              simple ? _styles.roundedLeftBorder : undefined
-            ]}
+            style={[_styles.border, simple ? _styles.roundedLeftBorder : undefined]}
             iconColor={'#3B485A'}
           />
           <SubCard
@@ -111,10 +89,7 @@ const GameDetailsCard = ({
             mainText="Пятница, 10 янв."
             subText="19:00"
             textColor={textColor}
-            style={[
-              _styles.border,
-              simple ? _styles.roundedRightBorder : undefined
-            ]}
+            style={[_styles.border, simple ? _styles.roundedRightBorder : undefined]}
             iconColor={'#3B485A'}
           />
         </View>
@@ -137,24 +112,24 @@ const _styles = StyleSheet.create({
     backgroundColor: cardBackgroundColor,
     borderColor: '#CCCCCC',
     overflow: 'hidden',
-    borderWidth: 0.5
+    borderWidth: 0.5,
   },
   mapContainer: { height: 110 },
   border: {},
   roundedRightBorder: { borderBottomRightRadius: 6 },
   roundedLeftBorder: { borderBottomLeftRadius: 6 },
   subCardContainerSimple: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   subCardContainer: {
     flexDirection: 'column',
-    height: 120
+    height: 120,
   },
   avatarsContainer: {
     marginRight: 'auto',
-    paddingVertical: 10
+    paddingVertical: 10,
   },
-  description: { paddingTop: 5 }
+  description: { paddingTop: 5 },
 });
 
 export default withNavigation(GameDetailsCard);

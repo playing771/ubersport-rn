@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, ViewStyle, ImageStyle, StyleSheet, Text, TextStyle, StyleProp } from 'react-native';
+import { View, ViewStyle, ImageStyle, StyleSheet, TextStyle, StyleProp } from 'react-native';
 import UImage from '../UImage';
 import ULoader from '../ULoader';
 import { FILES_URL } from '../../constants/Api';
+import EmptyAvatar from './EmptyAvatar';
 
 type UserAvatarProps = {
-  src?: string;
+  src: string | undefined | null;
   style?: StyleProp<ViewStyle>;
   count?: number;
 } & typeof defaultProps;
@@ -30,7 +31,7 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
     <View style={[s.imageContainer, style]}>
       {src ? (
         <UImage
-          indicator={() => <ULoader color="#434E77"></ULoader>}
+          indicator={() => <ULoader color="#434E77" />}
           borderRadius={(size * 0.9) / 2}
           style={s.image}
           source={{
@@ -38,7 +39,9 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
           }}
         />
       ) : (
-        <View style={s.counterContainer}>{count && <Text style={s.counter}>+{count}</Text>}</View>
+        <EmptyAvatar size={size} />
+
+        // <View style={s.counterContainer}>{count && <Text style={s.counter}>+{count}</Text>}</View>
       )}
     </View>
   );
@@ -46,7 +49,7 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
 
 const getStyle = (size: number, counterColor: string, imageBorderWidthRatio: number) => {
   // console.log("size", size);
-  return StyleSheet.create<Style>({
+  return StyleSheet.create({
     imageContainer: {
       width: size,
       height: size,
@@ -55,14 +58,15 @@ const getStyle = (size: number, counterColor: string, imageBorderWidthRatio: num
       alignItems: 'center',
       justifyContent: 'center',
     },
-    counterContainer: {
-      borderRadius: (size * 0.9) / 2,
-      width: size * 0.9,
-      height: size * 0.9,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: counterColor,
-    },
+
+    // counterContainer: {
+    //   borderRadius: (size * 0.9) / 2,
+    //   width: size * 0.9,
+    //   height: size * 0.9,
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    //   backgroundColor: counterColor,
+    // },
     image: {
       width: size * imageBorderWidthRatio,
       height: size * imageBorderWidthRatio,
