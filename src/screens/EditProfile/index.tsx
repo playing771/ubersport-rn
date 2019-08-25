@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { NavigationScreenProps } from 'react-navigation';
 
 import useAppContext from '../../hooks/useAppContext';
 import UserInfoTab from './tabs/UserInfo/';
 import FavouriteSportsTab from './tabs/FavouriteSports/index';
-import UButton from '../../components/UButton';
-import Colors, { HEADER_BACKGROUND } from '../../constants/Colors';
+
+import { HEADER_BACKGROUND } from '../../constants/Colors';
 import useNavigation from '../../hooks/useNavigation';
 import UTabsView from '../../components/UTabView';
 import ChangePasswordTab from './tabs/ChangePassword/';
+import HeaderRightButton from './ExitProfileButton';
 
 interface IProps extends NavigationScreenProps {}
 
@@ -49,46 +48,15 @@ const EditProfileScreen = (props: IProps) => {
   );
 };
 
-EditProfileScreen.navigationOptions = ({ navigation }) => {
-  const clickHandle = () => {
-    navigation.getParam('test');
-  };
-
+EditProfileScreen.navigationOptions = () => {
   return {
     headerStyle: {
       backgroundColor: HEADER_BACKGROUND,
     },
     headerTitleStyle: { color: 'white' },
     headerBackTitleStyle: { color: 'white' },
-    headerRight: <HeaderRightButton onPress={clickHandle} />,
+    headerRight: <HeaderRightButton />,
   };
 };
-
-function HeaderRightButton({ onPress }: { onPress: () => void }) {
-  // const { getParam } = useNavigation();
-
-  // const pressHandle = () => {
-  // 	console.log('CLICK');
-
-  // 	console.log(getParam('save'));
-  // };
-
-  return (
-    <UButton
-      onPress={onPress}
-      // iconStyle={{ width: 20, height: 20 }}
-      backgroundColor="transparent"
-      style={{ marginRight: 12 }}
-      // title="Cохранить"
-      textStyle={{ fontSize: 14 }}
-    >
-      <Ionicons name="ios-log-out" size={30} color={Colors.purle} />
-      {/* <Ionicons name="ios-save" size={30} color={'white'} /> */}
-      {/* <AntDesign size={24} color={'white'} name="save"></AntDesign>  */}
-    </UButton>
-  );
-}
-
-const styles = StyleSheet.create({});
 
 export default EditProfileScreen;

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  ActivityIndicator,
-  StatusBar,
-  Text,
-  AsyncStorage
-} from 'react-native';
+import { View, ActivityIndicator, StatusBar, Text, AsyncStorage } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
 import { StyleSheet } from 'react-native';
@@ -27,12 +21,10 @@ export default class LoadingScreen extends React.Component<IProps, IState> {
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    console.log('LOADINg screen');
-
     // AsyncStorage.clear();
 
     const user = await AsyncStorage.getItem('user');
-    console.log('user', user);
+    // console.log('user', user);
 
     // AsyncStorage.clear();
     if (user) {
@@ -78,9 +70,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#101F44',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   contentContainer: { flexDirection: 'row', alignItems: 'center' },
   title: { color: 'white', fontSize: 18 },
-  loader: { marginLeft: 12 }
+  loader: { marginLeft: 12 },
 });

@@ -22,11 +22,8 @@ interface IState {
   isVisible: boolean;
 }
 
-const withSubmitModal = <T extends IRequiredProps>(
-  WrappedComponent: React.ComponentType<T>
-) => {
-  const displayName =
-    WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const withSubmitModal = <T extends IRequiredProps>(WrappedComponent: React.ComponentType<T>) => {
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   class ComponentWithSubmit extends React.Component<
     Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps,
     IState
@@ -34,7 +31,7 @@ const withSubmitModal = <T extends IRequiredProps>(
     public static displayName = `withSubmitModal(${displayName})`;
 
     state = {
-      isVisible: false
+      isVisible: false,
     };
 
     toggleModal = (): Promise<void> => {
@@ -55,9 +52,7 @@ const withSubmitModal = <T extends IRequiredProps>(
             closeOnSubmit={this.props.closeOnSubmi}
           />
           <WrappedComponent
-            {...this.props as T &
-              Optionalize<T & IWithSubmitProps, IWithSubmitProps> &
-              IProps}
+            {...(this.props as T & Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps)}
             onPress={this.toggleModal}
           />
         </>

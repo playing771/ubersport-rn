@@ -20,8 +20,6 @@ interface IProps {
 // есть только MIN: не показываем прогрес бар
 
 const Participants = ({ textColor, max, min, participants, style }: IProps) => {
-  console.log('Participants', max, min);
-
   const count = participants ? participants.length : 0;
   // const progress = 100 / (max / count);
   const styles = _getStyles(textColor);
@@ -35,11 +33,7 @@ const Participants = ({ textColor, max, min, participants, style }: IProps) => {
           {max ? (
             <Text style={styles.capacity}>{`${count} / ${max}`}</Text>
           ) : (
-            <Ionicons
-              name="ios-infinite"
-              size={18}
-              style={styles.infiniteIcon}
-            />
+            <Ionicons name="ios-infinite" size={18} style={styles.infiniteIcon} />
           )}
         </View>
       </View>
@@ -63,14 +57,14 @@ const _getStyles = (textColor: string) => {
     topBarContainer: { flexDirection: 'row', alignItems: 'center' },
     avatarsContainer: {
       paddingVertical: 10,
-      marginRight: 'auto'
+      marginRight: 'auto',
     },
     title: {
       color: textColor,
       marginRight: 'auto',
       fontWeight: '600',
       fontSize: 12,
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
     },
     capacity: {
       color: textColor,
@@ -78,13 +72,13 @@ const _getStyles = (textColor: string) => {
       fontWeight: '600',
       fontSize: 12,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     count: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
     },
-    infiniteIcon: { paddingTop: 2 }
+    infiniteIcon: { paddingTop: 2 },
   });
   return _styles;
 };

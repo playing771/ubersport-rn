@@ -5,14 +5,14 @@ import useNavigation from './useNavigation';
 type ICheckType = 'boolean' | 'redirect';
 
 export default function useAuthCheck() {
-  const { user } = useAppContext();
+  const { user, isLoggedIn } = useAppContext();
   const { navigate, replace } = useNavigation();
   // console.log('useAuthCheck', user);
 
   const authCheck = (checkType: ICheckType = 'boolean') => {
     // console.log('authCheck', checkType);
 
-    if (user.id !== 'noId') {
+    if (isLoggedIn) {
       return true;
     }
 

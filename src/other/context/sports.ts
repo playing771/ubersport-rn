@@ -12,6 +12,7 @@ export const uknonwUser: IUserWithToken = {
   firstName: 'uknown',
   middleName: 'unknown',
   sex: 'MALE',
+  avatar: null,
 };
 export interface IAppContextInjectedProp {
   ctx: AppContext;

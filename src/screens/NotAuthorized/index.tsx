@@ -26,7 +26,7 @@ function NotAuthorizedScreen(props: IProps) {
         <View
           style={{
             // backgroundColor: '#F1F1F5',
-            paddingHorizontal: 24
+            paddingHorizontal: 24,
             // paddingBottom: 12
           }}
         >
@@ -34,7 +34,7 @@ function NotAuthorizedScreen(props: IProps) {
         </View>
         <View
           style={{
-            paddingHorizontal: 24
+            paddingHorizontal: 24,
           }}
         >
           <Text
@@ -45,7 +45,7 @@ function NotAuthorizedScreen(props: IProps) {
               // fontFamily: 'Avenir',
               fontWeight: '700',
               paddingVertical: 20,
-              width: '80%'
+              width: '80%',
             }}
           >
             Чтобы продолжить, Вы должны авторизоваться!
@@ -56,7 +56,7 @@ function NotAuthorizedScreen(props: IProps) {
             paddingHorizontal: 24,
             paddingTop: 24,
             backgroundColor: '#F1F1F5',
-            flex: 1
+            flex: 1,
           }}
         >
           <UButton
@@ -77,7 +77,7 @@ function NotAuthorizedScreen(props: IProps) {
 export default NotAuthorizedScreen;
 
 NotAuthorizedScreen.navigationOptions = {
-  header: null
+  header: null,
   // headerTransparent: true
   // headerStyle: {
   //   backgroundColor: '#1C2A4C'

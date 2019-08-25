@@ -14,24 +14,17 @@ type IProps = {
 const defaultProps = {
   submitText: 'Да',
   cancelText: 'Отмена',
-  closeOnSubmit: true
+  closeOnSubmit: true,
 };
 
 const SubmitModal = (props: IProps) => {
   return (
-    <Modal
-      isVisible={props.isVisible}
-      style={s.modalContainer}
-      onBackdropPress={props.toggleModal}
-    >
+    <Modal isVisible={props.isVisible} style={s.modalContainer} onBackdropPress={props.toggleModal}>
       <View style={s.modalContent}>
         <TouchableHighlight
           onPress={prop => {
             if (props.onSubmit) {
-              console.log('props.closeOnSubmit', props.closeOnSubmit);
-
               if (props.closeOnSubmit) {
-                console.log('closing');
                 props.toggleModal();
               }
               props.onSubmit(prop);
@@ -66,7 +59,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)'
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   submitBtn: {
     backgroundColor: '#EFEFED',
@@ -74,7 +67,7 @@ const s = StyleSheet.create({
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   submitText: { color: '#F84472', textAlign: 'center' },
   cancelBtn: {
@@ -82,9 +75,9 @@ const s = StyleSheet.create({
     width: '100%',
     padding: 14,
     borderRadius: 8,
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  cancelText: { color: '#4B7AEA', textAlign: 'center' }
+  cancelText: { color: '#4B7AEA', textAlign: 'center' },
 });
 
 SubmitModal.defaultProps = defaultProps;
