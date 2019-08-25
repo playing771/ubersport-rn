@@ -10,7 +10,8 @@ export const uknonwUser: IUserWithToken = {
   dateOfBirth: 123,
   favoriteSports: [],
   firstName: 'uknown',
-  middleName: 'unknown'
+  middleName: 'unknown',
+  sex: 'MALE',
 };
 export interface IAppContextInjectedProp {
   ctx: AppContext;
@@ -24,7 +25,7 @@ export interface AppContext {
 const ctx: AppContext = {
   sports: {},
   user: uknonwUser,
-  setUser: () => undefined
+  setUser: () => undefined,
   // user: {
   //   id: '',
   //   // TODO: favourite sports must be quered from server!

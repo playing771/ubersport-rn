@@ -11,10 +11,12 @@ import uploadAvatar from '../../../api/user/uploadAvatar';
 import AvatarSelectModal from './Modal';
 import ProfileAvatar from './ProfileAvatar';
 import getFormData from '../../../other/getFormData';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 interface IProps {
   wrapperStyle?: ViewStyle;
-  // onPress:()=>void≥
+  onChange?: (fileId: string | null) => void;
+  value?: string | null;
 }
 
 type IMAGE_SOURCE = 'GALLERY' | 'CAMERA';
@@ -23,8 +25,8 @@ const PICTURE_SIZE = 150;
 
 const ClickableView = withModal(withTouch(View));
 
-const AvatarSelect = ({ wrapperStyle }: IProps) => {
-  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+const AvatarSelect = ({ wrapperStyle, onChange, value }: IProps) => {
+  const [avatar, setAvatar] = useState<string | undefined | null>(value);
   const { user } = useAppContext();
 
   const getImageHandle = async (type: IMAGE_SOURCE, closeModal: () => void) => {
@@ -40,7 +42,7 @@ const AvatarSelect = ({ wrapperStyle }: IProps) => {
   };
 
   async function pickImage(type: IMAGE_SOURCE, closeModal: () => void) {
-    const result =
+    const result: ImagePicker.ImagePickerResult =
       type === 'CAMERA'
         ? await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -52,22 +54,30 @@ const AvatarSelect = ({ wrapperStyle }: IProps) => {
             allowsEditing: true,
             aspect: [4, 3],
           });
+    if (result.cancelled) {
+      return;
+    }
 
-    if (!result.cancelled) {
-      closeModal();
-      const localUri = result.uri;
-      const filename = localUri.split('/').pop();
-      setAvatar(localUri);
-      const formData = getFormData(localUri, filename);
+    closeModal();
+    const localUri = (result as ImageInfo).uri;
+    const filename = localUri.split('/').pop();
+    setAvatar(localUri);
+    const formData = getFormData(localUri, filename);
 
-      const response = await uploadAvatar(formData, user.token);
-      console.log('RRESPONSE', response);
+    const response = await uploadAvatar(formData, user.token);
+    if (!response.error) {
+      if (onChange) {
+        onChange(response.id);
+      }
+    } else {
+      console.warn(response.error);
     }
   }
 
   const deleteImageHandle = (closeModal: () => void) => {
     closeModal();
     setAvatar(undefined);
+    onChange(null);
   };
 
   return (
@@ -76,14 +86,14 @@ const AvatarSelect = ({ wrapperStyle }: IProps) => {
         style={styles.mainContainer}
         modal={({ toggleModal }) => (
           <AvatarSelectModal
-            avatar={avatar}
+            avatar={value ? value : avatar}
             useGaleryHandle={() => getImageHandle('GALLERY', toggleModal)}
             useCameraHandle={() => getImageHandle('CAMERA', toggleModal)}
             deleteImageHandle={() => deleteImageHandle(toggleModal)}
           />
         )}
       >
-        <ProfileAvatar avatarSrc={avatar} />
+        <ProfileAvatar avatarSrc={value ? value : avatar} />
         <Text style={styles.text}>Изменить аватар</Text>
       </ClickableView>
     </View>

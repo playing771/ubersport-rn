@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   View,
   Image,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  StyleProp
-} from "react-native";
+  StyleProp,
+} from 'react-native';
 
 type UserAvatarProps = {
   src?: string;
@@ -18,8 +18,8 @@ type UserAvatarProps = {
 
 const defaultProps = {
   size: 30,
-  counterColor: "transparent",
-  imageBorderWidthRatio: 0.9
+  counterColor: 'transparent',
+  imageBorderWidthRatio: 0.9,
 };
 
 const UserAvatar: React.SFC<UserAvatarProps> = ({
@@ -28,9 +28,11 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
   style,
   count,
   counterColor,
-  imageBorderWidthRatio
+  imageBorderWidthRatio,
 }) => {
   const s = getStyle(size, counterColor, imageBorderWidthRatio);
+  console.log('SRC', src);
+
   return (
     <View style={[s.imageContainer, style]}>
       {src ? (
@@ -38,46 +40,40 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
           borderRadius={(size * 0.9) / 2}
           style={s.image}
           source={{
-            uri: src
+            uri: `https://ubersport.ru/file/${src}`,
           }}
         />
       ) : (
-        <View style={s.counterContainer}>
-          {count && <Text style={s.counter}>+{count}</Text>}
-        </View>
+        <View style={s.counterContainer}>{count && <Text style={s.counter}>+{count}</Text>}</View>
       )}
     </View>
   );
 };
 
-const getStyle = (
-  size: number,
-  counterColor: string,
-  imageBorderWidthRatio: number
-) => {
+const getStyle = (size: number, counterColor: string, imageBorderWidthRatio: number) => {
   // console.log("size", size);
   return StyleSheet.create<Style>({
     imageContainer: {
       width: size,
       height: size,
       borderRadius: size! / 2,
-      backgroundColor: "white",
-      alignItems: "center",
-      justifyContent: "center"
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     counterContainer: {
       borderRadius: (size * 0.9) / 2,
       width: size * 0.9,
       height: size * 0.9,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: counterColor
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: counterColor,
     },
     image: {
       width: size * imageBorderWidthRatio,
-      height: size * imageBorderWidthRatio
+      height: size * imageBorderWidthRatio,
     },
-    counter: { color: "#76706f", fontWeight: "600", fontSize: 12 }
+    counter: { color: '#76706f', fontWeight: '600', fontSize: 12 },
   });
 };
 
@@ -90,10 +86,7 @@ interface Style {
 
 UserAvatar.defaultProps = defaultProps;
 
-type OuterProps = Pick<
-  UserAvatarProps,
-  Exclude<keyof UserAvatarProps, keyof typeof defaultProps>
-> &
+type OuterProps = Pick<UserAvatarProps, Exclude<keyof UserAvatarProps, keyof typeof defaultProps>> &
   Partial<typeof defaultProps>;
 
 export default UserAvatar as React.SFC<OuterProps>;

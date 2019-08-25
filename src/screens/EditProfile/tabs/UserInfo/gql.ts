@@ -9,6 +9,7 @@ export const EDIT_PROFILE_USER_INFO_QUERY = gql`
       firstName
       lastName
       sex
+      avatar
     }
   }
 `;

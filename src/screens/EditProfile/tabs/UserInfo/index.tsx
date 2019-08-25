@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import ULoader from '../../../../components/ULoader/index';
 import UTextInput from '../../../../components/UTextInput/index';
 
-import { USwitch as EditSex, ISwitchOption } from '../../../../components/Buttons/Switch';
+import { USwitch as EditSex } from '../../../../components/Buttons/Switch';
 import AvatarSelect from '../../AvatarSelect';
 
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
@@ -24,6 +24,7 @@ export interface IEditProfileUserInfo {
   firstName: string;
   lastName: string;
   sex: ISex;
+  avatar: string | null;
 }
 
 const initialUserInfo: IEditProfileUserInfo | null = null;
@@ -31,7 +32,6 @@ const initialUserInfo: IEditProfileUserInfo | null = null;
 export default function UserInfoTab({ id }: IProps) {
   const { data, loading, error } = useEditProfileInfoQuery({ id });
   const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(initialUserInfo);
-  const [test, setTest] = useState('TEST STRING');
 
   if (error) {
     return <ErrorGqlCard error={error} position="BOTTOM" />;
@@ -55,6 +55,12 @@ export default function UserInfoTab({ id }: IProps) {
     setNewInfo({ ...newInfo, sex: sex as ISex });
   };
 
+  const changeAvatarHandle = (newAvatar: string | null) => {
+    console.log('changeAvatarHandle', newAvatar);
+
+    setNewInfo({ ...newInfo, avatar: newAvatar });
+  };
+
   if (loading || !getUserInfo) {
     return <ULoader />;
   }
@@ -64,13 +70,17 @@ export default function UserInfoTab({ id }: IProps) {
     userInput: deepOmit(newInfo, '__typename'),
   };
 
-  // const initialValue = newInfo.sex;
+  console.log('UserInfoTab', getUserInfo);
 
   console.log('mutationVariables', mutationVariables);
 
   return (
     <FormContainer>
-      <AvatarSelect wrapperStyle={styles.avatarWrapper} />
+      <AvatarSelect
+        wrapperStyle={styles.avatarWrapper}
+        onChange={changeAvatarHandle}
+        value={data.getUserInfo.avatar}
+      />
       <UTextInput
         label="Имя"
         initialValue={data.getUserInfo.firstName}
