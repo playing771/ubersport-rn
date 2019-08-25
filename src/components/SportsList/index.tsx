@@ -20,7 +20,7 @@ interface IStyleProps {
 
 export interface IProps extends IStyleProps {
   exclude?: ISport[];
-  selectedItems?: number[];
+  // selectedItems?: number[];
   onChange?: (selected: number[]) => void;
   loading?: boolean;
 }
@@ -34,10 +34,11 @@ const SportsList = ({
   itemNonSelectedTextStyle,
   selectionLimit,
   loading,
-  initialValues = [],
-}: IProps) => {
+  initialValues,
+}: // selectedItems,
+IProps) => {
   const { data, loading: avaliableSportsLoading, error } = useAvaliableSportsQuery();
-  const [selectedSports, setSelectedSports] = useState<number[]>(initialValues);
+  const [innerSelectedSports, setInnerSelectedSports] = useState<number[]>(initialValues);
 
   if (error) {
     return <ErrorGqlCard error={error} />;
@@ -48,28 +49,23 @@ const SportsList = ({
   }
 
   const onChangeHandle = (selectedId: number) => {
-    console.log('onChangeHandle', selectedId);
-
-    const selected = [...selectedSports];
-
-    const itemIndex = selected.findIndex(sel => sel === selectedId);
+    const itemIndex = innerSelectedSports.findIndex(sel => sel === selectedId);
     if (itemIndex > -1) {
-      selected.splice(itemIndex, 1);
+      innerSelectedSports.splice(itemIndex, 1);
     } else {
-      console.log('push', selectedId);
-      selected.push(selectedId);
+      innerSelectedSports.push(selectedId);
     }
 
-    setSelectedSports([...selected]);
-    console.log('setSports', selectedSports, selected);
+    setInnerSelectedSports([...innerSelectedSports]);
+
     if (onChange) {
-      onChange(selectedSports);
+      onChange(innerSelectedSports);
     }
   };
 
   const renderItem = ({ item }: { item: ISport }) => {
-    const active = selectedSports.some(si => item.id === si);
-    const exceedMaximum = selectionLimit && selectionLimit === selectedSports.length;
+    const active = innerSelectedSports.some(si => item.id === si);
+    const exceedMaximum = selectionLimit && selectionLimit === innerSelectedSports.length;
 
     const onPressHandle = (itemId: number) => {
       // отменяем, если превышен selection-лимит
@@ -80,7 +76,6 @@ const SportsList = ({
         onChangeHandle(itemId);
       }
     };
-    console.log('active', active, item.id);
 
     return (
       <ToggleableItem

@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
-import ISport from '../../../../api/sports/Sport.type';
 import { IEditProfileUserInfoVarialbles } from '../UserInfo/gql';
 
 export const EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY = gql`
@@ -13,9 +12,13 @@ export const EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY = gql`
   }
 `;
 
+interface IEditProfileSport {
+  id: number;
+}
+
 export interface IEditProfileUserFavouriteSportsResult {
   getUserFavouriteSports: {
-    favouriteSports: number[];
+    favoriteSports: IEditProfileSport[];
   };
 }
 

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import ULoader from '../../../../components/ULoader/index';
 import UTextInput from '../../../../components/UTextInput/index';
 
-import { USwitch as EditSex } from '../../../../components/Buttons/Switch';
+import { USwitch as EditSex, ISwitchOption } from '../../../../components/Buttons/Switch';
 import AvatarSelect from '../../AvatarSelect';
 
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
@@ -26,22 +26,12 @@ export interface IEditProfileUserInfo {
   sex: ISex;
 }
 
-const initialUserInfo: IEditProfileUserInfo = {
-  firstName: '',
-  lastName: '',
-  nickname: '',
-  sex: 'MALE',
-};
+const initialUserInfo: IEditProfileUserInfo | null = null;
 
 export default function UserInfoTab({ id }: IProps) {
   const { data, loading, error } = useEditProfileInfoQuery({ id });
-  const [info, setInfo] = useState<IEditProfileUserInfo>(initialUserInfo);
-
-  useEffect(() => {
-    if (data) {
-      setInfo({ ...data.getUserInfo });
-    }
-  }, [data]);
+  const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(initialUserInfo);
+  const [test, setTest] = useState('TEST STRING');
 
   if (error) {
     return <ErrorGqlCard error={error} position="BOTTOM" />;
@@ -50,19 +40,19 @@ export default function UserInfoTab({ id }: IProps) {
   const { getUserInfo } = data;
 
   const changeFirstNameHandle = (firstName: string) => {
-    setInfo({ ...info, firstName });
+    setNewInfo({ ...newInfo, firstName });
   };
 
   const changeLastNameHandle = (lastName: string) => {
-    setInfo({ ...info, lastName });
+    setNewInfo({ ...newInfo, lastName });
   };
 
   const changeNicknameHandle = (nickname: string) => {
-    setInfo({ ...info, nickname });
+    setNewInfo({ ...newInfo, nickname });
   };
 
-  const changeSexHandle = (sex: ISex) => {
-    setInfo({ ...info, sex });
+  const changeSexHandle = (sex: string) => {
+    setNewInfo({ ...newInfo, sex: sex as ISex });
   };
 
   if (loading || !getUserInfo) {
@@ -71,17 +61,42 @@ export default function UserInfoTab({ id }: IProps) {
 
   const mutationVariables: IEditProfileVariables = {
     id,
-    userInput: deepOmit(info, '__typename'),
+    userInput: deepOmit(newInfo, '__typename'),
   };
+
+  // const initialValue = newInfo.sex;
+
+  console.log('mutationVariables', mutationVariables);
 
   return (
     <FormContainer>
       <AvatarSelect wrapperStyle={styles.avatarWrapper} />
-      <UTextInput label="Имя" value={info.firstName} onChange={changeFirstNameHandle} />
-      <UTextInput label="Фамилия" value={info.lastName} onChange={changeLastNameHandle} />
-      <UTextInput label="Никнейм" value={info.nickname} onChange={changeNicknameHandle} />
-      <EditSex options={['Мужской', 'Женский']} label="Пол" onChange={changeSexHandle} />
-      <SubmitButton gql={EDIT_PROFILE_MUTATION} variables={mutationVariables} />
+      <UTextInput
+        label="Имя"
+        initialValue={data.getUserInfo.firstName}
+        onChange={changeFirstNameHandle}
+      />
+      <UTextInput
+        label="Фамилия"
+        initialValue={data.getUserInfo.lastName}
+        onChange={changeLastNameHandle}
+      />
+      <UTextInput
+        label="Никнейм"
+        initialValue={data.getUserInfo.nickname}
+        onChange={changeNicknameHandle}
+      />
+      <EditSex
+        options={[{ label: 'Мужской', value: 'MALE' }, { label: 'Женский', value: 'FEMALE' }]}
+        label="Пол"
+        onChange={changeSexHandle}
+        initialValue={data.getUserInfo.sex}
+      />
+      <SubmitButton
+        gql={EDIT_PROFILE_MUTATION}
+        variables={mutationVariables}
+        disabled={newInfo === null}
+      />
     </FormContainer>
   );
   {

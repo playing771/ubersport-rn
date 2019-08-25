@@ -44,7 +44,8 @@ class SportFilters extends React.PureComponent<IProps, IState> {
         <Header>Прочие виды</Header>
         <SportsList
           exclude={favoriteSports}
-          selectedItems={this.state.selected}
+          // selectedItems={this.state.selected}
+          initialValues={this.state.selected}
           // itemPressHandle={this.toggleSelection}
           onChange={this.toggleSelectionHandle}
         />

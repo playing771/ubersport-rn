@@ -14,7 +14,8 @@ interface IProps {
 
 export default function FavouriteSportsTab({ userId }: IProps) {
   const { data, loading, error } = useEditProfileFavouriteSportsQuery({ id: userId });
-  const [favoriteSports, setFavoriteSports] = useState<number[]>([]);
+
+  const [newFavoriteSports, setNewFavoriteSports] = useState<number[] | null>(null);
 
   if (loading) {
     return <ULoader />;
@@ -25,10 +26,10 @@ export default function FavouriteSportsTab({ userId }: IProps) {
   }
 
   const changeSportsHandle = (sportIds: number[]) => {
-    setFavoriteSports(sportIds);
+    setNewFavoriteSports(sportIds);
   };
 
-  const { favouriteSports } = data.getUserFavouriteSports;
+  const { favoriteSports } = data.getUserFavouriteSports;
 
   return (
     <FormContainer withKeyboard={false}>
@@ -38,13 +39,14 @@ export default function FavouriteSportsTab({ userId }: IProps) {
       <SportsList
         onChange={changeSportsHandle}
         style={styles.sportsList}
-        initialValues={favouriteSports}
+        initialValues={favoriteSports.map(fsp => fsp.id)}
         loading={loading}
       />
       <SubmitButton
         gql={EDIT_PROFILE_MUTATION}
-        variables={{ id: userId, userInput: { favoriteSports } }}
+        variables={{ id: userId, userInput: { favoriteSports: newFavoriteSports } }}
         style={{ marginTop: 0 }}
+        disabled={newFavoriteSports === null}
       />
     </FormContainer>
   );

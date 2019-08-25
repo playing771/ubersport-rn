@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
 import UButton from '../UButton/index';
+
+export interface ISwitchOption {
+  label: string;
+  value: string;
+}
 
 interface IProps {
   label?: string;
-  options: [string, string];
-  onChange?: (optionsState: string) => void;
+  options: ISwitchOption[];
+  onChange?: (value: string) => void;
+  initialValue?: string;
 }
 
-export function USwitch({ label, options, onChange }: IProps) {
-  const [optionsState, setOptionsState] = useState({ [options[0]]: true, [options[1]]: false });
+export function USwitch({ label, options, onChange, initialValue = options[0].value }: IProps) {
+  const [activeValue, setActiveValue] = useState(initialValue);
 
-  const handleChangeState = (index: number) => {
-    if (!optionsState[index]) {
-      if (index === 0) {
-        setOptionsState({
-          [options[0]]: true,
-          [options[1]]: false,
-        });
-      } else {
-        setOptionsState({
-          [options[1]]: true,
-          [options[0]]: false,
-        });
-      }
-
-      if (onChange) {
-        onChange(options[0] ? options[0] : options[1]);
-      }
+  const handleSwitchPress = (e: GestureResponderEvent, id: string) => {
+    setActiveValue(id);
+    if (onChange) {
+      onChange(id);
     }
   };
 
@@ -35,30 +28,28 @@ export function USwitch({ label, options, onChange }: IProps) {
     <View style={styles.mainContainer}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.btnsContainer}>
-        <SwitchBtn
-          active={optionsState[options[0]]}
-          title={options[0]}
-          onPress={() => handleChangeState(0)}
-        />
-        <SwitchBtn
-          active={optionsState[options[1]]}
-          title={options[1]}
-          onPress={() => handleChangeState(1)}
-        />
+        {options.map(option => (
+          <SwitchBtn
+            active={option.value === activeValue}
+            title={option.label}
+            onPress={handleSwitchPress}
+            id={option.value}
+            key={option.value}
+          />
+        ))}
       </View>
     </View>
   );
 }
 
-interface IProps {}
-
 interface IToggleBtnProps {
   active: boolean;
   title: string;
-  onPress: () => void;
+  onPress: (e: GestureResponderEvent, onClickId: string) => void;
+  id: string;
 }
 
-const SwitchBtn = ({ active, title, onPress }: IToggleBtnProps) => {
+const SwitchBtn = ({ active, title, onPress, id }: IToggleBtnProps) => {
   return (
     <UButton
       title={title}
@@ -67,6 +58,7 @@ const SwitchBtn = ({ active, title, onPress }: IToggleBtnProps) => {
       textStyle={active ? styles.activeTest : styles.text}
       onPress={onPress}
       underlayColor={'#56BBBC'}
+      onClickId={id}
     />
   );
 };

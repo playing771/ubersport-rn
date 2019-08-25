@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationScreenProps } from 'react-navigation';
+
 import useAppContext from '../../hooks/useAppContext';
 import UserInfoTab from './tabs/UserInfo/';
 import FavouriteSportsTab from './tabs/FavouriteSports/index';
 import UButton from '../../components/UButton';
-
 import Colors, { HEADER_BACKGROUND } from '../../constants/Colors';
-import { NavigationScreenProps } from 'react-navigation';
 import useNavigation from '../../hooks/useNavigation';
 import UTabsView from '../../components/UTabView';
 import ChangePasswordTab from './tabs/ChangePassword/';
-import { StyleSheet, View } from 'react-native';
-import { useQuery } from 'react-apollo';
-import {
-  IGetUserInfoResult,
-  IGetUserInfoVariables,
-  GET_USER_INFO_GQL,
-} from '../../api/user/withUserInfoQuery';
-
-import ULoader from '../../components/ULoader';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
-import { Ionicons } from '@expo/vector-icons';
 
 interface IProps extends NavigationScreenProps {}
 
@@ -35,27 +26,19 @@ const initialNavState = {
 const EditProfileScreen = (props: IProps) => {
   const { user } = useAppContext();
   const { setParams } = useNavigation();
-  const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
-    GET_USER_INFO_GQL,
-    { variables: { id: user.id } }
-  );
 
   const [currentNavState, setTabState] = useState(initialNavState);
 
   const tabs = {
-    1: () => (!loading ? <UserInfoTab id={user.id} /> : <ULoader />),
-    2: () => (!loading ? <FavouriteSportsTab userId={user.id} /> : <ULoader />),
-    3: () => (!loading ? <ChangePasswordTab /> : <ULoader />),
+    1: () => <UserInfoTab id={user.id} />,
+    2: () => <FavouriteSportsTab userId={user.id} />,
+    3: () => <ChangePasswordTab />,
   };
 
   useEffect(() => {
     setParams({ test: 'test' });
     // setSports(getUser.favoriteSports.map(sport => sport.id));
   }, []);
-
-  if (error) {
-    return <ErrorGqlCard error={error} position="BOTTOM" />;
-  }
 
   const selectTabHandle = (index: number) => {
     setTabState({ ...currentNavState, index });

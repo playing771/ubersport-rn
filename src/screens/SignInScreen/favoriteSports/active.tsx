@@ -47,7 +47,7 @@ const favoriteSportsActive = ({ onSubmit, index }: IProps) => {
       <AnimatedView animation="fadeIn" useNativeDriver={true} duration={500} delay={100}>
         <View style={styles.inputsContainer}>
           <SportsList
-            selectedItems={selected}
+            initialValues={selected}
             // itemPressHandle={toggleSelection}
             onChange={onChangeHandle}
             style={styles.sportsList}

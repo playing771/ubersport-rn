@@ -8,9 +8,10 @@ interface IProps<T> {
   variables: IEditProfileVariables;
   gql: object;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
-export function EditProfileSubmitButton<T>({ gql, variables, style }: IProps<T>) {
+export function EditProfileSubmitButton<T>({ gql, variables, style, disabled }: IProps<T>) {
   return (
     <SubmitButton
       gql={gql}
@@ -19,6 +20,7 @@ export function EditProfileSubmitButton<T>({ gql, variables, style }: IProps<T>)
       onError={handleApoloError}
       style={{ position: 'relative', marginTop: 48, ...style }}
       rounded={true}
+      disabled={disabled}
     />
   );
 }
