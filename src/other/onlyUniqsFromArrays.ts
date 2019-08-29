@@ -1,7 +1,4 @@
-const onlyUniqFromArrays = <
-  T extends { id: string | number },
-  P extends { id: string | number }
->(
+const onlyUniqFromArrays = <T extends { id: string | number }, P extends { id: string | number }>(
   arrayOne: T[],
   arrayTwo: P[]
 ) => {
@@ -9,8 +6,9 @@ const onlyUniqFromArrays = <
     return arrayOne;
   }
   const result = arrayOne.filter(function(io) {
-    return arrayTwo.some(it => it.id !== io.id);
+    return !arrayTwo.some(it => it.id === io.id);
   });
+
   return result;
 };
 
