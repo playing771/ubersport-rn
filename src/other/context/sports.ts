@@ -18,13 +18,13 @@ export interface IAppContextInjectedProp {
   ctx: AppContext;
 }
 export interface AppContext {
-  sports: { [key: string]: ISport };
+  // sports: { [key: string]: ISport };
   user: IUserWithToken;
   setUser: (user: IUserWithToken) => void;
 }
 
 const ctx: AppContext = {
-  sports: {},
+  // sports: {},
   user: uknonwUser,
   setUser: () => undefined,
   // user: {

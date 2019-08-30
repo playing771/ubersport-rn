@@ -9,9 +9,10 @@ export interface IErrorCardProps {
   error: string;
   show?: boolean;
   position?: IErrorCardPosition;
+  style?: ViewStyle;
 }
 
-const ErrorCard = ({ error, show = true, position }: IErrorCardProps) => {
+const ErrorCard = ({ error, show = true, position, style }: IErrorCardProps) => {
   const [visible, toggle] = useState(true);
 
   const hide = () => {
@@ -29,7 +30,7 @@ const ErrorCard = ({ error, show = true, position }: IErrorCardProps) => {
       style={getContainerPosition(position)}
       useNativeDriver={true}
     >
-      <Card wrapperStyle={styles.card} onPress={hide}>
+      <Card wrapperStyle={[styles.card, style]} onPress={hide}>
         <View>
           <Text style={styles.textMain}>Ошибка</Text>
           <Text style={styles.textSub}>{error}</Text>

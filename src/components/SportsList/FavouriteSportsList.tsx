@@ -7,7 +7,8 @@ import ULoader from '../ULoader/index';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 import ErrorGqlCard from '../ErrorCard/ErrorGqlCard';
 import SportsListInner from './SportsListInner';
-import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
+import useFavouriteSportsQuery from './gql';
+import useAppContext from '../../hooks/useAppContext';
 
 interface IStyleProps {
   style?: StyleProp<ViewStyle>;
@@ -25,16 +26,19 @@ export interface ISportsListProps extends IStyleProps {
   initialValues?: number[];
 }
 // ISportsListProps
-const SportsList = ({ exclude = [], ...props }: ISportsListProps) => {
-  const { data, loading, error } = useAvaliableSportsQuery();
+const FavouriteSportsList = (props: ISportsListProps) => {
+  const { user } = useAppContext();
+  const { data, loading, error } = useFavouriteSportsQuery({ id: user.id });
 
   if (error) {
     return <ErrorGqlCard error={error} />;
   }
 
-  const uniqSports = onlyUniqFromArrays(data.sports, exclude);
+  if (loading) {
+    return <ULoader />;
+  }
 
-  return <SportsListInner {...props} sports={uniqSports} loading={loading} />;
+  return <SportsListInner {...props} sports={data.getFavouriteSports.favoriteSports} />;
 };
 
-export default SportsList;
+export default FavouriteSportsList;

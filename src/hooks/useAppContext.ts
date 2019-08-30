@@ -3,7 +3,7 @@ import { AppContext, uknonwUser } from '../other/context/sports';
 import { AsyncStorage } from 'react-native';
 
 export default function useAppContext() {
-  const { setUser, sports, user } = useContext(AppContext);
+  const { setUser, user } = useContext(AppContext);
 
   const isLoggedIn = user.id !== 'noId';
 
@@ -12,5 +12,5 @@ export default function useAppContext() {
     AsyncStorage.clear();
   };
 
-  return { setUser, sports, user, isLoggedIn, logout };
+  return { setUser, user, isLoggedIn, logout };
 }

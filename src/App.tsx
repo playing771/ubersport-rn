@@ -19,32 +19,32 @@ import { AsyncStorage } from 'react-native';
 
 //  TODO: поменять на динамическую загрузку с сервера данны по видам
 // спорта
-const sports: { [key: string]: ISport } = {
-  Football: {
-    name: 'Football',
-    id: 1,
-  },
-  Basketball: {
-    name: 'Basketball',
-    id: 2,
-  },
-  Volleyball: {
-    name: 'Volleyball',
-    id: 3,
-  },
-  Paintball: {
-    name: 'Paintball',
-    id: 4,
-  },
-  Tennis: {
-    name: 'Tennis',
-    id: 5,
-  },
-  Bicycle: {
-    name: 'Bicycle',
-    id: 6,
-  },
-};
+// const sports: { [key: string]: ISport } = {
+//   Football: {
+//     name: 'Football',
+//     id: 1,
+//   },
+//   Basketball: {
+//     name: 'Basketball',
+//     id: 2,
+//   },
+//   Volleyball: {
+//     name: 'Volleyball',
+//     id: 3,
+//   },
+//   Paintball: {
+//     name: 'Paintball',
+//     id: 4,
+//   },
+//   Tennis: {
+//     name: 'Tennis',
+//     id: 5,
+//   },
+//   Bicycle: {
+//     name: 'Bicycle',
+//     id: 6,
+//   },
+// };
 
 // const user = {
 //   id: '5cbaff053905710024d52151',
@@ -128,7 +128,7 @@ export default class App extends React.Component<IProps, IAppState> {
           спорта */}
           <AppContextProvider
             value={{
-              sports,
+              // sports,
               user,
               setUser: this.setLoggedInUserHandle,
             }}

@@ -23,18 +23,3 @@ export interface IGetSportsResult {
 export default function useAvaliableSportsQuery() {
   return useQuery<IGetSportsResult>(GET_AVALIABLE_SPORTS_QUERY);
 }
-
-// export type WithAvaliableSportsProps = ChildDataProps<
-// //   IInputProps,
-// //   IGetSportsResult,
-// //   IVariables
-// // >;
-
-// // const withAvaliableSportsQuery = graphql<
-// //   IInputProps,
-// //   Response,
-// //   IVariables,
-// //   WithAvaliableSportsProps
-// // >(GET_SPORTS_GQL);
-
-// // export default withAvaliableSportsQuery;

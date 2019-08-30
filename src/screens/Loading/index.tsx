@@ -1,68 +1,59 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, ActivityIndicator, StatusBar, Text, AsyncStorage } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
 import { StyleSheet } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
-import withAppContext from '../../components/hocs/WithAppContext';
-import { IAppContextInjectedProp } from '../../other/context/sports';
 
-interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
+import useAppContext from '../../hooks/useAppContext';
+import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
-interface IState {}
+interface IProps extends NavigationInjectedProps {}
 
-@withAppContext
-export default class LoadingScreen extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
+export default function LoadingScreen(props: IProps) {
+  const { setUser } = useAppContext();
+  // получаем доступные виды спорта и храняим их в аполо кэш
+  const { error, loading } = useAvaliableSportsQuery();
 
-    // this._bootstrapAsync();
-  }
-
-  // Fetch the token from storage then navigate to our appropriate place
-  _bootstrapAsync = async () => {
-    // AsyncStorage.clear();
-
+  const bootstrapAsync = async () => {
     const user = await AsyncStorage.getItem('user');
-    // console.log('user', user);
-
-    // AsyncStorage.clear();
     if (user) {
-      this.props.ctx.setUser(JSON.parse(user));
+      setUser(JSON.parse(user));
     }
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(
-      // userToken ? NavigationRoot.Main : NavigationRoot.Auth
-      // NavigationRoot.FindGame
-      NavigationRoot.Profile
-    );
+
+    props.navigation.navigate(NavigationRoot.FindGame);
   };
 
-  componentDidMount() {
-    setTimeout(() => {
-      this._bootstrapAsync();
-    }, 800);
-  }
-
-  public render() {
+  if (error) {
     return (
       <View style={styles.mainContainer}>
         <StatusBar barStyle="light-content" />
-        <AnimatedView
-          style={styles.contentContainer}
-          animation="pulse"
-          easing="ease-out"
-          iterationCount="infinite"
-          useNativeDriver={true}
-          duration={2000}
-        >
-          <Text style={styles.title}>Загрузка</Text>
-          <ActivityIndicator size="small" color="white" style={styles.loader} />
-        </AnimatedView>
+        <ErrorGqlCard style={styles.errorCard} error={error} position="CENTER" />
       </View>
     );
   }
+
+  if (!loading && !error) {
+    bootstrapAsync();
+  }
+
+  return (
+    <View style={styles.mainContainer}>
+      <StatusBar barStyle="light-content" />
+      <AnimatedView
+        style={styles.contentContainer}
+        animation="pulse"
+        easing="ease-out"
+        iterationCount="infinite"
+        useNativeDriver={true}
+        duration={2000}
+      >
+        <Text style={styles.title}>Загрузка</Text>
+        <ActivityIndicator size="small" color="white" style={styles.loader} />
+      </AnimatedView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -75,4 +66,5 @@ const styles = StyleSheet.create({
   contentContainer: { flexDirection: 'row', alignItems: 'center' },
   title: { color: 'white', fontSize: 18 },
   loader: { marginLeft: 12 },
+  errorCard: { minWidth: 200 },
 });
