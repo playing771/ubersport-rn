@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native';
 import ProfileGamesList from './GamesList';
 import { GameStatus } from '../../api/games/types';
 import { GET_USER_ACTIVE_GAMES_GQL } from '../../api/games/getUserActiveGames';
-import { GET_GAMES_GQL } from '../../api/games/getGamesQuery';
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
 import UButton from '../../components/UButton';
@@ -23,7 +22,7 @@ const Profile = ({ userId }: IProps) => {
     <ScrollView style={{ height: '100%', overflow: 'visible' }}>
       <ProfileInfo id={userId} />
       <View style={styles.subContainer}>
-        <ProfileGamesList
+        {/* <ProfileGamesList
           userId={userId}
           onGamePress={_onGameCardPress}
           status={GameStatus.Pending}
@@ -38,7 +37,7 @@ const Profile = ({ userId }: IProps) => {
           title="История игр"
           emptyText="Список истории игр пуст"
           query={GET_GAMES_GQL}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
@@ -49,7 +48,7 @@ Profile.navigationOptions = {
   headerTitleStyle: {
     color: '#fff',
     fontWeight: '400',
-    fontSize: 22
+    fontSize: 22,
   },
   headerTransparent: true, // TODO: fix
   headerRight: (
@@ -70,15 +69,15 @@ Profile.navigationOptions = {
       backgroundColor="transparent"
       style={{ width: 40, height: 40, marginRight: 10 }}
     />
-  )
+  ),
 };
 
 const styles = StyleSheet.create({
   subContainer: {
     backgroundColor: '#E9E9EF',
     height: '100%',
-    paddingBottom: 15
-  }
+    paddingBottom: 15,
+  },
 });
 
 export default Profile;
