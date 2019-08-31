@@ -9,17 +9,18 @@ import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
 
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useGamesList from './gql';
-import { IFindGameFilters } from '.';
+import { IFindGameFilters, ISearchGameSort } from '../FindGame';
 
 const keyExtractor = (item: IGame) => item.id;
 
 export interface IProps {
   onGameCardPress: (gameId: string) => void;
   filters: IFindGameFilters;
+  sort: ISearchGameSort;
 }
 
-const GamesList = ({ onGameCardPress, filters }: IProps) => {
-  const { data, loading, error } = useGamesList(filters);
+const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
+  const { data, loading, error } = useGamesList({ filters, sort });
 
   if (loading) {
     return <ULoader />;

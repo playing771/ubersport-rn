@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import { fullGameInfoFragment } from '../../api/fragments';
 import { GameStatus, IGame } from '../../api/games/types';
+import { ISearchGameSort } from '.';
 
 const fragments = `
   ${fullGameInfoFragment}
@@ -13,6 +14,7 @@ export const GET_GAMES_GQL = gql`
     $authorId: String
     $status: GameStatus
     $participantsIds: [String!]
+    $sort: SortInput
   ) {
     games(
       filters: {
@@ -21,6 +23,7 @@ export const GET_GAMES_GQL = gql`
         status: $status
         participantsIds: $participantsIds
       }
+      sort: $sort
     ) {
       count
       games {
@@ -31,13 +34,16 @@ export const GET_GAMES_GQL = gql`
   ${fragments}
 `;
 
-export type IGamesListQueryVariables = {
+export interface IGamesListQueryFilters {
   sportIds?: number[];
   authorId?: string;
   status?: GameStatus;
   participantsIds?: string[];
-};
-
+}
+export interface IGamesListQueryVariables {
+  filters: IGamesListQueryFilters;
+  sort: ISearchGameSort;
+}
 export interface IGamesListResult {
   games: {
     count: number;
@@ -47,5 +53,8 @@ export interface IGamesListResult {
 }
 
 export default function useGamesList(variables: IGamesListQueryVariables) {
-  return useQuery<IGamesListResult, IGamesListQueryVariables>(GET_GAMES_GQL, { variables });
+  return useQuery<IGamesListResult, IGamesListQueryVariables>(GET_GAMES_GQL, {
+    variables,
+    fetchPolicy: 'no-cache',
+  });
 }

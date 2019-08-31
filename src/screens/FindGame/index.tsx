@@ -13,12 +13,12 @@ import FiltersPanel from './FiltersPanel';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import GamesList from './GamesList';
-import { IGamesListQueryVariables } from './gql';
+import { IGamesListQueryFilters } from './gql';
 
 interface IProps extends NavigationInjectedProps {}
 
 export type ISearchGameSort = 'time' | 'distance' | 'date';
-export type IFindGameFilters = IGamesListQueryVariables;
+export type IFindGameFilters = IGamesListQueryFilters;
 
 function FindGameScreen(props: IProps) {
   const [sort, setSort] = useState<ISearchGameSort>('distance');
@@ -27,9 +27,9 @@ function FindGameScreen(props: IProps) {
     status: GameStatus.Pending,
   });
 
-  const changeActiveSort = (sort: ISearchGameSort, toggleModal: () => void) => {
+  const changeActiveSort = (sorting: ISearchGameSort, toggleModal: () => void) => {
     toggleModal();
-    // this.setState({ sort });
+    setSort(sorting);
   };
 
   const changeSportFilterHanlde = (sportIds: number[]) => {
@@ -51,7 +51,7 @@ function FindGameScreen(props: IProps) {
         changeSportFilterHanlde={changeSportFilterHanlde}
       />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.listContainer}>
-        <GamesList onGameCardPress={onGameCardPress} filters={activeFilters} />
+        <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
       </ScrollView>
     </>
   );
