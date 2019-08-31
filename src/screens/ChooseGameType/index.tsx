@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { AppContext } from '../../other/context/sports';
 import { NavigationScreenProps } from 'react-navigation';
@@ -6,10 +6,10 @@ import { CardNameObj } from '../../components/SportCard/index';
 import SportCard from '../../components/SportCard/index';
 import { NavigationRoot } from '../../navigation/roots';
 import withAppContext from '../../components/hocs/WithAppContext';
+import useNavigation from '../../hooks/useNavigation';
 
-interface Props extends NavigationScreenProps {
-  ctx: AppContext;
-}
+interface IProps {}
+
 interface State {
   activeSport: string | undefined;
 }
@@ -20,60 +20,59 @@ const params = {
   color: '#999a9b',
 };
 
-@withAppContext
-export default class ChooseGameTypeScreen extends React.Component<Props, State> {
+export default function ChooseGameTypeScreen(props: IProps) {
+  const { navigate } = useNavigation();
+  // const useAvaliableSp
+
   // static navigationOptions = {
   //   title: "Новая игра"
   // };
 
-  state = {
-    activeSport: undefined,
-  };
+  // state = {
+  //   activeSport: undefined,
+  // };
 
-  getTextIconColor = (sport: string): string => {
-    // console.log(sport, this.state.activeSport);
-    return this.state.activeSport === sport ? params.iconColorActive : params.color;
-  };
+  // const getTextIconColor = (sport: string): string => {
+  //   // console.log(sport, state.activeSport);
+  //   return state.activeSport === sport ? params.iconColorActive : params.color;
+  // };
 
-  onCardPress = (sport: CardNameObj): void => {
-    this.setState({ activeSport: sport.id }, () => {
-      const { navigate } = this.props.navigation;
-      navigate(NavigationRoot.EditGame, { sport });
-    });
-  };
+  // const onCardPress = (sport: CardNameObj): void => {
+  //   setState({ activeSport: sport.id }, () => {
+  //     navigate(NavigationRoot.EditGame, { sport });
+  //   });
+  // };
 
-  private keyExtractor = (item: string, index: number) => item;
+  // const renderItem = ({ item }: { item: string }) => {
+  //   return (
+  //     <SportCard
+  //       sport={props.ctx.sports[item]}
+  //       onPress={onCardPress}
+  //       // onShowUnderlay={onShowUnderlay}
+  //       // onHideUnderlay={onHideUnderlay}
+  //       textStyle={[s.cardTitle]}
+  //       iconColor={getTextIconColor(item)}
+  //       style={s.card}
+  //     />
+  //   );
+  // };
 
-  private renderItem = ({ item }: { item: string }) => {
-    return (
-      <SportCard
-        sport={this.props.ctx.sports[item]}
-        onPress={this.onCardPress}
-        // onShowUnderlay={this.onShowUnderlay}
-        // onHideUnderlay={this.onHideUnderlay}
-        textStyle={[s.cardTitle]}
-        iconColor={this.getTextIconColor(item)}
-        style={s.card}
-      />
-    );
-  };
-
-  public render() {
-    const { sports } = this.props.ctx;
-    return (
-      <View style={s.mainContainer}>
-        <Text style={s.header}>Какую игру вы хотите создать?</Text>
-        <FlatList
-          contentContainerStyle={s.cardContainer}
-          data={Object.keys(sports)}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          numColumns={3}
-        />
-      </View>
-    );
-  }
+  // const { sports } = props.ctx;
+  return (
+    <View style={s.mainContainer}>
+      <Text style={s.header}>Какую игру вы хотите создать?</Text>
+      {/* <FlatList
+        contentContainerStyle={s.cardContainer}
+        data={Object.keys(sports)}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        numColumns={3}
+      /> */}
+    </View>
+  );
 }
+
+const keyExtractor = (item: string, index: number) => item;
 
 const s = StyleSheet.create({
   mainContainer: {

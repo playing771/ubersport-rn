@@ -5,6 +5,7 @@ import ToggleableItem from '../ToggleableItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { StyleProp, TextStyle, StyleSheet } from 'react-native';
 import { ISportsListProps } from '.';
+import Colors from '../../constants/Colors';
 
 interface IProps extends Omit<ISportsListProps, 'exclude'> {
   selectedSports: number[];
@@ -47,6 +48,7 @@ export default function SportsListView({
         key={item.id}
         active={active}
         style={[styles.item, itemStyle]}
+        activeTextStyle={{ color: Colors.active }}
         textStyle={getStyle(active, exceedMaximum, itemTextStyle, itemNonSelectedTextStyle)}
         onPress={onPressHandle}
         itemId={item.id}

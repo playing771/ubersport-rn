@@ -2,10 +2,13 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import FilterButton from './FilterButton';
 import SortModal from './sortModal';
-import { ISearchGameSort } from '../../FindGame';
+import { ISearchGameSort, IFindGameFilters } from '../../FindGame';
 import withModal from '../../../components/hocs/WithModal';
 import { NavigationRoot } from '../../../navigation/roots';
 import useNavigation from '../../../hooks/useNavigation';
+import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
+import ULoader from '../../../components/ULoader';
+import ISport from '../../../api/sports/Sport.type';
 
 const sortValues: { [key in ISearchGameSort]: string } = {
   date: 'Новые',
@@ -17,42 +20,75 @@ interface IProps {
   activeSort: ISearchGameSort;
   onChangeActiveSort: (sort: ISearchGameSort, toggleModal: () => void) => void;
   changeSportFilterHanlde: (ids: number[]) => void;
-  activeFilters: { sportIds?: number[] };
+  activeFilters: IFindGameFilters;
 }
 
 const FilterButtonWithModal = withModal(FilterButton);
 
-export default function FiltersPanel(props: IProps) {
+export default function FiltersPanel({
+  changeSportFilterHanlde,
+  activeFilters,
+  activeSort,
+  onChangeActiveSort,
+}: IProps) {
   const { navigate } = useNavigation();
+  const { data, loading, error } = useAvaliableSportsQuery();
 
   const filtersNavigateHandle = () => {
     navigate(NavigationRoot.SportFilters, {
-      changeSportFilterHanlde: props.changeSportFilterHanlde,
-      activeFilters: props.activeFilters,
+      changeSportFilterHanlde: changeSportFilterHanlde,
+      activeFilters: activeFilters,
     });
   };
 
   return (
     <View style={styles.container}>
-      <FilterButton
-        style={styles.buttonLeft}
-        title="Спорт"
-        value="2 вида"
-        onPress={filtersNavigateHandle}
-      />
+      {!loading ? (
+        <FilterButton
+          style={styles.buttonLeft}
+          title="Спорт"
+          value={getFilterText(activeFilters, data.sports)}
+          onPress={filtersNavigateHandle}
+        />
+      ) : (
+        <ULoader></ULoader>
+      )}
       <FilterButtonWithModal
         wrapperStyle={styles.buttonRight}
         title="Сортировка"
-        value={sortValues[props.activeSort]}
+        value={sortValues[activeSort]}
         modal={({ toggleModal }) => (
           <SortModal
-            activeSort={props.activeSort}
-            onChange={sort => props.onChangeActiveSort(sort, toggleModal)}
+            activeSort={activeSort}
+            onChange={sort => onChangeActiveSort(sort, toggleModal)}
           />
         )}
       />
     </View>
   );
+}
+
+function getFilterText(filter: IFindGameFilters, sports: ISport[]): string {
+  if (!filter.sportIds || filter.sportIds.length === 0) {
+    return 'не выбрано';
+  }
+
+  if (filter.sportIds.length === 1) {
+    return sports.find(sport => sport.id === filter.sportIds[0]).name;
+  }
+
+  if (filter.sportIds.length === 2) {
+    return filter.sportIds.map(sportId => sports.find(sp => sp.id === sportId).name).join(', ');
+  }
+
+  if (filter.sportIds.length > 2) {
+    return (
+      filter.sportIds
+        .slice(0, 1)
+        .map(sportId => sports.find(sp => sp.id === sportId).name)
+        .join(', ') + ` и еще ${filter.sportIds.length - 1} других`
+    );
+  }
 }
 
 const styles = StyleSheet.create({

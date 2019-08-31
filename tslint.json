@@ -8,6 +8,7 @@
     "object-literal-sort-keys": false,
     "member-access": false,
     "jsx-no-lambda": false,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "member-ordering": false
   }
 }

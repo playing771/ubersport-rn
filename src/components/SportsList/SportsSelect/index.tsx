@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
-import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
-import { gradient } from '../../constants/generalStyles';
-import Header from './Header';
+import withAdaptiveScreen from '../../hocs/WithAdaptiveScreen';
+import { IAdaptiveScreenOptions } from '../../hocs/WithAdaptiveScreen';
+import { gradient } from '../../../constants/generalStyles';
+
 import { ScrollView } from 'react-native-gesture-handler';
-import useFavouriteSportsQuery from '../../components/SportsList/gql';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import useFavouriteSportsQuery from '../gql';
+import ErrorGqlCard from '../../ErrorCard/ErrorGqlCard';
 
-import useAppContext from '../../hooks/useAppContext';
-import useNavigation from '../../hooks/useNavigation';
+import useAppContext from '../../../hooks/useAppContext';
+import useNavigation from '../../../hooks/useNavigation';
 
-import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
+import onlyUniqFromArrays from '../../../other/onlyUniqsFromArrays';
 
-import SportsListView from '../../components/SportsList/SportsListView';
-import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
+import SportsListView from '../SportsListView';
+import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
+import Header from './Header';
 
-interface IProps {}
+// in separate component!
 
-function SportFilters(props: IProps) {
-  const { getParam } = useNavigation();
+interface IProps {
+  sports?: number[];
+  changeSportFilterHanlde: (sports: number[]) => void;
+}
+
+export default function SportsSelect({ sports, changeSportFilterHanlde }: IProps) {
+  // const { getParam } = useNavigation();
   const { user } = useAppContext();
 
-  const sports: number[] = getParam('activeFilters').sportIds || [];
+  // const sports: number[] = getParam('activeFilters').sportIds || [];
 
   const { data: fData, loading: fLoading, error: fError } = useFavouriteSportsQuery({
     id: user.id,
@@ -35,7 +41,7 @@ function SportFilters(props: IProps) {
       selected.indexOf(id) === -1 ? [...selected, id] : selected.filter(sel => sel !== id);
 
     setSelected(newSelected);
-    const changeSportFilterHanlde = getParam('changeSportFilterHanlde');
+    // const changeSportFilterHanlde = getParam('changeSportFilterHanlde');
     changeSportFilterHanlde(newSelected);
   };
 
@@ -84,21 +90,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-const screenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: true,
-  gradient,
-  barStyle: 'light-content',
-  // style: styles.mainContainer
-};
-
-SportFilters.navigationOptions = {
-  title: 'Информация об игре',
-  headerTitleStyle: {
-    color: '#fff',
-    fontWeight: '400',
-  },
-  headerTransparent: true, // TODO: fix
-};
-
-export default withAdaptiveScreen(SportFilters, screenOptions);

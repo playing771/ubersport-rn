@@ -15,7 +15,7 @@ interface IProps extends IWithToggleProps {
 function ToggleableItem(props: IProps) {
   return (
     <View style={[styles.item, props.style]}>
-      <Text style={[styles.itemText, props.textStyle, props.activeTextStyle]}>
+      <Text style={[styles.itemText, props.textStyle, props.active && props.activeTextStyle]}>
         {props.children}
       </Text>
       {props.active && (

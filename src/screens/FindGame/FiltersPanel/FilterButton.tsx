@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   title: {
     color: '#dcdcdc',
@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingBottom: 3,
     fontWeight: 'bold',
-    flex: 1
+    flex: 1,
   },
   value: {
     color: '#f7f7f7',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '300',
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default withTouch(FilterButton);

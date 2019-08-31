@@ -9,7 +9,7 @@ import MyProfileScreen from '../screens/Profile/MyProfile';
 import { NavigationRoot } from './roots';
 import ChooseGameTypeScreen from '../screens/ChooseGameType/index';
 import EditGameScreen from '../screens/EditGame/index';
-import SportFilters from '../screens/SportFilters/index';
+import SportFilters from '../screens/FindGame/SportFilters/index';
 import GameInfoScreen from '../screens/GameInfo/index';
 import EditLocationScreen from '../screens/EditGame/Location/index';
 import ParticipantsScreen from '../screens/Participants/index';

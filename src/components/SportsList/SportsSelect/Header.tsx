@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface IProps {}
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 16,
     fontWeight: 'bold',
-    paddingVertical: 12
-  }
+    paddingVertical: 12,
+  },
 });
 
 export default SportFiltersHeader;
