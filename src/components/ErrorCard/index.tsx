@@ -59,7 +59,7 @@ function getContainerPosition(position?: IErrorCardPosition): ViewStyle {
 
 const styles = StyleSheet.create({
   card: {
-    height: 90,
+    minHeight: 90,
     // width: '100%',
     alignSelf: 'center',
     backgroundColor: '#ff5722',
