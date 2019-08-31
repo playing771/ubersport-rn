@@ -1,127 +1,71 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, FlatList } from 'react-native';
-import { AppContext, IAppContextInjectedProp } from '../../other/context/sports';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import { gradient } from '../../constants/generalStyles';
-import ToggleableItem from '../../components/ToggleableItem';
 import Header from './Header';
 import { ScrollView } from 'react-native-gesture-handler';
-import ISport from '../../api/sports/Sport.type';
-import withAppContext from '../../components/hocs/WithAppContext';
-import SportsList from '../../components/SportsList';
 import useFavouriteSportsQuery from '../../components/SportsList/gql';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
-import ULoader from '../../components/ULoader';
+
 import useAppContext from '../../hooks/useAppContext';
-import FavouriteSportsList from '../../components/SportsList/FavouriteSportsList';
-import SportsListInner from '../../components/SportsList/SportsListInner';
-import { number } from 'prop-types';
 import useNavigation from '../../hooks/useNavigation';
-import { withNavigation } from 'react-navigation';
+
 import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
-import getUniqFromArray from '../../other/getUniqsFromArray';
+
 import SportsListView from '../../components/SportsList/SportsListView';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 
 interface IProps {}
 
-interface IState {
-  selected: number[];
-}
-function SportFilters(props: any) {
+function SportFilters(props: IProps) {
   const { getParam } = useNavigation();
   const { user } = useAppContext();
 
   const sports = getParam('activeFilters').sportIds;
-  // console.log('initial sports', sports);
 
   const { data: fData, loading: fLoading, error: fError } = useFavouriteSportsQuery({
     id: user.id,
   });
   const { data: aData, loading: aLoading, error: aErrror } = useAvaliableSportsQuery();
   const [selected, setSelected] = useState<number[]>(sports); // TODO: remove state?
-  // console.log('inital selected', selected);
 
-  // state: IState = { selected: [] };
+  const toggleSelection = (id: number) => {
+    const newSelected =
+      selected.indexOf(id) === -1 ? [...selected, id] : selected.filter(sel => sel !== id);
 
-  const toggleSelection = (ids: number[]) => {
-    // const _selected = [...selected];
+    setSelected(newSelected);
     const changeSportFilterHanlde = getParam('changeSportFilterHanlde');
-    // console.log('ids', ids);
-
-    console.log('ids', ids);
-
-    // const tmp = getUniqFromArray([...ids]);
-    // const itemIndex = tmp.findIndex(s => ids.some(id => id === s));
-    // if (itemIndex === 1) {
-    //   console.log('result', tmp.slice(itemIndex, 1));
-
-    //   changeSportFilterHanlde(tmp.slice(itemIndex, 1));
-    // } else {
-    //   console.log('result', tmp);
-
-    //   changeSportFilterHanlde(tmp);
-    // }
-
-    // console.log('tmp', tmp);
-    // changeSportFilterHanlde(selected);
-
-    // changeSportFilterHanlde(tmp);
-    // const itemIndex = selected.findIndex(s => s === id);
-    // if (itemIndex > -1) {
-    //   setSelected([...selected.splice(itemIndex, 1)]);
-    // } else {
-    //   setSelected([...selected, itemIndex]);
-    // }
-
-    // console.log('selected', selected);
-
-    // setSelected(_selected);
+    changeSportFilterHanlde(newSelected);
   };
 
   if (fError || aErrror) {
     return <ErrorGqlCard error={fError || aErrror} />;
   }
 
-  // const favoriteSports = !loading ? data.getFavouriteSports.favoriteSports : [];
-  console.log('SPORTS REINIT', sports);
+  const loading = aLoading && fLoading;
+
+  const sportsList = onlyUniqFromArrays(
+    aData.sports,
+    fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports
+  );
 
   return (
     <ScrollView style={styles.container}>
       <Header>Избранные виды</Header>
-      {/* 
-      <SportsListInner
-        // exclude={favoriteSports}
-        // selectedItems={state.selected}
-        sports={favoriteSports}
-        // itemPressHandle={toggleSelection}
-        onChange={toggleSelection}
-        initialValues={sports}
-        loading={loading}
-      /> */}
       <SportsListView
-        loading={fLoading}
-        selectedSports={[]}
+        loading={loading}
+        selectedSports={selected}
         sports={fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
-        onChangeHandle={() => undefined}
+        onChangeHandle={toggleSelection}
       />
-
       <Header>Прочие виды</Header>
       <SportsListView
-        loading={aLoading}
-        selectedSports={[]}
-        sports={aData && aData.sports}
-        onChangeHandle={() => undefined}
+        loading={loading}
+        selectedSports={selected}
+        sports={sportsList}
+        onChangeHandle={toggleSelection}
       />
-      {/* <SportsList
-        exclude={favoriteSports}
-        // selectedItems={state.selected}
-        // initialValues={selected}
-        // itemPressHandle={toggleSelection}
-        initialValues={sports}
-        onChange={toggleSelection}
-      /> */}
     </ScrollView>
   );
 }

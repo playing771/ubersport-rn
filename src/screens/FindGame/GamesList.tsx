@@ -1,52 +1,55 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import GameDetailsCard from '../../components/GameCard';
-import withGamesQuery from '../../api/games/getGamesQuery';
+
 import ULoader from '../../components/ULoader/index';
 import { IGame } from '../../api/games/types';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
-import handleApoloError from '../../other/handleApoloError';
+
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import useGamesList from './gql';
+import { IFindGameFilters } from '.';
 
 const keyExtractor = (item: IGame) => item.id;
 
-export interface IGamesListProps {
+export interface IProps {
   onGameCardPress: (gameId: string) => void;
+  filters: IFindGameFilters;
 }
 
-const GamesList = withGamesQuery(
-  ({ data: { loading, error, games = { games: [] } }, onGameCardPress }) => {
-    if (loading) {
-      return <ULoader />;
-    }
+const GamesList = ({ onGameCardPress, filters }: IProps) => {
+  const { data, loading, error } = useGamesList(filters);
 
-    if (error) {
-      return <ErrorGqlCard error={error}></ErrorGqlCard>;
-    }
-    return (
-      games && (
-        <FlatList
-          data={games.games}
-          // extraData={data!.getGames.games}
-          // style={{ marginBottom: 120 }}
-          contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined}
-          keyExtractor={keyExtractor}
-          renderItem={({ item }) => {
-            return (
-              <GameDetailsCard
-                game={item}
-                simple={true}
-                style={styles.card}
-                onPress={onGameCardPress}
-              />
-            );
-          }}
-        />
-      )
-    );
+  if (loading) {
+    return <ULoader />;
   }
-);
+
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
+  return (
+    data.games && (
+      <FlatList
+        data={data.games.games}
+        // extraData={data!.getGames.games}
+        // style={{ marginBottom: 120 }}
+        contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined}
+        keyExtractor={keyExtractor}
+        renderItem={({ item }) => {
+          return (
+            <GameDetailsCard
+              game={item}
+              simple={true}
+              style={styles.card}
+              onPress={onGameCardPress}
+            />
+          );
+        }}
+      />
+    )
+  );
+};
 
 const styles = StyleSheet.create({
   mainContainer: {},

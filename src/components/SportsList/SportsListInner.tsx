@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import ISport from '../../api/sports/Sport.type';
-import ToggleableItem from '../ToggleableItem';
-import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
-import { FlatList } from 'react-native-gesture-handler';
-import { StyleProp, TextStyle, StyleSheet } from 'react-native';
 import { ISportsListProps } from '.';
-import ULoader from '../ULoader';
+
 import SportsListView from './SportsListView';
 
 interface IProps extends Omit<ISportsListProps, 'exclude'> {

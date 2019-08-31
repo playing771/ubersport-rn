@@ -4,8 +4,8 @@ interface ObjectArrayItem {
 type ArrayItem = ObjectArrayItem | string | number;
 
 const onlyUniqFromArrays = <T extends ArrayItem, P extends ArrayItem>(
-  arrayOne: T[],
-  arrayTwo: P[]
+  arrayOne: T[] = [],
+  arrayTwo: P[] = []
 ) => {
   if (!arrayTwo.length) {
     return arrayOne;
