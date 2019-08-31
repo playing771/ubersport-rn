@@ -7,14 +7,12 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { GameStatus } from '../../api/games/types';
 import { gradient } from '../../constants/generalStyles';
 import { NavigationRoot } from '../../navigation/roots';
-import { ApolloError } from 'apollo-client';
 import UButton from '../../components/UButton';
 import { EvilIcons } from '@expo/vector-icons';
 import FiltersPanel from './FiltersPanel';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import GamesList from './GamesList';
-import useNavigation from '../../hooks/useNavigation';
 import { IGamesListQueryVariables } from './gql';
 
 interface IProps extends NavigationInjectedProps {}
@@ -25,7 +23,7 @@ export type IFindGameFilters = IGamesListQueryVariables;
 function FindGameScreen(props: IProps) {
   const [sort, setSort] = useState<ISearchGameSort>('distance');
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
-    sportIds: [],
+    sportIds: undefined,
     status: GameStatus.Pending,
   });
 
@@ -36,14 +34,13 @@ function FindGameScreen(props: IProps) {
 
   const changeSportFilterHanlde = (sportIds: number[]) => {
     console.log('changeSportFilterHanlde', sportIds);
-    setFilters({ sportIds });
+    setFilters({ ...activeFilters, sportIds });
   };
 
   const onGameCardPress = (gameId: string): void => {
     this.props.navigation.navigate(NavigationRoot.GameInfo, { gameId });
   };
 
-  const status = GameStatus.Pending;
   return (
     <>
       <UButton title="LOGIN" onPress={() => props.navigation.navigate(NavigationRoot.Auth)} />

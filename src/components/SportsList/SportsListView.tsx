@@ -52,7 +52,7 @@ export default function SportsListView({
         itemId={item.id}
         indicatorStyle={styles.indicator}
       >
-        {item.name} {item.id}
+        {item.name}
       </ToggleableItem>
     );
   };
