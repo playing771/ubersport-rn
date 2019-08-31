@@ -22,7 +22,7 @@ function SportFilters(props: IProps) {
   const { getParam } = useNavigation();
   const { user } = useAppContext();
 
-  const sports = getParam('activeFilters').sportIds;
+  const sports: number[] = getParam('activeFilters').sportIds || [];
 
   const { data: fData, loading: fLoading, error: fError } = useFavouriteSportsQuery({
     id: user.id,

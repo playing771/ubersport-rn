@@ -10,7 +10,7 @@ interface IProps {
   activeSort: ISearchGameSort;
 }
 
-const SortModal: React.FC<IProps> = props => {
+const SortModal = (props: IProps) => {
   return (
     <UModal>
       <Text style={styles.header}>Сортировка</Text>
