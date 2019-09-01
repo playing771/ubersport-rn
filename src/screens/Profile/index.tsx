@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { StyleSheet, View } from 'react-native';
+
 import ProfileInfo from './Info';
 import { ScrollView } from 'react-native';
 import ProfileGamesList from './GamesList';
 import { GameStatus } from '../../api/games/types';
-import { GET_USER_ACTIVE_GAMES_GQL } from '../../api/games/getUserActiveGames';
+
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
 import UButton from '../../components/UButton';
@@ -19,16 +19,15 @@ const Profile = ({ userId }: IProps) => {
   };
 
   return (
-    <ScrollView style={{ height: '100%', overflow: 'visible' }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <ProfileInfo id={userId} />
       <View style={styles.subContainer}>
-        {/* <ProfileGamesList
+        <ProfileGamesList
           userId={userId}
           onGamePress={_onGameCardPress}
           status={GameStatus.Pending}
           title="Активные игры"
           emptyText="Активных игр нет"
-          query={GET_USER_ACTIVE_GAMES_GQL}
         />
         <ProfileGamesList
           userId={userId}
@@ -36,8 +35,7 @@ const Profile = ({ userId }: IProps) => {
           status={GameStatus.Finished}
           title="История игр"
           emptyText="Список истории игр пуст"
-          query={GET_GAMES_GQL}
-        /> */}
+        />
       </View>
     </ScrollView>
   );
@@ -75,7 +73,7 @@ Profile.navigationOptions = {
 const styles = StyleSheet.create({
   subContainer: {
     backgroundColor: '#E9E9EF',
-    height: '100%',
+    flex: 1,
     paddingBottom: 15,
   },
 });

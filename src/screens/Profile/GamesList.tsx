@@ -1,76 +1,74 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, FlatList, View, StyleSheet } from 'react-native';
 import GameItem from './GameItem';
-import { GameStatus, IGame } from '../../api/games/types';
-import { GamesQuery } from '../../api/games/getGamesQuery';
+import { GameStatus } from '../../api/games/types';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
-import handleApoloError from '../../other/handleApoloError';
+import useGamesListQuery from '../FindGame/gql';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import ULoader from '../../components/ULoader';
+import { PADDING_VALUE } from '../../sharedStyles';
 
-interface Props {
+interface IProps {
   userId: string;
   onGamePress: (gameId: string) => void;
   status: GameStatus;
   title: string;
   emptyText: string;
-  query: object;
 }
 
-const ProfileGamesList: React.FC<Props> = ({
-  userId,
-  onGamePress,
-  status,
-  title,
-  emptyText,
-  query,
-}) => {
-  // console.log('ProfileGamesList', { participantsIds: [userId], status });
+const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IProps) => {
+  const { data, error, loading } = useGamesListQuery({ participantsIds: [userId], status });
+
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
+
+  if (loading) {
+    return <ULoader />;
+  }
+
+  const { games } = data.games;
+
+  const renderItem = ({ item, index }) => (
+    <GameItem
+      game={item}
+      onCardPress={onGamePress}
+      style={
+        // добавлям падинг первому и последнему элементу в списке
+        index === 0
+          ? { marginLeft: PADDING_VALUE }
+          : index === games.length - 1
+          ? { marginRight: PADDING_VALUE }
+          : undefined
+      }
+    />
+  );
 
   return (
-    // <GamesQuery query={query} variables={{ participantsIds: [userId], status }}>
-    //   {({ loading, error, data, networkStatus }) => {
-    //     if (error) {
-    //       console.log(handleApoloError(error));
-
-    //       return <Text>{error.message}(</Text>;
-    //     }
-
-    //     return loading || !data ? (
-    //       <Text>Loading...</Text>
-    //     ) : (
-    //       <>
-    //         <Text style={_style.header}>{title}</Text>
-    //         <View style={_style.container}>
-    //           {data.games.games.length ? (
-    //             <FlatList<IGame>
-    //               showsHorizontalScrollIndicator={false}
-    //               // style={{ marginBottom: 80 }}
-    //               contentContainerStyle={
-    //                 isIphoneX()
-    //                   ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 }
-    //                   : undefined
-    //               }
-    //               data={data.games.games}
-    //               horizontal={true}
-    //               keyExtractor={(item, index) => index.toString()}
-    //               renderItem={({ item, separators }) => (
-    //                 <GameItem game={item} onCardPress={onGamePress} />
-    //               )}
-    //             />
-    //           ) : (
-    //             <Text style={_style.emptyText}>{emptyText}</Text>
-    //           )}
-
-    //         </View>
-    //       </>
-    //     );
-    //   }}
-    // </GamesQuery>
-    <View></View>
+    <>
+      <Text style={styles.header}>{title}</Text>
+      <View style={styles.container}>
+        {games.length ? (
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={
+              isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined
+            }
+            data={games}
+            horizontal={true}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+          />
+        ) : (
+          <Text style={styles.emptyText}>{emptyText}</Text>
+        )}
+      </View>
+    </>
   );
 };
 
-const _style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',

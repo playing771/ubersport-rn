@@ -13,43 +13,8 @@ import { AppContextProvider, uknonwUser } from './other/context/sports';
 import { setContext } from 'apollo-link-context';
 import { concat } from 'apollo-link';
 import { createAppContainer } from 'react-navigation';
-import ISport from './api/sports/Sport.type';
 import { IUserWithToken } from './api/user/types';
 import { AsyncStorage } from 'react-native';
-
-//  TODO: поменять на динамическую загрузку с сервера данны по видам
-// спорта
-// const sports: { [key: string]: ISport } = {
-//   Football: {
-//     name: 'Football',
-//     id: 1,
-//   },
-//   Basketball: {
-//     name: 'Basketball',
-//     id: 2,
-//   },
-//   Volleyball: {
-//     name: 'Volleyball',
-//     id: 3,
-//   },
-//   Paintball: {
-//     name: 'Paintball',
-//     id: 4,
-//   },
-//   Tennis: {
-//     name: 'Tennis',
-//     id: 5,
-//   },
-//   Bicycle: {
-//     name: 'Bicycle',
-//     id: 6,
-//   },
-// };
-
-// const user = {
-//   id: '5cbaff053905710024d52151',
-//   favoriteSports: [{ id: '5b9396d521a69fd62c5e0208', name: 'Футбол' }]
-// };
 
 const authLink = setContext(async (req, { headers }) => {
   // const fetched = await fetch('https://ubersport.ru/auth/token');
