@@ -12,34 +12,38 @@ import GameLocation from '../GameLocation/index';
 import { IGame } from '../../api/games/types';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
+import useNavigation from '../../hooks/useNavigation';
 
-type IProps = {
+interface IProps {
   game: IGame;
   simple?: boolean;
   style?: StyleProp<ViewStyle>;
   onPress?: (gameId: string) => void;
   onParticipantsPress?: (e: GestureResponderEvent) => void;
-} & NavigationInjectedProps;
+}
 
 const textColor = '#242223';
 
-const GameDetailsCard = ({ game, simple, style, onPress, navigation }: IProps) => {
-  const _onPress = (): void => {
+export default function GameDetailsCard({ game, simple, style, onPress }: IProps) {
+  const { navigate } = useNavigation();
+
+  const cardPressHandle = (): void => {
     if (onPress) {
       onPress(game.id);
     }
   };
-  const _onParticipantsPress = (): void => {
-    navigation.navigate(NavigationRoot.Participants, {
-      gameId: game.id,
-      authorId: game.author.id,
-    });
+  // const _onParticipantsPress = (): void => {
+  //   navigation.navigate(NavigationRoot.Participants, {
+  //     gameId: game.id,
+  //     authorId: game.author.id,
+  //   });
+  // };
+  const locationPressHandle = (): void => {
+    navigate(NavigationRoot.Location, { location: game.location });
   };
-  const _onGameLocationPress = (): void => {
-    navigation.navigate(NavigationRoot.Location, { location: game.location });
-  };
+
   return (
-    <Card wrapperStyle={[_styles.card, style]} onPress={onPress ? _onPress : undefined}>
+    <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
       <>
         <CardPart bordered={false}>
           <GameDetailsCardHeader
@@ -65,9 +69,9 @@ const GameDetailsCard = ({ game, simple, style, onPress, navigation }: IProps) =
           />
         </CardPart>
         {!simple && (
-          <CardPart padded={false} onPress={_onGameLocationPress}>
+          <CardPart padded={false} onPress={locationPressHandle}>
             <GameLocation
-              style={_styles.mapContainer}
+              style={styles.mapContainer}
               customMapStyle={mapStyle}
               location={game.location}
               addressBar={false}
@@ -75,13 +79,13 @@ const GameDetailsCard = ({ game, simple, style, onPress, navigation }: IProps) =
             />
           </CardPart>
         )}
-        <View style={simple ? _styles.subCardContainerSimple : _styles.subCardContainer}>
+        <View style={simple ? styles.subCardContainerSimple : styles.subCardContainer}>
           <SubCard
             icon="ios-pin"
             mainText={game.location.address}
             subText="д. 7 к.1"
             textColor={textColor}
-            style={[_styles.border, simple ? _styles.roundedLeftBorder : undefined]}
+            style={[styles.border, simple ? styles.roundedLeftBorder : undefined]}
             iconColor={'#3B485A'}
           />
           <SubCard
@@ -89,24 +93,24 @@ const GameDetailsCard = ({ game, simple, style, onPress, navigation }: IProps) =
             mainText="Пятница, 10 янв."
             subText="19:00"
             textColor={textColor}
-            style={[_styles.border, simple ? _styles.roundedRightBorder : undefined]}
+            style={[styles.border, simple ? styles.roundedRightBorder : undefined]}
             iconColor={'#3B485A'}
           />
         </View>
 
         {!simple && (
           <CardPart bordered={false}>
-            <Text style={_styles.description}>{game.description}</Text>
+            <Text style={styles.description}>{game.description}</Text>
           </CardPart>
         )}
       </>
     </Card>
   );
-};
+}
 
 const cardBackgroundColor = '#ffffff';
 
-const _styles = StyleSheet.create({
+const styles = StyleSheet.create({
   card: {
     borderRadius: 6,
     backgroundColor: cardBackgroundColor,
@@ -131,5 +135,3 @@ const _styles = StyleSheet.create({
   },
   description: { paddingTop: 5 },
 });
-
-export default withNavigation(GameDetailsCard);
