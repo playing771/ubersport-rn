@@ -39,10 +39,6 @@ export default function SportsListView({
       }
     };
 
-    if (loading) {
-      return <ULoader />;
-    }
-
     return (
       <ToggleableItem
         key={item.id}
@@ -58,6 +54,10 @@ export default function SportsListView({
       </ToggleableItem>
     );
   };
+
+  if (loading) {
+    return <ULoader position="LEFT" />;
+  }
 
   return (
     <FlatList

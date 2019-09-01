@@ -8,7 +8,7 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
 
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
-import useGamesList from './gql';
+import useGamesListQuery from './gql';
 import { IFindGameFilters, ISearchGameSort } from '../FindGame';
 
 const keyExtractor = (item: IGame) => item.id;
@@ -19,8 +19,8 @@ export interface IProps {
   sort: ISearchGameSort;
 }
 
-const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
-  const { data, loading, error } = useGamesList({ filters, sort });
+const GamesList = ({ onGameCardPress, filters }: IProps) => {
+  const { data, loading, error } = useGamesListQuery(filters);
 
   if (loading) {
     return <ULoader />;

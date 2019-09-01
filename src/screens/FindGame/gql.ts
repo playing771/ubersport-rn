@@ -11,20 +11,10 @@ const fragments = `
 export const GET_GAMES_GQL = gql`
   query getGamesWithFilters(
     $sportIds: [Float]
-    $authorId: String
-    $status: GameStatus
-    $participantsIds: [String!]
-    $sort: SortInput
+    # $authorId: String
+    $status: GameStatus # $participantsIds: [String!]
   ) {
-    games(
-      filters: {
-        sportIds: $sportIds
-        authorId: $authorId
-        status: $status
-        participantsIds: $participantsIds
-      }
-      sort: $sort
-    ) {
+    games(filters: { sportIds: $sportIds, status: $status }) {
       count
       games {
         ...fullGameInfoFragment
@@ -40,10 +30,7 @@ export interface IGamesListQueryFilters {
   status?: GameStatus;
   participantsIds?: string[];
 }
-export interface IGamesListQueryVariables {
-  filters: IGamesListQueryFilters;
-  sort: ISearchGameSort;
-}
+
 export interface IGamesListResult {
   games: {
     count: number;
@@ -52,8 +39,8 @@ export interface IGamesListResult {
   };
 }
 
-export default function useGamesList(variables: IGamesListQueryVariables) {
-  return useQuery<IGamesListResult, IGamesListQueryVariables>(GET_GAMES_GQL, {
+export default function useGamesListQuery(variables: IGamesListQueryFilters) {
+  return useQuery<IGamesListResult, IGamesListQueryFilters>(GET_GAMES_GQL, {
     variables,
     fetchPolicy: 'no-cache',
   });

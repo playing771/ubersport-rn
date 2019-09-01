@@ -20,6 +20,8 @@ interface IProps extends NavigationInjectedProps {}
 export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
 
+// для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
+
 function FindGameScreen(props: IProps) {
   const [sort, setSort] = useState<ISearchGameSort>('distance');
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
@@ -33,8 +35,8 @@ function FindGameScreen(props: IProps) {
   };
 
   const changeSportFilterHanlde = (sportIds: number[]) => {
-    console.log('changeSportFilterHanlde', sportIds);
-    setFilters({ ...activeFilters, sportIds });
+    // если выбранных фильтров нет, ставим undefined
+    setFilters({ ...activeFilters, sportIds: sportIds.length > 0 ? sportIds : undefined });
   };
 
   const onGameCardPress = (gameId: string): void => {
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
 
 const screenOptions: IAdaptiveScreenOptions = {
   transparentHeader: true,
-  gradient: gradient,
+  gradient,
   barStyle: 'light-content',
 };
 
