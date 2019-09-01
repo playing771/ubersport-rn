@@ -1,47 +1,40 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import withAdaptiveScreen from '../../hocs/WithAdaptiveScreen';
-import { IAdaptiveScreenOptions } from '../../hocs/WithAdaptiveScreen';
-import { gradient } from '../../../constants/generalStyles';
-
 import { ScrollView } from 'react-native-gesture-handler';
+
 import useFavouriteSportsQuery from '../gql';
 import ErrorGqlCard from '../../ErrorCard/ErrorGqlCard';
-
 import useAppContext from '../../../hooks/useAppContext';
-import useNavigation from '../../../hooks/useNavigation';
-
 import onlyUniqFromArrays from '../../../other/onlyUniqsFromArrays';
-
 import SportsListView from '../SportsListView';
 import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
 import Header from './Header';
 
-// in separate component!
-
+export type ISelectionMode = 'MULTIPLE' | 'SINGLE';
 interface IProps {
-  sports?: number[];
+  initialSelection?: number[];
   changeSportFilterHanlde: (sports: number[]) => void;
+  mode?: ISelectionMode;
 }
 
-export default function SportsSelect({ sports, changeSportFilterHanlde }: IProps) {
-  // const { getParam } = useNavigation();
+export default function SportsSelect({
+  initialSelection = [],
+  changeSportFilterHanlde,
+  mode,
+}: IProps) {
   const { user } = useAppContext();
-
-  // const sports: number[] = getParam('activeFilters').sportIds || [];
 
   const { data: fData, loading: fLoading, error: fError } = useFavouriteSportsQuery({
     id: user.id,
   });
   const { data: aData, loading: aLoading, error: aErrror } = useAvaliableSportsQuery();
-  const [selected, setSelected] = useState<number[]>(sports); // TODO: remove state?
+  const [selected, setSelected] = useState<number[]>(initialSelection); // TODO: remove state?
 
   const toggleSelection = (id: number) => {
     const newSelected =
       selected.indexOf(id) === -1 ? [...selected, id] : selected.filter(sel => sel !== id);
 
     setSelected(newSelected);
-    // const changeSportFilterHanlde = getParam('changeSportFilterHanlde');
     changeSportFilterHanlde(newSelected);
   };
 
@@ -64,6 +57,7 @@ export default function SportsSelect({ sports, changeSportFilterHanlde }: IProps
         selectedSports={selected}
         sports={fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
         onChangeHandle={toggleSelection}
+        mode={mode}
       />
       <Header>Прочие виды</Header>
       <SportsListView
@@ -71,6 +65,7 @@ export default function SportsSelect({ sports, changeSportFilterHanlde }: IProps
         selectedSports={selected}
         sports={sportsList}
         onChangeHandle={toggleSelection}
+        mode={mode}
       />
     </ScrollView>
   );

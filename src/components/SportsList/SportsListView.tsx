@@ -1,17 +1,20 @@
 import React from 'react';
 import ISport from '../../api/sports/Sport.type';
 import ULoader from '../ULoader';
-import ToggleableItem from '../ToggleableItem';
+import ToggleableItem, { SporstListItem } from './SportsListItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { StyleProp, TextStyle, StyleSheet } from 'react-native';
 import { ISportsListProps } from '.';
 import Colors from '../../constants/Colors';
+import { ISelectionMode } from './SportsSelect';
 
+export const DEFAULT_SELECTION_MODE: ISelectionMode = 'MULTIPLE';
 interface IProps extends Omit<ISportsListProps, 'exclude'> {
   selectedSports: number[];
   sports: ISport[];
   loading?: boolean;
   onChangeHandle: (selectedId: number) => void;
+  mode?: ISelectionMode;
 }
 
 export default function SportsListView({
@@ -24,6 +27,7 @@ export default function SportsListView({
   itemTextStyle,
   itemNonSelectedTextStyle,
   onChangeHandle,
+  mode = DEFAULT_SELECTION_MODE,
 }: IProps) {
   const renderItem = ({ item }: { item: ISport }) => {
     const active = selectedSports.some(si => item.id === si);
@@ -39,7 +43,8 @@ export default function SportsListView({
       }
     };
 
-    return (
+    // 2 варианта элемента: обычная кнопки или toggle-кнопка с иконкой
+    return mode === 'MULTIPLE' ? (
       <ToggleableItem
         key={item.id}
         active={active}
@@ -52,6 +57,16 @@ export default function SportsListView({
       >
         {item.name}
       </ToggleableItem>
+    ) : (
+      <SporstListItem
+        key={item.id}
+        style={[styles.item, itemStyle]}
+        onPress={onPressHandle}
+        itemId={item.id}
+        textStyle={styles.itemText}
+      >
+        {item.name}
+      </SporstListItem>
     );
   };
 

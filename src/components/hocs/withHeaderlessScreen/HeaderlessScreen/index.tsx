@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, StyleSheet, ViewStyle } from 'react-native';
 
 import CloseButton from './CloseButton';
 import useNavigation from '../../../../hooks/useNavigation';
@@ -8,9 +8,11 @@ import sharedStyles from '../../../../sharedStyles';
 interface IProps {
   children: ReactElement | ReactElement[];
   title: string;
+  style?: ViewStyle;
+  contentStyle?: ViewStyle;
 }
 
-export default function HeaderLessScreen({ children, title }: IProps) {
+export default function HeaderLessScreen({ children, title, style, contentStyle }: IProps) {
   const { goBack } = useNavigation();
 
   const closeHanlde = () => {
@@ -18,7 +20,7 @@ export default function HeaderLessScreen({ children, title }: IProps) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, style]}>
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <View style={sharedStyles.paddingHorizontal}>
@@ -27,7 +29,9 @@ export default function HeaderLessScreen({ children, title }: IProps) {
         <View style={sharedStyles.paddingHorizontal}>
           <Text style={styles.header}>{title}</Text>
         </View>
-        <View style={[styles.contentContainer, sharedStyles.paddingHorizontal]}>{children}</View>
+        <View style={[styles.contentContainer, sharedStyles.paddingHorizontal, contentStyle]}>
+          {children}
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import Colors from '../../../constants/Colors';
 import { ISearchGameSort } from '../../FindGame';
-import ToggleableItem from '../../../components/ToggleableItem';
+import ToggleableItem from '../../../components/SportsList/SportsListItem';
 import UModal from '../../../components/UModal';
 
 interface IProps {

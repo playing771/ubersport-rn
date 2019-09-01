@@ -13,7 +13,9 @@ function SportFilters(props: IProps) {
   const sports: number[] = getParam('activeFilters').sportIds || [];
   const changeSportFilterHanlde = getParam('changeSportFilterHanlde');
 
-  return <SportsSelect sports={sports} changeSportFilterHanlde={changeSportFilterHanlde} />;
+  return (
+    <SportsSelect initialSelection={sports} changeSportFilterHanlde={changeSportFilterHanlde} />
+  );
 }
 
 const screenOptions: IAdaptiveScreenOptions = {

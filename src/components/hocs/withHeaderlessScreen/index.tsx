@@ -1,12 +1,14 @@
 import React, { ReactElement } from 'react';
 import { Optionalize } from '../../../other/types';
 
-import hoistNonReactStatic from 'hoist-non-react-statics';
 import HeaderLessScreen from './HeaderlessScreen';
+import { ViewStyle } from 'react-native';
 
 interface IWithHeaderLessScreenProps {}
-
-export interface IHeaderLessScreenOptions {}
+export interface IHeaderLessScreenOptions {
+  style?: ViewStyle;
+  contentStyle?: ViewStyle;
+}
 
 interface IProps {
   children: ReactElement | ReactElement[];
@@ -14,14 +16,15 @@ interface IProps {
 
 const withHeaderLessScreen = <T extends object>(
   WrappedComponent: React.ComponentType<T>,
-  title: string
+  title: string,
+  options?: IHeaderLessScreenOptions
 ) => {
   const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   function ComponentWithHeaderLessScreen(
     props: Optionalize<T, IWithHeaderLessScreenProps> & IProps
   ) {
     return (
-      <HeaderLessScreen title={title}>
+      <HeaderLessScreen title={title} {...options}>
         <WrappedComponent {...(props as T)}>{props.children}</WrappedComponent>
       </HeaderLessScreen>
     );
