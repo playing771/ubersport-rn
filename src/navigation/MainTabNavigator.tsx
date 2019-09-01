@@ -7,7 +7,7 @@ import FindGameScreen from '../screens/FindGame';
 import findGameBottomNav from '../screens/FindGame/bottomTabNav';
 import MyProfileScreen from '../screens/Profile/MyProfile';
 import { NavigationRoot } from './roots';
-import ChooseGameTypeScreen from '../screens/ChooseGameType/index';
+import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
 import EditGameScreen from '../screens/EditGame/index';
 import SportFilters from '../screens/FindGame/SportFilters/index';
 import GameInfoScreen from '../screens/GameInfo/index';

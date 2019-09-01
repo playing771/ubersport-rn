@@ -7,6 +7,7 @@ import SportCard from '../../components/SportCard/index';
 import { NavigationRoot } from '../../navigation/roots';
 import withAppContext from '../../components/hocs/WithAppContext';
 import useNavigation from '../../hooks/useNavigation';
+import withHeaderLessScreen from '../../components/hocs/withHeaderlessScreen';
 
 interface IProps {}
 
@@ -20,7 +21,9 @@ const params = {
   color: '#999a9b',
 };
 
-export default function ChooseGameTypeScreen(props: IProps) {
+const GameTypeSelect = withHeaderLessScreen(ScreenContent, 'Какую игру вы хотите создать?');
+
+function ScreenContent(props: IProps) {
   const { navigate } = useNavigation();
   // const useAvaliableSp
 
@@ -58,23 +61,31 @@ export default function ChooseGameTypeScreen(props: IProps) {
   // };
 
   // const { sports } = props.ctx;
-  return (
-    <View style={s.mainContainer}>
-      <Text style={s.header}>Какую игру вы хотите создать?</Text>
-      {/* <FlatList
+  return <Text>VIEW TEST</Text>;
+  // <View style={styles.mainContainer}>
+  /* <Text style={styles.header}>Какую игру вы хотите создать?</Text> */
+  /* <FlatList
         contentContainerStyle={s.cardContainer}
         data={Object.keys(sports)}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         numColumns={3}
-      /> */}
-    </View>
-  );
+      /> */
+
+  {
+    /* </View> */
+  }
 }
 
 const keyExtractor = (item: string, index: number) => item;
 
-const s = StyleSheet.create({
+export default GameTypeSelect;
+
+// GameTypeSelect.navigationOptions = {
+//   header: null,
+// };
+
+const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     // backgroundColor: "#E7EAEE",

@@ -16,8 +16,7 @@ const withAdaptiveScreen = <T extends object>(
   WrappedComponent: React.ComponentType<T>,
   options?: IAdaptiveScreenOptions
 ) => {
-  const displayName =
-    WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   class ComponentWithAdaptiveScreen extends React.Component<
     Optionalize<T, IWithAdaptiveScreenProps> & IProps,
     IState
@@ -26,9 +25,7 @@ const withAdaptiveScreen = <T extends object>(
     render() {
       return (
         <AdaptiveScreen {...options}>
-          <WrappedComponent {...this.props as T}>
-            {this.props.children}
-          </WrappedComponent>
+          <WrappedComponent {...(this.props as T)}>{this.props.children}</WrappedComponent>
         </AdaptiveScreen>
       );
     }
