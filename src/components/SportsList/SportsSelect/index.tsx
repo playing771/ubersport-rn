@@ -13,7 +13,7 @@ import Header from './Header';
 export type ISelectionMode = 'MULTIPLE' | 'SINGLE';
 interface IProps {
   initialSelection?: number[];
-  changeSportFilterHanlde: (sports: number[]) => void;
+  changeSportFilterHanlde: (sports: number[] | number) => void;
   mode?: ISelectionMode;
 }
 
@@ -31,11 +31,16 @@ export default function SportsSelect({
   const [selected, setSelected] = useState<number[]>(initialSelection); // TODO: remove state?
 
   const toggleSelection = (id: number) => {
-    const newSelected =
-      selected.indexOf(id) === -1 ? [...selected, id] : selected.filter(sel => sel !== id);
+    if (mode === 'SINGLE') {
+      // setSelected(id);
+      changeSportFilterHanlde(id);
+    } else {
+      const newSelected =
+        selected.indexOf(id) === -1 ? [...selected, id] : selected.filter(sel => sel !== id);
 
-    setSelected(newSelected);
-    changeSportFilterHanlde(newSelected);
+      setSelected(newSelected);
+      changeSportFilterHanlde(newSelected);
+    }
   };
 
   if (fError || aErrror) {

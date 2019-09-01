@@ -12,15 +12,12 @@ const GameTypeSelect = withHeaderLessScreen(ScreenContent, 'Какую игру 
 
 function ScreenContent(props: IProps) {
   const { navigate } = useNavigation();
-  // const useAvaliableSp
 
-  const chooseHandle = (sportIds: number[]) => {
-    navigate(NavigationRoot.EditGame, { sport: sportIds[0] });
+  const chooseHandle = (sportId: number) => {
+    navigate(NavigationRoot.EditGame, { sportId });
   };
 
-  return (
-    <SportsSelect mode="SINGLE" initialSelection={[]} changeSportFilterHanlde={chooseHandle} />
-  );
+  return <SportsSelect mode="SINGLE" changeSportFilterHanlde={chooseHandle} />;
 }
 
 export default GameTypeSelect;

@@ -93,13 +93,14 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const sport: ISport | undefined = this.props.navigation!.getParam('sport');
+    const sportId: number | undefined = this.props.navigation!.getParam('sportId');
+
     const gameEditData: IGameEditData | undefined = this.props.navigation!.getParam('gameEditData');
-    if (!sport && !gameEditData) {
+    if (!sportId && !gameEditData) {
       throw new Error('sport or gameEditData must be provided in editGame screen ');
     }
 
-    this.sportId = sport ? sport.id : gameEditData!.sportId;
+    this.sportId = sportId ? sportId : gameEditData!.sportId;
     this.gameId = gameEditData ? gameEditData.id : undefined;
     this.state = { ...initialState, ...gameEditData };
   }
