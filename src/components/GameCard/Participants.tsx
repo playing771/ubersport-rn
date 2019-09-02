@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 interface IProps {
   textColor: string;
   max?: number;
-  min?: number;
+  // min?: number;
   participants?: IParticipant[];
   style?: StyleProp<ViewStyle>;
 }
@@ -19,9 +19,8 @@ interface IProps {
 // есть только MAX: показываем прогрес бар по MAX
 // есть только MIN: не показываем прогрес бар
 
-const Participants = ({ textColor, max, min, participants, style }: IProps) => {
+const Participants = ({ textColor, max, participants, style }: IProps) => {
   const count = participants ? participants.length : 0;
-  // const progress = 100 / (max / count);
   const styles = _getStyles(textColor);
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, StyleProp, ViewStyle, GestureResponderEvent } from 'react-native';
-import GameDetailsCardHeader from './Header';
 
+import GameDetailsCardHeader from './Header';
 import GameTitle from './GameTitle';
 import Participants from './Participants';
 import mapStyle from './mapStyle';
@@ -10,7 +10,6 @@ import Card from '../GeneralCard/index';
 import CardPart from '../GeneralCard/CardPart';
 import GameLocation from '../GameLocation/index';
 import { IGame } from '../../api/games/types';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
 
@@ -32,12 +31,7 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
       onPress(game.id);
     }
   };
-  // const _onParticipantsPress = (): void => {
-  //   navigation.navigate(NavigationRoot.Participants, {
-  //     gameId: game.id,
-  //     authorId: game.author.id,
-  //   });
-  // };
+
   const locationPressHandle = (): void => {
     navigate(NavigationRoot.Location, { location: game.location });
   };
@@ -48,10 +42,8 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
         <CardPart bordered={false}>
           <GameDetailsCardHeader
             textColor={textColor}
-            author={game.author.firstName + ' ' + game.author.lastName}
-            team="fcpunlimited"
+            author={game.author}
             sport={game.sport.name}
-            avatar={game.author.avatar}
           />
         </CardPart>
         <CardPart bordered={false}>
@@ -65,7 +57,7 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
           <Participants
             textColor={textColor}
             max={game.maxParticipants}
-            participants={!simple ? game.participants : undefined}
+            participants={game.participants}
           />
         </CardPart>
         {!simple && (

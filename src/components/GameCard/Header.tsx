@@ -2,26 +2,29 @@ import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
 import UserAvatar from '../AvatarsGroup/UserAvatar';
 import SportIcon from './SportIcon';
+import { IAuthor } from '../../api/games/types';
 
 export interface GameDetailsCardHeaderProps {}
+
+const USER_AVATAR_SIZE = 43;
 interface IProps {
   textColor: string;
-  author: string;
-  team: string;
+  author: IAuthor;
   sport: string;
-  avatar: string | null;
 }
 
-const GameDetailsCardHeader = (props: IProps) => {
-  const styles = getStyles(props.textColor);
+const GameDetailsCardHeader = ({ author, textColor, sport }: IProps) => {
+  const styles = getStyles(textColor);
+  const team = undefined;
   return (
     <View style={styles.mainContainer}>
-      <UserAvatar src={props.avatar} size={43} style={styles.avatarContainer} />
+      <UserAvatar src={author.avatar} size={USER_AVATAR_SIZE} style={styles.avatarContainer} />
       <View style={styles.textContainer}>
-        <Text style={styles.mainText}>{props.author}</Text>
-        <Text style={styles.subText}>{props.team}</Text>
+        <Text style={styles.mainText}>{author.firstName + ' ' + author.lastName}</Text>
+
+        {team && <Text style={styles.subText}>{team}</Text>}
       </View>
-      <SportIcon sport={props.sport} style={styles.icon} />
+      <SportIcon sport={sport} style={styles.icon} />
     </View>
   );
 };

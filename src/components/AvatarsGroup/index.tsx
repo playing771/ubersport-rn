@@ -1,11 +1,12 @@
-import * as React from "react";
-import { View, ViewStyle, StyleSheet, StyleProp } from "react-native";
-import { ComponentType } from "react";
-import getRandomUser from "../../other/getRandomUser";
+import React from 'react';
+import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
+import { ComponentType } from 'react';
+import getRandomUser from '../../other/getRandomUser';
+import { IParticipant } from '../../api/games/types';
 
 type AvatarGroupProps = {
   style?: StyleProp<ViewStyle>;
-  users: Array<any>;
+  users: IParticipant[];
   limit?: number;
   styleLast?: StyleProp<ViewStyle>;
   AvatarCmp: ComponentType<any>;
@@ -13,7 +14,7 @@ type AvatarGroupProps = {
 
 const defaultProps = {
   limit: 4,
-  avatarSize: 40
+  avatarSize: 40,
 };
 
 const AvatarsGroup: React.SFC<AvatarGroupProps> = ({
@@ -22,27 +23,25 @@ const AvatarsGroup: React.SFC<AvatarGroupProps> = ({
   limit,
   AvatarCmp,
   styleLast,
-  avatarSize
+  avatarSize,
 }) => {
   return (
     <View style={[style, s.container]}>
       {users.slice(0, limit).map((user, index) => {
-        const src = getRandomUser();
+        // const src = getRandomUser();
+        console.log('user.src', user);
+
         return (
           <AvatarCmp
             key={index}
-            src={src}
+            src={user.avatar}
             style={index > 0 ? s.avatarCmp : undefined}
             size={avatarSize}
           />
         );
       })}
       {users.length > limit && (
-        <AvatarCmp
-          size={40}
-          count={users.length - limit}
-          style={[s.avatarCmp, styleLast]}
-        />
+        <AvatarCmp size={40} count={users.length - limit} style={[s.avatarCmp, styleLast]} />
       )}
     </View>
   );
@@ -55,11 +54,11 @@ interface Style {
 
 const s = StyleSheet.create<Style>({
   container: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   avatarCmp: {
-    marginLeft: -10
-  }
+    marginLeft: -10,
+  },
 });
 
 AvatarsGroup.defaultProps = defaultProps;
