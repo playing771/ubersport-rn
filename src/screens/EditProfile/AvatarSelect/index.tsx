@@ -10,7 +10,7 @@ import useAppContext from '../../../hooks/useAppContext';
 import uploadAvatar from '../../../api/user/uploadAvatar';
 import AvatarSelectModal from './Modal';
 import ProfileAvatar from './ProfileAvatar';
-import getFormData from '../../../other/getFormData';
+import getFormData from '../../../utils/getFormData';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 interface IProps {

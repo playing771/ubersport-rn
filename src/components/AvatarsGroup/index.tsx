@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
 import { ComponentType } from 'react';
-import getRandomUser from '../../other/getRandomUser';
+import getRandomUser from '../../utils/getRandomUser';
 import { IParticipant } from '../../api/games/types';
 
 type AvatarGroupProps = {

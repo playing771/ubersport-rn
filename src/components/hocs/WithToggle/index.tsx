@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import withTouch from '../WIthTouch';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 
 export interface IWithToggleProps {
   active?: boolean;

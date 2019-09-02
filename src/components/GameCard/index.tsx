@@ -12,6 +12,7 @@ import GameLocation from '../GameLocation/index';
 import { IGame } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
+import { getFormattedDate, getFormattedTime } from '../../utils/dateUtils';
 
 interface IProps {
   game: IGame;
@@ -35,6 +36,8 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
   const locationPressHandle = (): void => {
     navigate(NavigationRoot.Location, { location: game.location });
   };
+
+  console.log('game', game);
 
   return (
     <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
@@ -75,15 +78,14 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
           <SubCard
             icon="ios-pin"
             mainText={game.location.address}
-            subText="д. 7 к.1"
             textColor={textColor}
             style={[styles.border, simple ? styles.roundedLeftBorder : undefined]}
             iconColor={'#3B485A'}
           />
           <SubCard
             icon="ios-calendar"
-            mainText="Пятница, 10 янв."
-            subText="19:00"
+            mainText={getFormattedDate(game.dateStart)}
+            subText={getFormattedTime(game.dateStart)}
             textColor={textColor}
             style={[styles.border, simple ? styles.roundedRightBorder : undefined]}
             iconColor={'#3B485A'}

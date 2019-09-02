@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
-import getRandomUser from '../../other/getRandomUser';
+import getRandomUser from '../../utils/getRandomUser';
 import Card from '../../components/GeneralCard/index';
 import Swipeout from 'react-native-swipeout';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import getAgeFromBirthday from '../../other/getAgeFromBirthday';
+import getAgeFromBirthday from '../../utils/getAgeFromBirthday';
 import { NavigationRoot } from '../../navigation/roots';
 import RemoveParticipantBtn from './RemoveParticipantBtn';
 import { IParticipant } from '../../api/games/types';

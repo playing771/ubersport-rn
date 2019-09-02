@@ -9,7 +9,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import AppNavigator from './navigation/AppNavigator';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import { AppContextProvider, uknonwUser } from './other/context/sports';
+import { AppContextProvider, uknonwUser } from './utils/context/sports';
 import { setContext } from 'apollo-link-context';
 import { concat } from 'apollo-link';
 import { createAppContainer } from 'react-navigation';

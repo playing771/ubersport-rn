@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
-import getAgeFromBirthday from '../../other/getAgeFromBirthday';
+import getAgeFromBirthday from '../../utils/getAgeFromBirthday';
 import { NavigationRoot } from '../../navigation/roots';
 import ULoader from '../../components/ULoader/index';
 import useNavigation from '../../hooks/useNavigation';

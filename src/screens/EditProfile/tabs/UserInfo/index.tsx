@@ -13,7 +13,7 @@ import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
 import { useEditProfileInfoQuery } from './gql';
 import { ISex } from '../../../../api/user/types';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
-import { deepOmit } from '../../../../other/helpers';
+import { deepOmit } from '../../../../utils/helpers';
 
 interface IProps {
   id: string;

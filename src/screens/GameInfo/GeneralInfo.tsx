@@ -30,9 +30,9 @@ const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
             iconPosition="BOTTOM"
             label={() => (
               <View>
-                <Text style={styles.subText}>{`${
-                  game.author.nickname
-                }'s игра в ${game.sport.name}`}</Text>
+                <Text
+                  style={styles.subText}
+                >{`${game.author.nickname}'s игра в ${game.sport.name}`}</Text>
                 <Text style={styles.mainText}>{game.name}</Text>
               </View>
             )}
@@ -45,9 +45,7 @@ const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
           />
           <Section.Item
             icon="ios-calendar"
-            label={() => (
-              <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />
-            )}
+            label={() => <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
             labelStyle={{ color: '#5F6B8D' }}
           />
           <Section.Item
@@ -84,21 +82,21 @@ const styles = StyleSheet.create({
     color: '#5F6B8D',
     fontWeight: '500',
     paddingTop: 10,
-    fontSize: 18
+    fontSize: 18,
   },
   subText: {
     color: '#636F8F',
-    flex: 1
+    flex: 1,
   },
   optionalText: {
     color: '#AEBBC4',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   noPadding: {
-    paddingTop: 0
+    paddingTop: 0,
   },
   mapContainer: { height: 150, marginVertical: 12 },
-  capacityContainer: { paddingHorizontal: 18 }
+  capacityContainer: { paddingHorizontal: 18 },
 });
 
 export default GeneralGameInfo;

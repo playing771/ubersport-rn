@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SubmitModal from './SubmitModal';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
 export type IWithSubmitProps = {

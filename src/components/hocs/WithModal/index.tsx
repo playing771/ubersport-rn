@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import Modal from 'react-native-modal';
 import DefaultModal from './defaultModal';

@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, FlatList, Text, StyleSheet } from 'react-native';
 import ULoader from '../../components/ULoader/index';
 import { IParticipant, IGame } from '../../api/games/types';
-import { AppContextConsumer } from '../../other/context/sports';
+import { AppContextConsumer } from '../../utils/context/sports';
 import Participant from './Participant';
 import withParticipantsQuery from '../../api/games/getParticipantsQuery';
 

@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import useFavouriteSportsQuery from '../gql';
 import ErrorGqlCard from '../../ErrorCard/ErrorGqlCard';
 import useAppContext from '../../../hooks/useAppContext';
-import onlyUniqFromArrays from '../../../other/onlyUniqsFromArrays';
+import onlyUniqFromArrays from '../../../utils/onlyUniqsFromArrays';
 import SportsListView from '../SportsListView';
 import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
 import Header from './Header';

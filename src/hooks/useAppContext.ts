@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppContext, uknonwUser } from '../other/context/sports';
+import { AppContext, uknonwUser } from '../utils/context/sports';
 import { AsyncStorage } from 'react-native';
 
 export default function useAppContext() {

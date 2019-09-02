@@ -5,7 +5,7 @@ import ULoader from '../../components/ULoader/index';
 import GeneralGameInfo from './GeneralInfo';
 import Card from '../../components/GeneralCard';
 import InfoCard from './InfoCard';
-import { AppContext } from '../../other/context/sports';
+import { AppContext } from '../../utils/context/sports';
 import { IGame } from '../../api/games/types';
 import JoinGameBtn from './JoinGameBtn';
 import IUser from '../../api/user/types';
