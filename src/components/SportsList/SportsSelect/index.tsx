@@ -9,6 +9,7 @@ import onlyUniqFromArrays from '../../../other/onlyUniqsFromArrays';
 import SportsListView from '../SportsListView';
 import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
 import Header from './Header';
+import useAuthCheck from '../../../hooks/useAuthCheck';
 
 export type ISelectionMode = 'MULTIPLE' | 'SINGLE';
 interface IProps {
@@ -23,10 +24,13 @@ export default function SportsSelect({
   mode,
 }: IProps) {
   const { user } = useAppContext();
+  const { authCheck } = useAuthCheck();
 
+  // если пользрователь неавторизован, не запрашиваем favourite sports
   const { data: fData, loading: fLoading, error: fError } = useFavouriteSportsQuery({
     id: user.id,
   });
+
   const { data: aData, loading: aLoading, error: aErrror } = useAvaliableSportsQuery();
   const [selected, setSelected] = useState<number[]>(initialSelection); // TODO: remove state?
 
@@ -56,15 +60,21 @@ export default function SportsSelect({
 
   return (
     <ScrollView style={styles.container}>
-      <Header>Избранные виды</Header>
-      <SportsListView
-        loading={loading}
-        selectedSports={selected}
-        sports={fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
-        onChangeHandle={toggleSelection}
-        mode={mode}
-      />
-      <Header>Прочие виды</Header>
+      {authCheck() ? (
+        <>
+          <Header>Избранные виды</Header>
+          <SportsListView
+            loading={loading}
+            selectedSports={selected}
+            sports={fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
+            onChangeHandle={toggleSelection}
+            mode={mode}
+          />
+          <Header>Прочие виды</Header>
+        </>
+      ) : (
+        <Header>Виды спорта</Header>
+      )}
       <SportsListView
         loading={loading}
         selectedSports={selected}
