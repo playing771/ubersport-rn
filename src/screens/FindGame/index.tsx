@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Animated } from 'react-native';
 
 import { NavigationInjectedProps } from 'react-navigation';
 
@@ -24,6 +24,8 @@ export type IFindGameFilters = IGamesListQueryFilters;
 function FindGameScreen(props: IProps) {
   const { navigate } = useNavigation();
 
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+
   const [sort, setSort] = useState<ISearchGameSort>('distance');
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
     sportIds: undefined,
@@ -44,16 +46,39 @@ function FindGameScreen(props: IProps) {
     navigate(NavigationRoot.GameInfo, { gameId });
   };
 
+  const HEADER_EXPANDED_HEIGHT = 70;
+  const HEADER_COLLAPSED_HEIGHT = 0;
+
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
+    outputRange: [HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT],
+    extrapolate: 'clamp',
+  });
   return (
     <>
       {/* <UButton title="LOGIN" onPress={() => props.navigation.navigate(NavigationRoot.Auth)} /> */}
-      <FiltersPanel
-        activeSort={sort}
-        activeFilters={activeFilters}
-        onChangeActiveSort={changeActiveSort}
-        changeSportFilterHanlde={changeSportFilterHanlde}
-      />
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.listContainer}>
+      <Animated.View style={{ height: headerHeight }}>
+        <FiltersPanel
+          activeSort={sort}
+          activeFilters={activeFilters}
+          onChangeActiveSort={changeActiveSort}
+          changeSportFilterHanlde={changeSportFilterHanlde}
+        />
+      </Animated.View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.listContainer}
+        scrollEventThrottle={16}
+        onScroll={Animated.event([
+          {
+            nativeEvent: {
+              contentOffset: {
+                y: scrollY,
+              },
+            },
+          },
+        ])}
+      >
         <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
       </ScrollView>
     </>
