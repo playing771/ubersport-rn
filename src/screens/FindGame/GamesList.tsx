@@ -19,8 +19,10 @@ export interface IProps {
   sort: ISearchGameSort;
 }
 
-const GamesList = ({ onGameCardPress, filters }: IProps) => {
-  const { data, loading, error } = useGamesListQuery(filters);
+const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
+  console.log(sort, 'SORT');
+
+  const { data, loading, error } = useGamesListQuery({ filters, sort });
 
   if (loading) {
     return <ULoader />;

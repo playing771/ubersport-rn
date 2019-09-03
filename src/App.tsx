@@ -82,8 +82,8 @@ const authLink = setContext(async (req, { headers }) => {
 const NavigatorWrapper = createAppContainer(AppNavigator);
 
 const httpLink = new HttpLink({
-  uri: 'https://ubersport.ru/graphql',
-  // uri: "http://localhost:3000/graphql"
+  // uri: 'https://ubersport.ru/graphql',
+  uri: 'http://192.168.0.160:3000/graphql',
 });
 // Create the client as outlined in the setup guide
 
