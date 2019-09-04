@@ -20,8 +20,6 @@ export interface IProps {
 }
 
 const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
-  console.log(sort, 'SORT');
-
   const { data, loading, error } = useGamesListQuery({ filters, sort });
 
   if (loading) {

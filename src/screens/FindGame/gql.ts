@@ -9,13 +9,8 @@ const fragments = `
 `;
 
 export const GET_GAMES_GQL = gql`
-  query getGamesWithFilters(
-    $sportIds: [Float]
-    # $authorId: String
-    $status: GameStatus # $participantsIds: [String!]
-    $sort: SortInput
-  ) {
-    games(filters: { sportIds: $sportIds, status: $status }, sort: $sort) {
+  query getGamesWithFilters($filters: GameFiltersInput, $sort: SortInput) {
+    games(filters: $filters, sort: $sort) {
       count
       games {
         ...fullGameInfoFragment

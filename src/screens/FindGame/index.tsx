@@ -43,6 +43,8 @@ function FindGameScreen(props: IProps) {
   };
 
   const onGameCardPress = (gameId: string): void => {
+    console.log('gameId', gameId);
+
     navigate(NavigationRoot.GameInfo, { gameId });
   };
 

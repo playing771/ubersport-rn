@@ -25,35 +25,29 @@ export const GET_GAME_INFO_GQL = gql`
 interface GetGameInfoQueryVariables {
   id: string;
 }
-
+interface Response {
+  game: IGame;
+}
 export class GameInfoQuery extends Query<Response, GetGameInfoQueryVariables> {}
 
-type Response = { game: IGame };
-
-// type InputProps = {
+// interface InputProps  {
 //   id: string;
 //   ctx: AppContext;
 // };
 
-type Variables = {
+interface Variables {
   id: string;
-};
+}
 
-export type GetGameByIdChildProps = ChildDataProps<
-  IGameDetailsProps,
-  Response,
-  Variables
->;
+export type GetGameByIdChildProps = ChildDataProps<IGameDetailsProps, Response, Variables>;
 
-const withGameInfoQuery = graphql<
-  IGameDetailsProps,
-  Response,
-  Variables,
-  GetGameByIdChildProps
->(GET_GAME_INFO_GQL, {
-  options: ({ id }) => ({
-    variables: { id }
-  })
-});
+const withGameInfoQuery = graphql<IGameDetailsProps, Response, Variables, GetGameByIdChildProps>(
+  GET_GAME_INFO_GQL,
+  {
+    options: ({ id }) => ({
+      variables: { id },
+    }),
+  }
+);
 
 export default withGameInfoQuery;
