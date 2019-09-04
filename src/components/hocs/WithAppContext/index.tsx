@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { AppContextConsumer, AppContext } from '../../../other/context/sports';
-import { Optionalize } from '../../../other/types';
+import { AppContextConsumer, AppContext } from '../../../utils/context/sports';
+import { Optionalize } from '../../../utils/types';
 
 interface IInjectedProps {
   ctx?: AppContext;

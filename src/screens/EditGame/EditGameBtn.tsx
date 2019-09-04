@@ -4,7 +4,7 @@ import { IEditGameResult } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
 
 import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../api/games/editGameMutation';
-import handleApoloError from '../../other/handleApoloError';
+import handleApoloError from '../../utils/handleApoloError';
 import SubmitButton from '../../components/Buttons/SubmitButton';
 
 interface Props {

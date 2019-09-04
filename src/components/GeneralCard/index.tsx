@@ -14,15 +14,13 @@ type IProps = {
 } & Partial<typeof defaultProps>;
 
 const defaultProps = {
-  headerBgColor: 'white'
+  headerBgColor: 'white',
 };
 
 const Card = withTouch<IProps>(props => {
   return (
     <View style={styles.container}>
-      {props.header && (
-        <CardHeader bgColor={props.headerBgColor}>{props.header}</CardHeader>
-      )}
+      {props.header && <CardHeader bgColor={props.headerBgColor}>{props.header}</CardHeader>}
       <CardContent>
         {props.renderContent && props.renderContent()}
         {React.Children.map(props.children, child => {
@@ -37,7 +35,7 @@ const Card = withTouch<IProps>(props => {
 });
 
 const styles = StyleSheet.create({
-  container: { elevation: 50, flex: 1 }
+  container: { elevation: 50, flex: 1 },
 });
 
 (Card as any).defaultProps = defaultProps;

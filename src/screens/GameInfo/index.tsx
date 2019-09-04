@@ -3,10 +3,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { gradient } from '../../constants/generalStyles';
-import { AppContext } from '../../other/context/sports';
+import { AppContext } from '../../utils/context/sports';
 import GameDetails from './GameDetails';
 import { IGame } from '../../api/games/types';
-import { deepOmit } from '../../other/helpers';
+import { deepOmit } from '../../utils/helpers';
 import { IGameEditData } from '../EditGame/index';
 import { NavigationRoot } from '../../navigation/roots';
 import withAdaptiveScreen, {
@@ -81,7 +81,7 @@ class GameInfoScreen extends React.Component<IProps, IState> {
 
 const screenOptions: IAdaptiveScreenOptions = {
   transparentHeader: true,
-  gradient: gradient,
+  gradient,
   barStyle: 'light-content',
 };
 

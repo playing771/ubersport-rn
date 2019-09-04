@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { ILocation } from "../../api/games/types";
 import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import assembleLatLng from "../../other/assembleLatLng";
+import assembleLatLng from "../../utils/assembleLatLng";
 import AddressBar from "./AddressBar";
 import { LatLng } from "react-native-maps";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

@@ -1,7 +1,7 @@
 import React from 'react';
 import ErrorCard, { IErrorCardProps } from './index';
 import { ApolloError } from 'apollo-client';
-import handleApoloError from '../../other/handleApoloError';
+import handleApoloError from '../../utils/handleApoloError';
 
 interface IProps extends Omit<IErrorCardProps, 'error'> {
   error: ApolloError;

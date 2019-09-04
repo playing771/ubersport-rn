@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 import Expand, { IExpandProps } from '../../Expandable';
 
 interface IWithExpandProps {}

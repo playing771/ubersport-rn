@@ -1,6 +1,6 @@
 import React from 'react';
 
-import handleApoloError from '../../other/handleApoloError';
+import handleApoloError from '../../utils/handleApoloError';
 import { ViewStyle } from 'react-native';
 import { IEditProfileVariables } from './gql';
 import SubmitButton from '../../components/Buttons/SubmitButton';

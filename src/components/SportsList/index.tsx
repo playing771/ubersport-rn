@@ -5,7 +5,7 @@ import ISport from '../../api/sports/Sport.type';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 import ErrorGqlCard from '../ErrorCard/ErrorGqlCard';
 import SportsListInner from './SportsListInner';
-import onlyUniqFromArrays from '../../other/onlyUniqsFromArrays';
+import onlyUniqFromArrays from '../../utils/onlyUniqsFromArrays';
 
 interface IStyleProps {
   style?: StyleProp<ViewStyle>;

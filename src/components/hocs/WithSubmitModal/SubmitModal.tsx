@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Modal from 'react-native-modal';
 import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
-import shadeBlend from '../../../other/shadeBlend';
+import shadeBlend from '../../../utils/shadeBlend';
 
 type IProps = {
   isVisible: boolean;

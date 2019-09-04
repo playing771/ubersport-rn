@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import { TouchableOpacity, GestureResponderEvent } from 'react-native';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -17,8 +17,7 @@ interface IState {}
 const withTouch = <P extends object>(
   ComponentToAdd: ComponentType<P & IWithTouchInjectedProps>
 ) => {
-  const displayName =
-    ComponentToAdd.displayName || ComponentToAdd.name || 'Component';
+  const displayName = ComponentToAdd.displayName || ComponentToAdd.name || 'Component';
   class ComponentWithTouch extends React.Component<
     Optionalize<P, IWithTouchInjectedProps> & IWithTouchInjectedProps,
     IState
@@ -39,15 +38,9 @@ const withTouch = <P extends object>(
     render() {
       const { wrapperStyle, ...rest } = this.props;
       return (
-        <TouchableOpacity
-          onPress={this.onPress}
-          style={wrapperStyle}
-          disabled={this.isDisabled()}
-        >
+        <TouchableOpacity onPress={this.onPress} style={wrapperStyle} disabled={this.isDisabled()}>
           <ComponentToAdd
-            {...rest as P &
-              Optionalize<P, IWithTouchInjectedProps> &
-              IWithTouchInjectedProps}
+            {...(rest as P & Optionalize<P, IWithTouchInjectedProps> & IWithTouchInjectedProps)}
           />
         </TouchableOpacity>
       );

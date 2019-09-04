@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UButton from '../UButton/index';
-import shadeBlend from '../../other/shadeBlend';
+import shadeBlend from '../../utils/shadeBlend';
 import { StyleSheet, ViewStyle } from 'react-native';
 import useAuthCheck from '../../hooks/useAuthCheck';
 

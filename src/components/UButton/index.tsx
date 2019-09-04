@@ -12,7 +12,7 @@ import {
   Text
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import shadeBlend from '../../other/shadeBlend';
+import shadeBlend from '../../utils/shadeBlend';
 
 interface IButtonProps extends TouchableHighlightProps, IStyleProps {
   title?: string;

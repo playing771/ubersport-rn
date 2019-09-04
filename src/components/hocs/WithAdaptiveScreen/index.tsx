@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 import AdaptiveScreen from '../../AdaptiveScreen/index';
 import { IAdaptiveScreenProps } from '../../AdaptiveScreen/index';
 import hoistNonReactStatic from 'hoist-non-react-statics';

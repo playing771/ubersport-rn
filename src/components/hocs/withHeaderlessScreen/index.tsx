@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Optionalize } from '../../../other/types';
+import { Optionalize } from '../../../utils/types';
 
 import HeaderLessScreen from './HeaderlessScreen';
 import { ViewStyle } from 'react-native';

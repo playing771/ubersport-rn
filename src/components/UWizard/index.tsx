@@ -1,7 +1,7 @@
 import React, { createRef, RefObject, ReactNode } from 'react';
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import UWizardItem from './Item';
-import { deepCopy } from '../../other/helpers';
+import { deepCopy } from '../../utils/helpers';
 import { BOTTOM_BIG_NOTCH } from '../AdaptiveScreen/index';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import UWizardStepIndicator from './StepIndicator';

@@ -15,7 +15,7 @@ import withTouch from '../../components/hocs/WIthTouch';
 import EditPeopleCount, { IRestrictions } from './People';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
-import { AppContext } from '../../other/context/sports';
+import { AppContext } from '../../utils/context/sports';
 import ISport from '../../api/sports/Sport.type';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import EditGameBtn from './EditGameBtn';

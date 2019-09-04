@@ -1,17 +1,12 @@
 import * as React from 'react';
-import {
-  TextStyle,
-  StyleProp,
-  GestureResponderEvent,
-  StyleSheet
-} from 'react-native';
+import { TextStyle, StyleProp, GestureResponderEvent, StyleSheet } from 'react-native';
 import Card from '../GeneralCard/index';
 import { Ionicons } from '@expo/vector-icons';
 import getSportIcon from '../../constants/getSportIcon';
 import { Text, ViewStyle, View } from 'react-native';
 
 export interface CardNameObj {
-  id: string;
+  id: string | number;
   name: string;
 }
 export interface NewGameCardProps {
@@ -29,7 +24,7 @@ export interface NewGameCardProps {
 const params = {
   size: 60,
   iconColorActive: 'white',
-  color: '#999a9b'
+  color: '#999a9b',
 };
 
 const SportCard = (props: NewGameCardProps): JSX.Element => {
@@ -48,12 +43,12 @@ const SportCard = (props: NewGameCardProps): JSX.Element => {
       onPress={_onPress}
       wrapperStyle={[s.cardContainer, props.style]}
       // name={sport.name}
-      id={sport.id}
+      id={String(sport.id)}
       renderContent={() => (
         <View
           style={[
             { justifyContent: 'center' },
-            props.title ? { paddingHorizontal: 20 } : undefined
+            props.title ? { paddingHorizontal: 20 } : undefined,
           ]}
         >
           {props.image ? (
@@ -79,10 +74,10 @@ const s = StyleSheet.create({
   cardContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   cardTitle: { fontWeight: '600', paddingVertical: 5, textAlign: 'center' },
-  cardImage: { textAlign: 'center' }
+  cardImage: { textAlign: 'center' },
 });
 
 export default SportCard;

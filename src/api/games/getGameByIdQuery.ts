@@ -4,7 +4,7 @@ import { IGame } from './types';
 import { fullGameInfoFragment } from '../fragments';
 import { ChildDataProps, graphql } from 'react-apollo';
 import { NavigationInjectedProps } from 'react-navigation';
-import { AppContext } from '../../other/context/sports';
+import { AppContext } from '../../utils/context/sports';
 import { IGameDetailsProps } from '../../screens/GameInfo/GameDetails';
 
 // TODO: добавить Participant count в схему

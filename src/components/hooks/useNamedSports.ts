@@ -1,6 +1,6 @@
 import ISport from '../../api/sports/Sport.type';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
-import handleApoloError from '../../other/handleApoloError';
+import handleApoloError from '../../utils/handleApoloError';
 import { ApolloError } from 'apollo-client';
 
 export default function useNamedSports(

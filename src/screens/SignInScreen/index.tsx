@@ -25,11 +25,11 @@ import login, { IAuthResult } from '../../api/user/login';
 import ErrorCard from '../../components/ErrorCard/index';
 import { IUserWithToken } from '../../api/user/types';
 import withAppContext from '../../components/hocs/WithAppContext';
-import { IAppContextInjectedProp } from '../../other/context/sports';
+import { IAppContextInjectedProp } from '../../utils/context/sports';
 import emailValidate from '../../api/user/emailValidate';
 import { IExistEmail } from '../../api/user/emailValidate';
 import UserInfoPassed from './userInfo/passed';
-import parseGqlError from '../../other/parseGqlError';
+import parseGqlError from '../../utils/parseGqlError';
 import {
   ICreateUserMutationVariables,
   CREATE_USER_GQL
