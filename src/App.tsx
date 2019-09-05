@@ -15,6 +15,7 @@ import { concat } from 'apollo-link';
 import { createAppContainer } from 'react-navigation';
 import { IUserWithToken } from './api/user/types';
 import { AsyncStorage } from 'react-native';
+import gql from 'graphql-tag';
 
 const authLink = setContext(async (req, { headers }) => {
   // const fetched = await fetch('https://ubersport.ru/auth/token');
@@ -55,6 +56,25 @@ const httpLink = new HttpLink({
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: concat(authLink, httpLink),
+  resolvers: {
+    Mutation: {
+      // tslint:disable-next-line:variable-name
+      toggleTodo: (_root, variables, { cache, getCacheKey }) => {
+        console.log('mutate', variables);
+
+        const id = getCacheKey({ __typename: 'TodoItem', id: variables.id });
+        const fragment = gql`
+          fragment completeTodo on TodoItem {
+            completed
+          }
+        `;
+        const todo = cache.readFragment({ fragment, id });
+        const data = { ...todo, completed: !todo.completed };
+        cache.writeData({ id, data });
+        return null;
+      },
+    },
+  },
 });
 
 interface IProps {

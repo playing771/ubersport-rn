@@ -18,6 +18,7 @@ import UserInfoScreen from '../screens/Profile/UserInfo';
 // import TestHookScreen from '../screens/TestHookScreen/index';
 import EditProfileScreen from '../screens/EditProfile/index';
 import NotAuthorizedScreen from '../screens/NotAuthorized';
+import FindOwnLocationScreen from '../screens/FindGame/Location';
 
 const ProfileStack = createStackNavigator({
   [NavigationRoot.Profile]: MyProfileScreen,
@@ -35,7 +36,7 @@ const FindGameStack = createStackNavigator({
   [NavigationRoot.SportFilters]: SportFilters,
   [NavigationRoot.GameInfo]: GameInfoScreen,
   [NavigationRoot.Participants]: ParticipantsScreen,
-  // [NavigationRoot.Location]: GameLocationScreen,
+  [NavigationRoot.Location]: FindOwnLocationScreen,
   [NavigationRoot.UserInfo]: UserInfoScreen,
 });
 

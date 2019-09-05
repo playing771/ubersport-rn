@@ -7,10 +7,11 @@ export enum NavigationRoot {
   UserInfo = 'USER_INFO',
   ChooseGameType = 'CHOOSE_GAME_TYPE',
   FindGame = 'FIND_GAME',
+  OwnLocation = 'FIND_OWN_LOCATION',
   EditGame = 'EDIT_GAME',
   EditLocation = 'EDIT_LOCATION',
   SportFilters = 'SPORT_FILTERS',
   Main = 'MAIN',
   Auth = 'AUTH',
-  NotAuthorized = 'NOT_AUTHORIZED'
+  NotAuthorized = 'NOT_AUTHORIZED',
 }
