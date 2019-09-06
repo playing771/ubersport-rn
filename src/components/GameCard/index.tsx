@@ -37,8 +37,6 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
     navigate(NavigationRoot.Location, { location: game.location });
   };
 
-  console.log('game', game);
-
   return (
     <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
       <>
