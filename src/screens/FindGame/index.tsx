@@ -17,6 +17,7 @@ import UButton from '../../components/UButton';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
+import FindGameHeaderTitle from './FindGameHeaderTitle';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -24,12 +25,6 @@ export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
-
-const GET_TODOS = gql`
-  {
-    address @client
-  }
-`;
 
 function FindGameScreen(props: IProps) {
   const { navigate } = useNavigation();
@@ -41,11 +36,6 @@ function FindGameScreen(props: IProps) {
     sportIds: undefined,
     status: GameStatus.Pending,
   });
-  const { data, loading } = useQuery<any>(GET_TODOS);
-  if(loading) {
-    return <Text>loading</Text>
-  }
-  console.log('data', data);
 
   const changeActiveSort = (sorting: ISearchGameSort, toggleModal: () => void) => {
     toggleModal();
@@ -118,7 +108,7 @@ const screenOptions: IAdaptiveScreenOptions = {
 
 FindGameScreen.navigationOptions = ({ navigation }) => {
   let ownLocation;
-  console.log('location', navigation.getParam('adress'));
+
   const onChangeLocation = (location: ILocation) => {
     ownLocation = location;
   };
@@ -130,11 +120,7 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
 
   return {
     // title: 'Поиск игр',
-    headerTitle: () => (
-      <View>
-        <Text>{(ownLocation && ownLocation.adress) || 'Hello'}</Text>
-      </View>
-    ),
+    headerTitle: FindGameHeaderTitle,
     headerRight: (
       <View
         style={{

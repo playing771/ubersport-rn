@@ -8,6 +8,8 @@ import { concat } from 'apollo-link';
 import gql from 'graphql-tag';
 import { resolvers, typeDefs } from './store/resolvers';
 
+const cache = new InMemoryCache();
+
 const authLink = setContext(async (req, { headers }) => {
   const user = await AsyncStorage.getItem('user');
   const token = user ? (JSON.parse(user) as IUserWithToken).token : undefined;
@@ -27,8 +29,24 @@ const httpLink = new HttpLink({
 });
 
 export const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: concat(authLink, httpLink),
   resolvers,
   typeDefs,
 });
+
+const data = {
+  todos: [],
+  myLocation: {
+    address: 'Annenskaya',
+    coordinates: [35.15, 57.23],
+    __typename: 'MyLocation',
+  },
+  visibilityFilter: 'SHOW_ALL',
+  networkStatus: {
+    __typename: 'NetworkStatus',
+    isConnected: false,
+  },
+};
+
+cache.writeData({ data });

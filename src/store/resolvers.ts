@@ -1,29 +1,29 @@
 export const typeDefs = `
     type Query {
-      address: String
+      myLocation: {
+        address: String!,
+        coordinates: [Float!]
+      }
+    }
+    type Mutation {
+      myLocation(location: locationInput): myLocation
+    }
+    input locationInput {
+      address: String!,
+      coordinates: [Float!]
     }
   `;
 
 export const resolvers = {
   Mutation: {
-    // tslint:disable-next-line:variable-name
-    setLocation: (_root, variables, { cache, getCacheKey }) => {
-      console.log('mutate', variables);
-      // console.log('_root', _root);
-      // console.log('cache', cache);
-      const address = getCacheKey({ __typename: 'Address', address: variables.address });
-      // const fragment = gql`
-      //   fragment locationAdress on Location {
-      //     completed
-      //   }
-      // `;
-      console.log('address', address);
+    myLocation: async (_root, { location }, { cache, getCacheKey }) => {
+      console.log('mutate variables', location);
 
-      cache.writeData({ address: variables.address });
+      await cache.writeData({ data: { myLocation: location } });
       return null;
     },
   },
   Query: {
-    address: () => ({ __typename: 'Address', address: '1' }),
+    // myLocation: async () => ({ __typename: 'Address', address: '1' }),
   },
 };
