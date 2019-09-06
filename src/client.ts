@@ -23,9 +23,9 @@ const authLink = setContext(async (req, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  // uri: 'https://ubersport.ru/graphql',
+  uri: 'https://ubersport.ru/graphql',
   // uri: 'http://192.168.0.160:3000/graphql',
-  uri: 'http://10.1.32.107:3333/graphql',
+  // uri: 'http://10.1.32.107:3333/graphql',
 });
 
 export const client = new ApolloClient({
