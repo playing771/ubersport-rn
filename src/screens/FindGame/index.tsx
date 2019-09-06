@@ -120,27 +120,7 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
 
   return {
     // title: 'Поиск игр',
-    headerTitle: FindGameHeaderTitle,
-    headerRight: (
-      <View
-        style={{
-          paddingHorizontal: 6,
-          flexDirection: 'row',
-          // justifyContent: 'center',
-          // width: '100%'
-        }}
-      >
-        <UButton
-          onPress={editGeoHandle}
-          // iconStyle={{ width: 20, height: 20 }}
-          backgroundColor="transparent"
-          // style={{ width: 40, height: 40 }}
-          style={{ width: 40, height: 40, marginRight: 10 }}
-        >
-          <Entypo name="sound-mix" size={24} color="#dcdcdc" />
-        </UButton>
-      </View>
-    ),
+    headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
     headerTitleStyle: {
       color: '#fff',
       fontWeight: '400',

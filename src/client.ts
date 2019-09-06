@@ -36,13 +36,10 @@ export const client = new ApolloClient({
 });
 
 const data = {
-  todos: [],
   myLocation: {
-    address: 'Annenskaya',
-    coordinates: [35.15, 57.23],
+    address: null,
     __typename: 'MyLocation',
   },
-  visibilityFilter: 'SHOW_ALL',
   networkStatus: {
     __typename: 'NetworkStatus',
     isConnected: false,
