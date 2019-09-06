@@ -6,6 +6,7 @@ import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { concat } from 'apollo-link';
 import gql from 'graphql-tag';
+import { resolvers, typeDefs } from './store/resolvers';
 
 const authLink = setContext(async (req, { headers }) => {
   const user = await AsyncStorage.getItem('user');
@@ -28,23 +29,6 @@ const httpLink = new HttpLink({
 export const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: concat(authLink, httpLink),
-  resolvers: {
-    Mutation: {
-      // tslint:disable-next-line:variable-name
-      toggleTodo: (_root, variables, { cache, getCacheKey }) => {
-        console.log('mutate', variables);
-
-        const id = getCacheKey({ __typename: 'TodoItem', id: variables.id });
-        const fragment = gql`
-          fragment completeTodo on TodoItem {
-            completed
-          }
-        `;
-        const todo = cache.readFragment({ fragment, id });
-        const data = { ...todo, completed: !todo.completed };
-        cache.writeData({ id, data });
-        return null;
-      },
-    },
-  },
+  resolvers,
+  typeDefs,
 });

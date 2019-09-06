@@ -1,23 +1,16 @@
-import * as React from "react";
-import MapView, { PROVIDER_GOOGLE, Marker, Region } from "react-native-maps";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import {
-  StyleProp,
-  ViewStyle,
-  View,
-  StyleSheet,
-  Image,
-  Text
-} from "react-native";
-import { ILocation } from "../../api/games/types";
-import { NavigationInjectedProps, withNavigation } from "react-navigation";
-import assembleLatLng from "../../utils/assembleLatLng";
-import AddressBar from "./AddressBar";
-import { LatLng } from "react-native-maps";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import UButton from "../UButton";
-import Colors from "../../constants/Colors";
+import * as React from 'react';
+import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import { StyleProp, ViewStyle, View, StyleSheet, Image, Text } from 'react-native';
+import { ILocation } from '../../api/games/types';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import assembleLatLng from '../../utils/assembleLatLng';
+import AddressBar from './AddressBar';
+import { LatLng } from 'react-native-maps';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import UButton from '../UButton';
+import Colors from '../../constants/Colors';
 
 interface ILocationData {
   coords: {
@@ -31,10 +24,10 @@ interface ILocationData {
   timestamp: number;
 }
 
-type StyleProps = {
+interface StyleProps {
   style?: StyleProp<ViewStyle>;
   customMapStyle?: any;
-};
+}
 
 type Props = {
   onPress?: (LocationCoords: LatLng) => void;
@@ -71,16 +64,16 @@ const INITIAL_REGION = {
   latitude: 55.75,
   longitude: 37.61,
   latitudeDelta: 0,
-  longitudeDelta: 0.05
+  longitudeDelta: 0.05,
 };
 
 const initialState: State = {
-  address: "",
+  address: '',
   showMarker: false,
   loading: true,
   geoBusy: false,
   region: INITIAL_REGION,
-  addressBarVisible: true
+  addressBarVisible: true,
 };
 
 class GameLocation extends React.Component<Props, State> {
@@ -103,20 +96,19 @@ class GameLocation extends React.Component<Props, State> {
         region: INITIAL_REGION,
         showMarker: false,
         geoBusy: false,
-        addressBarVisible: false
+        addressBarVisible: false,
       }
     : initialState;
 
   async componentDidMount() {
     const location: ILocation =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.location
+      this.props.navigation.state.params && this.props.navigation.state.params.location
         ? this.props.navigation.state.params.location
         : this.props.location;
     if (location) {
       // const coords = assembleLatLng(location);
       await this.setState({
-        address: location.address
+        address: location.address,
         // LocationCoords: coords,
         // showMarker: true
       });
@@ -132,7 +124,7 @@ class GameLocation extends React.Component<Props, State> {
         const address = this.getFormattedAddress(locationAddress[0]);
 
         await this.setState({
-          address
+          address,
           // LocationCoords,
           // showMarker: true
         });
@@ -143,7 +135,7 @@ class GameLocation extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (typeof this.mapTimer !== "undefined") {
+    if (typeof this.mapTimer !== 'undefined') {
       clearTimeout(this.mapTimer);
     }
   }
@@ -166,7 +158,7 @@ class GameLocation extends React.Component<Props, State> {
   }
 
   private getFormattedAddress = (gd: Location.Address): string => {
-    let address = "";
+    let address = '';
 
     if (gd.name) {
       // if (gd.city && gd.city !== gd.name) {
@@ -177,14 +169,14 @@ class GameLocation extends React.Component<Props, State> {
       if (!gd.street || !gd.city) {
         address += gd.region;
         if (gd.name && !gd.city) {
-          address += ", " + gd.name;
+          address += ', ' + gd.name;
         }
       }
       if (gd.city) {
-        address += `${address.length ? ", " : ""}`;
-        address += "г. " + gd.city;
+        address += `${address.length ? ', ' : ''}`;
+        address += 'г. ' + gd.city;
         if (gd.street) {
-          address += ", ";
+          address += ', ';
         }
       }
       if (gd.street) {
@@ -195,23 +187,21 @@ class GameLocation extends React.Component<Props, State> {
   };
 
   private getMyLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
       // this.setState({
       //   errorMessage: 'Permission to access location was denied',
       // });
-      throw new Error("Permission to access location was denied");
+      throw new Error('Permission to access location was denied');
     }
 
     return Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.BestForNavigation
+      accuracy: Location.Accuracy.BestForNavigation,
     });
     // this.setState({ address });
   };
 
-  private getGeoDataFromLatLng = async (
-    LocationCoords: Location.GeocodedLocation
-  ) => {
+  private getGeoDataFromLatLng = async (LocationCoords: Location.GeocodedLocation) => {
     const address = Location.reverseGeocodeAsync(LocationCoords);
     return address;
   };
@@ -235,7 +225,7 @@ class GameLocation extends React.Component<Props, State> {
 
   private toggleGeoBusy(geoBusy?: boolean) {
     this.setState({
-      geoBusy: typeof geoBusy !== "undefined" ? geoBusy : !this.state.geoBusy
+      geoBusy: typeof geoBusy !== 'undefined' ? geoBusy : !this.state.geoBusy,
     });
   }
 
@@ -247,18 +237,18 @@ class GameLocation extends React.Component<Props, State> {
     this.toggleGeoBusy(false);
     this.setState({
       region,
-      address
+      address,
     });
   };
 
   private goToMyLocation = async () => {
     const locationData = await this.getMyLocationAsync();
-    console.log("locationData", locationData);
+    console.log('locationData', locationData);
     if (this.mapRef.current) {
       this.mapRef.current.animateToRegion({
         ...locationData.coords,
         longitudeDelta: 0.003,
-        latitudeDelta: 0
+        latitudeDelta: 0,
       });
     }
   };
@@ -274,7 +264,7 @@ class GameLocation extends React.Component<Props, State> {
       this.props.onChangeLocation({
         // ...assembleLatLng(this.state.region),
         coordinates: [this.state.region.longitude, this.state.region.latitude],
-        address: this.state.address
+        address: this.state.address,
       });
     }
   };
@@ -285,8 +275,8 @@ class GameLocation extends React.Component<Props, State> {
 
     const marker = {
       coordinate: region,
-      title: "Игра",
-      description: address
+      title: 'Игра',
+      description: address,
     };
 
     return (
@@ -295,14 +285,9 @@ class GameLocation extends React.Component<Props, State> {
           <Text>loading</Text>
         ) : (
           <>
-            {this.state.addressBarVisible && (
-              <AddressBar address={address} loading={geoBusy} />
-            )}
+            {this.state.addressBarVisible && <AddressBar address={address} loading={geoBusy} />}
             {this.state.mapSnapshot ? (
-              <Image
-                source={{ uri: this.state.mapSnapshot }}
-                style={{ flex: 1 }}
-              />
+              <Image source={{ uri: this.state.mapSnapshot }} style={{ flex: 1 }} />
             ) : (
               <>
                 <UButton
@@ -312,14 +297,14 @@ class GameLocation extends React.Component<Props, State> {
                   style={{
                     // width: 40,
                     // height: 40,
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: 70,
                     right: 10,
                     zIndex: 99,
-                    paddingVertical: 5
+                    paddingVertical: 5,
                   }}
                   backgroundColor="#f1f1f1"
-                  iconStyle={{ fontSize: 34, color: "#596588" }}
+                  iconStyle={{ fontSize: 34, color: '#596588' }}
                   rounded={true}
                   onPress={this.goToMyLocation}
 
@@ -380,11 +365,7 @@ class GameLocation extends React.Component<Props, State> {
 
                 {
                   <View style={styles.crosshairsContainer} pointerEvents="none">
-                    <MaterialCommunityIcons
-                      name="map-marker-outline"
-                      size={40}
-                      color="red"
-                    />
+                    <MaterialCommunityIcons name="map-marker-outline" size={40} color="red" />
                   </View>
                 }
               </>
@@ -399,35 +380,35 @@ class GameLocation extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     // width: '100%',
-    flex: 1
+    flex: 1,
   },
   mapWrapper: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   map: {
     flex: 1,
-    position: "relative"
+    position: 'relative',
     // borderRadius: 5
   },
   marker: {
-    fontSize: 50
+    fontSize: 50,
   },
   crosshairsContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 25 // чтобы скорректировать центр для некруглых иконок маркера
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 25, // чтобы скорректировать центр для некруглых иконок маркера
   },
   submitBtn: {
-    alignSelf: "center",
+    alignSelf: 'center',
     bottom: 10,
     zIndex: 999,
-    width: "95%",
+    width: '95%',
     height: 50,
-    position: "absolute"
+    position: 'absolute',
   },
   submitBtnIcon: { fontSize: 24 },
-  submitBtnText: { fontSize: 16 }
+  submitBtnText: { fontSize: 16 },
 });
 
 export default withNavigation(GameLocation);

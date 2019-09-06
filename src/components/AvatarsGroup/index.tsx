@@ -29,7 +29,7 @@ const AvatarsGroup: React.SFC<AvatarGroupProps> = ({
     <View style={[style, s.container]}>
       {users.slice(0, limit).map((user, index) => {
         // const src = getRandomUser();
-        console.log('user.src', user);
+        // console.log('user.src', user);
 
         return (
           <AvatarCmp

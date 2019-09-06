@@ -27,12 +27,7 @@ export type IFindGameFilters = IGamesListQueryFilters;
 
 const GET_TODOS = gql`
   {
-    todos @client {
-      id
-      completed
-      text
-    }
-    visibilityFilter @client
+    address @client
   }
 `;
 
@@ -46,8 +41,10 @@ function FindGameScreen(props: IProps) {
     sportIds: undefined,
     status: GameStatus.Pending,
   });
-  const { data } = useQuery<any>(GET_TODOS);
-
+  const { data, loading } = useQuery<any>(GET_TODOS);
+  if(loading) {
+    return <Text>loading</Text>
+  }
   console.log('data', data);
 
   const changeActiveSort = (sorting: ISearchGameSort, toggleModal: () => void) => {
@@ -61,7 +58,6 @@ function FindGameScreen(props: IProps) {
   };
 
   const onGameCardPress = (gameId: string): void => {
-
     navigate(NavigationRoot.GameInfo, { gameId });
   };
 

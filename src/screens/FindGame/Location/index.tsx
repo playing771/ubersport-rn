@@ -8,8 +8,8 @@ import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const STATE_MUTATE = gql`
-  mutation ToggleTodo($id: Int!) {
-    toggleTodo(id: $id) @client
+  mutation setLocation($address: string!) {
+    setLocation(address: $address) @client
   }
 `;
 type IProps = NavigationInjectedProps;
@@ -17,11 +17,19 @@ type IProps = NavigationInjectedProps;
 function FindOwnLocationScreen(props: IProps) {
   const locProp = props.navigation.getParam('location');
   const [location, setLocation] = useState(locProp);
-  const id = 1111;
+
   const [toggleTodo] = useMutation(STATE_MUTATE);
 
   const goBackWithLocation = (loc: ILocation) => {
+    console.log('LOCC', loc);
+
     const onChangeLocation = props.navigation.getParam('onChangeLocation');
+    toggleTodo({
+      variables: {
+        address: loc.address,
+      },
+      refetchQueries: ['location']
+    });
     props.navigation.setParams({ adress: loc.address });
     onChangeLocation(loc);
 
@@ -34,7 +42,7 @@ function FindOwnLocationScreen(props: IProps) {
       customMapStyle={mapStyle}
       location={location}
       dynamicMarker={true}
-      onChangeLocation={() => toggleTodo({ variables: { id } })}
+      onChangeLocation={goBackWithLocation}
       myLocation={true}
     />
   );
