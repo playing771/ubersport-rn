@@ -21,30 +21,29 @@ const GET_ACCOUNT = gql`
 `;
 export default function FindGameHeaderTitle(props: IProps) {
   const { editGeoHandle } = props;
-  const { data, loading } = useQuery<any>(GET_ACCOUNT);
-  if (loading) {
-    return <Text>loading</Text>;
+  const { data, loading, error } = useQuery<any>(GET_ACCOUNT);
+
+  if (error || loading) {
+    return (
+      <View style={styles.innerContainer}>
+        <TextButton onPress={editGeoHandle}>
+          <>
+            <Text style={styles.headerTitleStyle}>Укажите свой адресс </Text>
+            <Entypo name="location" size={20} color="#dcdcdc" />
+          </>
+        </TextButton>
+      </View>
+    );
   }
 
   const { location } = data.user;
   return (
     <View style={styles.container}>
-      {!location ? (
-        <View style={styles.innerContainer}>
-          <TextButton onPress={editGeoHandle}>
-            <>
-              <Text style={styles.headerTitleStyle}>Укажите свой адресс </Text>
-              <Entypo name="location" size={20} color="#dcdcdc" />
-            </>
-          </TextButton>
-        </View>
-      ) : (
-        <View style={styles.innerContainer}>
-          <TextButton onPress={editGeoHandle}>
-            <Text style={styles.headerTitleStyle}>{location.address}</Text>
-          </TextButton>
-        </View>
-      )}
+      <View style={styles.innerContainer}>
+        <TextButton onPress={editGeoHandle}>
+          <Text style={styles.headerTitleStyle}>{location.address}</Text>
+        </TextButton>
+      </View>
     </View>
   );
 }

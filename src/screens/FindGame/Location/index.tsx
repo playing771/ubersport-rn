@@ -12,13 +12,17 @@ function FindOwnLocationScreen(props: IProps) {
   const { setUser, user } = useContext(AppContext);
   const locProp = props.navigation.getParam('location');
   const [location, setLocation] = useState(locProp);
-  const [saveUserLocation] = useUserLocationEdit();
+  const [saveUserLocation, error] = useUserLocationEdit();
 
   const goBackWithLocation = (loc: ILocation) => {
-    saveUserLocation({
-      variables: { id: user.id, userInput: { location: loc } },
-      refetchQueries: ['UserLocation'],
-    });
+    // need rethink
+    if (user.id !== 'noid') {
+      saveUserLocation({
+        variables: { id: user.id, userInput: { location: loc } },
+        refetchQueries: ['UserLocation'],
+      });
+    }
+
     props.navigation.setParams({ address: loc.address });
 
     props.navigation.goBack();
