@@ -25,13 +25,15 @@ export default function FindGameHeaderTitle(props: IProps) {
 
   if (error || loading) {
     return (
-      <View style={styles.innerContainer}>
-        <TextButton onPress={editGeoHandle}>
-          <>
-            <Text style={styles.headerTitleStyle}>Укажите свой адресс </Text>
-            <Entypo name="location" size={20} color="#dcdcdc" />
-          </>
-        </TextButton>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <TextButton onPress={editGeoHandle}>
+            <>
+              <Text style={styles.headerTitleStyle}>Укажите свой адресс </Text>
+              <Entypo name="location" size={20} color="#dcdcdc" />
+            </>
+          </TextButton>
+        </View>
       </View>
     );
   }
