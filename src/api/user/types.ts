@@ -1,4 +1,5 @@
 import ISport from '../sports/Sport.type';
+import { ILocation } from '../games/types';
 
 export type ISex = 'MALE' | 'FEMALE';
 export default interface IUser {
@@ -11,6 +12,7 @@ export default interface IUser {
   favoriteSports: ISport[];
   sex: ISex;
   avatar: string | null;
+  location: ILocation;
 }
 
 export interface IUserWithToken extends IUser {

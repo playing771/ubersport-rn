@@ -107,15 +107,8 @@ const screenOptions: IAdaptiveScreenOptions = {
 };
 
 FindGameScreen.navigationOptions = ({ navigation }) => {
-  let ownLocation;
-
-  const onChangeLocation = (location: ILocation) => {
-    ownLocation = location;
-  };
   const editGeoHandle = () => {
-    navigation.navigate(NavigationRoot.Location, {
-      onChangeLocation,
-    });
+    navigation.navigate(NavigationRoot.Location);
   };
 
   return {

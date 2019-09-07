@@ -8,26 +8,28 @@ import TextButton from '../../components/Buttons/TextButton';
 interface IProps {
   editGeoHandle: () => void;
 }
-
-const GET_TODOS = gql`
-  {
-    myLocation @client {
-      address
+const GET_ACCOUNT = gql`
+  query UserLocation {
+    user: getAccount {
+      id
+      location {
+        address
+        coordinates
+      }
     }
   }
 `;
-
 export default function FindGameHeaderTitle(props: IProps) {
   const { editGeoHandle } = props;
-  const { data, loading } = useQuery<any>(GET_TODOS);
+  const { data, loading } = useQuery<any>(GET_ACCOUNT);
   if (loading) {
     return <Text>loading</Text>;
   }
-  const { myLocation } = data;
-  const { address } = myLocation;
+
+  const { location } = data.user;
   return (
     <View style={styles.container}>
-      {!address ? (
+      {!location ? (
         <View style={styles.innerContainer}>
           <TextButton onPress={editGeoHandle}>
             <>
@@ -38,7 +40,9 @@ export default function FindGameHeaderTitle(props: IProps) {
         </View>
       ) : (
         <View style={styles.innerContainer}>
-          <Text style={styles.headerTitleStyle}>{address}</Text>
+          <TextButton onPress={editGeoHandle}>
+            <Text style={styles.headerTitleStyle}>{location.address}</Text>
+          </TextButton>
         </View>
       )}
     </View>

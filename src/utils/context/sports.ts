@@ -13,6 +13,10 @@ export const uknonwUser: IUserWithToken = {
   middleName: 'unknown',
   sex: 'MALE',
   avatar: null,
+  location: {
+    address: null,
+    coordinates: [55, 35],
+  },
 };
 export interface IAppContextInjectedProp {
   ctx: AppContext;
