@@ -19,7 +19,7 @@ export interface IEditProfileVariables {
   };
 }
 
-export interface IEditProfileReponse {
+export interface IEditProfileResponse {
   id: string;
 }
 
@@ -32,5 +32,5 @@ export const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export function useEditUserProfileMutation() {
-  return useMutation<IEditProfileReponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION);
+  return useMutation<IEditProfileResponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION);
 }

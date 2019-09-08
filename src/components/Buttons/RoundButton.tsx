@@ -10,6 +10,8 @@ export interface IRoundButtonProps {
   underlayColor?: string;
   icon?: string;
   iconStyle?: TextStyle;
+  loading?: boolean;
+  loadingIndicatorColor?: string;
 }
 
 const DEFAULT_BACKGROUNDCOLOR = '#71B9BB';

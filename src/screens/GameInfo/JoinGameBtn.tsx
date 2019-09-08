@@ -10,7 +10,6 @@ import { BOTTOM_BIG_NOTCH, BOTTOM_SM_NOTCH } from '../../components/AdaptiveScre
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import SubmitButton from '../../components/Buttons/SubmitButton';
 import useAuthCheck from '../../hooks/useAuthCheck';
-import UButton from '../../components/UButton';
 import { NavigationRoot } from '../../navigation/roots';
 
 type IProps = {

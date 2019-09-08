@@ -9,7 +9,11 @@ export default function handleApoloError(err: ApolloError): string {
   let errString: string = '';
   if (err.graphQLErrors) {
     err.graphQLErrors.forEach(gError => {
-      errString += gError.message;
+      if (typeof gError.message === 'object') {
+        errString += gError.message.error + ' ' + gError.message.statusCode;
+      } else {
+        errString += gError.message;
+      }
 
       // console.warn(gError.message);
     });

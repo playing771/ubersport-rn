@@ -64,6 +64,7 @@ class SubmitButton extends React.Component<Props, State> {
               textStyle={[styles.title, this.props.textStyle]}
               disabled={this.props.disabled}
               loading={loading}
+              loadingIndicatorColor="white"
               icon={icon ? icon : error ? 'ios-close-circle' : undefined}
               rounded={rounded}
             />

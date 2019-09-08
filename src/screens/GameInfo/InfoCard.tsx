@@ -6,37 +6,52 @@ import Colors from '../../constants/Colors';
 import EditBtn from '../../components/Buttons/EditButton';
 import Right from '../../components/Layout/Right';
 import RoundButton from '../../components/Buttons/RoundButton';
+import { useLeaveGameMutation } from './gql';
+import useAppContext from '../../hooks/useAppContext';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 const PARTICIPANT_TEXT = 'Вы участник';
 const AUTHOR_TEXT = 'Вы модератор';
 interface IProps {
   isAuthor: boolean;
-  onPressEditBtn: () => void;
+  onEditBtnPress: () => void;
   style?: StyleProp<ViewStyle>;
+  gameId: string;
 }
 
-const InfoCard = ({ onPressEditBtn, style, isAuthor }: IProps) => {
+const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
+  const { user } = useAppContext();
+  const [leaveGame, { loading, error }] = useLeaveGameMutation();
+
+  const leaveGameHandle = () => {
+    leaveGame({ variables: { gameId, userId: user.id } });
+  };
+
   return (
-    <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
-      <View style={styles.content}>
-        <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />
+    <>
+      {error && <ErrorGqlCard error={error}></ErrorGqlCard>}
+      <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
+        <View style={styles.content}>
+          <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />
 
-        <Text style={styles.mainText}>{`${isAuthor ? AUTHOR_TEXT : PARTICIPANT_TEXT} !`}</Text>
-        {/* <Text style={{ color: '#9FFFC6' }}>Some sub text...</Text> */}
+          <Text style={styles.mainText}>{`${isAuthor ? AUTHOR_TEXT : PARTICIPANT_TEXT} !`}</Text>
+          {/* <Text style={{ color: '#9FFFC6' }}>Some sub text...</Text> */}
 
-        <Right centered={true} style={{ flexDirection: 'row' }}>
-          <EditBtn onPress={onPressEditBtn} />
-          <RoundButton
-            onPress={() => undefined}
-            icon="ios-log-out"
-            style={{ marginLeft: 12, width: 36, height: 36, alignSelf: 'center' }}
-            backgroundColor="#FFFFFF"
-            // backgroundColor={Colors.purle}
-            iconStyle={{ color: '#EA3323', fontSize: 20 }}
-          />
-        </Right>
-      </View>
-    </Card>
+          <Right centered={true} style={{ flexDirection: 'row' }}>
+            <EditBtn onPress={onEditBtnPress} />
+            <RoundButton
+              backgroundColor="#F7F5F3"
+              icon="ios-log-out"
+              onPress={leaveGameHandle}
+              style={styles.leaveGameBtn}
+              iconStyle={styles.leaveGameBtnIcon}
+              loadingIndicatorColor={Colors.purle}
+              loading={loading}
+            />
+          </Right>
+        </View>
+      </Card>
+    </>
   );
 };
 
@@ -70,6 +85,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   icon: { fontSize: 30 },
+  leaveGameBtn: { marginLeft: 12, width: 36, height: 36, alignSelf: 'center' },
+  leaveGameBtnIcon: { color: Colors.purle, fontSize: 20 },
 });
 
 export default InfoCard;

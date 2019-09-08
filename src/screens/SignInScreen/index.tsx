@@ -119,6 +119,15 @@ class SingInScreen extends React.Component<IProps, IState> {
       });
   };
 
+  testLoginHanlde2 = () => {
+    login('playing771@gmail.com', '123')
+      .then(this.loginHandle)
+      .catch(err => {
+        console.log(err);
+        this.toggleLoading();
+      });
+  };
+
   stepPassedHandle = async (stepIndex: number, text?: string) => {
     if (stepIndex === 0 && text) {
       const checkResult: IExistEmail = await emailValidate(text);
@@ -201,6 +210,7 @@ class SingInScreen extends React.Component<IProps, IState> {
           submitHandle={this.signUp}
         />
         <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+        <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
       </>
     ) : (
       <>
@@ -212,6 +222,7 @@ class SingInScreen extends React.Component<IProps, IState> {
           changeEmailHandle={this.changeEmailHandle}
         />
         <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+        <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
         <ErrorCard
           error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
           show={badCredentials}

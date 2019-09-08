@@ -1,7 +1,7 @@
-import { useQuery } from 'react-apollo';
+import { useQuery, useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { fullGameInfoFragment } from '../../api/fragments';
-import { IGame } from '../../api/games/types';
+import { IGame, ILeaveGameResult } from '../../api/games/types';
 
 // TODO: добавить Participant count в схему
 
@@ -29,4 +29,27 @@ export default function useGameInfoQuery(variables: IGameInfoQueryVariables) {
   return useQuery<IGameInfoQueryResponse, IGameInfoQueryVariables>(GET_GAME_INFO_GQL, {
     variables,
   });
+}
+
+export const LEAVE_GAME_GQL = gql`
+  mutation leaveGame($gameId: ID!, $userId: String!) {
+    leaveGame(gameId: $gameId, userId: $userId) {
+      id
+      participants {
+        id
+        firstName
+        lastName
+        nickname
+      }
+    }
+  }
+`;
+
+export interface ILeaveGameVariables {
+  gameId: string;
+  userId: string;
+}
+
+export function useLeaveGameMutation() {
+  return useMutation<ILeaveGameResult, ILeaveGameVariables>(LEAVE_GAME_GQL);
 }

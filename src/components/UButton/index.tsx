@@ -9,7 +9,7 @@ import {
   TouchableHighlightProps,
   StyleProp,
   ActivityIndicator,
-  Text
+  Text,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import shadeBlend from '../../utils/shadeBlend';
@@ -50,7 +50,7 @@ const defaultProps = {
   iconDividerColor: '#4ca7ff',
   loading: false,
   rounded: false,
-  loadingIndicatorColor: '#2f5378'
+  loadingIndicatorColor: '#2f5378',
   // underlayColor: 'transparent'
   // square: false
 };
@@ -60,7 +60,7 @@ type State = {
 };
 
 const initialState: State = {
-  isVisible: false
+  isVisible: false,
 };
 
 class UButton extends React.Component<IButtonProps, State> {
@@ -89,9 +89,9 @@ class UButton extends React.Component<IButtonProps, State> {
           {
             color: this.props.titleColor,
             marginLeft: this._getTextLeftMargin(),
-            paddingVertical: OUTER_HOR_PADDING
+            paddingVertical: OUTER_HOR_PADDING,
           },
-          this.props.textStyle
+          this.props.textStyle,
           // this.props.disabled ? s.btnTextDisabled : undefined
         ]}
       >
@@ -101,7 +101,6 @@ class UButton extends React.Component<IButtonProps, State> {
       <ActivityIndicator
         size="small"
         color={this.props.loadingIndicatorColor}
-        // style={{ position: 'absolute', right: -30 }}
         animating={this.props.loading}
       />
     );
@@ -109,8 +108,8 @@ class UButton extends React.Component<IButtonProps, State> {
 
   render() {
     const hasIcon =
-      typeof this.props.icon !== 'undefined' ||
-      this.props.children !== undefined;
+      !this.props.loading &&
+      (typeof this.props.icon !== 'undefined' || this.props.children !== undefined);
     const hasUnderlayColor = typeof this.props.underlayColor !== 'undefined';
     const undrclr = hasUnderlayColor
       ? this.props.underlayColor
@@ -129,7 +128,7 @@ class UButton extends React.Component<IButtonProps, State> {
             this.props.circle
               ? { borderRadius: 99, width: CIRCLE_SIZE, height: CIRCLE_SIZE }
               : undefined,
-            this.props.style
+            this.props.style,
             // this.props.disabled ? s.btnContainerDisabled : undefined
           ]}
           onPress={this._onPress}
@@ -142,10 +141,8 @@ class UButton extends React.Component<IButtonProps, State> {
               style={[
                 s.btnInnerContainer,
                 { flexDirection: this.props.square ? 'column' : 'row' },
-                this.props.square
-                  ? { paddingVertical: OUTER_HOR_PADDING }
-                  : undefined,
-                {}
+                this.props.square ? { paddingVertical: OUTER_HOR_PADDING } : undefined,
+                {},
               ]}
             >
               {hasIcon ? (
@@ -154,18 +151,14 @@ class UButton extends React.Component<IButtonProps, State> {
                     s.iconWrapper,
                     !this.props.square && hasTitle
                       ? { paddingRight: OUTER_HOR_PADDING }
-                      : undefined
+                      : undefined,
                   ]}
                 >
                   {this.props.icon ? (
                     <Ionicons
                       size={getIconSize(this.props.iconSize, this.props.circle)}
                       name={this.props.icon}
-                      style={[
-                        s.btnIcon,
-                        { color: this.props.iconColor },
-                        this.props.iconStyle
-                      ]}
+                      style={[s.btnIcon, { color: this.props.iconColor }, this.props.iconStyle]}
                     />
                   ) : (
                     this.props.children
@@ -180,8 +173,8 @@ class UButton extends React.Component<IButtonProps, State> {
                   s.textWrapper,
                   {
                     borderLeftWidth: this.props.iconDivider ? 0.3 : 0,
-                    borderLeftColor: this.props.iconDividerColor!
-                  }
+                    borderLeftColor: this.props.iconDividerColor!,
+                  },
                   // !this.props.square ? { height: '100%' } : undefined
                 ]}
               >
@@ -206,7 +199,7 @@ const _getStyle = (style?: any) => {
         (typeof style.borderTopRightRadius !== 'undefined' ||
           typeof style.borderBottomRightRadius !== 'undefined')
           ? 0
-          : 3
+          : 3,
     },
     btnInnerContainer: {
       display: 'flex',
@@ -216,26 +209,26 @@ const _getStyle = (style?: any) => {
       marginTop: 'auto',
       marginBottom: 'auto',
       // flex: 1,
-      paddingHorizontal: 10
+      paddingHorizontal: 10,
     },
     btnIcon: {
       color: '#f7f5f3',
-      textAlign: 'center'
+      textAlign: 'center',
     },
     iconWrapper: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      textAlign: 'center'
+      textAlign: 'center',
     },
     btnText: {
       fontSize: 14,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     textWrapper: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     disabledWrapper: {
       position: 'absolute',
@@ -245,8 +238,8 @@ const _getStyle = (style?: any) => {
       height: '100%',
       backgroundColor: '#1A5B937E',
       zIndex: 99,
-      overflow: 'visible'
-    }
+      overflow: 'visible',
+    },
   });
 };
 

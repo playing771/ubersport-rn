@@ -9,7 +9,7 @@ export interface IEditProfileVariables {
   };
 }
 
-export interface IEditProfileReponse {
+export interface IEditProfileResponse {
   location: ILocation;
 }
 
@@ -25,5 +25,5 @@ export const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export function useUserLocationEdit() {
-  return useMutation<IEditProfileReponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION);
+  return useMutation<IEditProfileResponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION);
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../GeneralCard/index';
-import { StyleSheet, View, Text, ViewStyle } from 'react-native';
+import { StyleSheet, Text, ViewStyle } from 'react-native';
 import { useState, useEffect } from 'react';
 import { View as AnimatedView } from 'react-native-animatable';
 
@@ -9,10 +9,9 @@ export interface IErrorCardProps {
   error: string;
   show?: boolean;
   position?: IErrorCardPosition;
-  style?: ViewStyle;
 }
 
-const ErrorCard = ({ error, show = true, position, style }: IErrorCardProps) => {
+const ErrorCard = ({ error, show = true, position }: IErrorCardProps) => {
   const [visible, toggle] = useState(true);
 
   const hide = () => {
@@ -27,14 +26,14 @@ const ErrorCard = ({ error, show = true, position, style }: IErrorCardProps) => 
     <AnimatedView
       animation="fadeIn"
       duration={300}
-      style={getContainerPosition(position)}
+      style={[getContainerPosition(position)]}
       useNativeDriver={true}
     >
-      <Card wrapperStyle={[styles.card, style]} onPress={hide}>
-        <View>
+      <Card wrapperStyle={styles.card} styles={styles.innerCardStyle} onPress={hide}>
+        <>
           <Text style={styles.textMain}>Ошибка</Text>
           <Text style={styles.textSub}>{error}</Text>
-        </View>
+        </>
       </Card>
     </AnimatedView>
   ) : (
@@ -59,14 +58,14 @@ function getContainerPosition(position?: IErrorCardPosition): ViewStyle {
 
 const styles = StyleSheet.create({
   card: {
-    minHeight: 90,
-    // width: '100%',
     alignSelf: 'center',
     backgroundColor: '#ff5722',
     padding: 18,
     borderRadius: 8,
     marginVertical: 12,
+    width: '100%',
   },
+  innerCardStyle: { flex: 0, minHeight: 50 },
   textMain: {
     color: 'white',
     fontSize: 16,

@@ -8,7 +8,6 @@ import InfoCard from './InfoCard';
 import { IGame } from '../../api/games/types';
 import JoinGameBtn from './JoinGameBtn';
 import IUser from '../../api/user/types';
-import LeaveGameBtn from './LeaveGameBtn';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useGameInfoQuery from './gql';
 import useAppContext from '../../hooks/useAppContext';
@@ -37,7 +36,11 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
     <View style={styles.mainContainer}>
       {/* {isAuthor(user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />} */}
       {isParticipant && (
-        <InfoCard onPressEditBtn={() => onPressEdit(game)} isAuthor={isAuthor(user.id, game)} />
+        <InfoCard
+          onEditBtnPress={() => onPressEdit(game)}
+          gameId={game.id}
+          isAuthor={isAuthor(user.id, game)}
+        />
       )}
       <Card disabled={true} wrapperStyle={styles.card}>
         <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
@@ -74,6 +77,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 0.5,
     flex: 1,
-    marginBottom: 110,
+    // marginBottom: 110,
   },
 });

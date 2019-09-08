@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import CardHeader from './Header';
 import CardContent from './Content';
 import withTouch from '../hocs/WIthTouch';
@@ -11,6 +11,7 @@ type IProps = {
   description?: string;
   header?: JSX.Element;
   renderContent?(): JSX.Element;
+  styles?: ViewStyle;
 } & Partial<typeof defaultProps>;
 
 const defaultProps = {
@@ -19,7 +20,7 @@ const defaultProps = {
 
 const Card = withTouch<IProps>(props => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.styles]}>
       {props.header && <CardHeader bgColor={props.headerBgColor}>{props.header}</CardHeader>}
       <CardContent>
         {props.renderContent && props.renderContent()}
