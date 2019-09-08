@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import ULoader from '../../components/ULoader/index';
 import GeneralGameInfo from './GeneralInfo';
@@ -31,25 +31,30 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
   }
 
   const { game } = data;
+  const isParticipant = isParticipantCheck(user.id, game.participants);
 
   return game ? (
     <View style={styles.mainContainer}>
-      {isAuthor(user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />}
+      {/* {isAuthor(user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />} */}
+      {isParticipant && (
+        <InfoCard onPressEditBtn={() => onPressEdit(game)} isAuthor={isAuthor(user.id, game)} />
+      )}
       <Card disabled={true} wrapperStyle={styles.card}>
         <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
       </Card>
-      {!isParticipant(user.id, game.participants) ? (
+      {/* {!isParticipant(user.id, game.participants) ? (
         <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />
       ) : (
         <LeaveGameBtn variables={{ gameId: game.id, userId: user.id }} />
-      )}
+      )} */}
+      {!isParticipant && <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />}
     </View>
   ) : (
     <ULoader />
   );
 }
 
-function isParticipant(userId: string, gameParticipants: IUser[]): boolean {
+function isParticipantCheck(userId: string, gameParticipants: IUser[]): boolean {
   return typeof gameParticipants.find(pnt => pnt.id === userId) !== 'undefined';
 }
 
