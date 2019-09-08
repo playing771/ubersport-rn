@@ -54,7 +54,7 @@ export interface ICreateUserMutationVariables {
   lastName?: string;
   middleName?: string;
   dateOfBirth?: number;
-  // favoriteSports: string[]
+  favoriteSports: string[];
 }
 
 export interface ICreateUserResult {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Card from '../../components/GeneralCard/index';
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,11 +17,7 @@ const InfoCard = ({ onPressEditBtn, style }: IProps) => {
   return (
     <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
       <View style={styles.content}>
-        <Ionicons
-          name="ios-checkmark-circle-outline"
-          style={styles.icon}
-          color="white"
-        />
+        <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />
 
         <Text style={styles.mainText}>{`${AUTHOR_TEXT} !`}</Text>
         {/* <Text style={{ color: '#9FFFC6' }}>Some sub text...</Text> */}
@@ -42,7 +38,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 6,
-    borderRadius: 6
+    borderRadius: 6,
   },
   content: {
     flexDirection: 'row',
@@ -51,19 +47,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 6,
-    flex: 1
+    flex: 1,
   },
   rounded: {
-    borderRadius: 7
+    borderRadius: 7,
   },
   mainText: {
     color: 'white',
     fontWeight: '600',
     fontSize: 16,
     paddingLeft: 24,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-  icon: { fontSize: 30 }
+  icon: { fontSize: 30 },
 });
 
 export default InfoCard;

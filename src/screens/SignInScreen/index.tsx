@@ -3,7 +3,7 @@ import { View, AsyncStorage, StyleSheet } from 'react-native';
 import {
   NavigationInjectedProps,
   NavigationStackScreenOptions,
-  withNavigation
+  withNavigation,
 } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
@@ -30,10 +30,7 @@ import emailValidate from '../../api/user/emailValidate';
 import { IExistEmail } from '../../api/user/emailValidate';
 import UserInfoPassed from './userInfo/passed';
 import parseGqlError from '../../utils/parseGqlError';
-import {
-  ICreateUserMutationVariables,
-  CREATE_USER_GQL
-} from '../../api/user/createUser';
+import { ICreateUserMutationVariables, CREATE_USER_GQL } from '../../api/user/createUser';
 import UButton from '../../components/UButton';
 
 interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
@@ -49,25 +46,25 @@ interface IState {
 }
 
 const steps = [
-  { active: SignUpActive, passed: SignUpPassed }, //validateFn: validateEmail
+  { active: SignUpActive, passed: SignUpPassed }, // validateFn: validateEmail
   {
     active: PasswordActive,
-    passed: PasswordPassed
+    passed: PasswordPassed,
     // validateFn: passwordValidateFn
   },
   {
     active: SubmitPasswordActive,
-    passed: SubmitPasswordPassed
+    passed: SubmitPasswordPassed,
     // validateFn: submitPasswordValidateFn
   },
   { active: UserInfoActive, passed: UserInfoPassed },
-  { active: favoriteSportsActive }
+  { active: favoriteSportsActive },
 ];
 
 @withAppContext
 class SingInScreen extends React.Component<IProps, IState> {
   static navigationOptions: NavigationStackScreenOptions = {
-    header: null
+    header: null,
     // title: 'Вход или регистрация',
     // headerTitleStyle: {
     //   color: '#fff',
@@ -81,7 +78,7 @@ class SingInScreen extends React.Component<IProps, IState> {
     type: undefined,
     userEmail: '',
     loading: false,
-    badCredentials: false
+    badCredentials: false,
   };
 
   loginHandle = async (data: IAuthResult) => {
@@ -94,7 +91,7 @@ class SingInScreen extends React.Component<IProps, IState> {
         // ...data.user,
         ...user,
         id: _id,
-        token: data.accessToken
+        token: data.accessToken,
       };
 
       await AsyncStorage.setItem('user', JSON.stringify(userWithToken));
@@ -128,7 +125,7 @@ class SingInScreen extends React.Component<IProps, IState> {
 
       this.setState({
         type: checkResult.isExist ? 'SIGNIN' : 'SIGNUP',
-        userEmail: checkResult.email
+        userEmail: checkResult.email,
       });
     }
   };
@@ -137,7 +134,7 @@ class SingInScreen extends React.Component<IProps, IState> {
     this.setState({
       type: 'SIGNUP',
       userEmail: '',
-      badCredentials: false
+      badCredentials: false,
     });
   };
 
@@ -145,25 +142,22 @@ class SingInScreen extends React.Component<IProps, IState> {
     this.setState({ badCredentials: false });
   };
 
-  signUp = async (
-    result: { [key: number]: any },
-    mutate: (mutation: any) => Promise<any>
-  ) => {
+  signUp = async (result: { [key: number]: any }, mutate: (mutation: any) => Promise<any>) => {
     const signUpVariables: ICreateUserMutationVariables = {
       email: result[0],
       password: result[1],
       nickname: result[3].login,
       firstName: result[3].name,
-      lastName: result[3].lastName
+      lastName: result[3].lastName,
       // middleName?: string;
       // dateOfBirth?: number;
-      // favoriteSports
+      favoriteSports: result[4].favoriteSports,
     };
     console.log(' this.setState({ signUpVariables }', signUpVariables);
     console.log('mutate', mutate);
     mutate({
-      mutation: CREATE_USER_GQL
-      // variables: signUpVariables
+      mutation: CREATE_USER_GQL,
+      variables: signUpVariables,
     })
       .then((data: any) => {
         console.log('MUTATE', data);
@@ -187,12 +181,7 @@ class SingInScreen extends React.Component<IProps, IState> {
   private renderHeader(type: IActionType) {
     switch (type) {
       case 'SIGNUP':
-        return (
-          <SignInScreenTitle
-            user={this.state.userEmail}
-            text="Новый пользователь"
-          />
-        );
+        return <SignInScreenTitle user={this.state.userEmail} text="Новый пользователь" />;
 
       case 'SIGNIN':
         return <SignInScreenTitle user={this.state.userEmail} text="Логин" />;
@@ -239,21 +228,21 @@ class SingInScreen extends React.Component<IProps, IState> {
 const screenOptions: IAdaptiveScreenOptions = {
   // transparentHeader: true,
   gradient: { colors: ['#101F44', '#101F44'] },
-  barStyle: 'light-content'
+  barStyle: 'light-content',
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#101F44'
+    backgroundColor: '#101F44',
   },
   socialIcon: {
-    marginRight: 12
+    marginRight: 12,
   },
   fbIcon: {
     fontSize: 32,
     color: 'white',
-    marginLeft: -2
+    marginLeft: -2,
   },
   mainText: { color: 'white', fontWeight: '600' },
   subText: { color: '#CBD6F2', marginTop: 6 },
@@ -262,12 +251,12 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 14,
     textAlign: 'center',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   socialContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 24
+    paddingVertical: 24,
   },
   inputsContainer: {},
   inputWrapper: { marginTop: 12 },
@@ -277,8 +266,8 @@ const styles = StyleSheet.create({
     lineHeight: 42,
     // borderRadius: 6,
     // paddingHorizontal: 6,
-    color: '#5F6B8D'
-  }
+    color: '#5F6B8D',
+  },
 });
 
 export default withNavigation(withAdaptiveScreen(SingInScreen, screenOptions));

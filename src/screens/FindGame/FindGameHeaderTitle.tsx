@@ -4,6 +4,7 @@ import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import { EvilIcons, Entypo, FontAwesome } from '@expo/vector-icons';
 import TextButton from '../../components/Buttons/TextButton';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 interface IProps {
   editGeoHandle: () => void;
@@ -23,7 +24,12 @@ export default function FindGameHeaderTitle(props: IProps) {
   const { editGeoHandle } = props;
   const { data, loading, error } = useQuery<any>(GET_ACCOUNT);
 
-  if (error || loading) {
+  // if (error) {
+  //   return <ErrorGqlCard error={error}></ErrorGqlCard>;
+  // }
+
+  // добавил проверку !data.user иначе подает gameInfo если пользователь не авторизован
+  if (error || loading || !data.user) {
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>

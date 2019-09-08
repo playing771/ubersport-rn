@@ -1,53 +1,53 @@
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { IGame } from './types';
-import { fullGameInfoFragment } from '../fragments';
-import { ChildDataProps, graphql } from 'react-apollo';
-import { NavigationInjectedProps } from 'react-navigation';
-import { AppContext } from '../../utils/context/sports';
-import { IGameDetailsProps } from '../../screens/GameInfo/GameDetails';
+// import { Query } from 'react-apollo';
+// import gql from 'graphql-tag';
+// import { IGame } from './types';
+// import { fullGameInfoFragment } from '../fragments';
+// import { ChildDataProps, graphql } from 'react-apollo';
+// import { NavigationInjectedProps } from 'react-navigation';
+// import { AppContext } from '../../utils/context/sports';
+// import { IGameDetailsProps } from '../../screens/GameInfo/GameDetails';
 
-// TODO: добавить Participant count в схему
+// // TODO: добавить Participant count в схему
 
-const fragments = `
-  ${fullGameInfoFragment}
-`;
+// const fragments = `
+//   ${fullGameInfoFragment}
+// `;
 
-export const GET_GAME_INFO_GQL = gql`
-  query getGameInfo($id: ID!) {
-    game(id: $id) {
-      ...fullGameInfoFragment
-    }
-  }
-  ${fragments}
-`;
+// export const GET_GAME_INFO_GQL = gql`
+//   query getGameInfo($id: ID!) {
+//     game(id: $id) {
+//       ...fullGameInfoFragment
+//     }
+//   }
+//   ${fragments}
+// `;
 
-interface GetGameInfoQueryVariables {
-  id: string;
-}
-interface Response {
-  game: IGame;
-}
-export class GameInfoQuery extends Query<Response, GetGameInfoQueryVariables> {}
-
-// interface InputProps  {
+// interface GetGameInfoQueryVariables {
 //   id: string;
-//   ctx: AppContext;
-// };
+// }
+// interface Response {
+//   game: IGame;
+// }
+// export class GameInfoQuery extends Query<Response, GetGameInfoQueryVariables> {}
 
-interface Variables {
-  id: string;
-}
+// // interface InputProps  {
+// //   id: string;
+// //   ctx: AppContext;
+// // };
 
-export type GetGameByIdChildProps = ChildDataProps<IGameDetailsProps, Response, Variables>;
+// interface Variables {
+//   id: string;
+// }
 
-const withGameInfoQuery = graphql<IGameDetailsProps, Response, Variables, GetGameByIdChildProps>(
-  GET_GAME_INFO_GQL,
-  {
-    options: ({ id }) => ({
-      variables: { id },
-    }),
-  }
-);
+// export type GetGameByIdChildProps = ChildDataProps<IGameDetailsProps, Response, Variables>;
 
-export default withGameInfoQuery;
+// const withGameInfoQuery = graphql<IGameDetailsProps, Response, Variables, GetGameByIdChildProps>(
+//   GET_GAME_INFO_GQL,
+//   {
+//     options: ({ id }) => ({
+//       variables: { id },
+//     }),
+//   }
+// );
+
+// export default withGameInfoQuery;

@@ -1,49 +1,53 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import withGameInfoQuery from '../../api/games/getGameByIdQuery';
+
 import ULoader from '../../components/ULoader/index';
 import GeneralGameInfo from './GeneralInfo';
 import Card from '../../components/GeneralCard';
 import InfoCard from './InfoCard';
-import { AppContext } from '../../utils/context/sports';
 import { IGame } from '../../api/games/types';
 import JoinGameBtn from './JoinGameBtn';
 import IUser from '../../api/user/types';
 import LeaveGameBtn from './LeaveGameBtn';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import useGameInfoQuery from './gql';
+import useAppContext from '../../hooks/useAppContext';
 
-export type IGameDetailsProps = {
+export interface IProps {
   id: string;
-  ctx: AppContext;
   onPressEdit: (game: IGame) => void;
   onPressParticipants: () => void;
-};
+}
 
-const GameDetails = withGameInfoQuery(
-  ({ data: { loading, game, error }, ctx, onPressEdit, onPressParticipants }) => {
-    if (loading) {
-      return <ULoader />;
-    }
-    if (error) {
-      return <ErrorGqlCard error={error}></ErrorGqlCard>;
-    }
-    return game ? (
-      <View style={styles.mainContainer}>
-        {isAuthor(ctx.user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />}
-        <Card disabled={true} wrapperStyle={styles.card}>
-          <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
-        </Card>
-        {!isParticipant(ctx.user.id, game.participants) ? (
-          <JoinGameBtn variables={{ gameId: game.id, userId: ctx.user.id }} />
-        ) : (
-          <LeaveGameBtn variables={{ gameId: game.id, userId: ctx.user.id }} />
-        )}
-      </View>
-    ) : (
-      <ULoader />
-    );
+export default function GameDetails({ id, onPressEdit, onPressParticipants }: IProps) {
+  const { data, loading, error } = useGameInfoQuery({ id });
+  const { user } = useAppContext();
+
+  if (loading) {
+    return <ULoader />;
   }
-);
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
+
+  const { game } = data;
+
+  return game ? (
+    <View style={styles.mainContainer}>
+      {isAuthor(user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />}
+      <Card disabled={true} wrapperStyle={styles.card}>
+        <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
+      </Card>
+      {!isParticipant(user.id, game.participants) ? (
+        <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />
+      ) : (
+        <LeaveGameBtn variables={{ gameId: game.id, userId: user.id }} />
+      )}
+    </View>
+  ) : (
+    <ULoader />
+  );
+}
 
 function isParticipant(userId: string, gameParticipants: IUser[]): boolean {
   return typeof gameParticipants.find(pnt => pnt.id === userId) !== 'undefined';
@@ -68,5 +72,3 @@ const styles = StyleSheet.create({
     marginBottom: 110,
   },
 });
-
-export default GameDetails;

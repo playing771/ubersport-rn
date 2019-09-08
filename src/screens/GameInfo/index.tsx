@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { View, StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
 import { gradient } from '../../constants/generalStyles';
-import { AppContext } from '../../utils/context/sports';
 import GameDetails from './GameDetails';
 import { IGame } from '../../api/games/types';
 import { deepOmit } from '../../utils/helpers';
@@ -12,31 +10,14 @@ import { NavigationRoot } from '../../navigation/roots';
 import withAdaptiveScreen, {
   IAdaptiveScreenOptions,
 } from '../../components/hocs/WithAdaptiveScreen';
-import withAppContext from '../../components/hocs/WithAppContext';
+import useNavigation from '../../hooks/useNavigation';
 
-type IProps = { ctx: AppContext } & NavigationInjectedProps;
+interface IProps {}
 
-interface IState {}
+function GameInfoScreen(props: IProps) {
+  const { navigate, getParam } = useNavigation();
 
-@withAppContext
-class GameInfoScreen extends React.Component<IProps, IState> {
-  static navigationOptions = {
-    title: 'Информация об игре',
-    headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
-    },
-    headerTransparent: true, // TODO: fix
-  };
-
-  // private isParticipant = (
-  //   userId: string,
-  //   participants: Array<IParticipant>
-  // ): boolean => {
-  //   return participants.some(p => p.id === userId);
-  // };
-
-  private onPressEdit = (game: IGame): void => {
+  const onPressEdit = (game: IGame): void => {
     // удаляем __typename, который добавляется автоматически, но нам не нужен
     const _game = deepOmit(game, '__typename');
     const gameEditData: IGameEditData = {
@@ -52,32 +33,37 @@ class GameInfoScreen extends React.Component<IProps, IState> {
       id: _game.id,
     };
 
-    this.props.navigation.navigate(NavigationRoot.EditGame, { gameEditData });
+    navigate(NavigationRoot.EditGame, { gameEditData });
   };
 
-  onPressParticipants = () => {
-    const { navigation } = this.props;
-    navigation.navigate(NavigationRoot.Participants, {
-      gameId: navigation.getParam('gameId'),
+  const onPressParticipants = () => {
+    navigate(NavigationRoot.Participants, {
+      gameId: getParam('gameId'),
     });
   };
 
-  public render() {
-    const gameId = this.props.navigation.getParam('gameId');
-    const { ctx } = this.props;
+  const gameId = getParam('gameId');
 
-    return (
-      <View style={styles.container}>
-        <GameDetails
-          id={gameId}
-          ctx={ctx}
-          onPressEdit={this.onPressEdit}
-          onPressParticipants={this.onPressParticipants}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <GameDetails
+        id={gameId}
+        // ctx={ctx}
+        onPressEdit={onPressEdit}
+        onPressParticipants={onPressParticipants}
+      />
+    </View>
+  );
 }
+
+GameInfoScreen.navigationOptions = {
+  title: 'Информация об игре',
+  headerTitleStyle: {
+    color: '#fff',
+    fontWeight: '400',
+  },
+  headerTransparent: true, // TODO: fix
+};
 
 const screenOptions: IAdaptiveScreenOptions = {
   transparentHeader: true,
