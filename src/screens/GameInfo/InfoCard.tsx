@@ -29,7 +29,7 @@ const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
 
   return (
     <>
-      {error && <ErrorGqlCard error={error}></ErrorGqlCard>}
+      {error && <ErrorGqlCard error={error} />}
       <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
         <View style={styles.content}>
           <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />
@@ -38,7 +38,7 @@ const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
           {/* <Text style={{ color: '#9FFFC6' }}>Some sub text...</Text> */}
 
           <Right centered={true} style={{ flexDirection: 'row' }}>
-            <EditBtn onPress={onEditBtnPress} />
+            {isAuthor && <EditBtn onPress={onEditBtnPress} />}
             <RoundButton
               backgroundColor="#F7F5F3"
               icon="ios-log-out"
