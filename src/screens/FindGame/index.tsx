@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { ScrollView, StyleSheet, Animated, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, Animated, View, Text, StatusBar } from 'react-native';
 
 import { NavigationInjectedProps } from 'react-navigation';
 
@@ -18,6 +18,7 @@ import { EvilIcons, Entypo } from '@expo/vector-icons';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import FindGameHeaderTitle from './FindGameHeaderTitle';
+import sharedStyles from '../../sharedStyles';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -61,6 +62,7 @@ function FindGameScreen(props: IProps) {
   });
   return (
     <>
+      <StatusBar barStyle="light-content" />
       {/* <UButton title="LOGIN" onPress={() => props.navigation.navigate(NavigationRoot.Auth)} /> */}
       <Animated.View style={{ height: headerHeight }}>
         <FiltersPanel
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: '#FAFAFA',
     paddingHorizontal: 12,
-    paddingVertical: 12,
+    paddingVertical: 6,
   },
   card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
 });
@@ -119,8 +121,10 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
       fontWeight: '400',
       fontSize: 22,
     },
-    headerTransparent: true, // TODO: fix
+    headerStyle: [sharedStyles.header, { borderBottomColor: 'transparent' }],
+    // headerTransparent: true, // TODO: fix
   };
 };
 
-export default withAdaptiveScreen(FindGameScreen, screenOptions);
+// export default withAdaptiveScreen(FindGameScreen, screenOptions);
+export default FindGameScreen;

@@ -1,16 +1,13 @@
 import React from 'react';
 
-import { View, StyleSheet } from 'react-native';
-import { gradient } from '../../constants/generalStyles';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import GameDetails from './GameDetails';
 import { IGame } from '../../api/games/types';
 import { deepOmit } from '../../utils/helpers';
 import { IGameEditData } from '../EditGame/index';
 import { NavigationRoot } from '../../navigation/roots';
-import withAdaptiveScreen, {
-  IAdaptiveScreenOptions,
-} from '../../components/hocs/WithAdaptiveScreen';
 import useNavigation from '../../hooks/useNavigation';
+import sharedStyles from '../../sharedStyles';
 
 interface IProps {}
 
@@ -46,6 +43,7 @@ function GameInfoScreen(props: IProps) {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <GameDetails
         id={gameId}
         // ctx={ctx}
@@ -62,16 +60,18 @@ GameInfoScreen.navigationOptions = {
     color: '#fff',
     fontWeight: '400',
   },
-  headerTransparent: true, // TODO: fix
+  headerStyle: sharedStyles.header,
+  // headerTransparent: true, // TODO: fix
 };
 
-const screenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: true,
-  gradient,
-  barStyle: 'light-content',
-};
+// const screenOptions: IAdaptiveScreenOptions = {
+//   transparentHeader: true,
+//   gradient,
+//   barStyle: 'light-content',
+// };
 
-export default withAdaptiveScreen(GameInfoScreen, screenOptions);
+export default GameInfoScreen;
+// export default withAdaptiveScreen(GameInfoScreen, screenOptions);
 
 const styles = StyleSheet.create({
   container: {

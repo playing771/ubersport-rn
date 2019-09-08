@@ -6,7 +6,7 @@ import useAuthCheck from '../../hooks/useAuthCheck';
 import useAppContext from '../../hooks/useAppContext';
 import EditProfileButton from './EditProfileButton';
 import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
-import shareStyles from '../styles';
+import shareStyles from '../../sharedStyles';
 import { NavigationRoot } from '../../navigation/roots';
 
 interface IProps {}

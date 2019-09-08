@@ -19,7 +19,7 @@ const Colors = {
   purle: '#F84472',
 };
 
-export const HEADER_BACKGROUND = '#141F42';
+export const HEADER_BACKGROUND = '#141F42'; // #1E3458
 export const GREEN_BUTTON_BACKGROUND = '#26AE60';
 export const MAIN_TITLE_COLOR = '#56BBBC';
 

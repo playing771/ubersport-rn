@@ -82,7 +82,7 @@ function onError(err: any) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    bottom: (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) + 13,
+    // bottom: (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) + 13,
   },
 });
 

@@ -9,6 +9,7 @@ import RoundButton from '../../components/Buttons/RoundButton';
 import { useLeaveGameMutation } from './gql';
 import useAppContext from '../../hooks/useAppContext';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import withSubmitModal from '../../components/hocs/WithSubmitModal';
 
 const PARTICIPANT_TEXT = 'Вы участник';
 const AUTHOR_TEXT = 'Вы модератор';
@@ -18,6 +19,8 @@ interface IProps {
   style?: StyleProp<ViewStyle>;
   gameId: string;
 }
+
+const LeaveGameButton = withSubmitModal(RoundButton);
 
 const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
   const { user } = useAppContext();
@@ -39,10 +42,10 @@ const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
 
           <Right centered={true} style={{ flexDirection: 'row' }}>
             {isAuthor && <EditBtn onPress={onEditBtnPress} />}
-            <RoundButton
+            <LeaveGameButton
               backgroundColor="#F7F5F3"
               icon="ios-log-out"
-              onPress={leaveGameHandle}
+              onSubmit={leaveGameHandle}
               style={styles.leaveGameBtn}
               iconStyle={styles.leaveGameBtnIcon}
               loadingIndicatorColor={Colors.purle}

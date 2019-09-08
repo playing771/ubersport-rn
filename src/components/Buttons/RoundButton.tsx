@@ -4,7 +4,7 @@ import shadeBlend from '../../utils/shadeBlend';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
 export interface IRoundButtonProps {
-  onPress: () => void;
+  onPress?: () => void;
   style?: ViewStyle;
   backgroundColor?: string;
   underlayColor?: string;

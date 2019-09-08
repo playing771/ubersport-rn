@@ -77,15 +77,15 @@ class SubmitButton extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    // width: '100%',
     height: 50,
-    position: 'absolute',
-    bottom: 0,
+    // position: 'absolute',
+    // bottom: 0,
     // bottom:
     //   TAB_DEFAULT_HEIGHT +
     //   (isIphoneX() ? BOTTOM_BIG_NOTCH : BOTTOM_SM_NOTCH) +
     //   10,
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
   error: {
     backgroundColor: '#f44336',

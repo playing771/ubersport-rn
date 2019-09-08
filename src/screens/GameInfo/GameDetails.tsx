@@ -11,6 +11,7 @@ import IUser from '../../api/user/types';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useGameInfoQuery from './gql';
 import useAppContext from '../../hooks/useAppContext';
+import UButton from '../../components/UButton';
 
 export interface IProps {
   id: string;
@@ -34,7 +35,6 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
 
   return game ? (
     <View style={styles.mainContainer}>
-      {/* {isAuthor(user.id, game) && <InfoCard onPressEditBtn={() => onPressEdit(game)} />} */}
       {isParticipant && (
         <InfoCard
           onEditBtnPress={() => onPressEdit(game)}
@@ -45,11 +45,7 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
       <Card disabled={true} wrapperStyle={styles.card}>
         <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
       </Card>
-      {/* {!isParticipant(user.id, game.participants) ? (
-        <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />
-      ) : (
-        <LeaveGameBtn variables={{ gameId: game.id, userId: user.id }} />
-      )} */}
+      {/* <UButton title="Присоединиться"></UButton> */}
       {!isParticipant && <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />}
     </View>
   ) : (
@@ -77,6 +73,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 0.5,
     flex: 1,
+    // paddingBottom: 50,
     // marginBottom: 110,
   },
 });

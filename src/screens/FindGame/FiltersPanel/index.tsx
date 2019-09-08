@@ -9,6 +9,7 @@ import useNavigation from '../../../hooks/useNavigation';
 import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
 import ULoader from '../../../components/ULoader';
 import ISport from '../../../api/sports/Sport.type';
+import { HEADER_BACKGROUND } from '../../../constants/Colors';
 
 const sortValues: { [key in ISearchGameSort]: string } = {
   date: 'Новые',
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
   container: {
     height: 60,
     flexDirection: 'row',
-    marginTop: 10,
+    // paddingTop: 10,
+    backgroundColor: HEADER_BACKGROUND,
   },
   buttonLeft: { flex: 1, alignItems: 'flex-start', paddingLeft: 12 },
   buttonRight: { flex: 1, alignItems: 'flex-end', paddingRight: 12 },

@@ -35,7 +35,7 @@ const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
         data={data.games.games}
         // extraData={data!.getGames.games}
         // style={{ marginBottom: 120 }}
-        contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined}
+        contentContainerStyle={{ paddingBottom: 12 }}
         keyExtractor={keyExtractor}
         renderItem={({ item }) => {
           return (
