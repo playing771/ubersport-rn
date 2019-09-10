@@ -1,15 +1,13 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import GameDetailsCard from '../../components/GameCard';
 
+import GameDetailsCard from '../../components/GameCard';
 import ULoader from '../../components/ULoader/index';
 import { IGame } from '../../api/games/types';
-import { isIphoneX } from 'react-native-iphone-x-helper';
-import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
-
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useGamesListQuery from './gql';
 import { IFindGameFilters, ISearchGameSort } from '../FindGame';
+import { BASE_PADDING } from '../../sharedStyles';
 
 const keyExtractor = (item: IGame) => item.id;
 
@@ -33,9 +31,7 @@ const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
     data.games && (
       <FlatList
         data={data.games.games}
-        // extraData={data!.getGames.games}
-        // style={{ marginBottom: 120 }}
-        contentContainerStyle={{ paddingBottom: 12 }}
+        contentContainerStyle={styles.listContainer}
         keyExtractor={keyExtractor}
         renderItem={({ item }) => {
           return (
@@ -53,12 +49,7 @@ const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {},
-  listContainer: {
-    backgroundColor: '#FAFAFA',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-  },
+  listContainer: { paddingBottom: BASE_PADDING },
   card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
 });
 

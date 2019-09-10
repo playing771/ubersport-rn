@@ -5,10 +5,8 @@ import { ScrollView, StyleSheet, Animated, StatusBar } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import { GameStatus } from '../../api/games/types';
-import { gradient } from '../../constants/generalStyles';
 import { NavigationRoot } from '../../navigation/roots';
 import FiltersPanel from './FiltersPanel';
-import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import GamesList from './GamesList';
 import { IGamesListQueryFilters } from './gql';
 import useNavigation from '../../hooks/useNavigation';
@@ -19,6 +17,9 @@ interface IProps extends NavigationInjectedProps {}
 
 export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
+
+const HEADER_EXPANDED_HEIGHT = 70;
+const HEADER_COLLAPSED_HEIGHT = 0;
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
 
@@ -46,9 +47,6 @@ function FindGameScreen(props: IProps) {
   const onGameCardPress = (gameId: string): void => {
     navigate(NavigationRoot.GameInfo, { gameId });
   };
-
-  const HEADER_EXPANDED_HEIGHT = 70;
-  const HEADER_COLLAPSED_HEIGHT = 0;
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
@@ -97,11 +95,11 @@ const styles = StyleSheet.create({
   card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
 });
 
-const screenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: true,
-  gradient,
-  barStyle: 'light-content',
-};
+// const screenOptions: IAdaptiveScreenOptions = {
+//   transparentHeader: true,
+//   gradient,
+//   barStyle: 'light-content',
+// };
 
 FindGameScreen.navigationOptions = ({ navigation }) => {
   const editGeoHandle = () => {
@@ -121,5 +119,4 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
   };
 };
 
-// export default withAdaptiveScreen(FindGameScreen, screenOptions);
 export default FindGameScreen;
