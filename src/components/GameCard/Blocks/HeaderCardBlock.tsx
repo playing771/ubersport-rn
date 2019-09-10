@@ -1,10 +1,10 @@
 import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
-import UserAvatar from '../AvatarsGroup/UserAvatar';
-import SportIcon from './SportIcon';
-import { IAuthor } from '../../api/games/types';
+import UserAvatar from '../../AvatarsGroup/UserAvatar';
+import SportIcon from '../SportIcon';
+import { IAuthor } from '../../../api/games/types';
 
-export interface GameDetailsCardHeaderProps {}
+export interface HeaderCardBlockProps {}
 
 const USER_AVATAR_SIZE = 43;
 interface IProps {
@@ -13,7 +13,7 @@ interface IProps {
   sport: string;
 }
 
-const GameDetailsCardHeader = ({ author, textColor, sport }: IProps) => {
+const HeaderCardBlock = ({ author, textColor, sport }: IProps) => {
   const styles = getStyles(textColor);
   const team = undefined;
   return (
@@ -53,4 +53,4 @@ const getStyles = (textColor: string) => {
   return styles;
 };
 
-export default GameDetailsCardHeader;
+export default HeaderCardBlock;

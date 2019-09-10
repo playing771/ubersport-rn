@@ -1,12 +1,11 @@
 import React from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Text } from 'react-native';
 import SportIcon from '../../components/GameCard/SportIcon';
 import TimeLabel from '../EditGame/Time/Label';
 import GameLocationStatic from '../../components/GameLocationStatic';
 import mapStyle from '../../components/GameCard/mapStyle';
-import Participants from '../../components/GameCard/Participants';
+import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
 import Section from '../../components/Layout/Section';
 import { IGame } from '../../api/games/types';
 import withTouch from '../../components/hocs/WIthTouch';

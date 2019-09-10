@@ -10,17 +10,12 @@ interface IProps {
 
 const SportIcon = ({ sport, style }: IProps) => {
   return (
-    <Ionicons
-      name={getSportIcon(sport)}
-      size={35}
-      color={'#3B485A'}
-      style={[styles.main, style]}
-    />
+    <Ionicons name={getSportIcon(sport)} size={35} color={'#3B485A'} style={[styles.main, style]} />
   );
 };
 
 const styles = StyleSheet.create({
-  main: {}
+  main: {},
 });
 
 export default SportIcon;

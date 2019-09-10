@@ -2,18 +2,18 @@ import React from 'react';
 import { StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-type IProps = {
+interface IProps {
   textColor: string;
   icon: string;
   mainText: string;
   subText?: string;
   iconColor?: string;
   style?: StyleProp<ViewStyle>;
-};
+}
 
 const ICON_SIZE = 28;
 
-const SubCard = (props: IProps) => {
+const SubCardBlock = (props: IProps) => {
   const styles = _getStyles(props.textColor);
   return (
     <View style={[styles.mainContainer, props.style]}>
@@ -69,4 +69,4 @@ const _getStyles = (textColor: string) => {
   return styles;
 };
 
-export default SubCard;
+export default SubCardBlock;

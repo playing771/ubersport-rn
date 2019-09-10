@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Text, StyleProp, ViewStyle, GestureResponderEvent } from 'react-native';
 
-import GameDetailsCardHeader from './Header';
+import HeaderCardBlock from './Blocks/HeaderCardBlock';
 import GameTitle from './GameTitle';
-import Participants from './Participants';
+import ParticipantsCardBlock from './Blocks/ParticipantsCardBlock';
 import mapStyle from './mapStyle';
-import SubCard from './SubCard';
+import SubCardBlock from './Blocks/SubCardBlock';
 import Card from '../GeneralCard/index';
 import CardPart from '../GeneralCard/CardPart';
 import GameLocation from '../GameLocation/index';
@@ -41,11 +41,7 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
     <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
       <>
         <CardPart bordered={false}>
-          <GameDetailsCardHeader
-            textColor={textColor}
-            author={game.author}
-            sport={game.sport.name}
-          />
+          <HeaderCardBlock textColor={textColor} author={game.author} sport={game.sport.name} />
         </CardPart>
         <CardPart bordered={false}>
           <GameTitle
@@ -55,7 +51,7 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
           />
         </CardPart>
         <CardPart>
-          <Participants
+          <ParticipantsCardBlock
             textColor={textColor}
             max={game.maxParticipants}
             participants={game.participants}
@@ -72,15 +68,15 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
             />
           </CardPart>
         )}
-        <View style={simple ? styles.subCardContainerSimple : styles.subCardContainer}>
-          <SubCard
+        <View style={simple ? styles.SubCardBlockContainerSimple : styles.SubCardBlockContainer}>
+          <SubCardBlock
             icon="ios-pin"
             mainText={game.location.address}
             textColor={textColor}
             style={[styles.border, simple ? styles.roundedLeftBorder : undefined]}
             iconColor={'#3B485A'}
           />
-          <SubCard
+          <SubCardBlock
             icon="ios-calendar"
             mainText={getFormattedDate(game.dateStart)}
             subText={getFormattedTime(game.dateStart)}
@@ -114,10 +110,10 @@ const styles = StyleSheet.create({
   border: {},
   roundedRightBorder: { borderBottomRightRadius: 6 },
   roundedLeftBorder: { borderBottomLeftRadius: 6 },
-  subCardContainerSimple: {
+  SubCardBlockContainerSimple: {
     flexDirection: 'row',
   },
-  subCardContainer: {
+  SubCardBlockContainer: {
     flexDirection: 'column',
     height: 120,
   },
