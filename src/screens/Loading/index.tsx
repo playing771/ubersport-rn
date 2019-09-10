@@ -22,14 +22,15 @@ export default function LoadingScreen(props: IProps) {
       setUser(JSON.parse(user));
     }
 
-    props.navigation.navigate(NavigationRoot.FindGame);
+    // props.navigation.navigate(NavigationRoot.FindGame);
+    props.navigation.navigate(NavigationRoot.Participants, { gameId: '5d6c14e9cb86d50025bc77f9' });
   };
 
   if (error) {
     return (
       <View style={styles.mainContainer}>
         <StatusBar barStyle="light-content" />
-        <ErrorGqlCard style={styles.errorCard} error={error} position="CENTER" />
+        <ErrorGqlCard error={error} position="CENTER" />
       </View>
     );
   }
@@ -66,5 +67,4 @@ const styles = StyleSheet.create({
   contentContainer: { flexDirection: 'row', alignItems: 'center' },
   title: { color: 'white', fontSize: 18 },
   loader: { marginLeft: 12 },
-  errorCard: { minWidth: 200 },
 });

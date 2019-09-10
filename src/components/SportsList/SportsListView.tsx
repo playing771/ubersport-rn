@@ -1,9 +1,9 @@
 import React from 'react';
 import ISport from '../../api/sports/Sport.type';
 import ULoader from '../ULoader';
-import ToggleableItem, { SporstListItem } from './SportsListItem';
+import ToggleableItem, { SporstListItem, SporstListItemInner } from './SportsListItem';
 import { FlatList } from 'react-native-gesture-handler';
-import { StyleProp, TextStyle, StyleSheet } from 'react-native';
+import { StyleProp, TextStyle, StyleSheet, Text } from 'react-native';
 import { ISportsListProps } from '.';
 import Colors from '../../constants/Colors';
 import { ISelectionMode } from './SportsSelect';
@@ -18,7 +18,7 @@ interface IProps extends Omit<ISportsListProps, 'exclude'> {
 }
 
 export default function SportsListView({
-  sports,
+  sports = [],
   style,
   selectedSports,
   loading,
@@ -74,7 +74,7 @@ export default function SportsListView({
     return <ULoader position="LEFT" />;
   }
 
-  return (
+  return sports.length ? (
     <FlatList
       style={style}
       data={sports}
@@ -82,6 +82,8 @@ export default function SportsListView({
       keyExtractor={keyExtractor}
       renderItem={renderItem}
     />
+  ) : (
+    <SporstListItemInner textStyle={{ color: '#B7B7B7', fontSize: 16 }}>Пусто</SporstListItemInner>
   );
 }
 

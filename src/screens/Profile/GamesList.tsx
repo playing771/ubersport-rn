@@ -7,7 +7,7 @@ import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
 import useGamesListQuery from '../FindGame/gql';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import ULoader from '../../components/ULoader';
-import { PADDING_VALUE } from '../../sharedStyles';
+import { BASE_PADDING } from '../../sharedStyles';
 
 interface IProps {
   userId: string;
@@ -37,9 +37,9 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
       style={
         // добавлям падинг первому и последнему элементу в списке
         index === 0
-          ? { marginLeft: PADDING_VALUE }
+          ? { marginLeft: BASE_PADDING }
           : index === games.length - 1
-          ? { marginRight: PADDING_VALUE }
+          ? { marginRight: BASE_PADDING }
           : undefined
       }
     />

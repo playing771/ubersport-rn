@@ -18,7 +18,7 @@ interface IToggleableItemProps extends ISimpleItemProps, IWithToggleProps {
   indicatorStyle?: StyleProp<TextStyle>;
 }
 
-function SporstListItemInner(props: ISimpleItemProps) {
+export function SporstListItemInner(props: ISimpleItemProps) {
   return (
     <View style={[styles.item, props.style]}>
       <Text style={[styles.itemText, props.textStyle]}>{props.children}</Text>

@@ -4,14 +4,12 @@ import useNavigation from '../../hooks/useNavigation';
 import withHeaderLessScreen from '../../components/hocs/withHeaderlessScreen';
 import SportsSelect from '../../components/SportsList/SportsSelect';
 import useAuthCheck from '../../hooks/useAuthCheck';
+import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
+import { View } from 'react-native';
 
 interface IProps {}
 
-const GameTypeSelect = withHeaderLessScreen(ScreenContent, 'Какую игру вы хотите создать?', {
-  contentStyle: { backgroundColor: '#FAFAFA' },
-});
-
-function ScreenContent(props: IProps) {
+export default function GameTypeSelectScreen(props: IProps) {
   const { navigate } = useNavigation();
   const { authCheck } = useAuthCheck();
 
@@ -20,8 +18,22 @@ function ScreenContent(props: IProps) {
   };
 
   return (
-    authCheck('redirect') && <SportsSelect mode="SINGLE" changeSportFilterHanlde={chooseHandle} />
+    authCheck('redirect') && (
+      <View style={{ paddingTop: BASE_PADDING / 2, flex: 1, backgroundColor: '#FAFAFA' }}>
+        <SportsSelect mode="SINGLE" changeSportFilterHanlde={chooseHandle} />
+      </View>
+    )
   );
 }
 
-export default GameTypeSelect;
+GameTypeSelectScreen.navigationOptions = {
+  title: 'Выберите спорт',
+  headerTitleStyle: {
+    textAlign: 'center',
+    flex: 1,
+  },
+  headerStyle: {
+    backgroundColor: '#FAFAFA',
+    ...sharedStyles.borderLessHeader,
+  },
+};

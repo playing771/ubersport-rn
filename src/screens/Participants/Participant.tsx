@@ -13,6 +13,7 @@ import { IParticipantWithAuthorState } from './ParticipantsList';
 import withTouch from '../../components/hocs/WIthTouch';
 import withModal from '../../components/hocs/WithModal/index';
 import ModalWithControls from './ModalWithControls';
+import sharedStyles from '../../sharedStyles';
 
 type IProps = IParticipantWithAuthorState & NavigationInjectedProps;
 
@@ -24,36 +25,28 @@ interface IParticipantRowProps extends Partial<IParticipant> {
 
 // тачбл элемент списка юзеров
 const ParticipantRow = withModal(
-  withTouch(
-    ({
-      src,
-      nickname,
-      dateOfBirth,
-      lastName,
-      firstName
-    }: IParticipantRowProps) => {
-      return (
-        <View style={styles.mainContainer}>
-          <UserAvatar src={src} size={60} style={styles.avatarContainer} />
-          <View style={styles.textContainer}>
-            <Text style={styles.mainText}>
-              {nickname}, {getUserAge(dateOfBirth)}
-            </Text>
-            <Text style={styles.subText}>
-              {getFullName(lastName, firstName)}
-            </Text>
-          </View>
+  withTouch(({ src, nickname, dateOfBirth, lastName, firstName }: IParticipantRowProps) => {
+    console.log('ParticipantRow', src);
+
+    return (
+      <View style={styles.mainContainer}>
+        <UserAvatar src={src} size={60} style={styles.avatarContainer} />
+        <View style={styles.textContainer}>
+          <Text style={styles.mainText}>
+            {nickname}, {getUserAge(dateOfBirth)}
+          </Text>
+          <Text style={styles.subText}>{getFullName(lastName, firstName)}</Text>
         </View>
-      );
-    }
-  )
+      </View>
+    );
+  })
 );
 
 // контейнер-элемент списка юзеров
 class Participant extends React.Component<IProps, IState> {
   private openProfileHandle = (id: string): void => {
     this.props.navigation!.navigate(NavigationRoot.UserInfo, {
-      userId: id
+      userId: id,
     });
   };
 
@@ -61,25 +54,15 @@ class Participant extends React.Component<IProps, IState> {
     const swipeoutBtns = [
       {
         component: (
-          <RemoveParticipantBtn
-            variables={{ userId: this.props.id, gameId: this.props.gameId }}
-          />
-        )
-      }
+          <RemoveParticipantBtn variables={{ userId: this.props.id, gameId: this.props.gameId }} />
+        ),
+      },
     ];
     return swipeoutBtns;
   }
 
   public render() {
-    const src = getRandomUser();
-    const {
-      nickname,
-      dateOfBirth,
-      lastName,
-      firstName,
-      isAuthor,
-      id
-    } = this.props;
+    const { nickname, dateOfBirth, lastName, firstName, isAuthor, id, avatar } = this.props;
 
     return (
       <Card wrapperStyle={styles.card}>
@@ -94,7 +77,7 @@ class Participant extends React.Component<IProps, IState> {
             dateOfBirth={dateOfBirth}
             lastName={lastName}
             firstName={firstName}
-            src={src}
+            src={avatar}
             modal={({ toggleModal }) => (
               <ModalWithControls
                 gameId={this.props.gameId}
@@ -119,31 +102,32 @@ class Participant extends React.Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
+  card: { marginBottom: 5, ...sharedStyles.paddingHorizontal },
   border: {
     // borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderColor: '#F0F0F0'
+    borderColor: '#F0F0F0',
   },
   mainContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5
+    // paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   textContainer: {
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingLeft: 8
+    paddingLeft: 8,
   },
   avatarContainer: {
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   mainText: {
     color: '#242223',
-    fontWeight: '700'
+    fontWeight: '700',
   },
   subText: {
     color: '#B7B7B7',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   deleteBtn: {
     alignItems: 'center',
@@ -152,10 +136,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f3f3f3',
     borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0
+    borderTopLeftRadius: 0,
   },
   icon: { marginLeft: 'auto', marginRight: 5 },
-  card: { marginBottom: 5 }
 });
 
 function getUserAge(birthday?: number): string {

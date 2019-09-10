@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 
 import ULoader from '../../components/ULoader/index';
 import GeneralGameInfo from './GeneralInfo';
@@ -11,7 +11,6 @@ import IUser from '../../api/user/types';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useGameInfoQuery from './gql';
 import useAppContext from '../../hooks/useAppContext';
-import UButton from '../../components/UButton';
 
 export interface IProps {
   id: string;
@@ -35,17 +34,19 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
 
   return game ? (
     <View style={styles.mainContainer}>
-      {isParticipant && (
-        <InfoCard
-          onEditBtnPress={() => onPressEdit(game)}
-          gameId={game.id}
-          isAuthor={isAuthor(user.id, game)}
-        />
-      )}
-      <Card disabled={true} wrapperStyle={styles.card}>
-        <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
-      </Card>
-      {/* <UButton title="Присоединиться"></UButton> */}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {isParticipant && (
+          <InfoCard
+            onEditBtnPress={() => onPressEdit(game)}
+            gameId={game.id}
+            isAuthor={isAuthor(user.id, game)}
+            style={{ marginTop: 6 }}
+          />
+        )}
+        <Card disabled={true} wrapperStyle={styles.card}>
+          <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
+        </Card>
+      </ScrollView>
       {!isParticipant && <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />}
     </View>
   ) : (

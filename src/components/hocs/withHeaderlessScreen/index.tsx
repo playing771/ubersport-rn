@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Optionalize } from '../../../utils/types';
 
 import HeaderLessScreen from './HeaderlessScreen';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, Text } from 'react-native';
 
 interface IWithHeaderLessScreenProps {}
 export interface IHeaderLessScreenOptions {
@@ -24,9 +24,11 @@ const withHeaderLessScreen = <T extends object>(
     props: Optionalize<T, IWithHeaderLessScreenProps> & IProps
   ) {
     return (
-      <HeaderLessScreen title={title} {...options}>
-        <WrappedComponent {...(props as T)}>{props.children}</WrappedComponent>
-      </HeaderLessScreen>
+      // <HeaderLessScreen title={title} {...options}>
+
+      <WrappedComponent {...(props as T)}>{props.children}</WrappedComponent>
+
+      // </HeaderLessScreen>
     );
   }
   ComponentWithHeaderLessScreen.displayName = `withSubmitModal(${displayName})`;

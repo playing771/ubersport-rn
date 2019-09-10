@@ -22,7 +22,7 @@ const ParticipantsTouchable = withTouch(Participants);
 
 const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <>
       {game && (
         <Section>
           <Section.Item
@@ -72,7 +72,7 @@ const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
           />
         </Section>
       )}
-    </ScrollView>
+    </>
   );
 };
 

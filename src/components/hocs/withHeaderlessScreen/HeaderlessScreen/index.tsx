@@ -20,37 +20,22 @@ export default function HeaderLessScreen({ children, title, style, contentStyle 
   };
 
   return (
-    <SafeAreaView style={[styles.container, style]}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.container}>
-        <View style={sharedStyles.paddingHorizontal}>
-          <CloseButton onPress={closeHanlde} />
+    <>
+      {/* <StatusBar barStyle="dark-content" /> */}
+      <View style={{}}>
+        <View>{/* <CloseButton onPress={closeHanlde} /> */}</View>
+        <View>
+          <Text style={{}}>{title}</Text>
         </View>
-        <View style={sharedStyles.paddingHorizontal}>
-          <Text style={styles.header}>{title}</Text>
-        </View>
-        <View style={[styles.contentContainer, sharedStyles.paddingHorizontal, contentStyle]}>
-          {children}
-        </View>
+        <View style={[]}>{children}</View>
       </View>
-    </SafeAreaView>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    color: '#333',
-    // color: 'white',
-    fontSize: 26,
-    // fontFamily: 'Avenir',
-    fontWeight: '700',
-    paddingVertical: 20,
-    width: '80%',
-  },
-  contentContainer: {
-    paddingTop: 24,
-    backgroundColor: '#F1F1F5',
-    flex: 1,
-  },
-});
+HeaderLessScreen.navigationOptions = {
+  // tslint:disable-next-line:no-null-keyword
+  // header: null,
+};
+
+const styles = StyleSheet.create({});

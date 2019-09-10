@@ -1,12 +1,14 @@
 import React from 'react';
-import { ScrollView, FlatList, Text, StyleSheet } from 'react-native';
+import { ScrollView, FlatList, StyleSheet } from 'react-native';
 import ULoader from '../../components/ULoader/index';
-import { IParticipant, IGame } from '../../api/games/types';
-import { AppContextConsumer } from '../../utils/context/sports';
+import { IParticipant } from '../../api/games/types';
 import Participant from './Participant';
-import withParticipantsQuery from '../../api/games/getParticipantsQuery';
+import { useGetParticipantsQuery } from './gql';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import useAppContext from '../../hooks/useAppContext';
+import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
 
-export interface IParticipantsListProps {
+interface IProps {
   gameId: string;
 }
 
@@ -21,36 +23,30 @@ const ParticipantItem = ({ item }: { item: IParticipantWithAuthorState }) => (
 
 const keyExtractor = (item: IParticipantWithAuthorState) => item.id;
 
-const ParticipantsList = withParticipantsQuery(({ data: { loading, error, game }, gameId }) => {
-  if (loading || !game) {
+function ParticipantsList(props: IProps) {
+  const { data, loading, error } = useGetParticipantsQuery({ id: props.gameId });
+  const { user } = useAppContext();
+
+  if (error) {
+    return <ErrorGqlCard error={error} />;
+  }
+
+  if (loading) {
     return <ULoader />;
   }
 
-  if (error) {
-    return <Text>ERROR</Text>;
-  }
+  const { participants, author } = data.game;
+  const { gameId } = props;
+
   return (
-    game && (
-      <AppContextConsumer>
-        {ctx => (
-          <ScrollView style={styles.container}>
-            <FlatList
-              style={styles.list}
-              data={getParticipantsWithAuthorState(
-                game.participants,
-                game.author.id,
-                ctx.user.id,
-                gameId
-              )}
-              renderItem={ParticipantItem}
-              keyExtractor={keyExtractor}
-            />
-          </ScrollView>
-        )}
-      </AppContextConsumer>
-    )
+    <FlatList
+      data={getParticipantsWithAuthorState(participants, author.id, user.id, gameId)}
+      contentContainerStyle={styles.list}
+      renderItem={ParticipantItem}
+      keyExtractor={keyExtractor}
+    />
   );
-});
+}
 
 export default ParticipantsList;
 
@@ -72,6 +68,5 @@ function getParticipantsWithAuthorState(
 }
 
 const styles = StyleSheet.create({
-  container: { paddingTop: 20 },
-  list: { paddingTop: 20 },
+  list: { paddingTop: BASE_PADDING / 2 },
 });

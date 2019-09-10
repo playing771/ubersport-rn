@@ -1,68 +1,51 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
-import ParticipantsHeader from './Header';
-import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
-import { gradient } from '../../constants/generalStyles';
-import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen/index';
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import ParticipantsList from './ParticipantsList';
+import useNavigation from '../../hooks/useNavigation';
+import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
 
-type Props = {} & NavigationInjectedProps;
+interface IProps {}
 
-interface State {}
+const TITLE = 'Участники игры';
+const SUB_TITLE =
+  'Подробную информацию о каждом из участников можно увидеть, нажав на соответствующий элемент списка';
 
-class ParticipantsScreen extends React.Component<Props, State> {
-  static navigationOptions = {
-    // tslint:disable-next-line:no-null-keyword
-    header: null
-  };
+// const HeaderLessParticipantsScreen = withHeaderLessScreen(ParticipantsScreen, 'TEST');
 
-  public render() {
-    const gameId = this.props.navigation.getParam('gameId');
-    console.log('gameId', gameId);
+export default function ParticipantsScreen(props: IProps) {
+  const { getParam } = useNavigation();
+  const gameId = getParam('gameId');
 
-    return (
-      <View style={_styles.mainContainer}>
-        <ParticipantsHeader
-          style={{ paddingHorizontal: 30 }}
-          title="Участники игры"
-          subTitle="Подробную информацию о каждом из участников можно увидеть, нажав на соответствующий элемент списка"
-        />
-        <ParticipantsList gameId={gameId} />
+  return (
+    <View style={styles.mainContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.mainText}>{TITLE}</Text>
+        <Text style={styles.subText}>{SUB_TITLE}</Text>
       </View>
-
-      // <GetParticipants
-      //   query={GET_GAME_PARTICIPANTS_GQL}
-      //   variables={{ id: gameId }}
-      // >
-      //   {({ loading, error, data }) => {
-      //     console.log('part', data);
-      //     if (error) {
-      //       return <Text>{error.message}(</Text>;
-      //     }
-      //     return loading || !data ? (
-      //       <Text>Loading...</Text>
-      //     ) : (
-
-      //     );
-      //   }}
-      // </GetParticipants>
-    );
-  }
+      <ParticipantsList gameId={gameId} />
+    </View>
+  );
 }
 
-const screenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: true,
-  gradient: gradient,
-  barStyle: 'light-content'
+ParticipantsScreen.navigationOptions = {
+  headerStyle: { ...sharedStyles.borderLessHeader },
 };
 
-export default withAdaptiveScreen(ParticipantsScreen, screenOptions);
-
-const _styles = StyleSheet.create({
+const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    paddingTop: 40,
-    backgroundColor: 'white'
-  }
+    // flex: 1,
+    paddingTop: BASE_PADDING,
+    backgroundColor: 'white',
+  },
+  titleContainer: { ...sharedStyles.paddingHorizontal },
+  mainText: {
+    color: '#333',
+    fontWeight: '700',
+    fontSize: 30,
+  },
+  subText: {
+    color: '#B7B7B7',
+    fontWeight: '500',
+    paddingVertical: 12,
+  },
 });

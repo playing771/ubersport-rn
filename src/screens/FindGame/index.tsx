@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { ScrollView, StyleSheet, Animated, View, Text, StatusBar } from 'react-native';
+import { ScrollView, StyleSheet, Animated, StatusBar } from 'react-native';
 
 import { NavigationInjectedProps } from 'react-navigation';
 
-import { GameStatus, ILocation } from '../../api/games/types';
+import { GameStatus } from '../../api/games/types';
 import { gradient } from '../../constants/generalStyles';
 import { NavigationRoot } from '../../navigation/roots';
 import FiltersPanel from './FiltersPanel';
-import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import GamesList from './GamesList';
 import { IGamesListQueryFilters } from './gql';
 import useNavigation from '../../hooks/useNavigation';
-import UButton from '../../components/UButton';
-import { EvilIcons, Entypo } from '@expo/vector-icons';
-import gql from 'graphql-tag';
-import { useQuery } from 'react-apollo';
 import FindGameHeaderTitle from './FindGameHeaderTitle';
 import sharedStyles from '../../sharedStyles';
 
@@ -121,7 +116,7 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
       fontWeight: '400',
       fontSize: 22,
     },
-    headerStyle: [sharedStyles.header, { borderBottomColor: 'transparent' }],
+    headerStyle: [sharedStyles.header, sharedStyles.borderLessHeader],
     // headerTransparent: true, // TODO: fix
   };
 };
