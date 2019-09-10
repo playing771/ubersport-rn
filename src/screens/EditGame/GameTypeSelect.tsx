@@ -1,11 +1,10 @@
 import React from 'react';
+import { View } from 'react-native';
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
-import withHeaderLessScreen from '../../components/hocs/withHeaderlessScreen';
 import SportsSelect from '../../components/SportsList/SportsSelect';
 import useAuthCheck from '../../hooks/useAuthCheck';
 import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
-import { View } from 'react-native';
 
 interface IProps {}
 

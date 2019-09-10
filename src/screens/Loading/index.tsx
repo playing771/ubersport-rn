@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, ActivityIndicator, StatusBar, Text, AsyncStorage } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
@@ -11,6 +11,9 @@ import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 interface IProps extends NavigationInjectedProps {}
 
+const ANIMATION_DURATION = 2000;
+const TITLE = 'Загрузка';
+
 export default function LoadingScreen(props: IProps) {
   const { setUser } = useAppContext();
   // получаем доступные виды спорта и храняим их в аполо кэш
@@ -22,8 +25,8 @@ export default function LoadingScreen(props: IProps) {
       setUser(JSON.parse(user));
     }
 
-    // props.navigation.navigate(NavigationRoot.FindGame);
-    props.navigation.navigate(NavigationRoot.Participants, { gameId: '5d6c14e9cb86d50025bc77f9' });
+    props.navigation.navigate(NavigationRoot.FindGame);
+    // props.navigation.navigate(NavigationRoot.Participants, { gameId: '5d6c14e9cb86d50025bc77f9' });
   };
 
   if (error) {
@@ -48,9 +51,9 @@ export default function LoadingScreen(props: IProps) {
         easing="ease-out"
         iterationCount="infinite"
         useNativeDriver={true}
-        duration={2000}
+        duration={ANIMATION_DURATION}
       >
-        <Text style={styles.title}>Загрузка</Text>
+        <Text style={styles.title}>{TITLE}</Text>
         <ActivityIndicator size="small" color="white" style={styles.loader} />
       </AnimatedView>
     </View>

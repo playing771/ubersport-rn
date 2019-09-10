@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import withTouch from '../../components/hocs/WIthTouch';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
-
-import { LEAVE_GAME_GQL, LeaveGameMutationVariables } from '../../api/games/leaveGameMutation';
-import SubmitButton from '../../components/Buttons/SubmitButton';
+import { ILeaveGameVariables, useLeaveGameMutation } from '../GameInfo/gql';
+import ULoader from '../../components/ULoader';
+import Colors from '../../constants/Colors';
+import { BASE_PADDING } from '../../sharedStyles';
+import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 interface IProps {
   gameId: string;
@@ -14,6 +16,8 @@ interface IProps {
   isAuthor: boolean;
 }
 
+const TITLE = 'Выберите действие';
+
 const SelectionItem = withTouch(
   ({ title, deleteBtn = false }: { title: string; deleteBtn?: boolean }) => {
     return <Text style={[styles.itemText, deleteBtn ? styles.deleteBtn : undefined]}>{title}</Text>;
@@ -22,23 +26,28 @@ const SelectionItem = withTouch(
 
 const SelectionItemWithSubmit = withSubmitModal(SelectionItem);
 
-const ModalWithControls = ({
+export default function ModalWithControls({
   participantId,
   openProfileHandle,
   kickParticipantHandle,
   isAuthor,
   gameId,
-}: IProps) => {
-  const variables: LeaveGameMutationVariables = {
+}: IProps) {
+  const variables: ILeaveGameVariables = {
     userId: participantId,
     gameId,
   };
 
-  console.log('variables', variables);
+  const [leaveGame, { loading, error }] = useLeaveGameMutation();
+
+  const kickBtnPressHandle = () => {
+    kickParticipantHandle();
+    leaveGame({ variables });
+  };
 
   return (
     <View style={styles.modal}>
-      <Text style={styles.header}>Выберите действие</Text>
+      <Text style={styles.header}>{TITLE}</Text>
       <SelectionItem
         itemId={participantId}
         title="Открыть профиль"
@@ -46,27 +55,21 @@ const ModalWithControls = ({
         onPress={openProfileHandle}
       />
       {isAuthor && (
-        <SubmitButton
-          gql={LEAVE_GAME_GQL}
-          variables={variables}
-          title="Исключить участника"
-          // onUpdate={onUpdate}s
-          renderBtn={mutate => (
-            <SelectionItemWithSubmit
-              title="Исключить участника"
-              onSubmit={() => {
-                kickParticipantHandle();
-                mutate({ variables });
-              }}
-              wrapperStyle={styles.item}
-              submitText="Исключить участника"
-            />
-          )}
-        />
+        <View style={styles.itemWithModalWrapper}>
+          <SelectionItemWithSubmit
+            title="Исключить участника"
+            onSubmit={kickBtnPressHandle}
+            wrapperStyle={styles.item}
+            submitText="Исключить участника"
+            deleteBtn={true}
+          />
+          {loading && <ULoader color={Colors.warningText} style={styles.loader} />}
+        </View>
       )}
+      <ErrorGqlCard error={error} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   modal: {
@@ -94,9 +97,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
   },
+  itemWithModalWrapper: { flexDirection: 'row' },
   deleteBtn: {
-    color: '#e57373',
+    color: Colors.warningText,
   },
+  loader: { marginLeft: BASE_PADDING },
 });
-
-export default ModalWithControls;

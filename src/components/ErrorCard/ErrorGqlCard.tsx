@@ -4,9 +4,9 @@ import { ApolloError } from 'apollo-client';
 import handleApoloError from '../../utils/handleApoloError';
 
 interface IProps extends Omit<IErrorCardProps, 'error'> {
-  error: ApolloError;
+  error?: ApolloError;
 }
 
 export default function ErrorGqlCard({ error, ...errorCardProps }: IProps) {
-  return <ErrorCard error={handleApoloError(error)} {...errorCardProps} />;
+  return error ? <ErrorCard error={handleApoloError(error)} {...errorCardProps} /> : null;
 }

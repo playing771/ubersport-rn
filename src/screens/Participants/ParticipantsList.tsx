@@ -1,12 +1,12 @@
 import React from 'react';
-import { ScrollView, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import ULoader from '../../components/ULoader/index';
 import { IParticipant } from '../../api/games/types';
 import Participant from './Participant';
 import { useGetParticipantsQuery } from './gql';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import useAppContext from '../../hooks/useAppContext';
-import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
+import { BASE_PADDING } from '../../sharedStyles';
 
 interface IProps {
   gameId: string;

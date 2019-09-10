@@ -12,7 +12,7 @@ const Colors = {
   errorBackground: 'red',
   errorText: '#fff',
   warningBackground: '#EAEB5E',
-  warningText: '#666804',
+  warningText: '#e57373',
   noticeBackground: tintColor,
   noticeText: '#fff',
   active: '#00BBBB',

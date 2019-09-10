@@ -10,8 +10,6 @@ const TITLE = 'Участники игры';
 const SUB_TITLE =
   'Подробную информацию о каждом из участников можно увидеть, нажав на соответствующий элемент списка';
 
-// const HeaderLessParticipantsScreen = withHeaderLessScreen(ParticipantsScreen, 'TEST');
-
 export default function ParticipantsScreen(props: IProps) {
   const { getParam } = useNavigation();
   const gameId = getParam('gameId');
