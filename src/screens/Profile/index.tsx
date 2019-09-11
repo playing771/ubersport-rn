@@ -8,6 +8,7 @@ import { GameStatus } from '../../api/games/types';
 
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
+import { BASE_PADDING } from '../../sharedStyles';
 
 interface IProps {
   userId: string;
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   subContainer: {
     backgroundColor: '#E9E9EF',
     flex: 1,
-    paddingBottom: 15,
+    paddingBottom: BASE_PADDING,
   },
 });
 

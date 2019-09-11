@@ -52,9 +52,9 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
         {games.length ? (
           <FlatList
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={
-              isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined
-            }
+            // contentContainerStyle={
+            //   isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined
+            // }
             data={games}
             horizontal={true}
             keyExtractor={(item, index) => index.toString()}
