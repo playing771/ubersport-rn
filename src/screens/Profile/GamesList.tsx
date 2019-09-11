@@ -2,8 +2,6 @@ import React from 'react';
 import { Text, FlatList, View, StyleSheet } from 'react-native';
 import GameItem from './GameItem';
 import { GameStatus } from '../../api/games/types';
-import { isIphoneX } from 'react-native-iphone-x-helper';
-import { BOTTOM_BIG_NOTCH } from '../../components/AdaptiveScreen/index';
 import useGamesListQuery from '../FindGame/gql';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 import ULoader from '../../components/ULoader';
@@ -18,7 +16,10 @@ interface IProps {
 }
 
 const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IProps) => {
-  const { data, error, loading } = useGamesListQuery({ participantsIds: [userId], status });
+  const { data, error, loading } = useGamesListQuery({
+    filters: { participantsIds: [userId], status },
+    sort: 'date',
+  });
 
   if (error) {
     return <ErrorGqlCard error={error} />;
