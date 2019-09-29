@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
-import UButton from '../../../components/UButton';
+import UButton from '../../../components/buttons/UButton';
 import { EvilIcons } from '@expo/vector-icons';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';

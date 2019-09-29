@@ -9,15 +9,11 @@ interface IProps {
 }
 
 const TextButton = withTouch(({ children, type = 'simple', style }: IProps) => {
-  return (
-    <Text style={[style, type === 'danger' ? styles.danger : undefined]}>
-      {children}
-    </Text>
-  );
+  return <Text style={[style, type === 'danger' ? styles.danger : undefined]}>{children}</Text>;
 });
 
 const styles = StyleSheet.create({
-  danger: { color: '#F84472' }
+  danger: { color: '#F84472' },
 });
 
 export default TextButton;

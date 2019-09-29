@@ -6,7 +6,7 @@ import { NavigationRoot } from '../../navigation/roots';
 
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import handleApoloError from '../../utils/handleApoloError';
-import SubmitButton from '../../components/Buttons/SubmitButton';
+import SubmitButton from '../../components/buttons/SubmitButton';
 
 interface Props {
   variables: CreateGameMutationVariables | EditGameMutationVariables;

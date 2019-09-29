@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import ULoader from '../../../../components/ULoader/index';
 import UTextInput from '../../../../components/UTextInput/index';
 
-import { USwitch as EditSex } from '../../../../components/Buttons/Switch';
+import { USwitch as EditSex } from '../../../../components/buttons/Switch';
 import AvatarSelect from '../../AvatarSelect';
 
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';

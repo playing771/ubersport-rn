@@ -9,7 +9,7 @@ import assembleLatLng from '../../utils/assembleLatLng';
 import AddressBar from './AddressBar';
 import { LatLng } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import UButton from '../UButton';
+import UButton from '../buttons/UButton';
 import Colors from '../../constants/Colors';
 
 interface ILocationData {

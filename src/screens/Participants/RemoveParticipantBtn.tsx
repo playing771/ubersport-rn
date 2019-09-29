@@ -1,5 +1,5 @@
 import React from 'react';
-import UButton from '../../components/UButton';
+import UButton from '../../components/buttons/UButton';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
 import { StyleSheet } from 'react-native';
 import { useLeaveGameMutation, ILeaveGameVariables } from '../GameInfo/gql';

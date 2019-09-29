@@ -6,7 +6,7 @@ import useAppContext from '../../hooks/useAppContext';
 import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
-import UButton from '../../components/UButton';
+import UButton from '../../components/buttons/UButton';
 import Colors from '../../constants/Colors';
 
 export default function HeaderRightButton() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import UButton from '../UButton/index';
+import UButton from './UButton/index';
 import shadeBlend from '../../utils/shadeBlend';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 

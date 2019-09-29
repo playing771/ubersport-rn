@@ -2,7 +2,7 @@ import React from 'react';
 import UModal from '../../../components/UModal/index';
 import { StyleSheet } from 'react-native';
 import ProfileAvatar from './ProfileAvatar';
-import TextButton from '../../../components/Buttons/TextButton';
+import TextButton from '../../../components/buttons/TextButton';
 
 interface IProps {
   avatar?: string;
@@ -19,15 +19,11 @@ export default function AvatarSelectModal({
   avatar,
   useGaleryHandle,
   useCameraHandle,
-  deleteImageHandle
+  deleteImageHandle,
 }: IProps) {
   return (
     <UModal style={styles.wrapper}>
-      <ProfileAvatar
-        avatarSrc={avatar}
-        style={styles.avatar}
-        size={AVATAR_SIZE}
-      />
+      <ProfileAvatar avatarSrc={avatar} style={styles.avatar} size={AVATAR_SIZE} />
       <>
         <TextButton onPress={useGaleryHandle} style={styles.text}>
           Загрузить из галереи
@@ -36,11 +32,7 @@ export default function AvatarSelectModal({
           Сделать снимок
         </TextButton>
         {avatar ? (
-          <TextButton
-            type="danger"
-            style={styles.text}
-            onPress={deleteImageHandle}
-          >
+          <TextButton type="danger" style={styles.text} onPress={deleteImageHandle}>
             Удалить изображение
           </TextButton>
         ) : null}
@@ -57,10 +49,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: '#667286',
     fontWeight: '700',
-    fontSize: 14
+    fontSize: 14,
   },
   avatar: { alignSelf: 'center', position: 'absolute', top: -60 },
-  deleteBtn: { color: '#F84472' }
+  deleteBtn: { color: '#F84472' },
   // itemText: {
   //   color: '#6F6F6F',
   //   fontWeight: '700',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import UButton from '../../components/UButton/index';
+import UButton from '../../components/buttons/UButton/index';
 
 interface IProps {}
 

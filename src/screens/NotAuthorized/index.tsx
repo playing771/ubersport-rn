@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, View, Text } from 'react-native';
 
-import UButton from '../../components/UButton';
+import UButton from '../../components/buttons/UButton';
 import Colors from '../../constants/Colors';
 import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';

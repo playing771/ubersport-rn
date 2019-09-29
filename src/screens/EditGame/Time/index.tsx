@@ -4,46 +4,56 @@ import Moment from 'moment';
 import moment from 'moment';
 import 'moment/locale/ru';
 import { extendMoment } from 'moment-range';
-import UButton from '../../../components/UButton';
+import UButton from '../../../components/buttons/UButton';
 import EditDateItem from './Item';
 import withExpand from '../../../components/hocs/WIthExpand';
-import DateInput from './Singlenput';
+import GameDateInput from './GameDateInput';
 import { IPickerValue } from '../../../components/Picker/types';
 import { ExpandDirection } from '../../../components/Expandable';
 import TimeInput from './TimeInput';
 import { IRestrictions } from '../People';
+import CalendarPicker from './CalendarPicker';
+import { isIOS } from '../../../utils/deviceInfo';
 
 const HOURS_COUNT = 24;
 const MINUTES_COUNT = 60;
 const MINUTES_STEP = 15;
 const ITEMS_LENGTH = 360;
-const ExpandableDateInput = withExpand(DateInput);
+const ExpandableDateInput = withExpand(GameDateInput);
+const ExpandableCalendar = withExpand(CalendarPicker);
 const ExpandableTimeInput = withExpand(TimeInput);
 const EXPAND_SETTINGS = {
   direction: ExpandDirection.Vertical,
   maxHeight: 120,
   minHeight: 15,
   openDuration: 200,
-  closeDuration: 150
+  closeDuration: 150,
+};
+
+const defaultProps = {
+  dateStart: 0,
 };
 
 export interface IProps {
   onSave: (dateStart: number, dateEnd: number) => void;
   dateStartRestrictions: IRestrictions;
   dateEndRestrictions: IRestrictions;
+  dateStart?: number;
 }
 
 export interface IState {
-  dateStart: number;
+  // dateStart: number;
   timeStart: number[];
   timeEnd: number[];
 }
 
-export default class EditTime extends React.PureComponent<IProps, IState> {
-  state = {
-    dateStart: 0,
+export default class EditTimeModal extends React.PureComponent<IProps, IState> {
+  static defaultProps = defaultProps;
+
+  state: IState = {
+    // dateStart: 0,
     timeStart: [12, 0],
-    timeEnd: [14, 0]
+    timeEnd: [14, 0],
   };
 
   dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
@@ -51,16 +61,16 @@ export default class EditTime extends React.PureComponent<IProps, IState> {
   minutes: IPickerValue[] = getNumbers(MINUTES_COUNT, MINUTES_STEP);
 
   onDateChange = (value: number | string) => {
-    this.setState({ dateStart: Number(value) });
-  }
+    // this.setState({ dateStart: Number(value) });
+  };
 
-  onTimeStartChange = (value: Array<number>) => {
+  onTimeStartChange = (value: number[]) => {
     this.setState({ timeStart: value });
-  }
+  };
 
-  onTimeEndChange = (value: Array<number>) => {
+  onTimeEndChange = (value: number[]) => {
     this.setState({ timeEnd: value });
-  }
+  };
 
   private convertToDateNumber(pickerValue: number, pickerValues: number[]) {
     const _date = moment()
@@ -79,30 +89,38 @@ export default class EditTime extends React.PureComponent<IProps, IState> {
   }
 
   onSave = () => {
-    const { dateStart, timeStart, timeEnd } = this.state;
+    const { timeStart, timeEnd } = this.state;
+    const { dateStart } = this.props;
     console.log(dateStart, timeStart, timeEnd);
 
     this.props.onSave(
       this.convertToDateNumber(dateStart, timeStart),
       this.convertToDateNumber(dateStart, timeEnd)
     );
-  }
+  };
 
   public render() {
+    const { dateStart } = this.props;
+    console.log('this.state.dateStart', dateStart);
+    console.log('this.props.dateStart', this.props.dateStart);
     return (
       <View style={styles.container}>
         <EditDateItem
-          label={getLabel(this.dates, this.state.dateStart)}
+          label={getLabel(this.dates, dateStart)}
           icon="ios-calendar"
-          renderInput={({ expanded }) => (
-            <ExpandableDateInput
-              list={this.dates}
-              onChange={this.onDateChange}
-              value={this.state.dateStart}
-              expanded={expanded}
-              {...EXPAND_SETTINGS}
-            />
-          )}
+          renderInput={({ expanded }) =>
+            isIOS ? (
+              <ExpandableDateInput
+                list={this.dates}
+                onChange={this.onDateChange}
+                value={dateStart}
+                expanded={expanded}
+                {...EXPAND_SETTINGS}
+              />
+            ) : (
+              <ExpandableCalendar expanded={expanded} {...EXPAND_SETTINGS} />
+            )
+          }
         />
         <EditDateItem
           label={
@@ -147,10 +165,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingTop: 28,
     borderRadius: 4,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   saveBtn: { width: '100%', height: 50 },
-  saveBtnText: { fontWeight: '600', fontSize: 16 }
+  saveBtnText: { fontWeight: '600', fontSize: 16 },
 });
 
 function getRangeOfDates(days: number) {
@@ -165,8 +183,7 @@ function getRangeOfDates(days: number) {
       .by('day')
   ).map((date: any, index: number) => {
     const _date =
-      date.format('dddd, MMM D')[0].toUpperCase() +
-      date.format('dddd, MMM D').substr(1);
+      date.format('dddd, MMM D')[0].toUpperCase() + date.format('dddd, MMM D').substr(1);
 
     const day = { label: _date, value: index };
     if (index === 0) {
@@ -184,7 +201,7 @@ function getNumbers(count: number, step: number = 1) {
   for (let index = 0; index * step < count; index++) {
     const pickerValue: IPickerValue = {
       label: String(index * step),
-      value: index
+      value: index,
     };
     if (index * step < 10) {
       pickerValue.label = '0' + pickerValue.label;

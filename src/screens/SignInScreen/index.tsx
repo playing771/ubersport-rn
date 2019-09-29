@@ -31,7 +31,7 @@ import { IExistEmail } from '../../api/user/emailValidate';
 import UserInfoPassed from './userInfo/passed';
 import parseGqlError from '../../utils/parseGqlError';
 import { ICreateUserMutationVariables, CREATE_USER_GQL } from '../../api/user/createUser';
-import UButton from '../../components/UButton';
+import UButton from '../../components/buttons/UButton';
 
 interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
 

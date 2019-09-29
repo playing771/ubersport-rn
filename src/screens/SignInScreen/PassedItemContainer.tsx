@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import UButton from '../../components/UButton';
+import UButton from '../../components/buttons/UButton';
 
 interface IProps {
   index?: number;

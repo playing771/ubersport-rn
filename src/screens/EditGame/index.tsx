@@ -5,7 +5,7 @@ import Section from '../../components/Layout/Section';
 import withAdaptiveScreen, {
   IAdaptiveScreenOptions,
 } from '../../components/hocs/WithAdaptiveScreen';
-import EditTime from './Time';
+import EditTimeModal from './Time';
 import withModal from '../../components/hocs/WithModal';
 import { NavigationRoot } from '../../navigation/roots';
 import { ILocation, IAgeLimit } from '../../api/games/types';
@@ -16,7 +16,7 @@ import EditPeopleCount, { IRestrictions } from './People';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { AppContext } from '../../utils/context/sports';
-import ISport from '../../api/sports/Sport.type';
+
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import EditGameBtn from './EditGameBtn';
 import NewGameBtn from './NewGameBtn';
@@ -198,12 +198,13 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
                     : DEFAULT_TIME_LABLE
                 }
                 modal={({ toggleModal }) => (
-                  <EditTime
+                  <EditTimeModal
                     onSave={(dStart: number, dEnd: number) =>
                       this.saveTime(dStart, dEnd, toggleModal)
                     }
                     dateStartRestrictions={this.getDateStartRestrictions()}
                     dateEndRestrictions={this.getDateEndRestrictions()}
+                    dateStart={this.state.dateStart}
                   />
                 )}
               />

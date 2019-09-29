@@ -8,7 +8,7 @@ import { GET_USER_ACTIVE_GAMES_GQL } from '../../api/games/getUserActiveGames';
 import { ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import { BOTTOM_BIG_NOTCH, BOTTOM_SM_NOTCH } from '../../components/AdaptiveScreen/index';
 import { isIphoneX } from 'react-native-iphone-x-helper';
-import SubmitButton from '../../components/Buttons/SubmitButton';
+import SubmitButton from '../../components/buttons/SubmitButton';
 import useAuthCheck from '../../hooks/useAuthCheck';
 import { NavigationRoot } from '../../navigation/roots';
 

@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import { StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { ApolloError, OperationVariables } from 'apollo-client';
 
-import UButton from '../UButton';
+import UButton from './UButton';
 import Colors from '../../constants/Colors';
 // import {
 //   TAB_DEFAULT_HEIGHT,

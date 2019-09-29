@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 import UPickerGroup from '../../../components/Picker';
 import PickerPart from '../../../components/Picker/PickerPart';
@@ -15,27 +15,23 @@ interface IStyleProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-interface IState {}
+export default function GameDateInput({ list, onChange, value }: IProps) {
+  const [current, setCurrent] = useState(0);
 
-class SingleInput extends React.PureComponent<IProps, IState> {
-  public render() {
-    return (
-      <UPickerGroup>
-        <PickerPart
-          items={this.props.list}
-          onChange={this.props.onChange}
-          selected={this.props.value}
-          style={styles.pickerPart}
-          itemStyle={styles.pickerPartItem}
-        />
-      </UPickerGroup>
-    );
-  }
+  return (
+    <UPickerGroup>
+      <PickerPart
+        items={list}
+        onChange={onChange}
+        selected={value}
+        style={styles.pickerPart}
+        itemStyle={styles.pickerPartItem}
+      />
+    </UPickerGroup>
+  );
 }
 
 const styles = StyleSheet.create({
   pickerPartItem: { color: '#8890A7', fontSize: 16 },
-  pickerPart: { flex: 1, marginTop: 15 }
+  pickerPart: { flex: 1, marginTop: 15 },
 });
-
-export default SingleInput;

@@ -4,7 +4,7 @@ import { View as AnimatedView } from 'react-native-animatable';
 import SignInScreenTitle from '../Title';
 import PassedItemContainer from '../PassedItemContainer';
 import SignInFormInput from '../Input';
-import UButton from '../../../components/UButton/index';
+import UButton from '../../../components/buttons/UButton/index';
 import Colors from '../../../constants/Colors';
 import useForm from '../../../components/hooks/UseForm/index';
 

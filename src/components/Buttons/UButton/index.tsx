@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   View,
   TouchableHighlight,
@@ -12,7 +12,7 @@ import {
   Text,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import shadeBlend from '../../utils/shadeBlend';
+import shadeBlend from '../../../utils/shadeBlend';
 
 interface IButtonProps extends TouchableHighlightProps, IStyleProps {
   title?: string;

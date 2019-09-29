@@ -1,6 +1,7 @@
 import React from 'react';
 import { Picker, StyleProp, ViewStyle, StyleSheet, TextStyle } from 'react-native';
 import { IPickerValue } from './types';
+import { isIOS } from '../../utils/deviceInfo';
 
 interface IProps {
   onChange: (value: string | number) => void;
@@ -17,7 +18,7 @@ function UPickerPart(props: IProps) {
     <Picker
       selectedValue={selected}
       style={style}
-      itemStyle={[styles.itemStyle, itemStyle]}
+      itemStyle={[isIOS && styles.itemIosStyle, itemStyle]}
       onValueChange={onChange}
     >
       {items.map((item, index) => (
@@ -28,7 +29,7 @@ function UPickerPart(props: IProps) {
 }
 
 const styles = StyleSheet.create({
-  itemStyle: {
+  itemIosStyle: {
     margin: 0,
     // paddingHorizontal: 22,
     height: 100,

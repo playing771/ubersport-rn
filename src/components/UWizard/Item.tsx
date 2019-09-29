@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactElement } from 'react';
 import { View, StyleSheet, GestureResponderEvent } from 'react-native';
-import UButton from '../UButton';
+import UButton from '../buttons/UButton';
 import Colors from '../../constants/Colors';
 import { ApolloConsumer } from 'react-apollo';
 

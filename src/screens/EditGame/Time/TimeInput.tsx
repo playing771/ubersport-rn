@@ -1,12 +1,5 @@
-import * as React from 'react';
-import {
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  Text,
-  View,
-  StyleSheet
-} from 'react-native';
+import React from 'react';
+import { StyleProp, ViewStyle, TextStyle, Text, View, StyleSheet } from 'react-native';
 import UPickerGroup from '../../../components/Picker';
 import PickerPart from '../../../components/Picker/PickerPart';
 import { IPickerValue } from '../../../components/Picker/types';
@@ -27,78 +20,73 @@ interface IStyleProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-interface IState {}
-
-class TimeInput extends React.PureComponent<IProps, IState> {
-  onStartHoursChange = (value: number | string) => {
-    const start = [...this.props.startValue];
+function TimeInput(props: IProps) {
+  const onStartHoursChange = (value: number | string) => {
+    const start = [...props.startValue];
     start[0] = Number(value);
-    console.log('ON HOURS CHANGE');
 
-    this.props.onStartChange(start);
-  }
+    props.onStartChange(start);
+  };
 
-  onStartMinutesChange = (value: number | string) => {
-    const start = [...this.props.startValue];
+  const onStartMinutesChange = (value: number | string) => {
+    const start = [...props.startValue];
     start[1] = Number(value);
-    this.props.onStartChange(start);
-  }
+    props.onStartChange(start);
+  };
 
-  onEndHoursChange = (value: number | string) => {
-    const end = [...this.props.endValue];
+  const onEndHoursChange = (value: number | string) => {
+    const end = [...props.endValue];
     end[0] = Number(value);
-    this.props.onEndChange(end);
-  }
+    props.onEndChange(end);
+  };
 
-  onEndMinutesChange = (value: number | string) => {
-    const end = [...this.props.endValue];
+  const onEndMinutesChange = (value: number | string) => {
+    const end = [...props.endValue];
     end[1] = Number(value);
-    this.props.onEndChange(end);
-  }
+    props.onEndChange(end);
+  };
 
-  public render() {
-    return (
-      <View style={styles.wrapper}>
-        <View style={[styles.fake, styles.fakeSide]} />
-        <UPickerGroup>
-          <PickerPart
-            items={this.props.hours}
-            onChange={this.onStartHoursChange}
-            selected={this.props.startValue[0]}
-            style={styles.pickerPart}
-            itemStyle={styles.pickerPartItem}
-          />
-          <PickerPart
-            items={this.props.minutes}
-            onChange={this.onStartMinutesChange}
-            selected={this.props.startValue[1]}
-            style={styles.pickerPart}
-            itemStyle={styles.pickerPartItem}
-          />
-        </UPickerGroup>
-        <View style={[styles.fakeMid, styles.fake]}>
-          <Text style={styles.fakeSymb}>-</Text>
-        </View>
-        <UPickerGroup>
-          <PickerPart
-            items={this.props.hours}
-            onChange={this.onEndHoursChange}
-            selected={this.props.endValue[0]}
-            style={styles.pickerPart}
-            itemStyle={styles.pickerPartItem}
-          />
-          <PickerPart
-            items={this.props.minutes}
-            onChange={this.onEndMinutesChange}
-            selected={this.props.endValue[1]}
-            style={styles.pickerPart}
-            itemStyle={styles.pickerPartItem}
-          />
-        </UPickerGroup>
-        <View style={[styles.fake, styles.fakeSide]} />
+  return (
+    <View style={styles.wrapper}>
+      <View style={[styles.fake, styles.fakeSide]} />
+      <UPickerGroup>
+        <PickerPart
+          items={props.hours}
+          onChange={onStartHoursChange}
+          selected={props.startValue[0]}
+          style={styles.pickerPart}
+          itemStyle={styles.pickerPartItem}
+        />
+        <PickerPart
+          items={props.minutes}
+          onChange={onStartMinutesChange}
+          selected={props.startValue[1]}
+          style={styles.pickerPart}
+          itemStyle={styles.pickerPartItem}
+        />
+      </UPickerGroup>
+      <View style={[styles.fakeMid, styles.fake]}>
+        <Text style={styles.fakeSymb}>-</Text>
       </View>
-    );
-  }
+      <UPickerGroup>
+        <PickerPart
+          items={props.hours}
+          onChange={onEndHoursChange}
+          selected={props.endValue[0]}
+          style={styles.pickerPart}
+          itemStyle={styles.pickerPartItem}
+        />
+        <PickerPart
+          items={props.minutes}
+          onChange={onEndMinutesChange}
+          selected={props.endValue[1]}
+          style={styles.pickerPart}
+          itemStyle={styles.pickerPartItem}
+        />
+      </UPickerGroup>
+      <View style={[styles.fake, styles.fakeSide]} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -107,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    marginTop: 15
+    marginTop: 15,
   },
   fake: {
     borderTopWidth: 0.5,
@@ -115,13 +103,13 @@ const styles = StyleSheet.create({
     borderColor: '#CDCDCD',
     height: 38.5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   fakeSymb: { color: '#8890A7', fontSize: 16 },
   fakeSide: { flex: 1 },
   fakeMid: { width: 30 },
   pickerPart: { width: 35 },
-  pickerPartItem: { color: '#8890A7', fontSize: 16 }
+  pickerPartItem: { color: '#8890A7', fontSize: 16 },
 });
 
 export default TimeInput;

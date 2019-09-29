@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import { EvilIcons, Entypo, FontAwesome } from '@expo/vector-icons';
-import TextButton from '../../components/Buttons/TextButton';
+import TextButton from '../../components/buttons/TextButton';
 import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
 
 interface IProps {
