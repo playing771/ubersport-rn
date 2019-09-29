@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar } from 'react-native-calendars';
-import Colors from '../../../constants/Colors';
+import Colors from '../../constants/Colors';
 
 interface IProps {}
 

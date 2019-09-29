@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
-import UButton from '../UButton/index';
+import UButton from './UButton/index';
 
 export interface ISwitchOption {
   label: string;

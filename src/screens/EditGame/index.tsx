@@ -163,7 +163,7 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
   }
 
   private getDateEndRestrictions() {
-    const dateStart = this.state.dateStart || 0;
+    const dateStart = this.state.dateStart;
     const restrictions: IRestrictions = {
       min: dateStart,
       max: MAX_PEOPLE_COUNT,

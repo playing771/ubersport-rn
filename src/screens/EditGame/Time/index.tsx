@@ -1,25 +1,28 @@
-import * as React from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Moment from 'moment';
+// import Moment from 'moment';
+// import { extendMoment } from 'moment-range';
 import moment from 'moment';
 import 'moment/locale/ru';
-import { extendMoment } from 'moment-range';
+
 import UButton from '../../../components/buttons/UButton';
 import EditDateItem from './Item';
 import withExpand from '../../../components/hocs/WIthExpand';
-import GameDateInput from './GameDateInput';
-import { IPickerValue } from '../../../components/Picker/types';
+import { IPickerValue } from '../../../components/pickers/Picker/types';
 import { ExpandDirection } from '../../../components/Expandable';
 import TimeInput from './TimeInput';
 import { IRestrictions } from '../People';
-import CalendarPicker from './CalendarPicker';
+import CalendarPicker from '../../../components/pickers/CalendarPicker';
 import { isIOS } from '../../../utils/deviceInfo';
+import DatePicker from '../../../components/pickers/DatePicker';
+import getRangeOfDates from '../../../utils/getRangeOfDates';
 
 const HOURS_COUNT = 24;
 const MINUTES_COUNT = 60;
 const MINUTES_STEP = 15;
 const ITEMS_LENGTH = 360;
-const ExpandableDateInput = withExpand(GameDateInput);
+// const ExpandableDateInput = withExpand(SinglePicker);
+const ExpandableDatePicker = withExpand(DatePicker);
 const ExpandableCalendar = withExpand(CalendarPicker);
 const ExpandableTimeInput = withExpand(TimeInput);
 const EXPAND_SETTINGS = {
@@ -42,7 +45,7 @@ export interface IProps {
 }
 
 export interface IState {
-  // dateStart: number;
+  dayPosition: number; // picker position from today date
   timeStart: number[];
   timeEnd: number[];
 }
@@ -51,7 +54,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   static defaultProps = defaultProps;
 
   state: IState = {
-    // dateStart: 0,
+    dayPosition: this.props.dateStart ? convertDateToPickerNumber(this.props.dateStart) : 0,
     timeStart: [12, 0],
     timeEnd: [14, 0],
   };
@@ -60,19 +63,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   hours: IPickerValue[] = getNumbers(HOURS_COUNT);
   minutes: IPickerValue[] = getNumbers(MINUTES_COUNT, MINUTES_STEP);
 
-  onDateChange = (value: number | string) => {
-    // this.setState({ dateStart: Number(value) });
-  };
-
-  onTimeStartChange = (value: number[]) => {
-    this.setState({ timeStart: value });
-  };
-
-  onTimeEndChange = (value: number[]) => {
-    this.setState({ timeEnd: value });
-  };
-
-  private convertToDateNumber(pickerValue: number, pickerValues: number[]) {
+  private convertNumberToDate(pickerValue: number, pickerValues: number[]) {
     const _date = moment()
       .add(pickerValue, 'days')
       .toDate();
@@ -88,32 +79,44 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
     return tmp.getTime();
   }
 
+  onDateChange = (value: number | string) => {
+    console.log('onDateChange', value);
+    this.setState({ dayPosition: Number(value) });
+  };
+
+  onTimeStartChange = (value: number[]) => {
+    this.setState({ timeStart: value });
+  };
+
+  onTimeEndChange = (value: number[]) => {
+    this.setState({ timeEnd: value });
+  };
+
   onSave = () => {
-    const { timeStart, timeEnd } = this.state;
-    const { dateStart } = this.props;
-    console.log(dateStart, timeStart, timeEnd);
+    const { dayPosition, timeStart, timeEnd } = this.state;
+
+    console.log('onSave', dayPosition, timeStart, timeEnd);
 
     this.props.onSave(
-      this.convertToDateNumber(dateStart, timeStart),
-      this.convertToDateNumber(dateStart, timeEnd)
+      this.convertNumberToDate(dayPosition, timeStart),
+      this.convertNumberToDate(dayPosition, timeEnd)
     );
   };
 
   public render() {
-    const { dateStart } = this.props;
-    console.log('this.state.dateStart', dateStart);
-    console.log('this.props.dateStart', this.props.dateStart);
+    const { dayPosition } = this.state;
+    console.log('this.state.dayPosition', dayPosition);
     return (
       <View style={styles.container}>
         <EditDateItem
-          label={getLabel(this.dates, dateStart)}
+          label={getLabel(this.dates, dayPosition)}
           icon="ios-calendar"
           renderInput={({ expanded }) =>
             isIOS ? (
-              <ExpandableDateInput
-                list={this.dates}
+              <ExpandableDatePicker
+                // list={this.dates}
                 onChange={this.onDateChange}
-                value={dateStart}
+                value={dayPosition}
                 expanded={expanded}
                 {...EXPAND_SETTINGS}
               />
@@ -171,31 +174,6 @@ const styles = StyleSheet.create({
   saveBtnText: { fontWeight: '600', fontSize: 16 },
 });
 
-function getRangeOfDates(days: number) {
-  const _moment = extendMoment(Moment as any);
-  _moment.locale('ru');
-  const start = _moment().startOf('day');
-  const end = _moment().add(days, 'day');
-
-  return Array.from(
-    _moment()
-      .range(start, end)
-      .by('day')
-  ).map((date: any, index: number) => {
-    const _date =
-      date.format('dddd, MMM D')[0].toUpperCase() + date.format('dddd, MMM D').substr(1);
-
-    const day = { label: _date, value: index };
-    if (index === 0) {
-      day.label = 'Сегодня';
-    }
-    if (index === 1) {
-      day.label = 'Завтра';
-    }
-    return day;
-  });
-}
-
 function getNumbers(count: number, step: number = 1) {
   const hours: IPickerValue[] = [];
   for (let index = 0; index * step < count; index++) {
@@ -214,5 +192,32 @@ function getNumbers(count: number, step: number = 1) {
 }
 
 function getLabel(items: IPickerValue[], index: number) {
+  // if (items[index] === undefined) {
+  //   console.log(items);
+  //   console.log('getLabel', index);
+  // }
   return items[index].label;
+}
+
+function convertDateToPickerNumber(date: number) {
+  // const dates = getRangeOfDates(ITEMS_LENGTH);
+  const today = Date.now().valueOf();
+  if (date < today) {
+    throw new Error('convertDateToPickerNumber error, date > today');
+  }
+
+  const days = Math.round(daysBetween(today, date));
+
+  return days;
+}
+
+function daysBetween(startDate: number, endDate: number) {
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+}
+
+function treatAsUTC(date: number): number {
+  const result = new Date(date);
+  result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+  return result.valueOf();
 }

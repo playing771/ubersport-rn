@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { IPickerValue } from '../../../components/Picker/types';
-import GameDateInput from '../Time/GameDateInput';
+import { IPickerValue } from '../../../components/pickers/Picker/types';
+import SinglePicker from '../../../components/pickers/SinglePicker';
 
 export interface IRestrictions {
   min: number;
@@ -34,7 +34,7 @@ export default class EditPeopleCount extends React.PureComponent<IProps, IState>
   public render() {
     return (
       <View style={styles.container}>
-        <GameDateInput onChange={this.onCountChange} value={this.getValue()} list={this.count} />
+        <SinglePicker onChange={this.onCountChange} value={this.getValue()} list={this.count} />
       </View>
     );
   }

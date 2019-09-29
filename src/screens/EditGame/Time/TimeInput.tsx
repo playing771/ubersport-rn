@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleProp, ViewStyle, TextStyle, Text, View, StyleSheet } from 'react-native';
-import UPickerGroup from '../../../components/Picker';
-import PickerPart from '../../../components/Picker/PickerPart';
-import { IPickerValue } from '../../../components/Picker/types';
+import UPickerGroup from '../../../components/pickers/Picker';
+import PickerPart from '../../../components/pickers/Picker/PickerPart';
+import { IPickerValue } from '../../../components/pickers/Picker/types';
 
 interface IProps extends IStyleProps {
   // onChange: (value: number | string) => void;
