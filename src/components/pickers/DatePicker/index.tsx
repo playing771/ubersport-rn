@@ -1,8 +1,8 @@
 import React from 'react';
 
-import SinglePicker from './SinglePicker';
-import { IPickerValue } from './Picker/types';
-import getRangeOfDates from '../../utils/getRangeOfDates';
+import SinglePicker from '../SinglePicker';
+import { IPickerValue } from '../Picker/types';
+import getRangeOfDates from '../../../utils/getRangeOfDates';
 
 const ITEMS_LENGTH = 360;
 

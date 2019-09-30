@@ -16,6 +16,7 @@ import CalendarPicker from '../../../components/pickers/CalendarPicker';
 import { isIOS } from '../../../utils/deviceInfo';
 import DatePicker from '../../../components/pickers/DatePicker';
 import getRangeOfDates from '../../../utils/getRangeOfDates';
+import { PickerUtils } from '../../../components/pickers/DatePicker/utils';
 
 const HOURS_COUNT = 24;
 const MINUTES_COUNT = 60;
@@ -54,7 +55,9 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   static defaultProps = defaultProps;
 
   state: IState = {
-    dayPosition: this.props.dateStart ? convertDateToPickerNumber(this.props.dateStart) : 0,
+    dayPosition: this.props.dateStart
+      ? PickerUtils.convertDateToPickerPosition(this.props.dateStart)
+      : 0,
     timeStart: [12, 0],
     timeEnd: [14, 0],
   };
@@ -63,7 +66,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   hours: IPickerValue[] = getNumbers(HOURS_COUNT);
   minutes: IPickerValue[] = getNumbers(MINUTES_COUNT, MINUTES_STEP);
 
-  private convertNumberToDate(pickerValue: number, pickerValues: number[]) {
+  private convertPickerPositionToDate(pickerValue: number, pickerValues: number[]) {
     const _date = moment()
       .add(pickerValue, 'days')
       .toDate();
@@ -79,9 +82,15 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
     return tmp.getTime();
   }
 
-  onDateChange = (value: number | string) => {
-    console.log('onDateChange', value);
-    this.setState({ dayPosition: Number(value) });
+  onDatePickerChange = (pickerValue: number | string) => {
+    console.log('onDatePickerChange', pickerValue);
+    this.setState({ dayPosition: Number(pickerValue) });
+  };
+
+  onCalendarPickerChange = (date: number) => {
+    const dayPosition = PickerUtils.convertDateToPickerPosition(date);
+    console.log('dayPosition', dayPosition);
+    this.setState({ dayPosition });
   };
 
   onTimeStartChange = (value: number[]) => {
@@ -96,15 +105,13 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
     const { dayPosition, timeStart, timeEnd } = this.state;
 
     console.log('onSave', dayPosition, timeStart, timeEnd);
-
-    this.props.onSave(
-      this.convertNumberToDate(dayPosition, timeStart),
-      this.convertNumberToDate(dayPosition, timeEnd)
-    );
+    const dateStart = this.convertPickerPositionToDate(dayPosition, timeStart);
+    const dateEnd = this.convertPickerPositionToDate(dayPosition, timeEnd);
+    this.props.onSave(dateStart, dateEnd);
   };
 
   public render() {
-    const { dayPosition } = this.state;
+    const { dayPosition, timeStart } = this.state;
     console.log('this.state.dayPosition', dayPosition);
     return (
       <View style={styles.container}>
@@ -115,13 +122,18 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
             isIOS ? (
               <ExpandableDatePicker
                 // list={this.dates}
-                onChange={this.onDateChange}
+                onChange={this.onDatePickerChange}
                 value={dayPosition}
                 expanded={expanded}
                 {...EXPAND_SETTINGS}
               />
             ) : (
-              <ExpandableCalendar expanded={expanded} {...EXPAND_SETTINGS} />
+              <ExpandableCalendar
+                expanded={expanded}
+                {...EXPAND_SETTINGS}
+                value={String(this.convertPickerPositionToDate(dayPosition, timeStart))}
+                onChange={this.onCalendarPickerChange}
+              />
             )
           }
         />
@@ -197,27 +209,4 @@ function getLabel(items: IPickerValue[], index: number) {
   //   console.log('getLabel', index);
   // }
   return items[index].label;
-}
-
-function convertDateToPickerNumber(date: number) {
-  // const dates = getRangeOfDates(ITEMS_LENGTH);
-  const today = Date.now().valueOf();
-  if (date < today) {
-    throw new Error('convertDateToPickerNumber error, date > today');
-  }
-
-  const days = Math.round(daysBetween(today, date));
-
-  return days;
-}
-
-function daysBetween(startDate: number, endDate: number) {
-  const millisecondsPerDay = 24 * 60 * 60 * 1000;
-  return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
-}
-
-function treatAsUTC(date: number): number {
-  const result = new Date(date);
-  result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-  return result.valueOf();
 }
