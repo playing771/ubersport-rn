@@ -1,14 +1,10 @@
 import React from 'react';
 import { StyleProp, ViewStyle, TextStyle, Text, View, StyleSheet } from 'react-native';
-import UPickerGroup from '../../../components/pickers/Picker';
-import PickerPart from '../../../components/pickers/Picker/PickerPart';
-import { IPickerValue } from '../../../components/pickers/Picker/types';
+import UPickerGroup from '../Picker';
+import PickerPart from '../Picker/PickerPart';
+import { TimePickerUtils } from './utils';
 
 interface IProps extends IStyleProps {
-  // onChange: (value: number | string) => void;
-  // value: number;
-  hours: IPickerValue[];
-  minutes: IPickerValue[];
   onStartChange: (start: number[]) => void;
   onEndChange: (end: number[]) => void;
   startValue: number[];
@@ -20,7 +16,7 @@ interface IStyleProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-function TimeInput(props: IProps) {
+function TimePicker(props: IProps) {
   const onStartHoursChange = (value: number | string) => {
     const start = [...props.startValue];
     start[0] = Number(value);
@@ -46,19 +42,22 @@ function TimeInput(props: IProps) {
     props.onEndChange(end);
   };
 
+  const hours = TimePickerUtils.getHoursList();
+  const minutes = TimePickerUtils.getMinutesList();
+
   return (
     <View style={styles.wrapper}>
       <View style={[styles.fake, styles.fakeSide]} />
       <UPickerGroup>
         <PickerPart
-          items={props.hours}
+          items={hours}
           onChange={onStartHoursChange}
           selected={props.startValue[0]}
           style={styles.pickerPart}
           itemStyle={styles.pickerPartItem}
         />
         <PickerPart
-          items={props.minutes}
+          items={minutes}
           onChange={onStartMinutesChange}
           selected={props.startValue[1]}
           style={styles.pickerPart}
@@ -70,14 +69,14 @@ function TimeInput(props: IProps) {
       </View>
       <UPickerGroup>
         <PickerPart
-          items={props.hours}
+          items={hours}
           onChange={onEndHoursChange}
           selected={props.endValue[0]}
           style={styles.pickerPart}
           itemStyle={styles.pickerPartItem}
         />
         <PickerPart
-          items={props.minutes}
+          items={minutes}
           onChange={onEndMinutesChange}
           selected={props.endValue[1]}
           style={styles.pickerPart}
@@ -112,4 +111,4 @@ const styles = StyleSheet.create({
   pickerPartItem: { color: '#8890A7', fontSize: 16 },
 });
 
-export default TimeInput;
+export default TimePicker;

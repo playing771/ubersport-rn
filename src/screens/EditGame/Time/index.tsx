@@ -10,22 +10,20 @@ import EditDateItem from './Item';
 import withExpand from '../../../components/hocs/WIthExpand';
 import { IPickerValue } from '../../../components/pickers/Picker/types';
 import { ExpandDirection } from '../../../components/Expandable';
-import TimeInput from './TimeInput';
+import TimePicker from '../../../components/pickers/TimePicker';
 import { IRestrictions } from '../People';
 import CalendarPicker from '../../../components/pickers/CalendarPicker';
 import { isIOS } from '../../../utils/deviceInfo';
 import DatePicker from '../../../components/pickers/DatePicker';
 import getRangeOfDates from '../../../utils/getRangeOfDates';
 import { PickerUtils } from '../../../components/pickers/DatePicker/utils';
+import { TimePickerUtils } from '../../../components/pickers/TimePicker/utils';
 
-const HOURS_COUNT = 24;
-const MINUTES_COUNT = 60;
-const MINUTES_STEP = 15;
 const ITEMS_LENGTH = 360;
 // const ExpandableDateInput = withExpand(SinglePicker);
 const ExpandableDatePicker = withExpand(DatePicker);
 const ExpandableCalendar = withExpand(CalendarPicker);
-const ExpandableTimeInput = withExpand(TimeInput);
+const ExpandableTimeInput = withExpand(TimePicker);
 const EXPAND_SETTINGS = {
   direction: ExpandDirection.Vertical,
   maxHeight: 120,
@@ -63,8 +61,8 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   };
 
   dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
-  hours: IPickerValue[] = getNumbers(HOURS_COUNT);
-  minutes: IPickerValue[] = getNumbers(MINUTES_COUNT, MINUTES_STEP);
+  hours: IPickerValue[] = TimePickerUtils.getHoursList();
+  minutes: IPickerValue[] = TimePickerUtils.getMinutesList();
 
   private convertPickerPositionToDate(pickerValue: number, pickerValues: number[]) {
     const _date = moment()
@@ -81,6 +79,18 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
 
     return tmp.getTime();
   }
+
+  private getTimeLable = () => {
+    return (
+      getLabel(this.hours, this.state.timeStart[0]) +
+      ':' +
+      getLabel(this.minutes, this.state.timeStart[1]) +
+      ' - ' +
+      getLabel(this.hours, this.state.timeEnd[0]) +
+      ':' +
+      getLabel(this.minutes, this.state.timeEnd[1])
+    );
+  };
 
   onDatePickerChange = (pickerValue: number | string) => {
     console.log('onDatePickerChange', pickerValue);
@@ -138,20 +148,10 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
           }
         />
         <EditDateItem
-          label={
-            getLabel(this.hours, this.state.timeStart[0]) +
-            ':' +
-            getLabel(this.minutes, this.state.timeStart[1]) +
-            ' - ' +
-            getLabel(this.hours, this.state.timeEnd[0]) +
-            ':' +
-            getLabel(this.minutes, this.state.timeEnd[1])
-          }
+          label={this.getTimeLable()}
           icon="ios-timer"
           renderInput={({ expanded }) => (
             <ExpandableTimeInput
-              hours={this.hours}
-              minutes={this.minutes}
               onStartChange={this.onTimeStartChange}
               onEndChange={this.onTimeEndChange}
               startValue={this.state.timeStart}
@@ -185,23 +185,6 @@ const styles = StyleSheet.create({
   saveBtn: { width: '100%', height: 50 },
   saveBtnText: { fontWeight: '600', fontSize: 16 },
 });
-
-function getNumbers(count: number, step: number = 1) {
-  const hours: IPickerValue[] = [];
-  for (let index = 0; index * step < count; index++) {
-    const pickerValue: IPickerValue = {
-      label: String(index * step),
-      value: index,
-    };
-    if (index * step < 10) {
-      pickerValue.label = '0' + pickerValue.label;
-    }
-    hours[index] = pickerValue;
-  }
-  hours[hours.length] = { label: hours[0].label, value: hours.length };
-
-  return hours;
-}
 
 function getLabel(items: IPickerValue[], index: number) {
   // if (items[index] === undefined) {
