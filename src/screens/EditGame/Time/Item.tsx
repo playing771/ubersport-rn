@@ -1,12 +1,14 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import  React, { ReactElement } from 'react';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import EditTimeItemForm from './Form';
 
 interface IProps {
-  label: string;
+  label: string | ReactElement;
   icon: string;
   extra?: string;
-  renderInput: (api: API) => JSX.Element;
+  renderInput?: (api: API) => JSX.Element;
+  onPress?: () => void;
+  style?: ViewStyle;
   // onChange: (value: number) => void;
 }
 
@@ -20,45 +22,33 @@ type API = ReturnType<EditTimeItem['getApi']>;
 class EditTimeItem extends React.PureComponent<IProps, IState> {
   state = { expanded: false };
 
-  // componentDidMount() {
-  //   this.props.onChange(this.dates[Number(this.state.pickerValue)].label); // чтобы установить лебел с датой в комоненте родителе
-  // }
-
   toggleInput = () => {
     this.setState({ expanded: !this.state.expanded });
-  }
+  };
 
   private getApi() {
     return {
-      expanded: this.state.expanded
+      expanded: this.state.expanded,
     };
   }
 
-  // pickerChange = (value: number | string) => {
-  //   this.props.onChange(Number(value));
-  //   // this.setState({ pickerValue: Number(value) }, () => {
-  //   //   this.props.onChange(this.dates[Number(value)].label);
-  //   // });
-  // }
-
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <EditTimeItemForm
           label={this.props.label}
           icon={this.props.icon}
           extra={this.props.extra}
-          onPress={this.toggleInput}
+          onPress={this.props.onPress ? this.props.onPress : this.toggleInput}
         />
-        {this.props.renderInput(this.getApi())}
+        {this.props.renderInput && this.props.renderInput(this.getApi())}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'column', overflow: 'hidden' },
-  fakePaddingContainer: { paddingVertical: 7 }
+  container: { flexDirection: 'column', overflow: 'hidden'},
 });
 
 export default EditTimeItem;

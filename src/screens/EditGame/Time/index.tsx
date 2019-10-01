@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, TimePickerAndroid } from 'react-native';
 // import Moment from 'moment';
 // import { extendMoment } from 'moment-range';
 import moment from 'moment';
@@ -13,11 +13,12 @@ import { ExpandDirection } from '../../../components/Expandable';
 import TimePicker from '../../../components/pickers/TimePicker';
 import { IRestrictions } from '../People';
 import CalendarPicker from '../../../components/pickers/CalendarPicker';
-import { isIOS } from '../../../utils/deviceInfo';
+import { isIOS, isAndroid } from '../../../utils/deviceInfo';
 import DatePicker from '../../../components/pickers/DatePicker';
 import getRangeOfDates from '../../../utils/getRangeOfDates';
 import { PickerUtils } from '../../../components/pickers/DatePicker/utils';
 import { TimePickerUtils } from '../../../components/pickers/TimePicker/utils';
+import EditableAndroidTimeLable from './EditableAndroidTimeLable';
 
 const ITEMS_LENGTH = 360;
 // const ExpandableDateInput = withExpand(SinglePicker);
@@ -120,6 +121,67 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
     this.props.onSave(dateStart, dateEnd);
   };
 
+  private async openAndroidTimePicker() {
+    try {
+      const { action } = await TimePickerAndroid.open({
+        hour: 14,
+        minute: 0,
+        is24Hour: true, // Will display '2 PM'
+        mode: 'default',
+      });
+      if (action !== TimePickerAndroid.dismissedAction) {
+        // Selected hour (0-23), minute (0-59)
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open time picker', message);
+    }
+  }
+
+  private renderEditableTimeLable() {
+    return isAndroid ? (
+      <EditDateItem
+        label={
+          <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
+            <EditableAndroidTimeLable
+              onPress={this.openAndroidTimePicker}
+              label={
+                getLabel(this.hours, this.state.timeStart[0]) +
+                ' : ' +
+                getLabel(this.minutes, this.state.timeStart[1])
+              }
+            />
+            <Text style={{ fontSize: 15 }}> - </Text>
+            <EditableAndroidTimeLable
+              onPress={this.openAndroidTimePicker}
+              label={
+                getLabel(this.hours, this.state.timeEnd[0]) +
+                ' : ' +
+                getLabel(this.minutes, this.state.timeEnd[1])
+              }
+            />
+          </View>
+        }
+        icon="ios-timer"
+        style={styles.itemContainer}
+      />
+    ) : (
+      <EditDateItem
+        label={this.getTimeLable()}
+        icon="ios-timer"
+        renderInput={({ expanded }) => (
+          <ExpandableTimeInput
+            onStartChange={this.onTimeStartChange}
+            onEndChange={this.onTimeEndChange}
+            startValue={this.state.timeStart}
+            endValue={this.state.timeEnd}
+            expanded={expanded}
+            {...EXPAND_SETTINGS}
+          />
+        )}
+      />
+    );
+  }
+
   public render() {
     const { dayPosition, timeStart } = this.state;
     console.log('this.state.dayPosition', dayPosition);
@@ -127,6 +189,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
       <View style={styles.container}>
         <EditDateItem
           label={getLabel(this.dates, dayPosition)}
+          style={{ marginBottom: 12 }}
           icon="ios-calendar"
           renderInput={({ expanded }) =>
             isIOS ? (
@@ -147,21 +210,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
             )
           }
         />
-        <EditDateItem
-          label={this.getTimeLable()}
-          icon="ios-timer"
-          renderInput={({ expanded }) => (
-            <ExpandableTimeInput
-              onStartChange={this.onTimeStartChange}
-              onEndChange={this.onTimeEndChange}
-              startValue={this.state.timeStart}
-              endValue={this.state.timeEnd}
-              expanded={expanded}
-              {...EXPAND_SETTINGS}
-            />
-          )}
-        />
-
+        {this.renderEditableTimeLable()}
         <UButton
           title="Сохранить"
           style={styles.saveBtn}
@@ -184,6 +233,7 @@ const styles = StyleSheet.create({
   },
   saveBtn: { width: '100%', height: 50 },
   saveBtnText: { fontWeight: '600', fontSize: 16 },
+  itemContainer: { marginBottom: 24 }, // compensate bottom padding if no renderInput provided
 });
 
 function getLabel(items: IPickerValue[], index: number) {

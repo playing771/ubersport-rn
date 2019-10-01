@@ -2,7 +2,7 @@ import React from 'react';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet, Text } from 'react-native';
 import SportIcon from '../../components/GameCard/SportIcon';
-import TimeLabel from '../EditGame/Time/Label';
+import TimeLabel from '../EditGame/Time/TimeLabel';
 import GameLocationStatic from '../../components/GameLocationStatic';
 import mapStyle from '../../components/GameCard/mapStyle';
 import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';

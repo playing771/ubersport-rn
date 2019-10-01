@@ -9,7 +9,7 @@ import EditTimeModal from './Time';
 import withModal from '../../components/hocs/WithModal';
 import { NavigationRoot } from '../../navigation/roots';
 import { ILocation, IAgeLimit } from '../../api/games/types';
-import TimeLabel from './Time/Label';
+import TimeLabel from './Time/TimeLabel';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import withTouch from '../../components/hocs/WIthTouch';
 import EditPeopleCount, { IRestrictions } from './People';

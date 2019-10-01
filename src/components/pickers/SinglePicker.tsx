@@ -54,5 +54,5 @@ function stateControlType(value?: number): StateControlType {
 
 const styles = StyleSheet.create({
   pickerPartItem: { color: '#8890A7', fontSize: 16 },
-  pickerPart: { flex: 1, marginTop: 15 },
+  pickerPart: { flex: 1 },
 });
