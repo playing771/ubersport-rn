@@ -140,6 +140,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
   private renderEditableTimeLable() {
     return isAndroid ? (
       <EditDateItem
+        touchable={false}
         label={
           <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
             <EditableAndroidTimeLable
@@ -168,6 +169,7 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
       <EditDateItem
         label={this.getTimeLable()}
         icon="ios-timer"
+        style={{ marginBottom: 12 }}
         renderInput={({ expanded }) => (
           <ExpandableTimeInput
             onStartChange={this.onTimeStartChange}

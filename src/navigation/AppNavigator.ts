@@ -2,12 +2,12 @@ import { createSwitchNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import LoadingScreen from '../screens/Loading/index';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import SingInScreen from '../screens/SignInScreen/index';
 import NotAuthorizedScreen from '../screens/NotAuthorized';
 
 const AuthStack = createStackNavigator({
-  SignIn: SingInScreen
+  SignIn: SingInScreen,
 });
 
 export default createSwitchNavigator({
@@ -15,5 +15,5 @@ export default createSwitchNavigator({
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
   LOADING: LoadingScreen,
   MAIN: MainTabNavigator,
-  AUTH: AuthStack
+  AUTH: AuthStack,
 });

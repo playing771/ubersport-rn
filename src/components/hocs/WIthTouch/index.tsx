@@ -38,7 +38,11 @@ const withTouch = <P extends object>(
     render() {
       const { wrapperStyle, ...rest } = this.props;
       return (
-        <TouchableOpacity onPress={this.onPress} style={wrapperStyle} disabled={this.isDisabled()}>
+        <TouchableOpacity
+          onPress={this.onPress}
+          style={wrapperStyle}
+          disabled={this.props.disabled}
+        >
           <ComponentToAdd
             {...(rest as P & Optionalize<P, IWithTouchInjectedProps> & IWithTouchInjectedProps)}
           />

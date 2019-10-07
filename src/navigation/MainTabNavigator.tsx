@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import TabBarIcon from '../components/TabBarIcon';
 import FindGameScreen from '../screens/FindGame';
 import findGameBottomNav from '../screens/FindGame/bottomTabNav';
@@ -71,7 +71,7 @@ NewGameStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator(
-  { NewGameStack, FindGameStack, ProfileStack },
+  { NewGameStack, FindGameStack },
   {
     tabBarOptions: {
       style: {

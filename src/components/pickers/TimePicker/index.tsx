@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    marginTop: 24,
+    // marginTop: 24,s
   },
   fake: {
     borderTopWidth: 0.5,

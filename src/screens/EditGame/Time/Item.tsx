@@ -1,6 +1,7 @@
-import  React, { ReactElement } from 'react';
+import React, { ReactElement, ElementType } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import EditTimeItemForm from './Form';
+import withTouch from '../../../components/hocs/WIthTouch';
 
 interface IProps {
   label: string | ReactElement;
@@ -9,6 +10,7 @@ interface IProps {
   renderInput?: (api: API) => JSX.Element;
   onPress?: () => void;
   style?: ViewStyle;
+  touchable?: boolean;
   // onChange: (value: number) => void;
 }
 
@@ -20,7 +22,16 @@ interface IState {
 type API = ReturnType<EditTimeItem['getApi']>;
 
 class EditTimeItem extends React.PureComponent<IProps, IState> {
-  state = { expanded: false };
+  static defaultProps = {
+    touchable: true,
+  };
+
+  itemElement: ElementType;
+
+  constructor(props: Readonly<IProps>) {
+    super(props);
+    this.state = { expanded: false };
+  }
 
   toggleInput = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -39,6 +50,7 @@ class EditTimeItem extends React.PureComponent<IProps, IState> {
           label={this.props.label}
           icon={this.props.icon}
           extra={this.props.extra}
+          disabled={!this.props.touchable}
           onPress={this.props.onPress ? this.props.onPress : this.toggleInput}
         />
         {this.props.renderInput && this.props.renderInput(this.getApi())}
@@ -48,7 +60,7 @@ class EditTimeItem extends React.PureComponent<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'column', overflow: 'hidden'},
+  container: { flexDirection: 'column', overflow: 'hidden' },
 });
 
 export default EditTimeItem;

@@ -26,7 +26,7 @@ export default function LoadingScreen(props: IProps) {
     }
 
     // props.navigation.navigate(NavigationRoot.FindGame);
-    props.navigation.navigate(NavigationRoot.ChooseGameType);
+    props.navigation.navigate(NavigationRoot.EditGame, { sportId: 1 });
     // props.navigation.navigate(NavigationRoot.Participants, { gameId: '5d6c14e9cb86d50025bc77f9' });
   };
 
