@@ -12,6 +12,7 @@ import { IGamesListQueryFilters } from './gql';
 import useNavigation from '../../hooks/useNavigation';
 import FindGameHeaderTitle from './FindGameHeaderTitle';
 import sharedStyles from '../../sharedStyles';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -106,7 +107,7 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
     navigation.navigate(NavigationRoot.Location);
   };
 
-  return {
+  const headerOptions: NavigationStackOptions = {
     // title: 'Поиск игр',
     headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
     headerTitleStyle: {
@@ -117,6 +118,8 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
     headerStyle: [sharedStyles.header, sharedStyles.borderLessHeader],
     // headerTransparent: true, // TODO: fix
   };
+
+  return headerOptions;
 };
 
 export default FindGameScreen;

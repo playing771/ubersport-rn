@@ -1,13 +1,13 @@
 import React from 'react';
 import Profile from '../Profile';
 import { gradient } from '../../constants/generalStyles';
-import { NavigationScreenProps } from 'react-navigation';
 import useAuthCheck from '../../hooks/useAuthCheck';
 import useAppContext from '../../hooks/useAppContext';
 import EditProfileButton from './EditProfileButton';
 import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
 import shareStyles from '../../sharedStyles';
 import { NavigationRoot } from '../../navigation/roots';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps {}
 
@@ -22,12 +22,12 @@ function MyProfileScreen(props: IProps) {
   );
 }
 
-MyProfileScreen.navigationOptions = ({ navigation }: NavigationScreenProps) => {
+MyProfileScreen.navigationOptions = ({ navigation }) => {
   const editBtnPressHandle = () => {
     navigation.navigate(NavigationRoot.EditProfile);
   };
 
-  return {
+  const options: NavigationStackOptions = {
     headerTitleStyle: {
       color: '#fff',
       fontWeight: '400',
@@ -37,6 +37,8 @@ MyProfileScreen.navigationOptions = ({ navigation }: NavigationScreenProps) => {
 
     headerRight: <EditProfileButton onPress={editBtnPressHandle} />,
   };
+
+  return options;
 };
 
 export default MyProfileScreen;

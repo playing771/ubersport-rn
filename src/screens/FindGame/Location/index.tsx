@@ -5,6 +5,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { ILocation } from '../../../api/games/types';
 import { AppContext } from '../../../utils/context/sports';
 import { useUserLocationEdit } from './gql';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 type IProps = NavigationInjectedProps;
 
@@ -40,7 +41,7 @@ function FindOwnLocationScreen(props: IProps) {
   );
 }
 
-FindOwnLocationScreen.navigationOptions = {
+const headerOptions: NavigationStackOptions = {
   // title: 'Карта',
   headerTitleStyle: {
     color: '#fff',
@@ -48,4 +49,6 @@ FindOwnLocationScreen.navigationOptions = {
   },
   headerTransparent: true, // TODO: fix
 };
+
+FindOwnLocationScreen.navigationOptions = headerOptions;
 export default FindOwnLocationScreen;

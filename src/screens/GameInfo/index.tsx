@@ -8,6 +8,7 @@ import { IGameEditData } from '../EditGame/index';
 import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
 import sharedStyles from '../../sharedStyles';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps {}
 
@@ -54,15 +55,18 @@ function GameInfoScreen(props: IProps) {
   );
 }
 
-GameInfoScreen.navigationOptions = {
+const headerOptions: NavigationStackOptions = {
   title: 'Информация об игре',
   headerTitleStyle: {
     color: '#fff',
     fontWeight: '400',
   },
   headerStyle: sharedStyles.header,
-  // headerTransparent: true, // TODO: fix
 };
+
+GameInfoScreen.navigationOptions = headerOptions;
+
+// headerTransparent: true, // TODO: fix
 
 // const screenOptions: IAdaptiveScreenOptions = {
 //   transparentHeader: true,

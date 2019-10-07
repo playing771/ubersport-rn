@@ -5,6 +5,7 @@ import useNavigation from '../../hooks/useNavigation';
 import SportsSelect from '../../components/SportsList/SportsSelect';
 import useAuthCheck from '../../hooks/useAuthCheck';
 import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps {}
 
@@ -25,7 +26,7 @@ export default function GameTypeSelectScreen(props: IProps) {
   );
 }
 
-GameTypeSelectScreen.navigationOptions = {
+const headerOptions: NavigationStackOptions = {
   title: 'Выберите спорт',
   headerTitleStyle: {
     textAlign: 'center',
@@ -36,3 +37,5 @@ GameTypeSelectScreen.navigationOptions = {
     ...sharedStyles.borderLessHeader,
   },
 };
+
+GameTypeSelectScreen.navigationOptions = headerOptions;

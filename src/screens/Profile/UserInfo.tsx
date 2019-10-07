@@ -3,21 +3,24 @@ import AdaptiveScreen from '../../components/AdaptiveScreen/index';
 import { gradient } from '../../constants/generalStyles';
 import Profile from '../Profile';
 import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps {}
 
 interface IState {}
 
+const headerOptions: NavigationStackOptions = {
+  headerTitleStyle: {
+    color: '#fff',
+    fontWeight: '400',
+  },
+  // header: null,
+  title: 'Player',
+  headerTransparent: true,
+};
+
 export default class UserInfoScreen extends React.Component<IProps, IState> {
-  static navigationOptions = {
-    headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
-    },
-    // header: null,
-    title: 'Player',
-    headerTransparent: true,
-  };
+  static navigationOptions = headerOptions;
 
   public render() {
     const userId = this.props.navigation.state.params && this.props.navigation.state.params.userId;
