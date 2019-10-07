@@ -1,14 +1,6 @@
 import * as React from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
-import { Location, Permissions } from 'expo';
-import {
-  StyleProp,
-  ViewStyle,
-  View,
-  StyleSheet,
-  Image,
-  Text
-} from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { StyleProp, ViewStyle, View, StyleSheet, Image } from 'react-native';
 import { ILocation } from '../../api/games/types';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { LatLng } from 'react-native-maps';
@@ -33,7 +25,7 @@ const INITIAL_REGION = {
   latitude: 55.75,
   longitude: 37.61,
   latitudeDelta: 0,
-  longitudeDelta: 0.05
+  longitudeDelta: 0.05,
 };
 
 class GameLocation extends React.Component<IProps, IState> {
@@ -79,7 +71,7 @@ class GameLocation extends React.Component<IProps, IState> {
     const { style, customMapStyle, location } = this.props;
     const latLng = {
       latitude: this.props.location.coordinates[1],
-      longitude: this.props.location.coordinates[0]
+      longitude: this.props.location.coordinates[0],
     };
     return (
       <View style={[styles.container, style]}>
@@ -98,15 +90,11 @@ class GameLocation extends React.Component<IProps, IState> {
               initialRegion={{
                 ...latLng,
                 longitudeDelta: INITIAL_REGION.longitudeDelta,
-                latitudeDelta: INITIAL_REGION.latitudeDelta
+                latitudeDelta: INITIAL_REGION.latitudeDelta,
               }}
             >
               <Marker coordinate={latLng}>
-                <MaterialCommunityIcons
-                  name="map-marker-outline"
-                  size={40}
-                  color="red"
-                />
+                <MaterialCommunityIcons name="map-marker-outline" size={40} color="red" />
               </Marker>
             </MapView>
           </View>
@@ -118,15 +106,15 @@ class GameLocation extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   mapWrapper: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   map: {
     flex: 1,
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 });
 
 export default withNavigation(GameLocation);

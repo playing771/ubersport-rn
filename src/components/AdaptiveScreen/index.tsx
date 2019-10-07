@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { Platform, StatusBar, StyleProp, ViewStyle, StatusBarProps } from 'react-native';
-import { Header, SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
+
 import Constants from 'expo-constants';
 import GradientWrapper from './GradientWrapper';
 import { IGradientWrapperParams } from './types';
+import { Header } from 'react-navigation-stack';
 
 export const TAB_DEFAULT_HEIGHT = 49;
 export const TAB_COMPACT_HEIGHT = 29;

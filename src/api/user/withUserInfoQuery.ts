@@ -1,8 +1,6 @@
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 // import { IProfileInfoProps } from '../../screens/Profile/Info';
-import IUser, { ISex } from './types';
-import { NavigationScreenProps } from 'react-navigation';
+import { ISex } from './types';
 
 export const GET_USER_INFO_GQL = gql`
   query getUser($id: String!) {

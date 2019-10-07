@@ -1,10 +1,6 @@
 import React from 'react';
 import { View, AsyncStorage, StyleSheet } from 'react-native';
-import {
-  NavigationInjectedProps,
-  NavigationStackScreenOptions,
-  withNavigation,
-} from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { NavigationRoot } from '../../navigation/roots';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen/index';
@@ -32,6 +28,7 @@ import UserInfoPassed from './userInfo/passed';
 import parseGqlError from '../../utils/parseGqlError';
 import { ICreateUserMutationVariables, CREATE_USER_GQL } from '../../api/user/createUser';
 import UButton from '../../components/buttons/UButton';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
 
@@ -63,7 +60,7 @@ const steps = [
 
 @withAppContext
 class SingInScreen extends React.Component<IProps, IState> {
-  static navigationOptions: NavigationStackScreenOptions = {
+  static navigationOptions: NavigationStackOptions = {
     header: null,
     // title: 'Вход или регистрация',
     // headerTitleStyle: {

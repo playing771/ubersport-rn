@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 
 import useAppContext from '../../hooks/useAppContext';
 import UserInfoTab from './tabs/UserInfo/';
@@ -10,8 +9,9 @@ import useNavigation from '../../hooks/useNavigation';
 import UTabsView from '../../components/UTabView';
 import ChangePasswordTab from './tabs/ChangePassword/';
 import HeaderRightButton from './ExitProfileButton';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
-interface IProps extends NavigationScreenProps {}
+interface IProps extends NavigationStackOptions {}
 
 const initialNavState = {
   index: 0,

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import GameLocation from '../../../components/GameLocation';
 import mapStyle from '../../../components/GameCard/mapStyle';
-import {
-  NavigationInjectedProps,
-  NavigationScreenOptions
-} from 'react-navigation';
+
 import { ILocation } from '../../../api/games/types';
+import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -15,17 +14,14 @@ interface IState {
 
 const initialState: IState = {};
 
-export default class EditLocationScreen extends React.Component<
-  IProps,
-  IState
-> {
-  static navigationOptions: NavigationScreenOptions = {
+export default class EditLocationScreen extends React.Component<IProps, IState> {
+  static navigationOptions: NavigationStackOptions = {
     // title: 'Карта',
     headerTitleStyle: {
       color: '#fff',
-      fontWeight: '400'
+      fontWeight: '400',
     },
-    headerTransparent: true // TODO: fix
+    headerTransparent: true, // TODO: fix
   };
 
   state = initialState;
@@ -38,7 +34,7 @@ export default class EditLocationScreen extends React.Component<
     const onChangeLocation = this.props.navigation.getParam('onLocationChange');
     onChangeLocation(location);
     this.props.navigation.goBack();
-  }
+  };
 
   public render() {
     return (
