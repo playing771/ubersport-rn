@@ -19,6 +19,7 @@ import getRangeOfDates from '../../../utils/getRangeOfDates';
 import { PickerUtils } from '../../../components/pickers/DatePicker/utils';
 import { TimePickerUtils } from '../../../components/pickers/TimePicker/utils';
 import EditableAndroidTimeLable from './EditableAndroidTimeLable';
+import { func } from 'prop-types';
 
 const ITEMS_LENGTH = 360;
 // const ExpandableDateInput = withExpand(SinglePicker);
@@ -32,6 +33,8 @@ const EXPAND_SETTINGS = {
   openDuration: 200,
   closeDuration: 150,
 };
+
+const DEFAULT_GAME_LENGTH = 2;
 
 const defaultProps = {
   dateStart: 0,
@@ -57,13 +60,24 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
     dayPosition: this.props.dateStart
       ? PickerUtils.convertDateToPickerPosition(this.props.dateStart)
       : 0,
-    timeStart: [12, 0],
-    timeEnd: [14, 0],
+    timeStart: [this.getStartingHour(), 0],
+    timeEnd: [this.getEndingHour(), 0],
   };
 
   dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
   hours: IPickerValue[] = TimePickerUtils.getHoursList();
   minutes: IPickerValue[] = TimePickerUtils.getMinutesList();
+
+  private getStartingHour() {
+    const now = new Date();
+    return now.getHours() + Math.round(now.getMinutes() / 60);
+  }
+
+  private getEndingHour() {
+    const now = new Date();
+    now.setHours(now.getHours() + Math.round(now.getMinutes() / 60) + DEFAULT_GAME_LENGTH);
+    return now.getHours();
+  }
 
   private convertPickerPositionToDate(pickerValue: number, pickerValues: number[]) {
     const _date = moment()
