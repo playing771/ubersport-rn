@@ -26,11 +26,8 @@ interface IState {
   isVisible: boolean;
 }
 
-const withModal = <T extends IRequiredProps>(
-  WrappedComponent: React.ComponentType<T>
-) => {
-  const displayName =
-    WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const withModal = <T extends IRequiredProps>(WrappedComponent: React.ComponentType<T>) => {
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
   class ComponentWithModal extends React.Component<
     Optionalize<T & IWithModalProps, IWithModalProps> & IProps,
     IState
@@ -39,11 +36,11 @@ const withModal = <T extends IRequiredProps>(
 
     static defaultProps = {
       animationIn: defaultAnimations.in,
-      animationOut: defaultAnimations.out
+      animationOut: defaultAnimations.out,
     };
 
     state = {
-      isVisible: false
+      isVisible: false,
     };
 
     toggleModal = () => {
@@ -52,7 +49,7 @@ const withModal = <T extends IRequiredProps>(
 
     private getApi() {
       return {
-        toggleModal: this.toggleModal
+        toggleModal: this.toggleModal,
       };
     }
 
@@ -65,17 +62,12 @@ const withModal = <T extends IRequiredProps>(
             onBackdropPress={this.toggleModal}
             animationIn={this.props.animationIn}
             animationOut={this.props.animationOut}
+            backdropTransitionOutTiming={0} // stops modal "flickering", https://github.com/react-native-community/react-native-modal/issues/268#issuecomment-493464419
           >
-            {this.props.modal ? (
-              this.props.modal(this.getApi())
-            ) : (
-              <DefaultModal />
-            )}
+            {this.props.modal ? this.props.modal(this.getApi()) : <DefaultModal />}
           </Modal>
           <WrappedComponent
-            {...this.props as T &
-              Optionalize<T & IWithModalProps, IWithModalProps> &
-              IProps}
+            {...(this.props as T & Optionalize<T & IWithModalProps, IWithModalProps> & IProps)}
             onPress={this.toggleModal}
           />
         </>
@@ -86,7 +78,7 @@ const withModal = <T extends IRequiredProps>(
 };
 
 const s = StyleSheet.create({
-  modalContainer: { justifyContent: 'center', margin: 30 }
+  modalContainer: { justifyContent: 'center', margin: 30 },
 });
 
 export default withModal;
