@@ -55,7 +55,7 @@ export default function SportsSelect({
 
   const sportsList = onlyUniqFromArrays(
     aData.sports,
-    fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports
+    fData && fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports
   );
 
   return (
@@ -66,7 +66,7 @@ export default function SportsSelect({
           <SportsListView
             loading={loading}
             selectedSports={selected}
-            sports={fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
+            sports={fData && fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
             onChangeHandle={toggleSelection}
             mode={mode}
           />
