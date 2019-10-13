@@ -65,7 +65,7 @@ export default function EditTimeModal(props: IProps) {
     props.dateStart ? props.dateStart : getInitialStartingTime()
   );
   const [dateEnd, setDateEnd] = useState<number>(
-    props.dateEnd ? this.props.dateEnd : getInittalEndingTime(dateStart)
+    props.dateEnd ? props.dateEnd : getInittalEndingTime(dateStart)
   );
 
   function dateStartPressHandle() {
@@ -166,7 +166,14 @@ export default function EditTimeModal(props: IProps) {
 
   const onCalendarPickerChange = (date: number) => {
     // const dayPosition = PickerUtils.convertDateToPickerPosition(date);
+    console.log('onCalendarPickerChange', new Date(date));
+    const diff = moment(date).diff(dateStart, 'ms');
+    console.log('daysDiff', diff);
+
+    const newEndDate = moment(dateEnd).add(diff, 'ms');
     setDateStart(date);
+    setDateEnd(newEndDate.valueOf());
+
     // this.setState({ dayPosition });
   };
 
@@ -186,7 +193,7 @@ export default function EditTimeModal(props: IProps) {
     // console.log('timeEnd', timeEnd);
     // const dateStart = this.convertPickerPositionToDate(dayPosition, timeStart);
     // const dateEnd = this.convertPickerPositionToDate(dayPosition, timeEnd);
-    // this.props.onSave(dateStart, dateEnd);
+    props.onSave(dateStart, dateEnd);
   };
 
   // const useAndroidTimePicker = async () => {
@@ -270,11 +277,6 @@ export default function EditTimeModal(props: IProps) {
     );
   };
 
-  // const { dayPosition, timeStart } = this.state;
-  // const lable = getLabel(this.dates, dayPosition);
-  // console.log('MODAL dayPosition', dayPosition);
-  // console.log('lable', lable);
-
   return (
     <View style={styles.container}>
       <EditDateItem
@@ -300,12 +302,12 @@ export default function EditTimeModal(props: IProps) {
           )
         }
       />
-      {/* <Text>
+      <Text>
         START: {getFormattedDate(dateStart)} {getFormattedTime(dateStart)}
       </Text>
       <Text>
         END: {getFormattedDate(dateEnd)} {getFormattedTime(dateEnd)}
-      </Text> */}
+      </Text>
       {renderEditableTimeLable()}
       <UButton
         title="Сохранить"

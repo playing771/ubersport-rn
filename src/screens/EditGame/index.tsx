@@ -205,6 +205,7 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
                     dateStartRestrictions={this.getDateStartRestrictions()}
                     dateEndRestrictions={this.getDateEndRestrictions()}
                     dateStart={this.state.dateStart}
+                    dateEnd={this.state.dateEnd}
                   />
                 )}
               />

@@ -5,7 +5,7 @@ import RU_CALENDARE_LOCALE from './locale';
 
 interface IProps {
   value: number;
-  onChange?: (date: number) => void;
+  onChange?: (date: number, day: number, month: number, year: number) => void;
 }
 
 interface IMarkedDates {
@@ -30,8 +30,14 @@ export default function CalendarPicker({ value, onChange }: IProps) {
       minDate={Date()}
       markedDates={convertDateToMarkedDate(value)}
       onDayPress={(selection: ISelectedDate) => {
+        const dateValue = new Date(value);
+        const { day, month, year, timestamp } = selection;
+        // сохраняем значения часов и минут для нового дня
+        const newTimestamp = new Date(timestamp);
+        newTimestamp.setHours(dateValue.getHours());
+        newTimestamp.setMinutes(dateValue.getMinutes());
         if (onChange) {
-          onChange(selection.timestamp);
+          onChange(newTimestamp.valueOf(), day, month, year);
         }
       }}
       // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
