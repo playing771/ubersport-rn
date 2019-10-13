@@ -19,7 +19,7 @@ interface IState {}
 export default class EditPeopleCount extends React.PureComponent<IProps, IState> {
   count: IPickerValue[] = getItems(this.props.restrictions);
 
-  onCountChange = (value: number | string) => {
+  onCountChange = (value: number | string, itemPosition: number) => {
     this.props.onSave(Number(value));
   };
 

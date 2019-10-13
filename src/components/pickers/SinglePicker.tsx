@@ -11,7 +11,7 @@ enum StateControlType {
 }
 
 interface IProps extends IStyleProps {
-  onChange?: (value: number | string) => void;
+  onChange?: (itemValue: string, itemPosition: number) => void;
   value?: number;
   initialValue?: number;
   list: IPickerValue[];
@@ -25,12 +25,12 @@ interface IStyleProps {
 export default function SinglePicker({ list, onChange, value, initialValue = 0 }: IProps) {
   const [current, setCurrent] = useState<number>(initialValue);
 
-  const handleChange = (newValue: string | number) => {
-    if (stateControlType(value) === StateControlType.Inner) {
-      setCurrent(Number(newValue));
+  const handleChange = (newValue: string, itemPosition: number) => {
+    if (getStateControlType(value) === StateControlType.Inner) {
+      setCurrent(itemPosition);
     }
     if (onChange) {
-      onChange(newValue);
+      onChange(newValue, itemPosition);
     }
   };
 
@@ -39,7 +39,7 @@ export default function SinglePicker({ list, onChange, value, initialValue = 0 }
       <UPickerPart
         items={list}
         onChange={handleChange}
-        selected={stateControlType(value) === StateControlType.Inner ? current : value}
+        selected={getStateControlType(value) === StateControlType.Inner ? current : value}
         style={styles.pickerPart}
         itemStyle={styles.pickerPartItem}
       />
@@ -47,7 +47,7 @@ export default function SinglePicker({ list, onChange, value, initialValue = 0 }
   );
 }
 
-function stateControlType(value?: number): StateControlType {
+function getStateControlType(value?: number): StateControlType {
   // если value не передается, используется внутренний state
   return value === undefined ? StateControlType.Inner : StateControlType.Outer;
 }

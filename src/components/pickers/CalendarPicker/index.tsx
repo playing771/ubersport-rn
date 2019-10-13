@@ -4,7 +4,7 @@ import Colors from '../../../constants/Colors';
 import RU_CALENDARE_LOCALE from './locale';
 
 interface IProps {
-  value: string;
+  value: number;
   onChange?: (date: number) => void;
 }
 
@@ -49,7 +49,7 @@ export default function CalendarPicker({ value, onChange }: IProps) {
   );
 }
 
-function convertDateToMarkedDate(date: string) {
+function convertDateToMarkedDate(date: number) {
   const markedDate: IMarkedDates = {
     [formatDateToISO(date)]: {
       selected: true,

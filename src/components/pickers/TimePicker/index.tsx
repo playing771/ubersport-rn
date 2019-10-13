@@ -17,33 +17,37 @@ interface IStyleProps {
 }
 
 function TimePicker(props: IProps) {
-  const onStartHoursChange = (value: number | string) => {
+  const onStartHoursChange = (itemValue: string, itemPosition: number) => {
     const start = [...props.startValue];
-    start[0] = Number(value);
+    start[0] = Number(itemValue);
 
     props.onStartChange(start);
   };
 
-  const onStartMinutesChange = (value: number | string) => {
+  const onStartMinutesChange = (itemValue: string, itemPosition: number) => {
     const start = [...props.startValue];
-    start[1] = Number(value);
+    start[1] = itemPosition;
+    console.log('itemValue', itemValue);
+
     props.onStartChange(start);
   };
 
-  const onEndHoursChange = (value: number | string) => {
+  const onEndHoursChange = (itemValue: string, itemPosition: number) => {
     const end = [...props.endValue];
-    end[0] = Number(value);
+    end[0] = Number(itemValue);
     props.onEndChange(end);
   };
 
-  const onEndMinutesChange = (value: number | string) => {
+  const onEndMinutesChange = (itemValue: number, itemPosition: number) => {
     const end = [...props.endValue];
-    end[1] = Number(value);
+    end[1] = Number(itemValue);
     props.onEndChange(end);
   };
 
   const hours = TimePickerUtils.getHoursList();
   const minutes = TimePickerUtils.getMinutesList();
+  // console.log('hours', hours);
+  // console.log('minutes', minutes);
 
   return (
     <View style={styles.wrapper}>

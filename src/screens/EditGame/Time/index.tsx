@@ -1,8 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Text, TimePickerAndroid } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TimePickerAndroid,
+  TimePickerAndroidOpenReturn,
+} from 'react-native';
 // import Moment from 'moment';
 // import { extendMoment } from 'moment-range';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import 'moment/locale/ru';
 
 import UButton from '../../../components/buttons/UButton';
@@ -19,7 +25,8 @@ import getRangeOfDates from '../../../utils/getRangeOfDates';
 import { PickerUtils } from '../../../components/pickers/DatePicker/utils';
 import { TimePickerUtils } from '../../../components/pickers/TimePicker/utils';
 import EditableAndroidTimeLable from './EditableAndroidTimeLable';
-import { func } from 'prop-types';
+import { getFormattedTime, getFormattedDate } from '../../../utils/dateUtils';
+import useAndroidTimePicker from '../../../components/pickers/useAndroidTimePicker';
 
 const ITEMS_LENGTH = 360;
 // const ExpandableDateInput = withExpand(SinglePicker);
@@ -34,144 +41,199 @@ const EXPAND_SETTINGS = {
   closeDuration: 150,
 };
 
-const DEFAULT_GAME_LENGTH = 2;
-
-const defaultProps = {
-  dateStart: 0,
-};
+const DEFAULT_GAME_LENGTH = 2; // 2h
+const DEFAULT_NEW_GAME_TIMEOUT = 15; // 15 minutes
 
 export interface IProps {
   onSave: (dateStart: number, dateEnd: number) => void;
   dateStartRestrictions: IRestrictions;
   dateEndRestrictions: IRestrictions;
   dateStart?: number;
+  dateEnd?: number;
 }
 
 export interface IState {
-  dayPosition: number; // picker position from today date
-  timeStart: number[];
-  timeEnd: number[];
+  dateStart: number;
+  dateEnd: number;
+  // dayPosition: number; // picker position from today date
+  // timeStart: number[];
+  // timeEnd: number[];
 }
 
-export default class EditTimeModal extends React.PureComponent<IProps, IState> {
-  static defaultProps = defaultProps;
+export default function EditTimeModal(props: IProps) {
+  const [dateStart, setDateStart] = useState<number>(
+    props.dateStart ? props.dateStart : getInitialStartingTime()
+  );
+  const [dateEnd, setDateEnd] = useState<number>(
+    props.dateEnd ? this.props.dateEnd : getInittalEndingTime(dateStart)
+  );
 
-  state: IState = {
-    dayPosition: this.props.dateStart
-      ? PickerUtils.convertDateToPickerPosition(this.props.dateStart)
-      : 0,
-    timeStart: [this.getStartingHour(), 0],
-    timeEnd: [this.getEndingHour(), 0],
-  };
-
-  dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
-  hours: IPickerValue[] = TimePickerUtils.getHoursList();
-  minutes: IPickerValue[] = TimePickerUtils.getMinutesList();
-
-  private getStartingHour() {
-    const now = new Date();
-    return now.getHours() + Math.round(now.getMinutes() / 60);
-  }
-
-  private getEndingHour() {
-    const now = new Date();
-    now.setHours(now.getHours() + Math.round(now.getMinutes() / 60) + DEFAULT_GAME_LENGTH);
-    return now.getHours();
-  }
-
-  private convertPickerPositionToDate(pickerValue: number, pickerValues: number[]) {
-    const _date = moment()
-      .add(pickerValue, 'days')
-      .toDate();
-
-    const tmp = new Date(
-      _date.getFullYear(),
-      _date.getMonth(),
-      _date.getDate(),
-      Number(this.hours[pickerValues[0]].label),
-      Number(this.hours[pickerValues[1]].label)
-    );
-
-    return tmp.getTime();
-  }
-
-  private getTimeLable = () => {
-    return (
-      getLabel(this.hours, this.state.timeStart[0]) +
-      ':' +
-      getLabel(this.minutes, this.state.timeStart[1]) +
-      ' - ' +
-      getLabel(this.hours, this.state.timeEnd[0]) +
-      ':' +
-      getLabel(this.minutes, this.state.timeEnd[1])
-    );
-  };
-
-  onDatePickerChange = (pickerValue: number | string) => {
-    console.log('onDatePickerChange', pickerValue);
-    this.setState({ dayPosition: Number(pickerValue) });
-  };
-
-  onCalendarPickerChange = (date: number) => {
-    const dayPosition = PickerUtils.convertDateToPickerPosition(date);
-    console.log('dayPosition', dayPosition);
-    this.setState({ dayPosition });
-  };
-
-  onTimeStartChange = (value: number[]) => {
-    this.setState({ timeStart: value });
-  };
-
-  onTimeEndChange = (value: number[]) => {
-    this.setState({ timeEnd: value });
-  };
-
-  onSave = () => {
-    const { dayPosition, timeStart, timeEnd } = this.state;
-
-    console.log('onSave', dayPosition, timeStart, timeEnd);
-    const dateStart = this.convertPickerPositionToDate(dayPosition, timeStart);
-    const dateEnd = this.convertPickerPositionToDate(dayPosition, timeEnd);
-    this.props.onSave(dateStart, dateEnd);
-  };
-
-  private async openAndroidTimePicker() {
-    try {
-      const { action } = await TimePickerAndroid.open({
-        hour: 14,
-        minute: 0,
-        is24Hour: true, // Will display '2 PM'
-        mode: 'default',
-      });
-      if (action !== TimePickerAndroid.dismissedAction) {
-        // Selected hour (0-23), minute (0-59)
+  function dateStartPressHandle() {
+    useAndroidTimePicker(dateStart, newDate => {
+      setDateStart(newDate);
+      if (newDate > dateEnd) {
+        const newDateEnd = moment(dateEnd);
+        newDateEnd.add(24, 'hours');
+        setDateEnd(newDateEnd.valueOf());
       }
-    } catch ({ code, message }) {
-      console.warn('Cannot open time picker', message);
-    }
+    });
   }
 
-  private renderEditableTimeLable() {
+  function dateEndPressHandle() {
+    useAndroidTimePicker(dateEnd, newDate => {
+      if (newDate < dateStart) {
+        const newDateEnd = moment(newDate);
+        newDateEnd.add(24, 'hours');
+        setDateEnd(newDateEnd.valueOf());
+      } else {
+        setDateEnd(newDate);
+      }
+    });
+  }
+
+  // console.log('useAndroidTimePicker', date, hour, minute);
+
+  // state: IState = {
+  //   dateStart: this.props.dateStart ? this.props.dateStart : new Date().valueOf(),
+  //   dateEnd: this.props.dateEnd ? this.props.dateEnd : new Date().valueOf(),
+  //   // dayPosition: this.props.dateStart
+  //   //   ? PickerUtils.convertDateToPickerPosition(this.props.dateStart)
+  //   //   : 0,
+  //   // timeStart: [this.getStartingHour(), 0],
+  //   // timeEnd: [this.getEndingHour(), 0],
+  // };
+
+  // dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
+  // hours: IPickerValue[] = TimePickerUtils.getHoursList();
+  // minutes: IPickerValue[] = TimePickerUtils.getMinutesList();
+
+  // const getStartingHour = () => {
+  //   const now = new Date();
+  //   return now.getHours() + Math.round(now.getMinutes() / 60);
+  // };
+
+  // const getEndingHour = () => {
+  //   const now = new Date();
+  //   now.setHours(now.getHours() + Math.round(now.getMinutes() / 60) + DEFAULT_GAME_LENGTH);
+  //   return now.getHours();
+  // };
+
+  // const convertPickerPositionToDate = (dayPosition: number, pickerValues: number[]) => {
+  //   console.log('pickerValues[0]', pickerValues[0]);
+  //   console.log('pickerValues[1]', pickerValues[1]);
+
+  //   const now = moment();
+  //   console.log('startOf', now.startOf('day'));
+
+  //   now
+  //     .startOf('day')
+  //     .add(dayPosition, 'days')
+  //     .add(pickerValues[0], 'hours')
+  //     .add(pickerValues[1], 'minutes')
+  //     .toDate();
+
+  //   console.log('date', now);
+  //   console.log('valueOf', now.valueOf());
+
+  //   // const tmp = new Date(
+  //   //   _date.getFullYear(),
+  //   //   _date.getMonth(),
+  //   //   _date.getDate(),
+  //   //   Number(this.hours[pickerValues[0]].label),
+  //   //   Number(this.hours[pickerValues[1]].label)
+  //   // );
+
+  //   // return tmp.getTime();
+  //   return now.valueOf();
+  // };
+
+  const getTimeLable = () => {
+    return getFormattedTime(this.state.dateStart) + ' - ' + getFormattedTime(this.state.dateEnd);
+    // getLabel(this.hours, this.state.timeEnd[0]) +
+    // ':' +
+    // getLabel(this.minutes, this.state.timeEnd[1])
+  };
+
+  const onDatePickerChange = (pickerValue: number | string, itemPosition: number) => {
+    console.log('pickerValue', pickerValue, itemPosition);
+
+    // this.setState({ dayPosition: itemPosition });
+  };
+
+  const onCalendarPickerChange = (date: number) => {
+    // const dayPosition = PickerUtils.convertDateToPickerPosition(date);
+    setDateStart(date);
+    // this.setState({ dayPosition });
+  };
+
+  const onTimeStartChange = (value: number[]) => {
+    // console.log('onTimeStartChange', value);
+    // this.setState({ timeStart: value });
+  };
+
+  const onTimeEndChange = (value: number[]) => {
+    // this.setState({ timeEnd: value });
+  };
+
+  const onSave = () => {
+    // const { dayPosition, timeStart, timeEnd } = this.state;
+    // console.log('dayPosition', dayPosition);
+    // console.log('timeStart', timeStart);
+    // console.log('timeEnd', timeEnd);
+    // const dateStart = this.convertPickerPositionToDate(dayPosition, timeStart);
+    // const dateEnd = this.convertPickerPositionToDate(dayPosition, timeEnd);
+    // this.props.onSave(dateStart, dateEnd);
+  };
+
+  // const useAndroidTimePicker = async () => {
+  //   try {
+  //     const response = await TimePickerAndroid.open({
+  //       hour: new Date(dateStart).getHours(),
+  //       minute: new Date(dateStart).getMinutes(),
+  //       is24Hour: true, // Will display '2 PM'
+  //       mode: 'default',
+  //     });
+
+  //     const { action, hour, minute } = response as any; // hack because of bad typings
+  //     if (action === TimePickerAndroid.timeSetAction) {
+  //       // Selected hour (0-23), minute (0-59)
+
+  //       const oldDateStart = new Date(dateStart);
+  //       oldDateStart.setHours(hour, minute);
+  //       setDateStart(Number(oldDateStart));
+  //       const oldDateEnd = new Date(dateEnd);
+  //       oldDateEnd.setHours(hour, minute);
+  //       setDateEnd(Number(oldDateEnd));
+  //     }
+  //   } catch ({ code, message }) {
+  //     console.warn('Cannot open time picker', message);
+  //   }
+  // };
+
+  const renderEditableTimeLable = () => {
+    console.log('astarttime', new Date(dateStart));
     return isAndroid ? (
       <EditDateItem
         touchable={false}
         label={
           <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
             <EditableAndroidTimeLable
-              onPress={this.openAndroidTimePicker}
+              onPress={dateStartPressHandle}
               label={
-                getLabel(this.hours, this.state.timeStart[0]) +
-                ' : ' +
-                getLabel(this.minutes, this.state.timeStart[1])
+                getFormattedTime(dateStart)
+                // getLabel(this.hours, timeStart[0]) +
+                // ' : ' +
+                // getLabel(this.minutes, timeStart[1])
               }
             />
             <Text style={{ fontSize: 15 }}> - </Text>
             <EditableAndroidTimeLable
-              onPress={this.openAndroidTimePicker}
+              onPress={dateEndPressHandle}
               label={
-                getLabel(this.hours, this.state.timeEnd[0]) +
-                ' : ' +
-                getLabel(this.minutes, this.state.timeEnd[1])
+                getFormattedTime(dateEnd)
+                // getLabel(this.hours, timeEnd[0]) +
+                // ' : ' +
+                // getLabel(this.minutes, timeEnd[1])
               }
             />
           </View>
@@ -181,63 +243,71 @@ export default class EditTimeModal extends React.PureComponent<IProps, IState> {
       />
     ) : (
       <EditDateItem
-        label={this.getTimeLable()}
+        label={getTimeLable()}
         icon="ios-timer"
         style={{ marginBottom: 12 }}
         renderInput={({ expanded }) => (
-          <ExpandableTimeInput
-            onStartChange={this.onTimeStartChange}
-            onEndChange={this.onTimeEndChange}
-            startValue={this.state.timeStart}
-            endValue={this.state.timeEnd}
-            expanded={expanded}
-            {...EXPAND_SETTINGS}
-          />
+          <></>
+          // <ExpandableTimeInput
+          //   onStartChange={this.onTimeStartChange}
+          //   onEndChange={this.onTimeEndChange}
+          //   startValue={timeStart}
+          //   endValue={timeEnd}
+          //   expanded={expanded}
+          //   {...EXPAND_SETTINGS}
+          // />
         )}
       />
     );
-  }
+  };
 
-  public render() {
-    const { dayPosition, timeStart } = this.state;
-    console.log('this.state.dayPosition', dayPosition);
-    return (
-      <View style={styles.container}>
-        <EditDateItem
-          label={getLabel(this.dates, dayPosition)}
-          style={{ marginBottom: 12 }}
-          icon="ios-calendar"
-          renderInput={({ expanded }) =>
-            isIOS ? (
-              <ExpandableDatePicker
-                // list={this.dates}
-                onChange={this.onDatePickerChange}
-                value={dayPosition}
-                expanded={expanded}
-                {...EXPAND_SETTINGS}
-              />
-            ) : (
-              <ExpandableCalendar
-                expanded={expanded}
-                {...EXPAND_SETTINGS}
-                value={String(this.convertPickerPositionToDate(dayPosition, timeStart))}
-                onChange={this.onCalendarPickerChange}
-              />
-            )
-          }
-        />
-        {this.renderEditableTimeLable()}
-        <UButton
-          title="Сохранить"
-          style={styles.saveBtn}
-          backgroundColor="#00BBBB"
-          textStyle={styles.saveBtnText}
-          rounded={false}
-          onPress={this.onSave}
-        />
-      </View>
-    );
-  }
+  // const { dayPosition, timeStart } = this.state;
+  // const lable = getLabel(this.dates, dayPosition);
+  // console.log('MODAL dayPosition', dayPosition);
+  // console.log('lable', lable);
+
+  return (
+    <View style={styles.container}>
+      <EditDateItem
+        label={getFormattedDate(dateStart, 'dddd, MMM DD ')}
+        style={{ marginBottom: 12 }}
+        icon="ios-calendar"
+        renderInput={({ expanded }) =>
+          isIOS ? (
+            <ExpandableDatePicker
+              // list={this.dates}
+              onChange={onDatePickerChange}
+              value={dateStart}
+              expanded={expanded}
+              {...EXPAND_SETTINGS}
+            />
+          ) : (
+            <ExpandableCalendar
+              expanded={expanded}
+              {...EXPAND_SETTINGS}
+              value={dateStart}
+              onChange={onCalendarPickerChange}
+            />
+          )
+        }
+      />
+      <Text>
+        START: {getFormattedDate(dateStart)} {getFormattedTime(dateStart)}
+      </Text>
+      <Text>
+        END: {getFormattedDate(dateEnd)} {getFormattedTime(dateEnd)}
+      </Text>
+      {renderEditableTimeLable()}
+      <UButton
+        title="Сохранить"
+        style={styles.saveBtn}
+        backgroundColor="#00BBBB"
+        textStyle={styles.saveBtnText}
+        rounded={false}
+        onPress={onSave}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -252,10 +322,33 @@ const styles = StyleSheet.create({
   itemContainer: { marginBottom: 24 }, // compensate bottom padding if no renderInput provided
 });
 
-function getLabel(items: IPickerValue[], index: number) {
-  // if (items[index] === undefined) {
-  //   console.log(items);
-  //   console.log('getLabel', index);
-  // }
-  return items[index].label;
+// function getLabel(items: IPickerValue[], index: number) {
+//   // if (items[index] === undefined) {
+//   //   console.log(items);
+//   //   console.log('getLabel', index);
+//   // }
+//   return items[index].label;
+// }
+
+function getInitialStartingTime() {
+  return roundNext15Minutes(moment()).valueOf();
+}
+
+function getInittalEndingTime(dateStart: number) {
+  return moment(dateStart)
+    .add(DEFAULT_GAME_LENGTH, 'hours')
+    .valueOf();
+}
+
+function roundNext15Minutes(dateToRound: Moment) {
+  const newDate = dateToRound.clone();
+  let intervals = Math.floor(newDate.minutes() / 15);
+  if (newDate.minutes() % 15 != 0) intervals++;
+  if (intervals == 4) {
+    newDate.add('hours', 1);
+    intervals = 0;
+  }
+  newDate.minutes(intervals * 15);
+  newDate.seconds(0);
+  return newDate;
 }
