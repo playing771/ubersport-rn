@@ -86,7 +86,11 @@ export default function EditTimeModal(props: IProps) {
         newDateEnd.add(24, 'hours');
         setDateEnd(newDateEnd.valueOf());
       } else {
-        setDateEnd(newDate);
+        const newDateEnd = moment(newDate);
+        if (newDateEnd.diff(moment(dateStart), 'day') >= 1) {
+          newDateEnd.subtract(1, 'day');
+        }
+        setDateEnd(newDateEnd.valueOf());
       }
     });
   }
@@ -215,6 +219,11 @@ export default function EditTimeModal(props: IProps) {
     return isAndroid ? (
       <EditDateItem
         touchable={false}
+        extra={
+          moment(dateEnd)
+            .diff(moment(dateStart), 'hours')
+            .toLocaleString() + ' h'
+        }
         label={
           <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
             <EditableAndroidTimeLable
@@ -291,12 +300,12 @@ export default function EditTimeModal(props: IProps) {
           )
         }
       />
-      <Text>
+      {/* <Text>
         START: {getFormattedDate(dateStart)} {getFormattedTime(dateStart)}
       </Text>
       <Text>
         END: {getFormattedDate(dateEnd)} {getFormattedTime(dateEnd)}
-      </Text>
+      </Text> */}
       {renderEditableTimeLable()}
       <UButton
         title="Сохранить"
@@ -343,8 +352,10 @@ function getInittalEndingTime(dateStart: number) {
 function roundNext15Minutes(dateToRound: Moment) {
   const newDate = dateToRound.clone();
   let intervals = Math.floor(newDate.minutes() / 15);
-  if (newDate.minutes() % 15 != 0) intervals++;
-  if (intervals == 4) {
+  if (newDate.minutes() % 15 !== 0) {
+    intervals++;
+  }
+  if (intervals === 4) {
     newDate.add('hours', 1);
     intervals = 0;
   }

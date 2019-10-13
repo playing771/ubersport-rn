@@ -19,7 +19,10 @@ const EditTimeItemForm: React.FC<IProps> = props => {
           <Text style={styles.extra}>{props.extra}</Text>
         </>
       ) : (
-        props.label
+        <>
+          {props.label}
+          <Text style={styles.extra}>{props.extra}</Text>
+        </>
       )}
     </View>
   );
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   text: { color: '#596588', paddingLeft: 18, fontSize: 16 },
-  extra: { paddingLeft: 10, color: '#B4BFC9', fontWeight: '600' },
+  extra: { paddingLeft: 10, color: '#B4BFC9', fontWeight: '600', fontSize: 16 },
 });
 
 export default withTouch(EditTimeItemForm);
