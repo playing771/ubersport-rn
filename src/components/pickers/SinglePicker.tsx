@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 
-import { IPickerValue } from './Picker/types';
-import UPickerGroup from './Picker';
-import UPickerPart from './Picker/PickerPart';
+import { IPickerValue } from './BasePicker/types';
+import UPickerGroup from './BasePicker';
+import UPickerPart from './BasePicker/PickerPart';
 
 enum StateControlType {
   Inner = 'INNER',
@@ -39,7 +39,7 @@ export default function SinglePicker({ list, onChange, value, initialValue = 0 }
       <UPickerPart
         items={list}
         onChange={handleChange}
-        selected={getStateControlType(value) === StateControlType.Inner ? current : value}
+        value={getStateControlType(value) === StateControlType.Inner ? current : value}
         style={styles.pickerPart}
         itemStyle={styles.pickerPartItem}
       />

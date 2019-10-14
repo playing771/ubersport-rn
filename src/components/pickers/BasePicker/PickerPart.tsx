@@ -4,29 +4,32 @@ import { IPickerValue } from './types';
 import { isIOS } from '../../../utils/deviceInfo';
 
 interface IProps {
-  onChange: (date: number, itemValue: string, itemPosition: number) => void;
-  selected: number;
+  onChange: (date: number, label: string, itemPosition: number) => void;
+  value: number;
   items: IPickerValue[];
-  measureUnit?: string;
+  // measureUnit?: string;
   itemStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
   style?: StyleProp<ViewStyle>;
 }
 
 export default function UPickerPart(props: IProps) {
-  const { selected, itemStyle, style, items, onChange } = props;
+  const { value, itemStyle, style, items, onChange } = props;
+  console.log('UPickerPart', value);
 
   const innerOnChange = (date: number, itemPosition: number) => {
     onChange(date, props.items[itemPosition].label, itemPosition);
   };
   return (
     <Picker
-      selectedValue={selected}
+      selectedValue={value}
       style={style}
       itemStyle={[isIOS && styles.itemIosStyle, itemStyle]}
       onValueChange={innerOnChange}
     >
       {items.map((item, index) => {
-        return <Picker.Item label={item.label} value={item.value} key={item.label} />;
+        console.log('item', item);
+
+        return <Picker.Item label={item.label} value={item.value} key={index} />;
       })}
     </Picker>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SinglePicker from '../SinglePicker';
-import { IPickerValue } from '../Picker/types';
+import { IPickerValue } from '../BasePicker/types';
 import getRangeOfDates from '../../../utils/getRangeOfDates';
 
 const ITEMS_LENGTH = 360;

@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleProp, ViewStyle, TextStyle, Text, View, StyleSheet } from 'react-native';
-import UPickerGroup from '../Picker';
-import PickerPart from '../Picker/PickerPart';
-import { TimePickerUtils } from './utils';
+import UPickerGroup from '../BasePicker';
+import PickerPart from '../BasePicker/PickerPart';
+import { TimePickerUtils } from '../TimePicker/utils';
+import moment from 'moment';
+import { getFormattedTime } from '../../../utils/dateUtils';
 
 interface IProps extends IStyleProps {
-  onStartChange: (start: number[]) => void;
-  onEndChange: (end: number[]) => void;
-  startValue: number[];
-  endValue: number[];
+  onChange: (date: number) => void;
+  value: number; // date
 }
 
 interface IStyleProps {
@@ -16,79 +16,57 @@ interface IStyleProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-function TimePicker(props: IProps) {
-  const onStartHoursChange = (itemValue: string, itemPosition: number) => {
-    const start = [...props.startValue];
-    start[0] = Number(itemValue);
+const MINUTES_STEP = 15;
 
-    props.onStartChange(start);
+const hours = TimePickerUtils.getHoursList();
+const minutes = TimePickerUtils.getMinutesList(MINUTES_STEP);
+
+export default function TimePicker({ value, onChange, style, textStyle }: IProps) {
+  const handleHoursChange = (date: number, label: string, itemPosition: number) => {
+    console.log('handleHoursChange', itemPosition);
+
+    const newDate = moment(value)
+      .add(itemPosition, 'h')
+      .valueOf();
+    console.log(
+      'TimePicker new Date',
+      new Date(newDate).getHours(),
+      new Date(newDate).getMinutes()
+    );
+    console.log('getFormattedTime(newDate)', getFormattedTime(newDate));
+
+    onChange(newDate);
   };
 
-  const onStartMinutesChange = (itemValue: string, itemPosition: number) => {
-    const start = [...props.startValue];
-    start[1] = itemPosition;
-    console.log('itemValue', itemValue);
+  const handleMinutesChange = (date: number, label: string, itemPosition: number) => {
+    console.log('handleMinutesChange', itemPosition);
 
-    props.onStartChange(start);
+    const newDate = moment(value)
+      .add(itemPosition * MINUTES_STEP, 'm')
+      .valueOf();
+    onChange(newDate);
   };
 
-  const onEndHoursChange = (itemValue: string, itemPosition: number) => {
-    const end = [...props.endValue];
-    end[0] = Number(itemValue);
-    props.onEndChange(end);
-  };
-
-  const onEndMinutesChange = (itemValue: number, itemPosition: number) => {
-    const end = [...props.endValue];
-    end[1] = Number(itemValue);
-    props.onEndChange(end);
-  };
-
-  const hours = TimePickerUtils.getHoursList();
-  const minutes = TimePickerUtils.getMinutesList();
-  // console.log('hours', hours);
-  // console.log('minutes', minutes);
+  const currentHour = new Date(value).getHours();
+  const currentMinutes = new Date(value).getMinutes();
 
   return (
-    <View style={styles.wrapper}>
-      <View style={[styles.fake, styles.fakeSide]} />
-      <UPickerGroup>
-        <PickerPart
-          items={hours}
-          onChange={onStartHoursChange}
-          selected={props.startValue[0]}
-          style={styles.pickerPart}
-          itemStyle={styles.pickerPartItem}
-        />
-        <PickerPart
-          items={minutes}
-          onChange={onStartMinutesChange}
-          selected={props.startValue[1]}
-          style={styles.pickerPart}
-          itemStyle={styles.pickerPartItem}
-        />
-      </UPickerGroup>
-      <View style={[styles.fakeMid, styles.fake]}>
-        <Text style={styles.fakeSymb}>-</Text>
-      </View>
-      <UPickerGroup>
-        <PickerPart
-          items={hours}
-          onChange={onEndHoursChange}
-          selected={props.endValue[0]}
-          style={styles.pickerPart}
-          itemStyle={styles.pickerPartItem}
-        />
-        <PickerPart
-          items={minutes}
-          onChange={onEndMinutesChange}
-          selected={props.endValue[1]}
-          style={styles.pickerPart}
-          itemStyle={styles.pickerPartItem}
-        />
-      </UPickerGroup>
-      <View style={[styles.fake, styles.fakeSide]} />
-    </View>
+    <UPickerGroup>
+      <PickerPart
+        items={hours}
+        onChange={handleHoursChange}
+        value={currentHour}
+        style={styles.pickerPart}
+        itemStyle={styles.pickerPartItem}
+      />
+      <PickerPart
+        items={minutes}
+        onChange={handleMinutesChange}
+        value={currentMinutes}
+        style={styles.pickerPart}
+        itemStyle={styles.pickerPartItem}
+      />
+    </UPickerGroup>
   );
 }
 
@@ -114,5 +92,3 @@ const styles = StyleSheet.create({
   pickerPart: { width: 35 },
   pickerPartItem: { color: '#8890A7', fontSize: 16 },
 });
-
-export default TimePicker;

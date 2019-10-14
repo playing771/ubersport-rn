@@ -19,9 +19,9 @@ interface IState {
   // pickerValue: number;
 }
 
-type API = ReturnType<EditTimeItem['getApi']>;
+type API = ReturnType<EditableDateItem['getApi']>;
 
-class EditTimeItem extends React.PureComponent<IProps, IState> {
+class EditableDateItem extends React.PureComponent<IProps, IState> {
   static defaultProps = {
     touchable: true,
   };
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   container: { flexDirection: 'column', overflow: 'hidden' },
 });
 
-export default EditTimeItem;
+export default EditableDateItem;

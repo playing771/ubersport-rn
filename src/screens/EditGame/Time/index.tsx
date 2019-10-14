@@ -12,11 +12,11 @@ import moment, { Moment } from 'moment';
 import 'moment/locale/ru';
 
 import UButton from '../../../components/buttons/UButton';
-import EditDateItem from './Item';
+import EditableDateItem from './Item';
 import withExpand from '../../../components/hocs/WIthExpand';
-import { IPickerValue } from '../../../components/pickers/Picker/types';
+import { IPickerValue } from '../../../components/pickers/BasePicker/types';
 import { ExpandDirection } from '../../../components/Expandable';
-import TimePicker from '../../../components/pickers/TimePicker';
+import DualTimePicker from '../../../components/pickers/DualTimePicker';
 import { IRestrictions } from '../People';
 import CalendarPicker from '../../../components/pickers/CalendarPicker';
 import { isIOS, isAndroid } from '../../../utils/deviceInfo';
@@ -27,6 +27,7 @@ import { TimePickerUtils } from '../../../components/pickers/TimePicker/utils';
 import EditableAndroidTimeLable from './EditableAndroidTimeLable';
 import { getFormattedTime, getFormattedDate } from '../../../utils/dateUtils';
 import useAndroidTimePicker from '../../../components/pickers/useAndroidTimePicker';
+import TimePicker from '../../../components/pickers/TimePicker';
 
 const ITEMS_LENGTH = 360;
 // const ExpandableDateInput = withExpand(SinglePicker);
@@ -69,87 +70,36 @@ export default function EditTimeModal(props: IProps) {
   );
 
   function dateStartPressHandle() {
-    useAndroidTimePicker(dateStart, newDate => {
-      setDateStart(newDate);
-      if (newDate > dateEnd) {
-        const newDateEnd = moment(dateEnd);
-        newDateEnd.add(24, 'hours');
-        setDateEnd(newDateEnd.valueOf());
-      }
-    });
+    useAndroidTimePicker(dateStart, timeStartChangeHandle);
   }
 
   function dateEndPressHandle() {
-    useAndroidTimePicker(dateEnd, newDate => {
-      if (newDate < dateStart) {
-        const newDateEnd = moment(newDate);
-        newDateEnd.add(24, 'hours');
-        setDateEnd(newDateEnd.valueOf());
-      } else {
-        const newDateEnd = moment(newDate);
-        if (newDateEnd.diff(moment(dateStart), 'day') >= 1) {
-          newDateEnd.subtract(1, 'day');
-        }
-        setDateEnd(newDateEnd.valueOf());
-      }
-    });
+    useAndroidTimePicker(dateEnd, timeEndChangeHandle);
   }
 
-  // console.log('useAndroidTimePicker', date, hour, minute);
+  function timeStartChangeHandle(newDate: number) {
+    setDateStart(newDate);
+    if (newDate > dateEnd) {
+      const newDateEnd = moment(dateEnd);
+      newDateEnd.add(24, 'h');
+      setDateEnd(newDateEnd.valueOf());
+    }
+  }
 
-  // state: IState = {
-  //   dateStart: this.props.dateStart ? this.props.dateStart : new Date().valueOf(),
-  //   dateEnd: this.props.dateEnd ? this.props.dateEnd : new Date().valueOf(),
-  //   // dayPosition: this.props.dateStart
-  //   //   ? PickerUtils.convertDateToPickerPosition(this.props.dateStart)
-  //   //   : 0,
-  //   // timeStart: [this.getStartingHour(), 0],
-  //   // timeEnd: [this.getEndingHour(), 0],
-  // };
+  function timeEndChangeHandle(newDate: number) {
+    if (newDate < dateStart) {
+      const newDateEnd = moment(newDate);
+      newDateEnd.add(24, 'h');
+      setDateEnd(newDateEnd.valueOf());
+    } else {
+      const newDateEnd = moment(newDate);
+      if (newDateEnd.diff(moment(dateStart), 'd') >= 1) {
+        newDateEnd.subtract(1, 'd');
+      }
 
-  // dates: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
-  // hours: IPickerValue[] = TimePickerUtils.getHoursList();
-  // minutes: IPickerValue[] = TimePickerUtils.getMinutesList();
-
-  // const getStartingHour = () => {
-  //   const now = new Date();
-  //   return now.getHours() + Math.round(now.getMinutes() / 60);
-  // };
-
-  // const getEndingHour = () => {
-  //   const now = new Date();
-  //   now.setHours(now.getHours() + Math.round(now.getMinutes() / 60) + DEFAULT_GAME_LENGTH);
-  //   return now.getHours();
-  // };
-
-  // const convertPickerPositionToDate = (dayPosition: number, pickerValues: number[]) => {
-  //   console.log('pickerValues[0]', pickerValues[0]);
-  //   console.log('pickerValues[1]', pickerValues[1]);
-
-  //   const now = moment();
-  //   console.log('startOf', now.startOf('day'));
-
-  //   now
-  //     .startOf('day')
-  //     .add(dayPosition, 'days')
-  //     .add(pickerValues[0], 'hours')
-  //     .add(pickerValues[1], 'minutes')
-  //     .toDate();
-
-  //   console.log('date', now);
-  //   console.log('valueOf', now.valueOf());
-
-  //   // const tmp = new Date(
-  //   //   _date.getFullYear(),
-  //   //   _date.getMonth(),
-  //   //   _date.getDate(),
-  //   //   Number(this.hours[pickerValues[0]].label),
-  //   //   Number(this.hours[pickerValues[1]].label)
-  //   // );
-
-  //   // return tmp.getTime();
-  //   return now.valueOf();
-  // };
+      setDateEnd(newDateEnd.valueOf());
+    }
+  }
 
   const getTimeLable = () => {
     return getFormattedTime(dateStart) + ' - ' + getFormattedTime(dateEnd);
@@ -166,19 +116,6 @@ export default function EditTimeModal(props: IProps) {
     setDateStart(date);
     setDateEnd(newEndDate.valueOf());
   };
-
-  // const onCalendarPickerChange = (date: number) => {
-  //   // const dayPosition = PickerUtils.convertDateToPickerPosition(date);
-  //   console.log('onCalendarPickerChange', new Date(date));
-  //   const diff = moment(date).diff(dateStart, 'ms');
-  //   console.log('daysDiff', diff);
-
-  //   const newEndDate = moment(dateEnd).add(diff, 'ms');
-  //   setDateStart(date);
-  //   setDateEnd(newEndDate.valueOf());
-
-  //   // this.setState({ dayPosition });
-  // };
 
   const onTimeStartChange = (value: number[]) => {
     // console.log('onTimeStartChange', value);
@@ -199,35 +136,9 @@ export default function EditTimeModal(props: IProps) {
     props.onSave(dateStart, dateEnd);
   };
 
-  // const useAndroidTimePicker = async () => {
-  //   try {
-  //     const response = await TimePickerAndroid.open({
-  //       hour: new Date(dateStart).getHours(),
-  //       minute: new Date(dateStart).getMinutes(),
-  //       is24Hour: true, // Will display '2 PM'
-  //       mode: 'default',
-  //     });
-
-  //     const { action, hour, minute } = response as any; // hack because of bad typings
-  //     if (action === TimePickerAndroid.timeSetAction) {
-  //       // Selected hour (0-23), minute (0-59)
-
-  //       const oldDateStart = new Date(dateStart);
-  //       oldDateStart.setHours(hour, minute);
-  //       setDateStart(Number(oldDateStart));
-  //       const oldDateEnd = new Date(dateEnd);
-  //       oldDateEnd.setHours(hour, minute);
-  //       setDateEnd(Number(oldDateEnd));
-  //     }
-  //   } catch ({ code, message }) {
-  //     console.warn('Cannot open time picker', message);
-  //   }
-  // };
-
   const renderEditableTimeLable = () => {
-    console.log('astarttime', new Date(dateStart));
     return isAndroid ? (
-      <EditDateItem
+      <EditableDateItem
         touchable={false}
         extra={
           moment(dateEnd)
@@ -251,28 +162,27 @@ export default function EditTimeModal(props: IProps) {
         style={styles.itemContainer}
       />
     ) : (
-      <EditDateItem
+      <EditableDateItem
         label={getTimeLable()}
         icon="ios-timer"
         style={{ marginBottom: 12 }}
         renderInput={({ expanded }) => (
-          <></>
-          // <ExpandableTimeInput
-          //   onStartChange={this.onTimeStartChange}
-          //   onEndChange={this.onTimeEndChange}
-          //   startValue={timeStart}
-          //   endValue={timeEnd}
-          //   expanded={expanded}
-          //   {...EXPAND_SETTINGS}
-          // />
+          <ExpandableTimeInput
+            onChange={timeStartChangeHandle}
+            value={dateStart}
+            expanded={expanded}
+            {...EXPAND_SETTINGS}
+          />
         )}
       />
     );
   };
 
+  console.log('DDATE START!!', new Date(dateStart).getHours(), new Date(dateStart).getMinutes());
+
   return (
     <View style={styles.container}>
-      <EditDateItem
+      <EditableDateItem
         label={getFormattedDate(dateStart, 'dddd, MMM DD ')}
         style={{ marginBottom: 12 }}
         icon="ios-calendar"

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { IPickerValue } from '../../../components/pickers/Picker/types';
+import { IPickerValue } from '../../../components/pickers/BasePicker/types';
 import SinglePicker from '../../../components/pickers/SinglePicker';
 
 export interface IRestrictions {

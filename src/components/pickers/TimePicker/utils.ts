@@ -1,4 +1,4 @@
-import { IPickerValue } from '../Picker/types';
+import { IPickerValue } from '../BasePicker/types';
 
 const HOURS_COUNT = 24;
 const MINUTES_COUNT = 60;
@@ -25,8 +25,8 @@ function getHoursList() {
   return getNumbers(HOURS_COUNT);
 }
 
-function getMinutesList() {
-  return getNumbers(MINUTES_COUNT, MINUTES_STEP);
+function getMinutesList(minutesStep = MINUTES_STEP) {
+  return getNumbers(MINUTES_COUNT, minutesStep);
 }
 
 export const TimePickerUtils = {
