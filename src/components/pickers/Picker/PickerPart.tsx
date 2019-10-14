@@ -4,7 +4,7 @@ import { IPickerValue } from './types';
 import { isIOS } from '../../../utils/deviceInfo';
 
 interface IProps {
-  onChange: (itemValue: string, itemPosition: number) => void;
+  onChange: (date: number, itemValue: string, itemPosition: number) => void;
   selected: number;
   items: IPickerValue[];
   measureUnit?: string;
@@ -15,11 +15,8 @@ interface IProps {
 export default function UPickerPart(props: IProps) {
   const { selected, itemStyle, style, items, onChange } = props;
 
-  const innerOnChange = (itemValue: number, itemPosition: number) => {
-    // console.log('onchange', itemValue, itemPosition);
-    console.log('selected', selected);
-
-    onChange(props.items[itemPosition].label, itemPosition);
+  const innerOnChange = (date: number, itemPosition: number) => {
+    onChange(date, props.items[itemPosition].label, itemPosition);
   };
   return (
     <Picker
@@ -29,7 +26,7 @@ export default function UPickerPart(props: IProps) {
       onValueChange={innerOnChange}
     >
       {items.map((item, index) => {
-        return <Picker.Item label={item.label} value={item.label} key={item.label} />;
+        return <Picker.Item label={item.label} value={item.value} key={item.label} />;
       })}
     </Picker>
   );

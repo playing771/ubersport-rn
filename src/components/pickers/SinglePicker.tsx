@@ -11,7 +11,7 @@ enum StateControlType {
 }
 
 interface IProps extends IStyleProps {
-  onChange?: (itemValue: string, itemPosition: number) => void;
+  onChange?: (date: number, label: string, itemPosition: number) => void;
   value?: number;
   initialValue?: number;
   list: IPickerValue[];
@@ -25,12 +25,12 @@ interface IStyleProps {
 export default function SinglePicker({ list, onChange, value, initialValue = 0 }: IProps) {
   const [current, setCurrent] = useState<number>(initialValue);
 
-  const handleChange = (newValue: string, itemPosition: number) => {
+  const handleChange = (date: number, label: string, itemPosition: number) => {
     if (getStateControlType(value) === StateControlType.Inner) {
       setCurrent(itemPosition);
     }
     if (onChange) {
-      onChange(newValue, itemPosition);
+      onChange(date, label, itemPosition);
     }
   };
 

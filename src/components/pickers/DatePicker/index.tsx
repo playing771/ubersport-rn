@@ -9,7 +9,7 @@ const DATES: IPickerValue[] = getRangeOfDates(ITEMS_LENGTH);
 
 interface IProps {
   value: number;
-  onChange?: (itemValue: string, itemPosition: number) => void;
+  onChange?: (date: number, label: string, itemPosition: number) => void;
 }
 
 export default function DatePicker({ value, onChange }: IProps) {

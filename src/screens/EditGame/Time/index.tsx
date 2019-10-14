@@ -152,30 +152,33 @@ export default function EditTimeModal(props: IProps) {
   // };
 
   const getTimeLable = () => {
-    return getFormattedTime(this.state.dateStart) + ' - ' + getFormattedTime(this.state.dateEnd);
-    // getLabel(this.hours, this.state.timeEnd[0]) +
+    return getFormattedTime(dateStart) + ' - ' + getFormattedTime(dateEnd);
+    // getLabel(this.hours, timeEnd[0]) +
     // ':' +
-    // getLabel(this.minutes, this.state.timeEnd[1])
+    // getLabel(this.minutes, timeEnd[1])
   };
 
-  const onDatePickerChange = (pickerValue: number | string, itemPosition: number) => {
-    console.log('pickerValue', pickerValue, itemPosition);
-
-    // this.setState({ dayPosition: itemPosition });
-  };
-
-  const onCalendarPickerChange = (date: number) => {
-    // const dayPosition = PickerUtils.convertDateToPickerPosition(date);
-    console.log('onCalendarPickerChange', new Date(date));
+  const onDatePickerChange = (date: number) => {
     const diff = moment(date).diff(dateStart, 'ms');
-    console.log('daysDiff', diff);
+    // console.log('daysDiff', diff);
 
     const newEndDate = moment(dateEnd).add(diff, 'ms');
     setDateStart(date);
     setDateEnd(newEndDate.valueOf());
-
-    // this.setState({ dayPosition });
   };
+
+  // const onCalendarPickerChange = (date: number) => {
+  //   // const dayPosition = PickerUtils.convertDateToPickerPosition(date);
+  //   console.log('onCalendarPickerChange', new Date(date));
+  //   const diff = moment(date).diff(dateStart, 'ms');
+  //   console.log('daysDiff', diff);
+
+  //   const newEndDate = moment(dateEnd).add(diff, 'ms');
+  //   setDateStart(date);
+  //   setDateEnd(newEndDate.valueOf());
+
+  //   // this.setState({ dayPosition });
+  // };
 
   const onTimeStartChange = (value: number[]) => {
     // console.log('onTimeStartChange', value);
@@ -235,22 +238,12 @@ export default function EditTimeModal(props: IProps) {
           <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
             <EditableAndroidTimeLable
               onPress={dateStartPressHandle}
-              label={
-                getFormattedTime(dateStart)
-                // getLabel(this.hours, timeStart[0]) +
-                // ' : ' +
-                // getLabel(this.minutes, timeStart[1])
-              }
+              label={getFormattedTime(dateStart)}
             />
             <Text style={{ fontSize: 15 }}> - </Text>
             <EditableAndroidTimeLable
               onPress={dateEndPressHandle}
-              label={
-                getFormattedTime(dateEnd)
-                // getLabel(this.hours, timeEnd[0]) +
-                // ' : ' +
-                // getLabel(this.minutes, timeEnd[1])
-              }
+              label={getFormattedTime(dateEnd)}
             />
           </View>
         }
@@ -297,7 +290,7 @@ export default function EditTimeModal(props: IProps) {
               expanded={expanded}
               {...EXPAND_SETTINGS}
               value={dateStart}
-              onChange={onCalendarPickerChange}
+              onChange={onDatePickerChange}
             />
           )
         }
@@ -353,15 +346,15 @@ function getInittalEndingTime(dateStart: number) {
 
 function roundNext15Minutes(dateToRound: Moment) {
   const newDate = dateToRound.clone();
-  let intervals = Math.floor(newDate.minutes() / 15);
-  if (newDate.minutes() % 15 !== 0) {
+  let intervals = Math.floor(newDate.minutes() / DEFAULT_NEW_GAME_TIMEOUT);
+  if (newDate.minutes() % DEFAULT_NEW_GAME_TIMEOUT !== 0) {
     intervals++;
   }
-  if (intervals === 4) {
+  if (intervals === 60 / DEFAULT_NEW_GAME_TIMEOUT) {
     newDate.add('hours', 1);
     intervals = 0;
   }
-  newDate.minutes(intervals * 15);
+  newDate.minutes(intervals * DEFAULT_NEW_GAME_TIMEOUT);
   newDate.seconds(0);
   return newDate;
 }
