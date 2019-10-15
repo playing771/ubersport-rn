@@ -9,7 +9,7 @@ function getNumbers(count: number, step: number = 1) {
   for (let index = 0; index * step < count; index++) {
     const pickerValue: IPickerValue = {
       label: String(index * step),
-      value: index,
+      value: index * step,
     };
     if (index * step < 10) {
       pickerValue.label = '0' + pickerValue.label;

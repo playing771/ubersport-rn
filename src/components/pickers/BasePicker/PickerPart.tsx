@@ -14,7 +14,6 @@ interface IProps {
 
 export default function UPickerPart(props: IProps) {
   const { value, itemStyle, style, items, onChange } = props;
-  console.log('UPickerPart', value);
 
   const innerOnChange = (date: number, itemPosition: number) => {
     onChange(date, props.items[itemPosition].label, itemPosition);
@@ -27,8 +26,6 @@ export default function UPickerPart(props: IProps) {
       onValueChange={innerOnChange}
     >
       {items.map((item, index) => {
-        console.log('item', item);
-
         return <Picker.Item label={item.label} value={item.value} key={index} />;
       })}
     </Picker>

@@ -11,7 +11,7 @@ enum StateControlType {
 }
 
 interface IProps extends IStyleProps {
-  onChange?: (date: number, label: string, itemPosition: number) => void;
+  onChange?: (value: number, label: string, itemPosition: number) => void;
   value?: number;
   initialValue?: number;
   list: IPickerValue[];

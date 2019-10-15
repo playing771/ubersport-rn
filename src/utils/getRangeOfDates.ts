@@ -1,14 +1,16 @@
 import Mom, { Moment } from 'moment';
 import { extendMoment } from 'moment-range';
 
+const moment = extendMoment(Mom);
+moment.locale('ru');
+
 export default function getRangeOfDates(days: number) {
-  const _moment = extendMoment(Mom);
-  _moment.locale('ru');
-  const start = _moment();
-  const end = _moment().add(days, 'day');
+  const now = moment().startOf('d');
+  const start = now.clone();
+  const end = now.add(days, 'day');
 
   return Array.from(
-    _moment()
+    moment()
       .range(start, end)
       .by('day')
   ).map((date: Moment, index: number) => {
