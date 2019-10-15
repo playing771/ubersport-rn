@@ -165,12 +165,12 @@ export default function EditTimeModal(props: IProps) {
 
   return (
     <View style={styles.container}>
-      <Text>
+      {/* <Text>
         START: {getFormattedDate(dateStart)} {getFormattedTime(dateStart)}
       </Text>
       <Text>
         END: {getFormattedDate(dateEnd)} {getFormattedTime(dateEnd)}
-      </Text>
+      </Text> */}
       {renderEditableDateLable()}
       {renderEditableTimeLable()}
       <UButton
