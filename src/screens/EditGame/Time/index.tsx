@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import 'moment/locale/ru';
 
 import UButton from '../../../components/buttons/UButton';
@@ -18,6 +18,7 @@ import EditableAndroidTimeLable from './EditableAndroidTimeLable';
 import { getFormattedTime, getFormattedDate } from '../../../utils/dateUtils';
 import useAndroidTimePicker from '../../../components/pickers/useAndroidTimePicker';
 import { BASE_PADDING } from '../../../sharedStyles';
+import { getInitialStartingTime, getInittalEndingTime, getGameLength, getTimeLable } from './utils';
 
 const ExpandableDatePicker = withExpand(DatePicker);
 const ExpandableCalendar = withExpand(CalendarPicker);
@@ -29,9 +30,6 @@ const EXPAND_SETTINGS = {
   openDuration: 200,
   closeDuration: 150,
 };
-
-const DEFAULT_GAME_LENGTH = 2; // 2h
-const DEFAULT_NEW_GAME_TIMEOUT = 15; // 15 minutes
 
 export interface IProps {
   onSave: (dateStart: number, dateEnd: number) => void;
@@ -48,8 +46,6 @@ export default function EditTimeModal(props: IProps) {
   const [dateEnd, setDateEnd] = useState<number>(
     props.dateEnd ? props.dateEnd : getInittalEndingTime(dateStart)
   );
-
-  console.log('initial ', getFormattedTime(dateStart));
 
   function dateStartPressHandle() {
     useAndroidTimePicker(dateStart, timeStartChangeHandle);
@@ -83,17 +79,17 @@ export default function EditTimeModal(props: IProps) {
     }
   }
 
-  const onDatePickerChange = (date: number) => {
+  function onDatePickerChange(date: number) {
     const diff = moment(date).diff(dateStart, 'ms');
 
     const newEndDate = moment(dateEnd).add(diff, 'ms');
     setDateStart(date);
     setDateEnd(newEndDate.valueOf());
-  };
+  }
 
-  const onSave = () => {
+  function onSave() {
     props.onSave(dateStart, dateEnd);
-  };
+  }
 
   function renderEditableTimeLable() {
     return isAndroid ? (
@@ -196,40 +192,3 @@ const styles = StyleSheet.create({
   saveBtnText: { fontWeight: '600', fontSize: 16 },
   itemContainer: { marginBottom: BASE_PADDING }, // compensate bottom padding if no renderInput provided
 });
-
-function getInitialStartingTime() {
-  return roundNext15Minutes(moment()).valueOf();
-}
-
-function getInittalEndingTime(dateStart: number) {
-  return moment(dateStart)
-    .add(DEFAULT_GAME_LENGTH, 'h')
-    .valueOf();
-}
-
-function roundNext15Minutes(dateToRound: Moment) {
-  const newDate = dateToRound.clone();
-  let intervals = Math.floor(newDate.minutes() / DEFAULT_NEW_GAME_TIMEOUT);
-  if (newDate.minutes() % DEFAULT_NEW_GAME_TIMEOUT !== 0) {
-    intervals++;
-  }
-  if (intervals === 60 / DEFAULT_NEW_GAME_TIMEOUT) {
-    newDate.add(1, 'h');
-    intervals = 0;
-  }
-  newDate.minutes(intervals * DEFAULT_NEW_GAME_TIMEOUT);
-  newDate.seconds(0);
-  return newDate;
-}
-
-function getGameLength(dateStart: number, dateEnd: number) {
-  return (
-    moment(dateEnd)
-      .diff(moment(dateStart), 'hours')
-      .toLocaleString() + ' h'
-  );
-}
-
-function getTimeLable(dateStart: number, dateEnd: number) {
-  return getFormattedTime(dateStart) + ' - ' + getFormattedTime(dateEnd);
-}
