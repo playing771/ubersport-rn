@@ -15,14 +15,14 @@ async function login(email: string, password: string): Promise<IAuthResult> {
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email,
-      password
+      password,
       // email: 'maxpayne7@yandex.ru',
       // password: '123'
-    })
+    }),
   });
   let responseJson = await response.json();
 

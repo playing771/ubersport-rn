@@ -71,7 +71,7 @@ NewGameStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator(
-  { NewGameStack, FindGameStack },
+  { NewGameStack, FindGameStack, ProfileStack },
   {
     tabBarOptions: {
       style: {

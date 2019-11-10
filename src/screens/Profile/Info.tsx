@@ -23,10 +23,10 @@ interface IProps {
 
 export default function ProfileInfo({ id }: IProps) {
   const { navigate } = useNavigation();
-  const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
-    GET_USER_INFO_GQL,
-    { variables: { id } }
-  );
+  const { data = {} as IGetUserInfoResult, loading, error } = useQuery<
+    IGetUserInfoResult,
+    IGetUserInfoVariables
+  >(GET_USER_INFO_GQL, { variables: { id } });
 
   if (error) {
     return <ErrorGqlCard error={error} />;

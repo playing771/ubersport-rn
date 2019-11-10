@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, Platform, StatusBar, AppRegistry } from 'react-native';
 import { ApolloProvider } from '@apollo/react-hooks';
-import AppNavigator from './navigation/AppNavigator';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import { AppContextProvider, uknonwUser } from './utils/context/sports';
 import { createAppContainer } from 'react-navigation';
+
+import { AppContextProvider, uknonwUser } from './utils/context/sports';
+import AppNavigator from './navigation/AppNavigator';
 import { IUserWithToken } from './api/user/types';
 import { client } from './client';
 
