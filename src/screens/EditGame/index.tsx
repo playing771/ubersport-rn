@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { View, TextInput, Text, StyleSheet, ScrollView } from 'react-native';
+
 import Section from '../../components/Layout/Section';
 import withAdaptiveScreen, {
   IAdaptiveScreenOptions,
@@ -15,12 +16,10 @@ import withTouch from '../../components/hocs/WIthTouch';
 import EditPeopleCount, { IRestrictions } from './People';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
-import { AppContext } from '../../utils/context/sports';
-
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import EditGameBtn from './EditGameBtn';
 import NewGameBtn from './NewGameBtn';
-import withAppContext from '../../components/hocs/WithAppContext';
+import useAppContext from '../../hooks/useAppContext';
 
 const adaptiveScreenOptions: IAdaptiveScreenOptions = {
   transparentHeader: false,
@@ -47,9 +46,7 @@ const ICON_PARAMS_SM = { color: '#B1B2B4', size: 16 };
 
 const MAX_PEOPLE_COUNT = 99;
 
-interface IProps extends Partial<NavigationInjectedProps> {
-  ctx: AppContext;
-}
+interface IProps extends NavigationInjectedProps {}
 
 export interface IGameEditData {
   dateStart: number;
@@ -86,57 +83,52 @@ const initialState: IState = {
   ageLimit: { min: 0, max: 0 },
 };
 
-@withAppContext
-class EditGameScreen extends React.PureComponent<IProps, IState> {
-  private sportId: number;
-  private gameId?: string;
+function EditGameScreen(props: IProps) {
+  const { user } = useAppContext();
 
-  constructor(props: IProps) {
-    super(props);
-    const sportId: number | undefined = this.props.navigation!.getParam('sportId');
+  const navigationSportId = props.navigation!.getParam('sportId');
+  const gameEditData = props.navigation!.getParam('gameEditData');
 
-    const gameEditData: IGameEditData | undefined = this.props.navigation!.getParam('gameEditData');
-    if (!sportId && !gameEditData) {
-      throw new Error('sport or gameEditData must be provided in editGame screen ');
-    }
+  const [formState, setFormState] = React.useState<IState>(
+    gameEditData ? gameEditData : initialState
+  );
 
-    this.sportId = sportId ? sportId : gameEditData!.sportId;
-    this.gameId = gameEditData ? gameEditData.id : undefined;
-    this.state = { ...initialState, ...gameEditData };
-  }
+  const sportId: number = navigationSportId ? navigationSportId : gameEditData.sportId;
+  const gameId: string | undefined = gameEditData ? gameEditData.id : undefined;
 
-  saveTime = (dateStart: number, dateEnd: number, cbFn: () => void) => {
-    this.setState({ dateStart, dateEnd }, cbFn);
+  const saveTime = (dateStart: number, dateEnd: number, cbFn: () => void) => {
+    setFormState({ ...formState, dateStart, dateEnd });
+    cbFn();
   };
 
-  goToLocationScreen = () => {
-    this.props.navigation!.navigate(NavigationRoot.EditLocation, {
-      onLocationChange: this.onChangeLocation,
+  const goToLocationScreen = () => {
+    props.navigation!.navigate(NavigationRoot.EditLocation, {
+      onLocationChange: onChangeLocation,
     });
   };
 
-  onChangeLocation = (location: ILocation) => {
-    this.setState({ location });
+  const onChangeLocation = (location: ILocation) => {
+    setFormState({ ...formState, location });
   };
 
-  onChangeCountminParticipants = (count: number) => {
-    this.setState({ minParticipants: count });
+  const onChangeCountminParticipants = (count: number) => {
+    setFormState({ ...formState, minParticipants: count });
   };
 
-  onChangeCountmaxParticipants = (count: number) => {
-    this.setState({ maxParticipants: count });
+  const onChangeCountmaxParticipants = (count: number) => {
+    setFormState({ ...formState, maxParticipants: count });
   };
 
-  setGameName = (name: string) => {
-    this.setState({ name });
+  const setGameName = (name: string) => {
+    setFormState({ ...formState, name });
   };
 
-  setGameDescription = (description: string) => {
-    this.setState({ description });
+  const setGameDescription = (description: string) => {
+    setFormState({ ...formState, description });
   };
 
-  private getminParticipantsRestrictions() {
-    const maxP = this.state.maxParticipants || 0;
+  function getminParticipantsRestrictions() {
+    const maxP = formState.maxParticipants || 0;
     const restrictions: IRestrictions = {
       min: 0,
       max: maxP === 0 ? Math.max(maxP, MAX_PEOPLE_COUNT) : maxP - 1,
@@ -144,8 +136,8 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
     return restrictions;
   }
 
-  private getmaxParticipantsRestrictions() {
-    const minP = this.state.minParticipants || 0;
+  function getmaxParticipantsRestrictions() {
+    const minP = formState.minParticipants || 0;
     const restrictions: IRestrictions = {
       min: minP,
       max: MAX_PEOPLE_COUNT,
@@ -153,8 +145,8 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
     return restrictions;
   }
 
-  private getDateStartRestrictions() {
-    const dateEnd = this.state.dateEnd || 0;
+  function getDateStartRestrictions() {
+    const dateEnd = formState.dateEnd || 0;
     const restrictions: IRestrictions = {
       min: 0,
       max: dateEnd === 0 ? Math.max(dateEnd, MAX_PEOPLE_COUNT) : dateEnd - 1,
@@ -162,162 +154,149 @@ class EditGameScreen extends React.PureComponent<IProps, IState> {
     return restrictions;
   }
 
-  private getDateEndRestrictions() {
-    const dateStart = this.state.dateStart;
+  function getDateEndRestrictions() {
+    const dateStart = formState.dateStart;
     const restrictions: IRestrictions = {
-      min: dateStart,
+      min: dateStart!, // TODO: remove "!"
       max: MAX_PEOPLE_COUNT,
     };
     return restrictions;
   }
 
-  public render() {
-    const {
-      dateStart,
-      dateEnd,
-      location,
-      name,
-      description,
-      minParticipants,
-      maxParticipants,
-    } = this.state;
-    // console.log('dateStart,dateStart', dateStart, dateEnd);
+  const {
+    dateStart,
+    dateEnd,
+    location,
+    name,
+    description,
+    minParticipants,
+    maxParticipants,
+  } = formState;
+  // console.log('dateStart,dateStart', dateStart, dateEnd);
 
-    return (
-      <>
-        <KeyboardAwareScrollView extraScrollHeight={40}>
-          <ScrollView keyboardDismissMode="interactive" style={styles.container}>
-            <Section title={TIME_PLACE_TITLE}>
-              <SectionItemWithModal
-                icon="ios-calendar"
-                // iconParams={ICON_PARAMS}
-                bordered={true}
-                label={
-                  dateStart && dateEnd
-                    ? () => <TimeLabel dateStart={dateStart} dateEnd={dateEnd} />
-                    : DEFAULT_TIME_LABLE
-                }
-                modal={({ toggleModal }) => (
-                  <EditTimeModal
-                    onSave={(dStart: number, dEnd: number) =>
-                      this.saveTime(dStart, dEnd, toggleModal)
-                    }
-                    dateStartRestrictions={this.getDateStartRestrictions()}
-                    dateEndRestrictions={this.getDateEndRestrictions()}
-                    dateStart={this.state.dateStart}
-                    dateEnd={this.state.dateEnd}
-                  />
-                )}
-              />
-              <SectionItemWithBtn
-                label={
-                  location
-                    ? () => <Text style={styles.mainText}>{location.address}</Text>
-                    : DEFAULT_PLACE_LABLE
-                }
-                icon="ios-pin"
-                // iconParams={ICON_PARAMS}
-                onPress={this.goToLocationScreen}
-              />
-            </Section>
-            <Section title={GAME_PARAMS_TITLE}>
-              <SectionItem
-                bordered={true}
-                label={() => (
-                  <View>
-                    <Text style={styles.mainText}>{NAME_LABLE}</Text>
-                    <TextInput
-                      multiline={true}
-                      style={styles.subText}
-                      placeholder={NAME_PLACEHOLDER}
-                      placeholderTextColor={styles.optionalText.color}
-                      onChangeText={this.setGameName}
-                      value={name}
-                    />
-                  </View>
-                )}
-                icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
-              />
-              <SectionItemWithModal
-                icon="ios-contact"
-                // iconParams={ICON_PARAMS}
-                labelStyle={styles.optionalText}
-                bordered={true}
-                label={() => (
-                  <View>
-                    <Text style={styles.optionalText}>{MIN_PEOPLE}</Text>
-                    {typeof minParticipants !== 'undefined' && minParticipants > 0 && (
-                      <Text style={styles.subText}>{minParticipants}</Text>
-                    )}
-                  </View>
-                )}
-                modal={api => (
-                  <EditPeopleCount
-                    value={minParticipants}
-                    onSave={this.onChangeCountminParticipants}
-                    restrictions={this.getminParticipantsRestrictions()}
-                  />
-                )}
-              />
-              <SectionItemWithModal
-                icon="ios-contacts"
-                label={() => (
-                  <View>
-                    <Text style={styles.optionalText}>{MAX_PEOPLE}</Text>
-                    {typeof maxParticipants !== 'undefined' && maxParticipants > 0 && (
-                      <Text style={styles.subText}>{maxParticipants}</Text>
-                    )}
-                  </View>
-                )}
-                // iconParams={ICON_PARAMS}
-                labelStyle={styles.optionalText}
-                bordered={true}
-                modal={api => (
-                  <EditPeopleCount
-                    value={maxParticipants}
-                    onSave={this.onChangeCountmaxParticipants}
-                    restrictions={this.getmaxParticipantsRestrictions()}
-                  />
-                )}
-              />
-              <SectionItem
-                bordered={true}
-                label={() => (
+  return (
+    <>
+      <KeyboardAwareScrollView extraScrollHeight={40}>
+        <ScrollView keyboardDismissMode="interactive" style={styles.container}>
+          <Section title={TIME_PLACE_TITLE}>
+            <SectionItemWithModal
+              icon="ios-calendar"
+              // iconParams={ICON_PARAMS}
+              bordered={true}
+              label={
+                dateStart && dateEnd
+                  ? () => <TimeLabel dateStart={dateStart} dateEnd={dateEnd} />
+                  : DEFAULT_TIME_LABLE
+              }
+              modal={({ toggleModal }) => (
+                <EditTimeModal
+                  onSave={(dStart: number, dEnd: number) => saveTime(dStart, dEnd, toggleModal)}
+                  dateStartRestrictions={getDateStartRestrictions()}
+                  dateEndRestrictions={getDateEndRestrictions()}
+                  dateStart={dateStart}
+                  dateEnd={dateEnd}
+                />
+              )}
+            />
+            <SectionItemWithBtn
+              label={
+                location
+                  ? () => <Text style={styles.mainText}>{location.address}</Text>
+                  : DEFAULT_PLACE_LABLE
+              }
+              icon="ios-pin"
+              // iconParams={ICON_PARAMS}
+              onPress={goToLocationScreen}
+            />
+          </Section>
+          <Section title={GAME_PARAMS_TITLE}>
+            <SectionItem
+              bordered={true}
+              label={() => (
+                <View>
+                  <Text style={styles.mainText}>{NAME_LABLE}</Text>
                   <TextInput
                     multiline={true}
-                    style={[styles.subText, styles.noPadding]}
-                    placeholder={DESCRIPTION_PLACEHOLDER}
+                    style={styles.subText}
+                    placeholder={NAME_PLACEHOLDER}
                     placeholderTextColor={styles.optionalText.color}
-                    onChangeText={this.setGameDescription}
-                    value={description}
+                    onChangeText={setGameName}
+                    value={name}
                   />
-                )}
-                icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS_SM} />}
-              />
-            </Section>
-          </ScrollView>
-        </KeyboardAwareScrollView>
-        {this.gameId ? (
-          <EditGameBtn // TODO: validation!!!
-            variables={getEditGameVariablesFromState(
-              this.state,
-              this.props.ctx.user.id,
-              this.gameId,
-              this.sportId
-            )}
-          />
-        ) : (
-          <NewGameBtn // TODO: validation!!!
-            variables={getNewGameVariablesFromState(
-              this.state,
-              this.props.ctx.user.id,
-              this.sportId
-            )}
-          />
-        )}
-      </>
-    );
-  }
+                </View>
+              )}
+              icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
+            />
+            <SectionItemWithModal
+              icon="ios-contact"
+              // iconParams={ICON_PARAMS}
+              labelStyle={styles.optionalText}
+              bordered={true}
+              label={() => (
+                <View>
+                  <Text style={styles.optionalText}>{MIN_PEOPLE}</Text>
+                  {typeof minParticipants !== 'undefined' && minParticipants > 0 && (
+                    <Text style={styles.subText}>{minParticipants}</Text>
+                  )}
+                </View>
+              )}
+              modal={api => (
+                <EditPeopleCount
+                  value={minParticipants}
+                  onSave={onChangeCountminParticipants}
+                  restrictions={getminParticipantsRestrictions()}
+                />
+              )}
+            />
+            <SectionItemWithModal
+              icon="ios-contacts"
+              label={() => (
+                <View>
+                  <Text style={styles.optionalText}>{MAX_PEOPLE}</Text>
+                  {typeof maxParticipants !== 'undefined' && maxParticipants > 0 && (
+                    <Text style={styles.subText}>{maxParticipants}</Text>
+                  )}
+                </View>
+              )}
+              // iconParams={ICON_PARAMS}
+              labelStyle={styles.optionalText}
+              bordered={true}
+              modal={api => (
+                <EditPeopleCount
+                  value={maxParticipants}
+                  onSave={onChangeCountmaxParticipants}
+                  restrictions={getmaxParticipantsRestrictions()}
+                />
+              )}
+            />
+            <SectionItem
+              bordered={true}
+              label={() => (
+                <TextInput
+                  multiline={true}
+                  style={[styles.subText, styles.noPadding]}
+                  placeholder={DESCRIPTION_PLACEHOLDER}
+                  placeholderTextColor={styles.optionalText.color}
+                  onChangeText={setGameDescription}
+                  value={description}
+                />
+              )}
+              icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS_SM} />}
+            />
+          </Section>
+        </ScrollView>
+      </KeyboardAwareScrollView>
+      {gameId ? (
+        <EditGameBtn // TODO: validation!!!
+          variables={getEditGameVariablesFromState(formState, user.id, gameId, sportId)}
+        />
+      ) : (
+        <NewGameBtn // TODO: validation!!!
+          variables={getNewGameVariablesFromState(formState, user.id, sportId)}
+        />
+      )}
+    </>
+  );
 }
 
 function getNewGameVariablesFromState(state: IState, authorId: string, sportId: number) {
