@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { IPickerValue } from '../../../components/pickers/BasePicker/types';
 import SinglePicker from '../../../components/pickers/SinglePicker';
@@ -14,30 +14,26 @@ interface IProps {
   restrictions: IRestrictions;
 }
 
-interface IState {}
+export function EditPeopleCount(props: IProps) {
+  const count: IPickerValue[] = getItems(props.restrictions);
 
-export default class EditPeopleCount extends React.PureComponent<IProps, IState> {
-  count: IPickerValue[] = getItems(this.props.restrictions);
+  const onCountChange = useCallback((value: number) => {
+    props.onSave(value);
+  }, []);
 
-  onCountChange = (value: number | string, itemPosition: number) => {
-    this.props.onSave(Number(value));
-  };
-
-  private getValue() {
-    if (typeof this.props.value === 'undefined') {
-      return Number(this.count[0].value);
+  function getValue() {
+    if (typeof props.value === 'undefined') {
+      return count[0].value;
     } else {
-      return this.props.value;
+      return props.value;
     }
   }
 
-  public render() {
-    return (
-      <View style={styles.container}>
-        <SinglePicker onChange={this.onCountChange} value={this.getValue()} list={this.count} />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <SinglePicker onChange={onCountChange} value={getValue()} list={count} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

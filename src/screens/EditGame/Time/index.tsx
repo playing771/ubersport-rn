@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'moment/locale/ru';
 
 import UButton from '../../../components/buttons/UButton';
-import EditableDateItem from './Item';
+import { EditableDateItem } from './Item';
 import withExpand from '../../../components/hocs/WIthExpand';
 
 import { ExpandDirection } from '../../../components/Expandable';

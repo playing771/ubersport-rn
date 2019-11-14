@@ -7,7 +7,7 @@ interface IProps {
   dateEnd: number;
 }
 
-const TimeLabel: React.FC<IProps> = ({ dateStart, dateEnd }) => {
+function TimeLabel({ dateStart, dateEnd }: IProps) {
   // console.log('dateStart,dateEnd', dateStart, dateEnd);
 
   return (

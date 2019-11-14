@@ -12,7 +12,7 @@ enum StateControlType {
 
 interface IProps extends IStyleProps {
   onChange?: (value: number, label: string, itemPosition: number) => void;
-  value?: number;
+  value: number;
   initialValue?: number;
   list: IPickerValue[];
 }

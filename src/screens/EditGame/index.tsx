@@ -13,7 +13,7 @@ import { ILocation, IAgeLimit } from '../../api/games/types';
 import TimeLabel from './Time/TimeLabel';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import withTouch from '../../components/hocs/WIthTouch';
-import EditPeopleCount, { IRestrictions } from './People';
+import { EditPeopleCount, IRestrictions } from './People';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';

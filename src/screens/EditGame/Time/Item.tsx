@@ -1,7 +1,6 @@
-import React, { ReactElement, ElementType } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import EditTimeItemForm from './Form';
-import withTouch from '../../../components/hocs/WIthTouch';
 
 interface IProps {
   label: string | ReactElement;
@@ -14,53 +13,41 @@ interface IProps {
   // onChange: (value: number) => void;
 }
 
-interface IState {
+interface API {
   expanded: boolean;
-  // pickerValue: number;
 }
 
-type API = ReturnType<EditableDateItem['getApi']>;
+export function EditableDateItem(props: IProps) {
+  const [expanded, setExpanded] = useState(false);
 
-class EditableDateItem extends React.PureComponent<IProps, IState> {
-  static defaultProps = {
-    touchable: true,
+  const toggleInput = () => {
+    setExpanded(!expanded);
   };
 
-  itemElement: ElementType;
-
-  constructor(props: Readonly<IProps>) {
-    super(props);
-    this.state = { expanded: false };
-  }
-
-  toggleInput = () => {
-    this.setState({ expanded: !this.state.expanded });
-  };
-
-  private getApi() {
+  function getApi(): API {
     return {
-      expanded: this.state.expanded,
+      expanded,
     };
   }
 
-  render() {
-    return (
-      <View style={[styles.container, this.props.style]}>
-        <EditTimeItemForm
-          label={this.props.label}
-          icon={this.props.icon}
-          extra={this.props.extra}
-          disabled={!this.props.touchable}
-          onPress={this.props.onPress ? this.props.onPress : this.toggleInput}
-        />
-        {this.props.renderInput && this.props.renderInput(this.getApi())}
-      </View>
-    );
-  }
+  return (
+    <View style={[styles.container, props.style]}>
+      <EditTimeItemForm
+        label={props.label}
+        icon={props.icon}
+        extra={props.extra}
+        disabled={!props.touchable}
+        onPress={props.onPress ? props.onPress : toggleInput}
+      />
+      {props.renderInput && props.renderInput(getApi())}
+    </View>
+  );
 }
+
+EditableDateItem.defaultProps = {
+  touchable: true,
+};
 
 const styles = StyleSheet.create({
   container: { flexDirection: 'column', overflow: 'hidden' },
 });
-
-export default EditableDateItem;
