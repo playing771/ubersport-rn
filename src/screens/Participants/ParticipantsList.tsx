@@ -1,12 +1,12 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import ULoader from '../../components/ULoader/index';
 import { IParticipant } from '../../api/games/types';
-import Participant from './Participant';
-import { useGetParticipantsQuery } from './gql';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import ErrorCard from '../../components/ErrorCard';
+import ULoader from '../../components/ULoader/index';
 import useAppContext from '../../hooks/useAppContext';
 import { BASE_PADDING } from '../../sharedStyles';
+import { useGetParticipantsQuery } from './gql';
+import Participant from './Participant';
 
 interface IProps {
   gameId: string;
@@ -28,7 +28,7 @@ function ParticipantsList(props: IProps) {
   const { user } = useAppContext();
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   if (loading) {

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, FlatList, View, StyleSheet } from 'react-native';
-import GameItem from './GameItem';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { GameStatus } from '../../api/games/types';
-import useGamesListQuery from '../FindGame/gql';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import ErrorCard from '../../components/ErrorCard';
 import ULoader from '../../components/ULoader';
 import { BASE_PADDING } from '../../sharedStyles';
+import useGamesListQuery from '../FindGame/gql';
+import GameItem from './GameItem';
 
 interface IProps {
   userId: string;
@@ -22,7 +22,7 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
   });
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   if (loading) {

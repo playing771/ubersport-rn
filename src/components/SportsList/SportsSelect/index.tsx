@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-
-import useFavouriteSportsQuery from '../gql';
-import ErrorGqlCard from '../../ErrorCard/ErrorGqlCard';
-import useAppContext from '../../../hooks/useAppContext';
-import onlyUniqFromArrays from '../../../utils/onlyUniqsFromArrays';
-import SportsListView from '../SportsListView';
 import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
-import Header from './Header';
+import useAppContext from '../../../hooks/useAppContext';
 import useAuthCheck from '../../../hooks/useAuthCheck';
+import onlyUniqFromArrays from '../../../utils/onlyUniqsFromArrays';
+import ErrorCard from '../../ErrorCard';
+import useFavouriteSportsQuery from '../gql';
+import SportsListView from '../SportsListView';
+import Header from './Header';
 
 export type ISelectionMode = 'MULTIPLE' | 'SINGLE';
 interface IProps {
@@ -48,7 +47,7 @@ export default function SportsSelect({
   };
 
   if (fError || aErrror) {
-    return <ErrorGqlCard error={fError || aErrror} />;
+    return <ErrorCard error={fError || aErrror} />;
   }
 
   const loading = aLoading && fLoading;

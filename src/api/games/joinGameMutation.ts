@@ -21,8 +21,3 @@ export type JoinGameMutationVariables = {
   gameId: string;
   userId: string;
 };
-
-export default class CreateGameMutation extends Mutation<
-  IJoinGameResult,
-  JoinGameMutationVariables
-> {}

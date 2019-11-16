@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-
+import { ISex } from '../../../../api/user/types';
+import { USwitch as EditSex } from '../../../../components/buttons/Switch';
+import ErrorCard from '../../../../components/ErrorCard';
 import ULoader from '../../../../components/ULoader/index';
 import UTextInput from '../../../../components/UTextInput/index';
-
-import { USwitch as EditSex } from '../../../../components/buttons/Switch';
+import { deepOmit } from '../../../../utils/helpers';
 import AvatarSelect from '../../AvatarSelect';
-
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
-import ErrorGqlCard from '../../../../components/ErrorCard/ErrorGqlCard';
+import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
 import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
 import { useEditProfileInfoQuery } from './gql';
-import { ISex } from '../../../../api/user/types';
-import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
-import { deepOmit } from '../../../../utils/helpers';
 
 interface IProps {
   id: string;
@@ -34,7 +31,7 @@ export default function UserInfoTab({ id }: IProps) {
   const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(newInfoInitial);
 
   if (error) {
-    return <ErrorGqlCard error={error} position="BOTTOM" />;
+    return <ErrorCard error={error} position="BOTTOM" />;
   }
 
   const { getUserInfo } = data;

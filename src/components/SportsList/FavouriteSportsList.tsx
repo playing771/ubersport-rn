@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-
-import { StyleProp, ViewStyle, TextStyle } from 'react-native';
+import React from 'react';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import ISport from '../../api/sports/Sport.type';
-
-import ULoader from '../ULoader/index';
-import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
-import ErrorGqlCard from '../ErrorCard/ErrorGqlCard';
-import SportsListInner from './SportsListInner';
-import useFavouriteSportsQuery from './gql';
 import useAppContext from '../../hooks/useAppContext';
+import ErrorCard from '../ErrorCard';
+import ULoader from '../ULoader/index';
+import useFavouriteSportsQuery from './gql';
+import SportsListInner from './SportsListInner';
 
 interface IStyleProps {
   style?: StyleProp<ViewStyle>;
@@ -31,7 +28,7 @@ const FavouriteSportsList = (props: ISportsListProps) => {
   const { data, loading, error } = useFavouriteSportsQuery({ id: user.id });
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   if (loading) {

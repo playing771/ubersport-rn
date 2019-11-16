@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, StatusBar, View, Text } from 'react-native';
-
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import UButton from '../../components/buttons/UButton';
 import Colors from '../../constants/Colors';
 import useNavigation from '../../hooks/useNavigation';
@@ -12,7 +11,7 @@ interface IProps {}
 const TITLE = 'Чтобы продолжить, Вы должны авторизоваться!';
 const BTN_TITLE = 'Войти или зарегистрироваться';
 
-export default function NonAuthorizedScreen(props: IProps) {
+export default function NotAuthorizedScreen(props: IProps) {
   const { navigate } = useNavigation();
 
   const loginBtnPressHandle = () => {
@@ -40,7 +39,7 @@ export default function NonAuthorizedScreen(props: IProps) {
   );
 }
 
-NonAuthorizedScreen.navigationOptions = {
+NotAuthorizedScreen.navigationOptions = {
   headerStyle: { ...sharedStyles.borderLessHeader },
 };
 

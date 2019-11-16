@@ -1,25 +1,24 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { NavigationInjectedProps } from 'react-navigation';
-import { View, TextInput, Text, StyleSheet, ScrollView } from 'react-native';
-
-import Section from '../../components/Layout/Section';
+import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
+import { EditGameMutationVariables } from '../../api/games/editGameMutation';
+import { IAgeLimit, ILocation } from '../../api/games/types';
 import withAdaptiveScreen, {
   IAdaptiveScreenOptions,
 } from '../../components/hocs/WithAdaptiveScreen';
-import EditTimeModal from './Time';
 import withModal from '../../components/hocs/WithModal';
-import { NavigationRoot } from '../../navigation/roots';
-import { ILocation, IAgeLimit } from '../../api/games/types';
-import TimeLabel from './Time/TimeLabel';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import withTouch from '../../components/hocs/WIthTouch';
-import { EditPeopleCount, IRestrictions } from './People';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
-import { EditGameMutationVariables } from '../../api/games/editGameMutation';
+import Section from '../../components/Layout/Section';
+import useAppContext from '../../hooks/useAppContext';
+import { NavigationRoot } from '../../navigation/roots';
 import EditGameBtn from './EditGameBtn';
 import NewGameBtn from './NewGameBtn';
-import useAppContext from '../../hooks/useAppContext';
+import { EditPeopleCount, IRestrictions } from './People';
+import EditTimeModal from './Time';
+import TimeLabel from './Time/TimeLabel';
 
 const adaptiveScreenOptions: IAdaptiveScreenOptions = {
   transparentHeader: false,
@@ -288,7 +287,7 @@ function EditGameScreen(props: IProps) {
       </KeyboardAwareScrollView>
       {gameId ? (
         <EditGameBtn // TODO: validation!!!
-          variables={getEditGameVariablesFromState(formState, user.id, gameId, sportId)}
+          variables={getEditGameVariablesFromState(formState, user.id, gameId)}
         />
       ) : (
         <NewGameBtn // TODO: validation!!!
@@ -314,12 +313,7 @@ function getNewGameVariablesFromState(state: IState, authorId: string, sportId: 
   return variables;
 }
 
-function getEditGameVariablesFromState(
-  state: IState,
-  authorId: string,
-  gameId: string,
-  sportId: number
-) {
+function getEditGameVariablesFromState(state: IState, gameId: string) {
   const variables: EditGameMutationVariables = {
     gameInput: {
       id: gameId,
@@ -328,8 +322,6 @@ function getEditGameVariablesFromState(
       description: state.description,
       dateStart: state.dateStart!,
       dateEnd: state.dateStart,
-      authorId,
-      sportId,
       maxParticipants: state.maxParticipants,
       minParticipants: state.minParticipants,
     },

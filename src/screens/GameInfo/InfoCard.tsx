@@ -1,15 +1,15 @@
-import React from 'react';
-import Card from '../../components/GeneralCard/index';
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '../../constants/Colors';
+import React from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import EditBtn from '../../components/buttons/EditButton';
-import Right from '../../components/Layout/Right';
 import RoundButton from '../../components/buttons/RoundButton';
-import { useLeaveGameMutation } from './gql';
-import useAppContext from '../../hooks/useAppContext';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import ErrorCard from '../../components/ErrorCard';
+import Card from '../../components/GeneralCard/index';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
+import Right from '../../components/Layout/Right';
+import Colors from '../../constants/Colors';
+import useAppContext from '../../hooks/useAppContext';
+import { useLeaveGameMutation } from './gql';
 
 const PARTICIPANT_TEXT = 'Вы участник';
 const AUTHOR_TEXT = 'Вы модератор';
@@ -32,7 +32,7 @@ const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
 
   return (
     <>
-      {error && <ErrorGqlCard error={error} />}
+      {error && <ErrorCard error={error} />}
       <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
         <View style={styles.content}>
           <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />

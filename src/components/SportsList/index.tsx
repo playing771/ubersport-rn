@@ -1,11 +1,10 @@
 import React from 'react';
-
-import { StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import ISport from '../../api/sports/Sport.type';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
-import ErrorGqlCard from '../ErrorCard/ErrorGqlCard';
-import SportsListInner from './SportsListInner';
 import onlyUniqFromArrays from '../../utils/onlyUniqsFromArrays';
+import ErrorCard from '../ErrorCard';
+import SportsListInner from './SportsListInner';
 
 interface IStyleProps {
   style?: StyleProp<ViewStyle>;
@@ -27,7 +26,7 @@ const SportsList = ({ exclude = [], ...props }: ISportsListProps) => {
   const { data, loading, error } = useAvaliableSportsQuery();
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   const uniqSports = onlyUniqFromArrays(data.sports, exclude);

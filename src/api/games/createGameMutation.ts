@@ -1,6 +1,5 @@
-import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ILocation, IAgeLimit, ICreateGameResult } from './types';
+import { ILocation, IAgeLimit } from './types';
 
 // TODO: remove redundant data. Return only game ID
 export const CREATE_GAME_GQL = gql`
@@ -35,7 +34,7 @@ export const CREATE_GAME_GQL = gql`
   }
 `;
 
-export type CreateGameMutationVariables = {
+export interface CreateGameMutationVariables {
   name: string;
   location: ILocation;
   description: string;
@@ -46,9 +45,4 @@ export type CreateGameMutationVariables = {
   dateStart: number;
   dateEnd: number;
   authorId: string;
-};
-
-export default class CreateGameMutation extends Mutation<
-  ICreateGameResult,
-  CreateGameMutationVariables
-> {}
+}

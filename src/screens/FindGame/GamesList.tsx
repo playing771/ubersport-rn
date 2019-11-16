@@ -1,13 +1,12 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-
+import { IGame } from '../../api/games/types';
+import ErrorCard from '../../components/ErrorCard';
 import GameDetailsCard from '../../components/GameCard';
 import ULoader from '../../components/ULoader/index';
-import { IGame } from '../../api/games/types';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
-import useGamesListQuery from './gql';
-import { IFindGameFilters, ISearchGameSort } from '../FindGame';
 import { BASE_PADDING } from '../../sharedStyles';
+import { IFindGameFilters, ISearchGameSort } from '../FindGame';
+import useGamesListQuery from './gql';
 
 const keyExtractor = (item: IGame) => item.id;
 
@@ -25,7 +24,7 @@ const GamesList = ({ onGameCardPress, filters, sort }: IProps) => {
   }
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
   return (
     data.games && (

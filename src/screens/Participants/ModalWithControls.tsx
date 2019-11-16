@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import withTouch from '../../components/hocs/WIthTouch';
+import { StyleSheet, Text, View } from 'react-native';
+import ErrorCard from '../../components/ErrorCard';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
-import { ILeaveGameVariables, useLeaveGameMutation } from '../GameInfo/gql';
+import withTouch from '../../components/hocs/WIthTouch';
 import ULoader from '../../components/ULoader';
 import Colors from '../../constants/Colors';
 import { BASE_PADDING } from '../../sharedStyles';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import { ILeaveGameVariables, useLeaveGameMutation } from '../GameInfo/gql';
 
 interface IProps {
   gameId: string;
@@ -66,7 +66,7 @@ export default function ModalWithControls({
           {loading && <ULoader color={Colors.warningText} style={styles.loader} />}
         </View>
       )}
-      <ErrorGqlCard error={error} />
+      <ErrorCard error={error} />
     </View>
   );
 }

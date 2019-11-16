@@ -1,16 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-
-import ULoader from '../../components/ULoader/index';
-import GeneralGameInfo from './GeneralInfo';
-import Card from '../../components/GeneralCard';
-import InfoCard from './InfoCard';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { IGame } from '../../api/games/types';
-import JoinGameBtn from './JoinGameBtn';
 import IUser from '../../api/user/types';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
-import useGameInfoQuery from './gql';
+import ErrorCard from '../../components/ErrorCard';
+import Card from '../../components/GeneralCard';
+import ULoader from '../../components/ULoader/index';
 import useAppContext from '../../hooks/useAppContext';
+import GeneralGameInfo from './GeneralInfo';
+import useGameInfoQuery from './gql';
+import InfoCard from './InfoCard';
+import JoinGameBtn from './JoinGameBtn';
 
 export interface IProps {
   id: string;
@@ -26,7 +25,7 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
     return <ULoader />;
   }
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   const { game } = data;

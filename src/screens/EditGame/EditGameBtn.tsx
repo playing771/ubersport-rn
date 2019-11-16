@@ -1,39 +1,43 @@
-import * as React from 'react';
+import { ApolloError } from 'apollo-client';
+import React, { useCallback, useState } from 'react';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../api/games/editGameMutation';
 import { IEditGameResult } from '../../api/games/types';
+import SubmitButton from '../../components/buttons/SubmitButton';
+import withErrorCard from '../../components/hocs/WithErrorCard';
 import { NavigationRoot } from '../../navigation/roots';
 
-import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../api/games/editGameMutation';
-import handleApoloError from '../../utils/handleApoloError';
-import SubmitButton from '../../components/buttons/SubmitButton';
-
-interface Props {
+interface Props extends NavigationInjectedProps {
   variables: EditGameMutationVariables;
   disabled?: boolean;
 }
 
-const EditGameBtn: React.FC<Props & NavigationInjectedProps> = ({
-  variables,
-  disabled,
-  navigation,
-}) => {
-  const onComplete = (data: IEditGameResult) => {
-    navigation.navigate(NavigationRoot.GameInfo, {
-      gameId: data.editGame.id,
-    });
-  };
+const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
-  return (
-    <SubmitButton
-      gql={EDIT_GAME_GQL}
-      title="Опубликовать изменения"
-      variables={variables}
-      onComplete={onComplete}
-      onError={handleApoloError}
-      disabled={disabled}
-      refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
-    />
-  );
-};
+function EditGameBtn({ variables, disabled, navigation }: Props) {
+  const [error, setError] = useState<ApolloError>();
+  const handleError = useCallback((err: ApolloError) => setError(err), []);
+
+  {
+    const onComplete = (data: IEditGameResult) => {
+      navigation.navigate(NavigationRoot.GameInfo, {
+        gameId: data.editGame.id,
+      });
+    };
+
+    return (
+      <SubmitButtonWithErrorCard
+        gql={EDIT_GAME_GQL}
+        title="Опубликовать изменения"
+        variables={variables}
+        onComplete={onComplete}
+        onError={handleError}
+        disabled={disabled}
+        refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
+        error={error}
+      />
+    );
+  }
+}
 
 export default withNavigation(EditGameBtn);

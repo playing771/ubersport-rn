@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, ActivityIndicator, StatusBar, Text, AsyncStorage } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
-import { NavigationRoot } from '../../navigation/roots';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
-
-import useAppContext from '../../hooks/useAppContext';
+import { NavigationInjectedProps } from 'react-navigation';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import ErrorCard from '../../components/ErrorCard';
+import useAppContext from '../../hooks/useAppContext';
+import { NavigationRoot } from '../../navigation/roots';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -36,7 +34,7 @@ export default function LoadingScreen(props: IProps) {
     return (
       <View style={styles.mainContainer}>
         <StatusBar barStyle="light-content" />
-        <ErrorGqlCard error={error} position="CENTER" />
+        <ErrorCard error={error} position="CENTER" />
       </View>
     );
   }

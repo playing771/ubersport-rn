@@ -1,24 +1,24 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
-import FindGameScreen from '../screens/FindGame';
-import findGameBottomNav from '../screens/FindGame/bottomTabNav';
-import MyProfileScreen from '../screens/Profile/MyProfile';
-import { NavigationRoot } from './roots';
 import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
 import EditGameScreen from '../screens/EditGame/index';
-import SportFilters from '../screens/FindGame/SportFilters/index';
-import GameInfoScreen from '../screens/GameInfo/index';
 import EditLocationScreen from '../screens/EditGame/Location/index';
-import ParticipantsScreen from '../screens/Participants/index';
-import UserInfoScreen from '../screens/Profile/UserInfo';
 // import SingInScreen from '../screens/SignInScreen/index';
 // import TestHookScreen from '../screens/TestHookScreen/index';
 import EditProfileScreen from '../screens/EditProfile/index';
-import NotAuthorizedScreen from '../screens/NotAuthorized';
+import FindGameScreen from '../screens/FindGame';
+import findGameBottomNav from '../screens/FindGame/bottomTabNav';
 import FindOwnLocationScreen from '../screens/FindGame/Location';
+import SportFilters from '../screens/FindGame/SportFilters/index';
+import GameInfoScreen from '../screens/GameInfo/index';
+import NotAuthorizedScreen from '../screens/NotAuthorized';
+import ParticipantsScreen from '../screens/Participants/index';
+import MyProfileScreen from '../screens/Profile/MyProfile';
+import UserInfoScreen from '../screens/Profile/UserInfo';
+import { NavigationRoot } from './roots';
 
 const ProfileStack = createStackNavigator({
   [NavigationRoot.Profile]: MyProfileScreen,

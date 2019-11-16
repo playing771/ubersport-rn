@@ -1,20 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
-import getAgeFromBirthday from '../../utils/getAgeFromBirthday';
-import { NavigationRoot } from '../../navigation/roots';
-import ULoader from '../../components/ULoader/index';
-import useNavigation from '../../hooks/useNavigation';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '../../constants/Colors';
-import { ISex } from '../../api/user/types';
+import React from 'react';
 import { useQuery } from 'react-apollo';
+import { StyleSheet, Text, View } from 'react-native';
+import { ISex } from '../../api/user/types';
 import {
+  GET_USER_INFO_GQL,
   IGetUserInfoResult,
   IGetUserInfoVariables,
-  GET_USER_INFO_GQL,
 } from '../../api/user/withUserInfoQuery';
-import ErrorGqlCard from '../../components/ErrorCard/ErrorGqlCard';
+import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
+import ErrorCard from '../../components/ErrorCard';
+import ULoader from '../../components/ULoader/index';
+import Colors from '../../constants/Colors';
+import useNavigation from '../../hooks/useNavigation';
+import { NavigationRoot } from '../../navigation/roots';
+import getAgeFromBirthday from '../../utils/getAgeFromBirthday';
 
 // type IProps = {} & Partial<IGetUserResult> & NavigationScreenProps;
 interface IProps {
@@ -29,7 +29,7 @@ export default function ProfileInfo({ id }: IProps) {
   >(GET_USER_INFO_GQL, { variables: { id } });
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   const { getUser } = data;

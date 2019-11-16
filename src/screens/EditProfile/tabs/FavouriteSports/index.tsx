@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import SportsList from '../../../../components/SportsList';
-import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { StyleSheet, Text, View } from 'react-native';
+import ErrorCard from '../../../../components/ErrorCard';
+import SportsList from '../../../../components/SportsList';
+import ULoader from '../../../../components/ULoader';
+import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION } from '../../gql';
 import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
 import { useEditProfileFavouriteSportsQuery } from './gql';
-import ULoader from '../../../../components/ULoader';
-import ErrorGqlCard from '../../../../components/ErrorCard/ErrorGqlCard';
 
 interface IProps {
   userId: string;
@@ -22,7 +22,7 @@ export default function FavouriteSportsTab({ userId }: IProps) {
   }
 
   if (error) {
-    return <ErrorGqlCard error={error} />;
+    return <ErrorCard error={error} />;
   }
 
   const changeSportsHandle = (sportIds: number[]) => {
