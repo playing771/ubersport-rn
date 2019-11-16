@@ -1,16 +1,16 @@
-import * as React from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { StyleProp, ViewStyle, View, StyleSheet, Image, Text } from 'react-native';
-import { ILocation } from '../../api/games/types';
+import * as React from 'react';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import assembleLatLng from '../../utils/assembleLatLng';
+import { ILocation } from '../../api/games/types';
+import { isAndroid } from '../../utils/deviceInfo';
+import ULoader from '../ULoader';
 import AddressBar from './AddressBar';
-import { LatLng } from 'react-native-maps';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import UButton from '../buttons/UButton';
-import Colors from '../../constants/Colors';
+import MapCrosshair from './MapCrosshair';
+import MyLocationButton from './MyLocationButton';
+import SaveLocationButton from './SaveLocationButton';
 
 interface ILocationData {
   coords: {
@@ -33,6 +33,7 @@ type Props = {
   onPress?: (LocationCoords: LatLng) => void;
   onChangeLocation?: (location: ILocation) => void;
   myLocation?: boolean;
+  initialLocation?: Location.LocationData;
   location?: ILocation;
   dynamicMarker?: boolean;
   addressBar?: boolean;
@@ -52,13 +53,6 @@ interface State {
   geoBusy: boolean;
   addressBarVisible: boolean;
 }
-
-// const initialRegion = {
-//   latitude: 50,
-//   longitude: 37,
-//   latitudeDelta: 1,
-//   longitudeDelta: 0.0421
-// };
 
 const INITIAL_REGION = {
   latitude: 55.75,
@@ -101,37 +95,7 @@ class GameLocation extends React.Component<Props, State> {
     : initialState;
 
   async componentDidMount() {
-    const location: ILocation =
-      this.props.navigation.state.params && this.props.navigation.state.params.location
-        ? this.props.navigation.state.params.location
-        : this.props.location;
-    if (location) {
-      // const coords = assembleLatLng(location);
-      await this.setState({
-        address: location.address,
-        // LocationCoords: coords,
-        // showMarker: true
-      });
-      // this.changeRegion(coords);
-      await this.setState({ loading: false });
-    } else {
-      if (this.props.myLocation) {
-        const myLocation: ILocationData = await this.getMyLocationAsync();
-        const LocationCoords = assembleLatLng(myLocation.coords);
-        this.toggleGeoBusy();
-        const locationAddress = await this.getGeoDataFromLatLng(LocationCoords);
-        this.toggleGeoBusy();
-        const address = this.getFormattedAddress(locationAddress[0]);
-
-        await this.setState({
-          address,
-          // LocationCoords,
-          // showMarker: true
-        });
-        // this.changeRegion(LocationCoords);
-        await this.setState({ loading: false });
-      }
-    }
+    console.log('MAP componentDidMounts', this.props.initialLocation);
   }
 
   componentWillUnmount() {
@@ -140,7 +104,9 @@ class GameLocation extends React.Component<Props, State> {
     }
   }
 
-  private initStaticMap = () => {
+  initStaticMap = () => {
+    console.log('map is ready');
+
     if (this.props.static) {
       // this.setState({ loading: true });
       // const bindedTakeSnapshot = this.takeSnapshot.bind(this);
@@ -152,53 +118,58 @@ class GameLocation extends React.Component<Props, State> {
     }
   };
 
+  onMapReadyHandle = async () => {
+    // this.setState({ loading: false });
+    // const location: ILocation =
+    //   this.props.navigation.state.params && this.props.navigation.state.params.location
+    //     ? this.props.navigation.state.params.location
+    //     : this.props.location;
+    // if (location) {
+    //   // const coords = assembleLatLng(location);
+    //   this.setState({
+    //     address: location.address,
+    //   });
+    //   // this.changeRegion(coords);
+    //   this.setState({ loading: false });
+    // } else {
+    //   if (this.props.myLocation) {
+    //     const myLocation = await this.goToMyLocation();
+    //     const LocationCoords = assembleLatLng(myLocation.coords);
+    //     this.toggleGeoBusy();
+    //     const locationAddress = await this.getGeoDataFromLatLng(LocationCoords);
+    //     this.toggleGeoBusy();
+    //     const address = getFormattedAddress(locationAddress[0]);
+    //     console.log('getFormattedAddress', address);
+    //     this.setState({
+    //       address,
+    //       loading: false,
+    //     });
+    //     // this.changeRegion(LocationCoords);
+    //   }
+    // }
+    this.initStaticMap();
+    this.setState({ loading: false });
+  };
+
   private async updateAdress(region: Region) {
     const locationAddress = await this.getGeoDataFromLatLng(region);
-    return this.getFormattedAddress(locationAddress[0]);
+    return getFormattedAddress(locationAddress[0]);
   }
-
-  private getFormattedAddress = (gd: Location.Address): string => {
-    let address = '';
-
-    if (gd.name) {
-      // if (gd.city && gd.city !== gd.name) {
-      //   address += gd.city + ', ';
-      // }
-      address += gd.name;
-    } else {
-      if (!gd.street || !gd.city) {
-        address += gd.region;
-        if (gd.name && !gd.city) {
-          address += ', ' + gd.name;
-        }
-      }
-      if (gd.city) {
-        address += `${address.length ? ', ' : ''}`;
-        address += 'г. ' + gd.city;
-        if (gd.street) {
-          address += ', ';
-        }
-      }
-      if (gd.street) {
-        address += gd.street;
-      }
-    }
-    return address;
-  };
 
   private getMyLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
     if (status !== 'granted') {
-      // this.setState({
-      //   errorMessage: 'Permission to access location was denied',
-      // });
       throw new Error('Permission to access location was denied');
     }
 
-    return Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.BestForNavigation,
+    const location = await Location.getCurrentPositionAsync({
+      // on anroid it takew too long with hight accuracy
+      // https://github.com/expo/expo/issues/3433
+      accuracy: isAndroid ? Location.Accuracy.Low : Location.Accuracy.BestForNavigation,
     });
-    // this.setState({ address });
+
+    return location;
   };
 
   private getGeoDataFromLatLng = async (LocationCoords: Location.GeocodedLocation) => {
@@ -241,25 +212,33 @@ class GameLocation extends React.Component<Props, State> {
     });
   };
 
-  private goToMyLocation = async () => {
-    const locationData = await this.getMyLocationAsync();
-    console.log('locationData', locationData);
+  goToMyLocation = async () => {
+    console.log('goToMyLocation');
+
+    const myLocation = await this.getMyLocationAsync();
+    console.log('myLocation', myLocation);
+
+    this.goToLocation(myLocation);
+    return myLocation;
+  };
+
+  goToLocation = async (location: ILocationData) => {
+    console.log('goToLocation', this.mapRef.current);
+
     if (this.mapRef.current) {
-      this.mapRef.current.animateToRegion({
-        ...locationData.coords,
-        longitudeDelta: 0.003,
-        latitudeDelta: 0,
-      });
+      console.log('this.mapRef.current', 'TRUE');
+
+      this.mapRef.current.animateToRegion(getRegionFromLocation(location));
     }
   };
 
-  private hideAddressBar = () => {
+  hideAddressBar = () => {
     if (this.state.addressBarVisible) {
       this.setState({ addressBarVisible: false });
     }
   };
 
-  private submitLocation = () => {
+  submitLocation = () => {
     if (this.props.onChangeLocation) {
       this.props.onChangeLocation({
         // ...assembleLatLng(this.state.region),
@@ -281,100 +260,103 @@ class GameLocation extends React.Component<Props, State> {
 
     return (
       <View style={[styles.container, style]}>
-        {this.state.loading ? (
-          <Text>loading</Text>
-        ) : (
-          <>
-            {this.state.addressBarVisible && <AddressBar address={address} loading={geoBusy} />}
-            {this.state.mapSnapshot ? (
-              <Image source={{ uri: this.state.mapSnapshot }} style={{ flex: 1 }} />
-            ) : (
-              <>
-                <UButton
-                  // style={styles.submitBtn}
+        <>
+          {this.state.addressBarVisible && <AddressBar address={address} loading={geoBusy} />}
+          {this.state.mapSnapshot ? (
+            <Image source={{ uri: this.state.mapSnapshot }} style={{ flex: 1 }} />
+          ) : (
+            <>
+              <View style={styles.mapWrapper}>
+                <MapView
+                  ref={this.mapRef}
+                  provider={PROVIDER_GOOGLE}
+                  onMapReady={this.onMapReadyHandle}
+                  // scrollEnabled={false}
+                  zoomControlEnabled={false}
+                  style={styles.map}
+                  loadingEnabled={true}
+                  customMapStyle={[customMapStyle, { flex: 1 }]}
+                  // initialRegion={this.state.region}
+                  initialRegion={
+                    this.props.initialLocation
+                      ? getRegionFromLocation(this.props.initialLocation)
+                      : this.state.region
+                  }
+                  onRegionChangeComplete={this.props.dynamicMarker ? this.changeRegion : undefined}
+                  onRegionChange={this.hideAddressBar}
+                >
+                  {this.state.region && this.state.showMarker ? (
+                    <Marker
+                      coordinate={this.state.region}
+                      title={marker.title}
+                      description={marker.description}
+                    />
+                  ) : (
+                    undefined
+                  )}
+                </MapView>
+              </View>
 
-                  icon="ios-compass"
+              <MyLocationButton onPress={this.goToMyLocation} />
+              <SaveLocationButton onPress={this.submitLocation} />
+              {this.state.loading ? (
+                <View
                   style={{
-                    // width: 40,
-                    // height: 40,
+                    backgroundColor: 'white',
                     position: 'absolute',
-                    bottom: 70,
-                    right: 10,
-                    zIndex: 99,
-                    paddingVertical: 5,
+                    height: '100%',
+                    width: '100%',
+                    zIndex: 999,
                   }}
-                  backgroundColor="#f1f1f1"
-                  iconStyle={{ fontSize: 34, color: '#596588' }}
-                  rounded={true}
-                  onPress={this.goToMyLocation}
-
-                  // iconStyle={styles.submitBtnIcon}
-                  // textStyle={styles.submitBtnText}
-                  // backgroundColor={Colors.green}
-                />
-                <UButton
-                  style={styles.submitBtn}
-                  title="Сохранить"
-                  icon="ios-checkmark-circle"
-                  iconStyle={styles.submitBtnIcon}
-                  textStyle={styles.submitBtnText}
-                  backgroundColor={Colors.green}
-                  rounded={true}
-                  onPress={this.submitLocation}
-                />
-                <View style={styles.mapWrapper}>
-                  <MapView
-                    ref={this.mapRef}
-                    provider={PROVIDER_GOOGLE}
-                    onMapReady={this.initStaticMap}
-                    // scrollEnabled={false}
-                    zoomControlEnabled={false}
-                    style={styles.map}
-                    loadingEnabled={true}
-                    customMapStyle={[customMapStyle, { flex: 1 }]}
-                    initialRegion={
-                      this.state.region
-                      // (this.props.static ||
-                      //   (this.props.navigation.state.params &&
-                      //     this.props.navigation.state.params.location)) &&
-                      // this.state.region
-                      //   ? {
-                      //       ...this.state.region
-                      //       // latitudeDelta: 0.08,
-                      //       // longitudeDelta: 0.0421
-                      //     }
-                      //   : undefined
-                    }
-                    // onRegionChange={this.onRegionChange}
-                    onRegionChangeComplete={
-                      this.props.dynamicMarker ? this.changeRegion : undefined
-                    }
-                    onRegionChange={this.hideAddressBar}
-                  >
-                    {this.state.region && this.state.showMarker ? (
-                      <Marker
-                        coordinate={this.state.region}
-                        title={marker.title}
-                        description={marker.description}
-                      />
-                    ) : (
-                      undefined
-                    )}
-                  </MapView>
+                >
+                  <ULoader style={styles.loader} size="large" color="#434E77" />
                 </View>
-
-                {
-                  <View style={styles.crosshairsContainer} pointerEvents="none">
-                    <MaterialCommunityIcons name="map-marker-outline" size={40} color="red" />
-                  </View>
-                }
-              </>
-            )}
-          </>
-        )}
+              ) : (
+                <MapCrosshair />
+              )}
+            </>
+          )}
+        </>
       </View>
     );
   }
+}
+
+function getRegionFromLocation(location: ILocationData): Region {
+  return {
+    ...location.coords,
+    longitudeDelta: 0.003,
+    latitudeDelta: 0,
+  };
+}
+
+function getFormattedAddress(gd: Location.Address): string {
+  let address = '';
+
+  if (gd.name) {
+    // if (gd.city && gd.city !== gd.name) {
+    //   address += gd.city + ', ';
+    // }
+    address += gd.name;
+  } else {
+    if (!gd.street || !gd.city) {
+      address += gd.region;
+      if (gd.name && !gd.city) {
+        address += ', ' + gd.name;
+      }
+    }
+    if (gd.city) {
+      address += `${address.length ? ', ' : ''}`;
+      address += 'г. ' + gd.city;
+      if (gd.street) {
+        address += ', ';
+      }
+    }
+    if (gd.street) {
+      address += gd.street;
+    }
+  }
+  return address;
 }
 
 const styles = StyleSheet.create({
@@ -393,22 +375,7 @@ const styles = StyleSheet.create({
   marker: {
     fontSize: 50,
   },
-  crosshairsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 25, // чтобы скорректировать центр для некруглых иконок маркера
-  },
-  submitBtn: {
-    alignSelf: 'center',
-    bottom: 10,
-    zIndex: 999,
-    width: '95%',
-    height: 50,
-    position: 'absolute',
-  },
-  submitBtnIcon: { fontSize: 24 },
-  submitBtnText: { fontSize: 16 },
+  loader: { marginTop: 'auto', marginBottom: 'auto' },
 });
 
 export default withNavigation(GameLocation);

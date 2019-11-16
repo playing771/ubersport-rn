@@ -1,18 +1,22 @@
+import { LocationData } from 'expo-location';
 import * as React from 'react';
-import GameLocation from '../../../components/GameLocation';
-import mapStyle from '../../../components/GameCard/mapStyle';
-
-import { ILocation } from '../../../api/games/types';
 import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
+import { ILocation } from '../../../api/games/types';
+import mapStyle from '../../../components/GameCard/mapStyle';
+import GameLocation from '../../../components/GameLocation';
+import getMyLocationAsync from '../../../utils/getMyLocation';
 
 interface IProps extends NavigationInjectedProps {}
 
 interface IState {
-  location?: ILocation;
+  // location?: ILocation;
+  hasLocation: boolean;
 }
 
-const initialState: IState = {};
+const initialState: IState = {
+  hasLocation: false,
+};
 
 export default class EditLocationScreen extends React.Component<IProps, IState> {
   static navigationOptions: NavigationStackOptions = {
@@ -25,9 +29,22 @@ export default class EditLocationScreen extends React.Component<IProps, IState> 
   };
 
   state = initialState;
+  location: LocationData | null = null;
 
-  componentDidMount() {
-    this.setState({ location: this.props.navigation.getParam('location') });
+  constructor(props: IProps) {
+    super(props);
+
+    this.location = this.props.navigation.getParam('location');
+  }
+
+  async componentDidMount() {
+    if (!this.location) {
+      console.log('componentDidMount');
+
+      this.location = await getMyLocationAsync();
+      this.setState({ hasLocation: true });
+      console.log('getMyLocationAsync', this.location);
+    }
   }
 
   goBackWithLocation = (location: ILocation) => {
@@ -38,14 +55,19 @@ export default class EditLocationScreen extends React.Component<IProps, IState> 
 
   public render() {
     return (
-      <GameLocation
-        style={{ height: '100%' }}
-        customMapStyle={mapStyle}
-        location={this.state.location}
-        dynamicMarker={true}
-        onChangeLocation={this.goBackWithLocation}
-        myLocation={true}
-      />
+      <>
+        {this.state.hasLocation && (
+          <GameLocation
+            style={{ height: '100%' }}
+            customMapStyle={mapStyle}
+            // location={this.state.location}
+            initialLocation={this.location!}
+            dynamicMarker={true}
+            onChangeLocation={this.goBackWithLocation}
+            myLocation={true}
+          />
+        )}
+      </>
     );
   }
 }

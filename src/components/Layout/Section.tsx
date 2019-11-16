@@ -6,7 +6,7 @@ import UbSectionTitle from './SectionTitle';
 interface IProps {
   title?: string;
   titleContainerStyles?: StyleProp<ViewStyle>;
-  children: ReactElement | ReactElement;
+  children: ReactElement | ReactElement[];
 }
 
 export default function UbSection({ title, titleContainerStyles, children }: IProps) {
