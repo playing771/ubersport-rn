@@ -17,27 +17,30 @@ interface IProps {
 }
 
 export interface IEditProfileUserInfo {
-  nickname: string;
-  firstName: string;
-  lastName: string;
-  sex: ISex;
-  avatar: string | null;
+  nickname?: string;
+  firstName?: string;
+  lastName?: string;
+  sex?: ISex;
+  avatar?: string | null;
 }
-
-const newInfoInitial: IEditProfileUserInfo | null = null;
 
 export default function UserInfoTab({ id }: IProps) {
   const { data, loading, error } = useEditProfileInfoQuery({ id });
-  const [newInfo, setNewInfo] = useState<IEditProfileUserInfo>(newInfoInitial);
+  const [newInfo, setNewInfo] = useState<IEditProfileUserInfo | null>(null);
 
   if (error) {
     return <ErrorCard error={error} position="BOTTOM" />;
   }
 
+  if (!data) {
+    return <></>;
+  }
+
   const { getUserInfo } = data;
 
   const changeFirstNameHandle = (firstName: string) => {
-    setNewInfo({ ...newInfo, firstName });
+    const tmo = { ...newInfo, firstName };
+    setNewInfo(tmo);
   };
 
   const changeLastNameHandle = (lastName: string) => {
@@ -105,13 +108,13 @@ export default function UserInfoTab({ id }: IProps) {
   );
 }
 
-function getAvatarSrc(info: IEditProfileUserInfo | null, fetchedAvatar: string | null) {
+function getAvatarSrc(info: IEditProfileUserInfo | null, fetchedAvatar: string | null | undefined) {
   if (info === null) {
     // если аватар не выбран, то показываем аватара с сервера или пустой аватар
     return fetchedAvatar ? fetchedAvatar : null;
   }
 
-  if (info.avatar === null) {
+  if (!!!info.avatar) {
     return null;
   }
   // если выбран аватар, покащываем его
