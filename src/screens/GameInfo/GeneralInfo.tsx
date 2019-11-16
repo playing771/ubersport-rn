@@ -1,14 +1,14 @@
-import React from 'react';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { View, StyleSheet, Text } from 'react-native';
-import SportIcon from '../../components/GameCard/SportIcon';
-import TimeLabel from '../EditGame/Time/TimeLabel';
-import GameLocationStatic from '../../components/GameLocationStatic';
-import mapStyle from '../../components/GameCard/mapStyle';
-import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
-import Section from '../../components/Layout/Section';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { IGame } from '../../api/games/types';
+import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
+import mapStyle from '../../components/GameCard/mapStyle';
+import SportIcon from '../../components/GameCard/SportIcon';
+import GameLocationStatic from '../../components/GameLocationStatic';
 import withTouch from '../../components/hocs/WIthTouch';
+import Section from '../../components/Layout/Section';
+import TimeLabel from '../EditGame/Time/TimeLabel';
 
 interface IProps {
   game: IGame;
@@ -19,7 +19,7 @@ const ICON_PARAMS = { color: '#B1B2B4', size: 20 };
 
 const ParticipantsTouchable = withTouch(Participants);
 
-const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
+export default function GeneralGameInfo({ game, onPressParticipants }: IProps) {
   return (
     <>
       {game && (
@@ -73,7 +73,7 @@ const GeneralGameInfo = ({ game, onPressParticipants }: IProps) => {
       )}
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   // titleContainer: { paddingHorizontal: 6 },
@@ -97,5 +97,3 @@ const styles = StyleSheet.create({
   mapContainer: { height: 150, marginVertical: 12 },
   capacityContainer: { paddingHorizontal: 18 },
 });
-
-export default GeneralGameInfo;

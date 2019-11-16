@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import mapStyle from '../../components/GameCard/mapStyle';
 import { ILocation } from '../../api/games/types';
 import AdaptiveScreen from '../../components/AdaptiveScreen/index';
+import mapStyle from '../../components/GameCard/mapStyle';
 import GameLocation from '../../components/GameLocation';
 import { gradient } from '../../constants/generalStyles';
 
 type Props = {} & NavigationInjectedProps;
 
-type State = {
+interface State {
   location?: ILocation;
-};
+}
 
 const initialState: State = {};
 
@@ -19,9 +19,9 @@ export default class GameLocationScreen extends React.Component<Props, State> {
     title: 'Карта',
     headerTitleStyle: {
       color: '#fff',
-      fontWeight: '400'
+      fontWeight: '400',
     },
-    headerTransparent: true // TODO: fix
+    headerTransparent: true, // TODO: fix
   };
 
   state: State = initialState;
@@ -33,11 +33,7 @@ export default class GameLocationScreen extends React.Component<Props, State> {
   public render(): JSX.Element {
     const onChangeLocation = this.props.navigation.getParam('onLocationChange');
     return (
-      <AdaptiveScreen
-        transparentHeader={true}
-        gradient={gradient}
-        barStyle={'light-content'}
-      >
+      <AdaptiveScreen transparentHeader={true} gradient={gradient} barStyle={'light-content'}>
         <GameLocation
           style={{ height: '100%' }}
           customMapStyle={mapStyle}
