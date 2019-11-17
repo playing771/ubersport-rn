@@ -31,29 +31,38 @@ function getRegionFromLocation(location: Location.LocationData): Region {
 function getFormattedAddress(gd: Location.Address): string {
   let address = '';
 
-  if (gd.name) {
-    // if (gd.city && gd.city !== gd.name) {
-    //   address += gd.city + ', ';
-    // }
-    address += gd.name;
-  } else {
-    if (!gd.street || !gd.city) {
-      address += gd.region;
-      if (gd.name && !gd.city) {
+  // ANDROID
+  if (isAndroid) {
+    if (gd.street) {
+      address += gd.street;
+      if (gd.name && gd.name !== gd.street) {
         address += ', ' + gd.name;
       }
     }
-    if (gd.city) {
-      address += `${address.length ? ', ' : ''}`;
-      address += 'г. ' + gd.city;
+    // IOS
+  } else {
+    if (gd.name) {
+      address += gd.name;
+    } else {
+      if (!gd.street || !gd.city) {
+        address += gd.region;
+        if (gd.name && !gd.city) {
+          address += ', ' + gd.name;
+        }
+      }
+      if (gd.city) {
+        address += `${address.length ? ', ' : ''}`;
+        address += 'г. ' + gd.city;
+        if (gd.street) {
+          address += ', ';
+        }
+      }
       if (gd.street) {
-        address += ', ';
+        address += gd.street;
       }
     }
-    if (gd.street) {
-      address += gd.street;
-    }
   }
+
   return address;
 }
 

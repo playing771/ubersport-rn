@@ -157,8 +157,6 @@ export default class UMap extends React.Component<Props, State> {
   };
 
   goToLocation = async (location: Location.LocationData) => {
-    console.log('goToLocation', this.mapRef.current);
-
     if (this.mapRef.current) {
       this.mapRef.current.animateToRegion(locationUtils.getRegionFromLocation(location));
     }
