@@ -27,6 +27,7 @@ export function KeyboardView(props: IProps & IDefaultProps) {
       scrollEnabled={scrollEnabled}
       alwaysBounceVertical={false}
       extraHeight={keyboardVerticalOffset}
+      enableOnAndroid={true}
       // behavior="position"
     >
       {children}
