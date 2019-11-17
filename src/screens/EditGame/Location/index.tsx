@@ -35,13 +35,11 @@ export default class EditLocationScreen extends React.Component<IProps, IState> 
     super(props);
 
     this.location = this.props.navigation.getParam('location');
-    console.log('this.location', this.location);
   }
 
   async componentDidMount() {
     if (!this.location) {
       this.location = await locationUtils.getMyLocationAsync();
-      console.log('MY location', this.location);
     }
     this.setState({ hasLocation: true });
   }

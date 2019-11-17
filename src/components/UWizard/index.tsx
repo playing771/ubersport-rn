@@ -169,7 +169,6 @@ export default class UWizard extends React.Component<IProps, IState> {
           keyExtractor={(item, index) => index.toString()}
           onLayout={e => {
             const height = e.nativeEvent.layout.height;
-            console.log('HEIGHT', height);
 
             this.setState({ offset: height });
           }}

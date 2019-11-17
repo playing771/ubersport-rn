@@ -17,18 +17,16 @@ export default function HeaderRightButton() {
     logout();
   };
 
-  return (
-    isLoggedIn && (
-      <WithModalButton
-        backgroundColor="transparent"
-        style={styles.button}
-        textStyle={styles.buttonText}
-        onSubmit={pressHandle}
-      >
-        <Ionicons name="ios-log-out" size={30} color={Colors.purle} />
-      </WithModalButton>
-    )
-  );
+  return isLoggedIn ? (
+    <WithModalButton
+      backgroundColor="transparent"
+      style={styles.button}
+      textStyle={styles.buttonText}
+      onSubmit={pressHandle}
+    >
+      <Ionicons name="ios-log-out" size={30} color={Colors.purle} />
+    </WithModalButton>
+  ) : null;
 }
 
 const WithModalButton = withSubmitModal(UButton);

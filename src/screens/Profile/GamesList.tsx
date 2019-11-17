@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { GameStatus } from '../../api/games/types';
+import { GameStatus, IGame } from '../../api/games/types';
 import ErrorCard from '../../components/ErrorCard';
 import ULoader from '../../components/ULoader';
 import { BASE_PADDING } from '../../sharedStyles';
@@ -29,9 +29,9 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
     return <ULoader />;
   }
 
-  const { games } = data.games;
+  const games = data ? data.games.games : [];
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item, index }: { item: IGame; index: number }) => (
     <GameItem
       game={item}
       onCardPress={onGamePress}
@@ -51,11 +51,8 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
       <Text style={styles.header}>{title}</Text>
       <View style={styles.container}>
         {games.length ? (
-          <FlatList
+          <FlatList<IGame>
             showsHorizontalScrollIndicator={false}
-            // contentContainerStyle={
-            //   isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH + 25 } : undefined
-            // }
             data={games}
             horizontal={true}
             keyExtractor={(item, index) => index.toString()}

@@ -28,7 +28,12 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
     return <ErrorCard error={error} />;
   }
 
+  if (!data) {
+    return null;
+  }
+
   const { game } = data;
+
   const isParticipant = isParticipantCheck(user.id, game.participants);
 
   return game ? (

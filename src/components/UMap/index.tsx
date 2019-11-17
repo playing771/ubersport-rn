@@ -86,8 +86,6 @@ export default class UMap extends React.Component<Props, State> {
   }
 
   initStaticMap = () => {
-    console.log('map is ready');
-
     if (this.props.static) {
       // this.setState({ loading: true });
       // const bindedTakeSnapshot = this.takeSnapshot.bind(this);

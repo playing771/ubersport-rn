@@ -1,12 +1,12 @@
-import useAppContext from './useAppContext';
 import { NavigationRoot } from '../navigation/roots';
+import useAppContext from './useAppContext';
 import useNavigation from './useNavigation';
 
 type ICheckType = 'boolean' | 'redirect';
 
 export default function useAuthCheck() {
   const { user, isLoggedIn } = useAppContext();
-  const { navigate, replace } = useNavigation();
+  const { navigate } = useNavigation();
   // console.log('useAuthCheck', user);
 
   const authCheck = (checkType: ICheckType = 'boolean') => {

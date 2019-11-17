@@ -1,15 +1,13 @@
 import React from 'react';
-
+import { StyleSheet, Text, View } from 'react-native';
+import { IParticipant } from '../../../api/games/types';
+import UserAvatar from '../../../components/AvatarsGroup/UserAvatar';
 import withModal from '../../../components/hocs/WithModal';
 import withTouch from '../../../components/hocs/WIthTouch';
-import { IParticipant } from '../../../api/games/types';
-import { View, Text, StyleSheet } from 'react-native';
-import UserAvatar from '../../../components/AvatarsGroup/UserAvatar';
-import { getUserAge, getFullName } from './utils';
-import sharedStyles from '../../../sharedStyles';
+import { getFullName, getUserAge } from './utils';
 
 interface IProps extends Partial<IParticipant> {
-  src: string;
+  src: string | null;
 }
 
 function ParticipantRow({ src, nickname, dateOfBirth, lastName, firstName }: IProps) {

@@ -33,7 +33,7 @@ const EditProfileScreen = (props: IProps) => {
   };
 
   useEffect(() => {
-    setParams({ test: 'test' });
+    setParams({ test: 'test' }); // TODO: check???
     // setSports(getUser.favoriteSports.map(sport => sport.id));
   }, []);
 
