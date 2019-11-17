@@ -1,34 +1,31 @@
 import React from 'react';
-import { View, AsyncStorage, StyleSheet } from 'react-native';
+import { AsyncStorage, StyleSheet, View } from 'react-native';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { NavigationRoot } from '../../navigation/roots';
+import { NavigationStackOptions } from 'react-navigation-stack';
+import { CREATE_USER_GQL, ICreateUserMutationVariables } from '../../api/user/createUser';
+import emailValidate, { IExistEmail } from '../../api/user/emailValidate';
+import login, { IAuthResult } from '../../api/user/login';
+import { IUserWithToken } from '../../api/user/types';
+import UButton from '../../components/buttons/UButton';
+import ErrorCard from '../../components/ErrorCard/index';
 import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen/index';
+import withAppContext from '../../components/hocs/WithAppContext';
+import { KeyboardView } from '../../components/KeyboardVew';
 import UWizard from '../../components/UWizard/index';
-import SignUpActive, { validateEmail } from './email/active';
+import { NavigationRoot } from '../../navigation/roots';
+import { IAppContextInjectedProp } from '../../utils/context/sports';
+import SignUpActive from './email/active';
 import SignUpPassed from './email/passed';
-import PasswordActive from './password/active';
-import SubmitPasswordActive from './submitPassword/active';
-import PasswordPassed from './password/passed';
-import { passwordValidateFn } from './password/active';
-import { submitPasswordValidateFn } from './submitPassword/active';
-import UserInfoActive from './userInfo/active';
-import SubmitPasswordPassed from './submitPassword/passed';
 import favoriteSportsActive from './favoriteSports/active';
 import LoginForm from './LoginForm/index';
+import PasswordActive from './password/active';
+import PasswordPassed from './password/passed';
+import SubmitPasswordActive from './submitPassword/active';
+import SubmitPasswordPassed from './submitPassword/passed';
 import SignInScreenTitle from './Title';
-import login, { IAuthResult } from '../../api/user/login';
-import ErrorCard from '../../components/ErrorCard/index';
-import { IUserWithToken } from '../../api/user/types';
-import withAppContext from '../../components/hocs/WithAppContext';
-import { IAppContextInjectedProp } from '../../utils/context/sports';
-import emailValidate from '../../api/user/emailValidate';
-import { IExistEmail } from '../../api/user/emailValidate';
+import UserInfoActive from './userInfo/active';
 import UserInfoPassed from './userInfo/passed';
-import parseGqlError from '../../utils/parseGqlError';
-import { ICreateUserMutationVariables, CREATE_USER_GQL } from '../../api/user/createUser';
-import UButton from '../../components/buttons/UButton';
-import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
 
@@ -159,18 +156,12 @@ class SingInScreen extends React.Component<IProps, IState> {
       // dateOfBirth?: number;
       favoriteSports: result[4].favoriteSports,
     };
-    console.log(' this.setState({ signUpVariables }', signUpVariables);
-    console.log('mutate', mutate);
     mutate({
       mutation: CREATE_USER_GQL,
       variables: signUpVariables,
     })
-      .then((data: any) => {
-        console.log('MUTATE', data);
-      })
-      .catch(error => {
-        console.log('ERROR', parseGqlError(error));
-      });
+      .then((data: any) => {})
+      .catch(error => {});
     // console.log('DATA', data);
 
     // this.setState({ signUpVariables });
@@ -198,33 +189,37 @@ class SingInScreen extends React.Component<IProps, IState> {
 
   private renderContent() {
     const { type, userEmail, loading, badCredentials } = this.state;
-    return type === 'SIGNUP' || type === undefined ? (
-      <>
-        <UWizard
-          header={this.renderHeader(type)}
-          onStepPass={this.stepPassedHandle}
-          steps={steps}
-          submitHandle={this.signUp}
-        />
-        <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-        <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
-      </>
-    ) : (
-      <>
-        <LoginForm
-          userEmail={userEmail}
-          submitHandle={this.login}
-          loading={loading}
-          hideErroHandle={this.hideBadCredentials}
-          changeEmailHandle={this.changeEmailHandle}
-        />
-        <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-        <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
-        <ErrorCard
-          error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
-          show={badCredentials}
-        />
-      </>
+    return (
+      <KeyboardView>
+        {type === 'SIGNUP' || type === undefined ? (
+          <>
+            <UWizard
+              header={this.renderHeader(type)}
+              onStepPass={this.stepPassedHandle}
+              steps={steps}
+              submitHandle={this.signUp}
+            />
+            <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+            <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
+          </>
+        ) : (
+          <>
+            <LoginForm
+              userEmail={userEmail}
+              submitHandle={this.login}
+              loading={loading}
+              hideErroHandle={this.hideBadCredentials}
+              changeEmailHandle={this.changeEmailHandle}
+            />
+            <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+            <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
+            <ErrorCard
+              error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
+              show={badCredentials}
+            />
+          </>
+        )}
+      </KeyboardView>
     );
   }
 

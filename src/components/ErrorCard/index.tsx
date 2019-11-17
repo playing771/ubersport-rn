@@ -9,7 +9,7 @@ export type IErrorCardPosition = 'TOP' | 'BOTTOM' | 'CENTER';
 
 interface IDefaultProps {
   gapped: boolean;
-  show: true;
+  show: boolean;
 }
 
 interface INonDefaultProps {

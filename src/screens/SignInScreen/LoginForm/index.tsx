@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
-import SignInScreenTitle from '../Title';
-import PassedItemContainer from '../PassedItemContainer';
-import SignInFormInput from '../Input';
 import UButton from '../../../components/buttons/UButton/index';
-import Colors from '../../../constants/Colors';
 import useForm from '../../../components/hooks/UseForm/index';
+import Colors from '../../../constants/Colors';
+import SignInFormInput from '../Input';
+import PassedItemContainer from '../PassedItemContainer';
+import SignInScreenTitle from '../Title';
 
 interface IProps {
   userEmail: string;
@@ -21,7 +21,7 @@ const LoginForm = ({
   submitHandle,
   loading,
   hideErroHandle,
-  changeEmailHandle
+  changeEmailHandle,
 }: IProps) => {
   const { values, useTextInput, isValid } = useForm({ password: '' });
   // console.log('values', values);
@@ -44,16 +44,9 @@ const LoginForm = ({
             // index={index}
           />
         </AnimatedView>
-        <AnimatedView
-          animation="fadeIn"
-          useNativeDriver={true}
-          duration={1100}
-          delay={500}
-        >
+        <AnimatedView animation="fadeIn" useNativeDriver={true} duration={1100} delay={500}>
           <View style={styles.inputsContainer}>
-            <View
-              style={[styles.titleContainer, styles.passwordTitleContainer]}
-            >
+            <View style={[styles.titleContainer, styles.passwordTitleContainer]}>
               <Text style={styles.mainText}>Введите пароль, чтобы войти</Text>
             </View>
             <SignInFormInput
@@ -90,13 +83,13 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 14,
     borderBottomLeftRadius: 0,
-    width: '80%'
+    width: '80%',
   },
   passwordTitleContainer: { width: '100%' },
   mainText: { color: 'white', fontWeight: '600', fontSize: 16 },
   inputsContainer: { marginTop: 6 },
   submitButton: { marginTop: 12, height: 42, borderRadius: 6 },
-  submitButtonTitle: { fontSize: 16, fontWeight: '500' }
+  submitButtonTitle: { fontSize: 16, fontWeight: '500' },
 });
 
 export default LoginForm;

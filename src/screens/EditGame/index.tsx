@@ -2,7 +2,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LocationData } from 'expo-location';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { NavigationInjectedProps } from 'react-navigation';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
@@ -12,6 +11,7 @@ import withAdaptiveScreen, {
 } from '../../components/hocs/WithAdaptiveScreen';
 import withModal from '../../components/hocs/WithModal';
 import withTouch from '../../components/hocs/WIthTouch';
+import { KeyboardView } from '../../components/KeyboardVew';
 import Section from '../../components/Layout/Section';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
@@ -109,7 +109,6 @@ function EditGameScreen(props: IProps) {
         ? locationUtils.convertLocationToExpoLocation(formState.location)
         : undefined,
     };
-    console.log('mapProps', mapProps);
 
     props.navigation!.navigate(NavigationRoot.EditLocation, mapProps);
   };
@@ -183,7 +182,7 @@ function EditGameScreen(props: IProps) {
 
   return (
     <>
-      <KeyboardAwareScrollView extraScrollHeight={40}>
+      <KeyboardView>
         <ScrollView keyboardDismissMode="interactive" style={styles.container}>
           <Section title={TIME_PLACE_TITLE}>
             <SectionItemWithModal
@@ -292,7 +291,7 @@ function EditGameScreen(props: IProps) {
             />
           </Section>
         </ScrollView>
-      </KeyboardAwareScrollView>
+      </KeyboardView>
       {gameId ? (
         <EditGameBtn // TODO: validation!!!
           variables={getEditGameVariablesFromState(formState, gameId)}

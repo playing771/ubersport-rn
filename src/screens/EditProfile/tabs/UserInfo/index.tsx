@@ -94,7 +94,10 @@ export default function UserInfoTab({ id }: IProps) {
         onChange={changeNicknameHandle}
       />
       <EditSex
-        options={[{ label: 'Мужской', value: 'MALE' }, { label: 'Женский', value: 'FEMALE' }]}
+        options={[
+          { label: 'Мужской', value: 'MALE' },
+          { label: 'Женский', value: 'FEMALE' },
+        ]}
         label="Пол"
         onChange={changeSexHandle}
         initialValue={data.getUserInfo.sex}

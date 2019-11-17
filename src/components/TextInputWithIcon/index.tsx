@@ -1,13 +1,6 @@
-import React from 'react';
-import {
-  View,
-  TextInput,
-  TextInputProps,
-  ViewStyle,
-  StyleSheet
-} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
+import { StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 
 interface IProps extends TextInputProps {
   icon?: string;
@@ -15,43 +8,28 @@ interface IProps extends TextInputProps {
   containerStyle?: ViewStyle;
 }
 
-const TextInputWithIcon = ({
+export default function TextInputWithIcon({
   icon,
   children,
   containerStyle,
   style,
   ...textInputProps
-}: IProps) => {
+}: IProps) {
   return (
     <View style={[styles.mainContainer, containerStyle]}>
-      {icon ? (
-        <Ionicons
-          // size={}
-          size={18}
-          name={icon}
-          style={styles.icon}
-          // style={[
-          //   s.btnIcon,
-          //   { color: this.props.iconColor },
-          //   this.props.iconStyle
-          // ]}
-        />
-      ) : (
-        children
-      )}
+      {icon ? <Ionicons size={18} name={icon} style={styles.icon} /> : children}
       <TextInput style={[styles.input, style]} {...textInputProps} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // flex: 1,
     flexDirection: 'row',
     borderRadius: 6,
     overflow: 'hidden',
-    // justifyContent: 'center',
-    alignItems: 'center'
+
+    alignItems: 'center',
   },
   input: { flex: 1 },
   icon: {
@@ -59,10 +37,6 @@ const styles = StyleSheet.create({
     color: '#9CA5BF',
     backgroundColor: 'white',
     height: 42,
-    lineHeight: 42
-    // alignItems:'center',
-    // justifyContent:'center'
-  }
+    lineHeight: 42,
+  },
 });
-
-export default TextInputWithIcon;

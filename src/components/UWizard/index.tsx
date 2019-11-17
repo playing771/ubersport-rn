@@ -1,12 +1,11 @@
-import React, { createRef, RefObject, ReactNode } from 'react';
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import UWizardItem from './Item';
+import React, { createRef, ReactNode } from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import { deepCopy } from '../../utils/helpers';
 import { BOTTOM_BIG_NOTCH } from '../AdaptiveScreen/index';
-import { isIphoneX } from 'react-native-iphone-x-helper';
+import UWizardItem from './Item';
 import UWizardStepIndicator from './StepIndicator';
-
-import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 export interface IUWizardStep {
   active: any;
@@ -32,10 +31,7 @@ export interface IPassedStepInjectedProps {
 
 interface IProps {
   steps: IUWizardStepOmitIndex[];
-  submitHandle: (
-    result: { [key: number]: any },
-    mutate: (mutation: any) => Promise<any>
-  ) => void;
+  submitHandle: (result: { [key: number]: any }, mutate: (mutation: any) => Promise<any>) => void;
   header: string | ReactNode;
   onStepPass?: (stepIndex: number, data: any) => void;
   style?: StyleProp<ViewStyle>;
@@ -65,7 +61,7 @@ export default class UWizard extends React.Component<IProps, IState> {
   };
 
   private renderActiveItem = (item: IUWizardStep) => {
-    const ActiveItemComponent = item.active; //TODO: typings!
+    const ActiveItemComponent = item.active; // TODO: typings!
 
     return this.state.passed.includes(item.index - 1) ||
       (!this.state.passed.length && item.index === 0) ? (
@@ -94,7 +90,7 @@ export default class UWizard extends React.Component<IProps, IState> {
   };
 
   private renderPassedItem = (item: IUWizardStep) => {
-    const PassedItemComponent = item.passed; //TODO: typings!
+    const PassedItemComponent = item.passed; // TODO: typings!
 
     return typeof item.passed !== 'undefined' ? (
       <UWizardItem
@@ -129,7 +125,7 @@ export default class UWizard extends React.Component<IProps, IState> {
       setTimeout(() => {
         if (this.listRef) {
           this.listRef.scrollToOffset({
-            offset: this.state.offset
+            offset: this.state.offset,
           });
           // (this.listRef as any).props.sfs(1);
           // this.listRef.current.scrollToOffset({ offset: 400 });
@@ -158,20 +154,15 @@ export default class UWizard extends React.Component<IProps, IState> {
             this.props.header
           )}
         </View>
-        <UWizardStepIndicator
-          passed={this.state.passed}
-          total={this.props.steps.length}
-        />
-        <KeyboardAwareFlatList
+        <UWizardStepIndicator passed={this.state.passed} total={this.props.steps.length} />
+        <FlatList
           // innerRef={this.listRef}
-          enableOnAndroid={true}
-          innerRef={ref => {
+          // enableOnAndroid={true}
+          ref={ref => {
             this.listRef = ref;
           }}
-          extraScrollHeight={160}
-          contentContainerStyle={
-            isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH } : undefined
-          }
+          // extraScrollHeight={160}
+          contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH } : undefined}
           style={styles.listContainer}
           data={addIndexes(this.props.steps)}
           renderItem={this.renderItem}
@@ -199,14 +190,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     // borderBottomColor: '#141720',
     // borderBottomWidth: 2,
-    backgroundColor: '#505B77'
+    backgroundColor: '#505B77',
   },
   header: {
     color: 'white',
     paddingVertical: 12,
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: '500',
   },
-  listContainer: { paddingTop: 24, paddingHorizontal: 24 }
+  listContainer: { paddingTop: 24, paddingHorizontal: 24 },
 });

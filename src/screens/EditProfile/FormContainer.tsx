@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { StyleSheet, View } from 'react-native';
+import { KeyboardView } from '../../components/KeyboardVew';
 
 interface IProps {
   children: ReactElement | ReactElement[];
@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export function EditProfileFormContainer({ children, withKeyboard = true }: IProps) {
-  const UView = withKeyboard ? KeyboardAwareScrollView : View;
+  const UView = withKeyboard ? KeyboardView : View;
   return <UView style={styles.mainContainer}>{children}</UView>;
 }
 
