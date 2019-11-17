@@ -5,7 +5,7 @@ import { NavigationStackOptions } from 'react-navigation-stack';
 import { ILocation } from '../../../api/games/types';
 import mapStyle from '../../../components/GameCard/mapStyle';
 import UMap from '../../../components/UMap';
-import getMyLocationAsync from '../../../utils/getMyLocation';
+import { locationUtils } from '../../../utils/location';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -35,16 +35,15 @@ export default class EditLocationScreen extends React.Component<IProps, IState> 
     super(props);
 
     this.location = this.props.navigation.getParam('location');
+    console.log('this.location', this.location);
   }
 
   async componentDidMount() {
     if (!this.location) {
-      console.log('componentDidMount');
-
-      this.location = await getMyLocationAsync();
-      this.setState({ hasLocation: true });
-      console.log('getMyLocationAsync', this.location);
+      this.location = await locationUtils.getMyLocationAsync();
+      console.log('MY location', this.location);
     }
+    this.setState({ hasLocation: true });
   }
 
   goBackWithLocation = (location: ILocation) => {

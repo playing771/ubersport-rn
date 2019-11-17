@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LocationData } from 'expo-location';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -14,6 +15,7 @@ import withTouch from '../../components/hocs/WIthTouch';
 import Section from '../../components/Layout/Section';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
+import { locationUtils } from '../../utils/location';
 import EditGameBtn from './EditGameBtn';
 import NewGameBtn from './NewGameBtn';
 import { EditPeopleCount, IRestrictions } from './People';
@@ -101,9 +103,15 @@ function EditGameScreen(props: IProps) {
   };
 
   const goToLocationScreen = () => {
-    props.navigation!.navigate(NavigationRoot.EditLocation, {
+    const mapProps: { onLocationChange: (loction: ILocation) => void; location?: LocationData } = {
       onLocationChange: onChangeLocation,
-    });
+      location: formState.location
+        ? locationUtils.convertLocationToExpoLocation(formState.location)
+        : undefined,
+    };
+    console.log('mapProps', mapProps);
+
+    props.navigation!.navigate(NavigationRoot.EditLocation, mapProps);
   };
 
   const onChangeLocation = (location: ILocation) => {
@@ -287,7 +295,7 @@ function EditGameScreen(props: IProps) {
       </KeyboardAwareScrollView>
       {gameId ? (
         <EditGameBtn // TODO: validation!!!
-          variables={getEditGameVariablesFromState(formState, user.id, gameId)}
+          variables={getEditGameVariablesFromState(formState, gameId)}
         />
       ) : (
         <NewGameBtn // TODO: validation!!!

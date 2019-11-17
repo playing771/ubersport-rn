@@ -1,15 +1,14 @@
-import * as React from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { StyleProp, ViewStyle, View, StyleSheet, Image } from 'react-native';
-import { ILocation } from '../../api/games/types';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { LatLng } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as React from 'react';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { ILocation } from '../../api/games/types';
 
-type StyleProps = {
+interface StyleProps {
   style?: StyleProp<ViewStyle>;
   customMapStyle?: any;
-};
+}
 
 type IProps = {
   onPress?: (latLng: LatLng) => void;
@@ -47,13 +46,15 @@ class GameLocation extends React.Component<IProps, IState> {
   private initStaticMap = () => {
     this.mapTimer = setTimeout(() => {
       this.takeSnapshot();
-    }, 300);
+    }, 900);
   };
 
   private takeSnapshot = () => {
     const cb = (resolve: any, reject: any) => {
       if (this.mapRef.current) {
-        const snapshot = this.mapRef.current.takeSnapshot({});
+        console.log('this.mapRef.current', this.mapRef.current);
+
+        const snapshot = this.mapRef.current.takeSnapshot({ format: 'png' });
         snapshot.then((uri: string) => {
           this.setState({ mapSnapshot: uri }, () => resolve());
         });

@@ -1,27 +1,14 @@
 import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
 import * as React from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { ILocation } from '../../api/games/types';
-import { isAndroid } from '../../utils/deviceInfo';
+import { locationUtils } from '../../utils/location';
 import ULoader from '../ULoader';
 import AddressBar from './AddressBar';
 import MapCrosshair from './MapCrosshair';
 import MyLocationButton from './MyLocationButton';
 import SaveLocationButton from './SaveLocationButton';
-
-interface ILocationData {
-  coords: {
-    heading: number;
-    speed: number;
-    altitude: number;
-    accuracy: number;
-    latitude: number;
-    longitude: number;
-  };
-  timestamp: number;
-}
 
 interface StyleProps {
   style?: StyleProp<ViewStyle>;
@@ -68,7 +55,7 @@ const initialState: State = {
   addressBarVisible: true,
 };
 
-export default class GameLocation extends React.Component<Props, State> {
+export default class UMap extends React.Component<Props, State> {
   static defaultProps = defaultProps;
 
   mapTimer?: any;
@@ -92,10 +79,6 @@ export default class GameLocation extends React.Component<Props, State> {
       }
     : initialState;
 
-  async componentDidMount() {
-    console.log('MAP componentDidMounts', this.props.initialLocation);
-  }
-
   componentWillUnmount() {
     if (typeof this.mapTimer !== 'undefined') {
       clearTimeout(this.mapTimer);
@@ -117,58 +100,14 @@ export default class GameLocation extends React.Component<Props, State> {
   };
 
   onMapReadyHandle = async () => {
-    // this.setState({ loading: false });
-    // const location: ILocation =
-    //   this.props.navigation.state.params && this.props.navigation.state.params.location
-    //     ? this.props.navigation.state.params.location
-    //     : this.props.location;
-    // if (location) {
-    //   // const coords = assembleLatLng(location);
-    //   this.setState({
-    //     address: location.address,
-    //   });
-    //   // this.changeRegion(coords);
-    //   this.setState({ loading: false });
-    // } else {
-    //   if (this.props.myLocation) {
-    //     const myLocation = await this.goToMyLocation();
-    //     const LocationCoords = assembleLatLng(myLocation.coords);
-    //     this.toggleGeoBusy();
-    //     const locationAddress = await this.getGeoDataFromLatLng(LocationCoords);
-    //     this.toggleGeoBusy();
-    //     const address = getFormattedAddress(locationAddress[0]);
-    //     console.log('getFormattedAddress', address);
-    //     this.setState({
-    //       address,
-    //       loading: false,
-    //     });
-    //     // this.changeRegion(LocationCoords);
-    //   }
-    // }
-    this.initStaticMap();
+    // this.initStaticMap();
     this.setState({ loading: false });
   };
 
   private async updateAdress(region: Region) {
     const locationAddress = await this.getGeoDataFromLatLng(region);
-    return getFormattedAddress(locationAddress[0]);
+    return locationUtils.getFormattedAddress(locationAddress[0]);
   }
-
-  private getMyLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-    if (status !== 'granted') {
-      throw new Error('Permission to access location was denied');
-    }
-
-    const location = await Location.getCurrentPositionAsync({
-      // on anroid it takew too long with hight accuracy
-      // https://github.com/expo/expo/issues/3433
-      accuracy: isAndroid ? Location.Accuracy.Low : Location.Accuracy.BestForNavigation,
-    });
-
-    return location;
-  };
 
   private getGeoDataFromLatLng = async (LocationCoords: Location.GeocodedLocation) => {
     const address = Location.reverseGeocodeAsync(LocationCoords);
@@ -178,7 +117,7 @@ export default class GameLocation extends React.Component<Props, State> {
   private takeSnapshot = () => {
     const cb = (resolve: any, reject: any) => {
       if (this.mapRef.current) {
-        const snapshot = this.mapRef.current.takeSnapshot({});
+        const snapshot = this.mapRef.current.takeSnapshot(undefined);
         snapshot.then((uri: string) => {
           this.setState({ mapSnapshot: uri }, () => resolve());
         });
@@ -211,22 +150,17 @@ export default class GameLocation extends React.Component<Props, State> {
   };
 
   goToMyLocation = async () => {
-    console.log('goToMyLocation');
-
-    const myLocation = await this.getMyLocationAsync();
-    console.log('myLocation', myLocation);
+    const myLocation = await locationUtils.getMyLocationAsync();
 
     this.goToLocation(myLocation);
     return myLocation;
   };
 
-  goToLocation = async (location: ILocationData) => {
+  goToLocation = async (location: Location.LocationData) => {
     console.log('goToLocation', this.mapRef.current);
 
     if (this.mapRef.current) {
-      console.log('this.mapRef.current', 'TRUE');
-
-      this.mapRef.current.animateToRegion(getRegionFromLocation(location));
+      this.mapRef.current.animateToRegion(locationUtils.getRegionFromLocation(location));
     }
   };
 
@@ -277,7 +211,7 @@ export default class GameLocation extends React.Component<Props, State> {
                   // initialRegion={this.state.region}
                   initialRegion={
                     this.props.initialLocation
-                      ? getRegionFromLocation(this.props.initialLocation)
+                      ? locationUtils.getRegionFromLocation(this.props.initialLocation)
                       : this.state.region
                   }
                   onRegionChangeComplete={this.props.dynamicMarker ? this.changeRegion : undefined}
@@ -298,15 +232,7 @@ export default class GameLocation extends React.Component<Props, State> {
               <MyLocationButton onPress={this.goToMyLocation} />
               <SaveLocationButton onPress={this.submitLocation} />
               {this.state.loading ? (
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    position: 'absolute',
-                    height: '100%',
-                    width: '100%',
-                    zIndex: 999,
-                  }}
-                >
+                <View style={styles.loaderWrapper}>
                   <ULoader style={styles.loader} size="large" color="#434E77" />
                 </View>
               ) : (
@@ -318,43 +244,6 @@ export default class GameLocation extends React.Component<Props, State> {
       </View>
     );
   }
-}
-
-function getRegionFromLocation(location: ILocationData): Region {
-  return {
-    ...location.coords,
-    longitudeDelta: 0.003,
-    latitudeDelta: 0,
-  };
-}
-
-function getFormattedAddress(gd: Location.Address): string {
-  let address = '';
-
-  if (gd.name) {
-    // if (gd.city && gd.city !== gd.name) {
-    //   address += gd.city + ', ';
-    // }
-    address += gd.name;
-  } else {
-    if (!gd.street || !gd.city) {
-      address += gd.region;
-      if (gd.name && !gd.city) {
-        address += ', ' + gd.name;
-      }
-    }
-    if (gd.city) {
-      address += `${address.length ? ', ' : ''}`;
-      address += 'г. ' + gd.city;
-      if (gd.street) {
-        address += ', ';
-      }
-    }
-    if (gd.street) {
-      address += gd.street;
-    }
-  }
-  return address;
 }
 
 const styles = StyleSheet.create({
@@ -374,4 +263,11 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   loader: { marginTop: 'auto', marginBottom: 'auto' },
+  loaderWrapper: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: 999,
+  },
 });
