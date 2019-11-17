@@ -4,7 +4,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import { ILocation } from '../../../api/games/types';
 import mapStyle from '../../../components/GameCard/mapStyle';
-import GameLocation from '../../../components/GameLocation';
+import UMap from '../../../components/UMap';
 import getMyLocationAsync from '../../../utils/getMyLocation';
 
 interface IProps extends NavigationInjectedProps {}
@@ -57,7 +57,7 @@ export default class EditLocationScreen extends React.Component<IProps, IState> 
     return (
       <>
         {this.state.hasLocation && (
-          <GameLocation
+          <UMap
             style={{ height: '100%' }}
             customMapStyle={mapStyle}
             // location={this.state.location}

@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
-import GameLocation from '../../../components/GameLocation';
-import mapStyle from '../../../components/GameCard/mapStyle';
 import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationStackOptions } from 'react-navigation-stack';
 import { ILocation } from '../../../api/games/types';
+import mapStyle from '../../../components/GameCard/mapStyle';
+import UMap from '../../../components/UMap';
 import { AppContext } from '../../../utils/context/sports';
 import { useUserLocationEdit } from './gql';
-import { NavigationStackOptions } from 'react-navigation-stack';
 
 type IProps = NavigationInjectedProps;
 
-function FindOwnLocationScreen(props: IProps) {
+export default function FindOwnLocationScreen(props: IProps) {
   const { setUser, user } = useContext(AppContext);
   const locProp = props.navigation.getParam('location');
   const [location, setLocation] = useState(locProp);
@@ -30,7 +30,7 @@ function FindOwnLocationScreen(props: IProps) {
   };
 
   return (
-    <GameLocation
+    <UMap
       style={{ height: '100%' }}
       customMapStyle={mapStyle}
       location={location}
@@ -51,4 +51,3 @@ const headerOptions: NavigationStackOptions = {
 };
 
 FindOwnLocationScreen.navigationOptions = headerOptions;
-export default FindOwnLocationScreen;

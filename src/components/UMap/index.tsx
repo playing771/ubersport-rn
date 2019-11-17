@@ -3,7 +3,6 @@ import * as Permissions from 'expo-permissions';
 import * as React from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { ILocation } from '../../api/games/types';
 import { isAndroid } from '../../utils/deviceInfo';
 import ULoader from '../ULoader';
@@ -38,8 +37,7 @@ type Props = {
   dynamicMarker?: boolean;
   addressBar?: boolean;
   static?: boolean;
-} & StyleProps &
-  NavigationInjectedProps;
+} & StyleProps;
 
 const defaultProps = { addressBar: true };
 
@@ -70,7 +68,7 @@ const initialState: State = {
   addressBarVisible: true,
 };
 
-class GameLocation extends React.Component<Props, State> {
+export default class GameLocation extends React.Component<Props, State> {
   static defaultProps = defaultProps;
 
   mapTimer?: any;
@@ -377,5 +375,3 @@ const styles = StyleSheet.create({
   },
   loader: { marginTop: 'auto', marginBottom: 'auto' },
 });
-
-export default withNavigation(GameLocation);

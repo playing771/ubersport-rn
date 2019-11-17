@@ -1,18 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Text, StyleProp, ViewStyle, GestureResponderEvent } from 'react-native';
-
-import HeaderCardBlock from './Blocks/HeaderCardBlock';
-import GameTitle from './GameTitle';
-import ParticipantsCardBlock from './Blocks/ParticipantsCardBlock';
-import mapStyle from './mapStyle';
-import SubCardBlock from './Blocks/SubCardBlock';
-import Card from '../GeneralCard/index';
-import CardPart from '../GeneralCard/CardPart';
-import GameLocation from '../GameLocation/index';
+import { GestureResponderEvent, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { IGame } from '../../api/games/types';
-import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
+import { NavigationRoot } from '../../navigation/roots';
 import { getFormattedDate, getFormattedTime } from '../../utils/dateUtils';
+import CardPart from '../GeneralCard/CardPart';
+import Card from '../GeneralCard/index';
+import GameLocation from '../UMap/index';
+import HeaderCardBlock from './Blocks/HeaderCardBlock';
+import ParticipantsCardBlock from './Blocks/ParticipantsCardBlock';
+import SubCardBlock from './Blocks/SubCardBlock';
+import GameTitle from './GameTitle';
+import mapStyle from './mapStyle';
 
 interface IProps {
   game: IGame;
