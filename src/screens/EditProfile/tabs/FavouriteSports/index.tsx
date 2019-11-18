@@ -5,7 +5,7 @@ import SportsList from '../../../../components/SportsList';
 import ULoader from '../../../../components/ULoader';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION } from '../../gql';
-import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
+import SubmitButton from '../../SubmitButton';
 import { useEditProfileFavouriteSportsQuery } from './gql';
 
 interface IProps {

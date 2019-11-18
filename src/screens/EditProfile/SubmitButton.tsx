@@ -1,27 +1,30 @@
+import { ApolloError } from 'apollo-client';
 import React from 'react';
-
-import handleApoloError from '../../utils/handleApoloError';
 import { ViewStyle } from 'react-native';
-import { IEditProfileVariables } from './gql';
 import SubmitButton from '../../components/buttons/SubmitButton';
+import withErrorCard from '../../components/hocs/WithErrorCard';
+import { IEditProfileVariables } from './gql';
 
 interface IProps {
   variables: IEditProfileVariables;
   gql: object;
   style?: ViewStyle;
   disabled?: boolean;
+  onError?: (err: ApolloError) => void;
 }
 
-export function EditProfileSubmitButton({ gql, variables, style, disabled }: IProps) {
+function EditProfileSubmitButton({ gql, variables, style, disabled, onError }: IProps) {
   return (
     <SubmitButton
       gql={gql}
       variables={variables}
       title="Сохранить"
-      onError={handleApoloError}
+      onError={onError}
       style={{ position: 'relative', marginTop: 48, ...style }}
       rounded={true}
       disabled={disabled}
     />
   );
 }
+
+export default withErrorCard(EditProfileSubmitButton);

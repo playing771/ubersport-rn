@@ -1,11 +1,10 @@
+import { ApolloError } from 'apollo-client';
 import * as React from 'react';
-
 import { Mutation } from 'react-apollo';
-import { StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { ApolloError, OperationVariables } from 'apollo-client';
-
-import UButton from './UButton';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import Colors from '../../constants/Colors';
+import UButton from './UButton';
+
 // import {
 //   TAB_DEFAULT_HEIGHT,
 //   BOTTOM_BIG_NOTCH,

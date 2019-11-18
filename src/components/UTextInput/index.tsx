@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { TextInput, View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native';
 
-interface IProps {
+interface IProps extends TextInputProps {
   label?: string;
   value?: string;
   initialValue?: string;
-  onChange?: (text: string) => void;
+  onChangeText?: (text: string) => void;
 }
 
 /**
@@ -13,13 +13,13 @@ interface IProps {
  * 1) передаем initialValue (первоначальное значение), при изменении новыые значения пишутся во внутренний state, вызывается onChange
  * 2) передаем value, тогда все изменения пишутся через onChange во внешний state, внутренний state игнорируется
  */
-export default function UTextInput({ label, onChange, value, initialValue }: IProps) {
+export default function UTextInput({ label, onChangeText, value, initialValue, ...rest }: IProps) {
   const [innerValue, setInnerValue] = useState(initialValue);
 
   const changeHandle = (text: string) => {
     setInnerValue(text);
-    if (onChange) {
-      onChange(text);
+    if (onChangeText) {
+      onChangeText(text);
     }
   };
 
@@ -30,6 +30,7 @@ export default function UTextInput({ label, onChange, value, initialValue }: IPr
         value={value !== undefined ? value : innerValue}
         onChangeText={changeHandle}
         style={styles.text}
+        {...rest}
       />
     </View>
   );

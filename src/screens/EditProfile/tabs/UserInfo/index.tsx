@@ -9,7 +9,7 @@ import { deepOmit } from '../../../../utils/helpers';
 import AvatarSelect from '../../AvatarSelect';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
-import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
+import SubmitButton from '../../SubmitButton';
 import { useEditProfileInfoQuery } from './gql';
 
 interface IProps {
@@ -81,17 +81,17 @@ export default function UserInfoTab({ id }: IProps) {
       <UTextInput
         label="Имя"
         initialValue={data.getUserInfo.firstName}
-        onChange={changeFirstNameHandle}
+        onChangeText={changeFirstNameHandle}
       />
       <UTextInput
         label="Фамилия"
         initialValue={data.getUserInfo.lastName}
-        onChange={changeLastNameHandle}
+        onChangeText={changeLastNameHandle}
       />
       <UTextInput
         label="Никнейм"
         initialValue={data.getUserInfo.nickname}
-        onChange={changeNicknameHandle}
+        onChangeText={changeNicknameHandle}
       />
       <EditSex
         options={[

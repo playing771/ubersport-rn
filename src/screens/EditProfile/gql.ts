@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { ISex } from '../../api/user/types';
 import { useMutation } from 'react-apollo';
+import { ISex } from '../../api/user/types';
 
 export interface IEditProfileVariables {
   id: string;
@@ -15,7 +15,7 @@ export interface IEditProfileVariables {
     favoriteSports?: number[];
     sex?: ISex;
     avatar?: string;
-    location: Location;
+    location?: Location;
   };
 }
 
