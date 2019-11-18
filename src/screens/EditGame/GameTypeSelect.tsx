@@ -13,7 +13,7 @@ export default function GameTypeSelectScreen(props: IProps) {
   const { navigate } = useNavigation();
   const { authCheck } = useAuthCheck();
 
-  const chooseHandle = (sportId: number) => {
+  const chooseHandle = (sportId: number | number[]) => {
     navigate(NavigationRoot.EditGame, { sportId });
   };
 

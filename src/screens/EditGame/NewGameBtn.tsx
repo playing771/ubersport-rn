@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import {
+  NavigationInjectedProps,
+  withNavigation,
+  StackActions,
+  NavigationActions,
+} from 'react-navigation';
 import { CreateGameMutationVariables, CREATE_GAME_GQL } from '../../api/games/createGameMutation';
 import { ICreateGameResult } from '../../api/games/types';
 import { NavigationRoot } from '../../navigation/roots';
@@ -19,6 +24,19 @@ const NewGameBtn: React.FC<Props & NavigationInjectedProps> = ({
   navigation,
 }) => {
   const onComplete = (data: ICreateGameResult) => {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: NavigationRoot.ChooseGameType,
+          params: {
+            gameId: data.createGame.id,
+          },
+        }),
+      ],
+    });
+
+    navigation.dispatch(resetAction);
     navigation.navigate(NavigationRoot.GameInfo, {
       gameId: data.createGame.id,
     });
