@@ -1,19 +1,37 @@
-import React from 'react';
+import { ApolloError } from 'apollo-client';
+import React, { useCallback, useState } from 'react';
+import useForm from '../../../../components/hooks/UseForm';
 import UTextInput from '../../../../components/UTextInput';
+import useAppContext from '../../../../hooks/useAppContext';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
-import { EDIT_PROFILE_MUTATION } from '../../gql';
-import { EditProfileSubmitButton as SubmitButton } from '../../SubmitButton';
+import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
+import SubmitButton from '../../SubmitButton';
 
-interface IProps {}
+export default function ChangePasswordTab() {
+  const { user } = useAppContext();
+  const { values, useTextInput, isValid } = useForm();
+  const [error, setError] = useState<ApolloError>();
+  const handleError = useCallback((err: ApolloError) => setError(err), []);
 
-export default function ChangePasswordTab(props: IProps) {
-  // TODO: реализовать функционал по смене пароля
+  const newInput: IEditProfileVariables = {
+    id: user.id,
+    userInput: { password: values.newPassword },
+  };
   return (
     <FormContainer>
-      <UTextInput label="Старый пароль" value={'***'} onChange={() => undefined} />
-      <UTextInput label="Новый пароль" value={'***'} onChange={() => undefined} />
-
-      <SubmitButton gql={EDIT_PROFILE_MUTATION} variables={{}} />
+      {/* <UTextInput label="Старый пароль" {...useTextInput('old', 'isRequired')} /> */}
+      <UTextInput
+        secureTextEntry={true}
+        label="Новый пароль"
+        {...useTextInput('newPassword', 'isRequired')}
+      />
+      <SubmitButton
+        gql={EDIT_PROFILE_MUTATION}
+        variables={newInput}
+        onError={handleError}
+        error={error}
+        disabled={!isValid}
+      />
     </FormContainer>
   );
 }
