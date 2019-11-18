@@ -26,6 +26,9 @@ const ProfileStack = createStackNavigator({
   // [NavigationRoot.Profile]: TestHookScreen,
   [NavigationRoot.GameInfo]: GameInfoScreen,
   [NavigationRoot.EditGame]: EditGameScreen,
+  [NavigationRoot.FindGame]: FindGameScreen,
+  // [NavigationRoot.UserInfo]: UserInfoScreen,
+  [NavigationRoot.Participants]: ParticipantsScreen,
   [NavigationRoot.EditLocation]: EditLocationScreen,
   [NavigationRoot.EditProfile]: EditProfileScreen,
   [NavigationRoot.NotAuthorized]: NotAuthorizedScreen,
@@ -35,6 +38,7 @@ const FindGameStack = createStackNavigator({
   [NavigationRoot.FindGame]: FindGameScreen,
   [NavigationRoot.SportFilters]: SportFilters,
   [NavigationRoot.GameInfo]: GameInfoScreen,
+  [NavigationRoot.EditGame]: EditGameScreen,
   [NavigationRoot.Participants]: ParticipantsScreen,
   [NavigationRoot.Location]: FindOwnLocationScreen,
   [NavigationRoot.UserInfo]: UserInfoScreen,
@@ -43,6 +47,7 @@ const FindGameStack = createStackNavigator({
 const NewGameStack = createStackNavigator({
   [NavigationRoot.ChooseGameType]: ChooseGameTypeScreen,
   [NavigationRoot.EditGame]: EditGameScreen,
+  [NavigationRoot.GameInfo]: GameInfoScreen,
   [NavigationRoot.EditLocation]: EditLocationScreen,
 });
 
