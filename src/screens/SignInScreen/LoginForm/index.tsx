@@ -54,9 +54,7 @@ const LoginForm = ({
               secureTextEntry={true}
               placeholder="Введите пароль"
               icon="ios-key"
-              // onChangeText={changePassword}
-              // value={password}
-              {...useTextInput('password', 'isRequired', hideErroHandle)}
+              {...useTextInput<string>('password', 'isRequired', hideErroHandle)}
             />
             <UButton
               title="Войти"
