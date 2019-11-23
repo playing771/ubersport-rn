@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
+import { ISearchGameSort } from '.';
 import { fullGameInfoFragment } from '../../api/fragments';
 import { GameStatus, IGame } from '../../api/games/types';
-import { ISearchGameSort } from '.';
 
 const fragments = `
   ${fullGameInfoFragment}
@@ -42,6 +42,6 @@ export interface IGamesListResult {
 export default function useGamesListQuery(variables: IGamesListQueryVariables) {
   return useQuery<IGamesListResult, IGamesListQueryVariables>(GET_GAMES_GQL, {
     variables,
-    fetchPolicy: 'no-cache',
+    // fetchPolicy: 'no-cache',
   });
 }
