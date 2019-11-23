@@ -4,6 +4,7 @@ import { NavigationStackOptions } from 'react-navigation-stack';
 import { ILocation } from '../../../api/games/types';
 import mapStyle from '../../../components/GameCard/mapStyle';
 import UMap from '../../../components/UMap';
+import sharedStyles from '../../../sharedStyles';
 import { AppContext } from '../../../utils/context/sports';
 import { useUserLocationEdit } from './gql';
 
@@ -43,10 +44,7 @@ export default function FindOwnLocationScreen(props: IProps) {
 
 const headerOptions: NavigationStackOptions = {
   // title: 'Карта',
-  headerTitleStyle: {
-    color: '#fff',
-    fontWeight: '400',
-  },
+  ...sharedStyles.headerTitleStyle,
   headerTransparent: true, // TODO: fix
 };
 

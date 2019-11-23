@@ -10,6 +10,12 @@ const sharedStyles = StyleSheet.create({
     backgroundColor: HEADER_BACKGROUND,
     borderBottomColor: '#303F79',
   },
+  headerTitleStyle: {
+    color: '#fff',
+    fontWeight: '400',
+  },
+  headerBackTitleStyle: { color: 'white' },
+  headerBackIcon: { marginLeft: 12, marginRight: 8 },
   borderLessHeader: isAndroid ? { elevation: 0 } : { borderBottomWidth: 0 },
   container: {
     backgroundColor: 'white',

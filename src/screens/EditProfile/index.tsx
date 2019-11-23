@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import UTabsView from '../../components/UTabView';
-import { HEADER_BACKGROUND } from '../../constants/Colors';
+import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useAppContext from '../../hooks/useAppContext';
 import useNavigation from '../../hooks/useNavigation';
 import HeaderRightButton from './ExitProfileButton';
@@ -48,11 +48,7 @@ const EditProfileScreen = (props: IProps) => {
 
 EditProfileScreen.navigationOptions = () => {
   return {
-    headerStyle: {
-      backgroundColor: HEADER_BACKGROUND,
-    },
-    headerTitleStyle: { color: 'white' },
-    headerBackTitleStyle: { color: 'white' },
+    ...defaultHeaderOptions,
     headerRight: <HeaderRightButton />,
   };
 };

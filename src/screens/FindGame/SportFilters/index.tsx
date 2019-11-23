@@ -1,9 +1,7 @@
 import React from 'react';
-import withAdaptiveScreen from '../../../components/hocs/WithAdaptiveScreen';
-import { IAdaptiveScreenOptions } from '../../../components/hocs/WithAdaptiveScreen';
-import { gradient } from '../../../constants/generalStyles';
-import useNavigation from '../../../hooks/useNavigation';
 import SportsSelect from '../../../components/SportsList/SportsSelect';
+import { defaultHeaderOptions } from '../../../defaultHeaderOptions';
+import useNavigation from '../../../hooks/useNavigation';
 
 interface IProps {}
 
@@ -18,20 +16,10 @@ function SportFilters(props: IProps) {
   );
 }
 
-const screenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: true,
-  gradient,
-  barStyle: 'light-content',
-  // style: styles.mainContainer
-};
-
 SportFilters.navigationOptions = {
   title: 'Информация об игре',
-  headerTitleStyle: {
-    color: '#fff',
-    fontWeight: '400',
-  },
-  headerTransparent: true, // TODO: fix
+  ...defaultHeaderOptions,
+  // headerTransparent: true, // TODO: fix
 };
 
-export default withAdaptiveScreen(SportFilters, screenOptions);
+export default SportFilters;

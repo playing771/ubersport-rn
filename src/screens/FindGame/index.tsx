@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-
-import { ScrollView, StyleSheet, Animated, StatusBar } from 'react-native';
-
+import { Animated, ScrollView, StatusBar, StyleSheet } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
-
+import { NavigationStackOptions } from 'react-navigation-stack';
 import { GameStatus } from '../../api/games/types';
+import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
+import sharedStyles from '../../sharedStyles';
 import FiltersPanel from './FiltersPanel';
+import FindGameHeaderTitle from './FindGameHeaderTitle';
 import GamesList from './GamesList';
 import { IGamesListQueryFilters } from './gql';
-import useNavigation from '../../hooks/useNavigation';
-import FindGameHeaderTitle from './FindGameHeaderTitle';
-import sharedStyles from '../../sharedStyles';
-import { NavigationStackOptions } from 'react-navigation-stack';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -111,8 +108,7 @@ FindGameScreen.navigationOptions = ({ navigation }) => {
     // title: 'Поиск игр',
     headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
     headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
+      ...sharedStyles.headerTitleStyle,
       fontSize: 22,
     },
     headerStyle: [sharedStyles.header, sharedStyles.borderLessHeader],

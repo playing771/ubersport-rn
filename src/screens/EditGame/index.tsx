@@ -3,14 +3,15 @@ import { LocationData } from 'expo-location';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationStackOptions } from 'react-navigation-stack';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import { IAgeLimit, ILocation } from '../../api/games/types';
-import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import { withModal } from '../../components/hocs/WithModal';
 import withTouch from '../../components/hocs/WIthTouch';
 import { KeyboardView } from '../../components/KeyboardVew';
 import Section from '../../components/Layout/Section';
+import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
@@ -20,11 +21,6 @@ import { NewGameBtn } from './NewGameBtn';
 import { EditPeopleCount, IRestrictions } from './People';
 import EditTimeModal from './Time';
 import TimeLabel from './Time/TimeLabel';
-
-const adaptiveScreenOptions: IAdaptiveScreenOptions = {
-  transparentHeader: false,
-  barStyle: 'dark-content',
-};
 
 const SectionItem = Section.Item;
 const SectionItemWithBtn = withTouch(SectionItem);
@@ -303,6 +299,13 @@ function EditGameScreen(props: IProps) {
     </>
   );
 }
+
+const headerOptions: NavigationStackOptions = {
+  title: 'Новая игра',
+  ...defaultHeaderOptions,
+};
+
+EditGameScreen.navigationOptions = headerOptions;
 
 function getNewGameVariablesFromState(state: IState, authorId: string, sportId: number) {
   const variables: CreateGameMutationVariables = {

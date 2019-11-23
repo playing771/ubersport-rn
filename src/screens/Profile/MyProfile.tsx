@@ -2,10 +2,10 @@ import React from 'react';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
 import { gradient } from '../../constants/generalStyles';
+import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useAppContext from '../../hooks/useAppContext';
 import useAuthCheck from '../../hooks/useAuthCheck';
 import { NavigationRoot } from '../../navigation/roots';
-import shareStyles from '../../sharedStyles';
 import Profile from '../Profile';
 import EditProfileButton from './EditProfileButton';
 
@@ -28,13 +28,8 @@ MyProfileScreen.navigationOptions = ({ navigation }: any) => {
   };
 
   const options: NavigationStackOptions = {
-    headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
-    },
-    headerStyle: shareStyles.header,
-    title: 'Ваш профиль',
-
+    ...defaultHeaderOptions,
+    title: 'Профиль',
     headerRight: <EditProfileButton onPress={editBtnPressHandle} />,
   };
 
