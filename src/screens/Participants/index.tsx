@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useNavigation from '../../hooks/useNavigation';
 import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
 import { ParticipantsList } from './ParticipantsList';
@@ -26,7 +27,7 @@ export default function ParticipantsScreen(props: IProps) {
 }
 
 ParticipantsScreen.navigationOptions = {
-  headerStyle: { ...sharedStyles.borderLessHeader },
+  ...defaultHeaderOptions,
 };
 
 const styles = StyleSheet.create({

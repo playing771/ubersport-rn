@@ -1,14 +1,13 @@
 import React from 'react';
-
-import { View, StyleSheet, StatusBar } from 'react-native';
-import GameDetails from './GameDetails';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { NavigationStackOptions } from 'react-navigation-stack';
 import { IGame } from '../../api/games/types';
+import { defaultHeaderOptions } from '../../defaultHeaderOptions';
+import useNavigation from '../../hooks/useNavigation';
+import { NavigationRoot } from '../../navigation/roots';
 import { deepOmit } from '../../utils/helpers';
 import { IGameEditData } from '../EditGame/index';
-import { NavigationRoot } from '../../navigation/roots';
-import useNavigation from '../../hooks/useNavigation';
-import sharedStyles from '../../sharedStyles';
-import { NavigationStackOptions } from 'react-navigation-stack';
+import GameDetails from './GameDetails';
 
 interface IProps {}
 
@@ -47,7 +46,6 @@ function GameInfoScreen(props: IProps) {
       <StatusBar barStyle="light-content" />
       <GameDetails
         id={gameId}
-        // ctx={ctx}
         onPressEdit={onPressEdit}
         onPressParticipants={onPressParticipants}
       />
@@ -57,11 +55,7 @@ function GameInfoScreen(props: IProps) {
 
 const headerOptions: NavigationStackOptions = {
   title: 'Информация об игре',
-  headerTitleStyle: {
-    color: '#fff',
-    fontWeight: '400',
-  },
-  headerStyle: sharedStyles.header,
+  ...defaultHeaderOptions,
 };
 
 GameInfoScreen.navigationOptions = headerOptions;
