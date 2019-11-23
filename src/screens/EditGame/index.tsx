@@ -16,8 +16,8 @@ import Section from '../../components/Layout/Section';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
 import { locationUtils } from '../../utils/location';
-import EditGameBtn from './EditGameBtn';
-import NewGameBtn from './NewGameBtn';
+import { EditGameBtn } from './EditGameBtn';
+import { NewGameBtn } from './NewGameBtn';
 import { EditPeopleCount, IRestrictions } from './People';
 import EditTimeModal from './Time';
 import TimeLabel from './Time/TimeLabel';
@@ -325,7 +325,7 @@ function getEditGameVariablesFromState(state: IState, gameId: string) {
     gameInput: {
       id: gameId,
       name: state.name,
-      location: state.location!,
+      // location: state.location!,
       description: state.description,
       dateStart: state.dateStart!,
       dateEnd: state.dateStart,

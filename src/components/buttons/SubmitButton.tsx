@@ -1,78 +1,85 @@
 import { ApolloError } from 'apollo-client';
-import * as React from 'react';
-import { Mutation } from 'react-apollo';
+import { DocumentNode } from 'graphql';
+import React from 'react';
+import { useMutation } from 'react-apollo';
 import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import Colors from '../../constants/Colors';
 import UButton from './UButton';
 
-// import {
-//   TAB_DEFAULT_HEIGHT,
-//   BOTTOM_BIG_NOTCH,
-//   BOTTOM_SM_NOTCH
-// } from './AdaptiveScreen/index';
-// import { isIphoneX } from 'react-native-iphone-x-helper';
-
-type Props = {
+interface IProps {
   renderBtn?: (mutateFn: any, toggleModal?: (cb?: Function) => void) => JSX.Element;
   onComplete?: (result: any) => void;
-  onUpdate?: (cache: any, { data: data }: any) => void;
+  // onUpdate?: (cache: any, { data: data }: any) => void;
   onError?: (err: ApolloError) => void;
   refetchQueries?: string[];
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   backgroundColor?: string;
-  gql: object;
+  gql: DocumentNode;
   title: string;
   variables: any;
   rounded?: boolean;
   icon?: string;
   onPress?: () => void;
-} & Partial<typeof defaultProps>;
+  disabled?: boolean;
+}
 
-const defaultProps = {
-  disabled: false,
+interface IDefaultProps {
+  backgroundColor: string;
+}
+
+const defaultProps: IDefaultProps = {
   backgroundColor: Colors.green,
 };
 
-const defaultstate: State = {};
+export function SubmitButton(props: IProps) {
+  const {
+    variables,
+    refetchQueries,
+    backgroundColor,
+    rounded,
+    icon,
+    onPress,
+    onError,
+    onComplete,
+  } = props;
+  const [mutate, { loading, error, data }] = useMutation(props.gql);
 
-interface State {}
-class SubmitButton extends React.Component<Props, State> {
-  static defaultProps = defaultProps;
-
-  state = defaultstate;
-
-  public render() {
-    const { variables, refetchQueries, backgroundColor, rounded, icon, onPress } = this.props;
-    return (
-      <Mutation
-        mutation={this.props.gql}
-        onCompleted={this.props.onComplete}
-        onError={this.props.onError}
-        update={this.props.onUpdate}
-      >
-        {(mutate: any, { data, loading, error }: any) => {
-          return this.props.renderBtn ? (
-            this.props.renderBtn(mutate)
-          ) : (
-            <UButton
-              title={this.props.title}
-              onPress={onPress ? onPress : () => mutate({ variables, refetchQueries })}
-              style={[styles.container, error ? styles.error : undefined, this.props.style]}
-              backgroundColor={backgroundColor}
-              textStyle={[styles.title, this.props.textStyle]}
-              disabled={this.props.disabled}
-              loading={loading}
-              loadingIndicatorColor="white"
-              icon={icon ? icon : error ? 'ios-close-circle' : undefined}
-              rounded={rounded}
-            />
-          );
-        }}
-      </Mutation>
-    );
+  if (error && onError) {
+    onError(error);
   }
+
+  if (data && onComplete) {
+    onComplete(data);
+  }
+
+  function handleClick() {
+    if (onPress) {
+      onPress();
+    } else {
+      mutate({ variables, refetchQueries });
+    }
+  }
+
+  return props.renderBtn ? (
+    props.renderBtn(mutate)
+  ) : (
+    <UButton
+      title={props.title}
+      onPress={handleClick}
+      style={[styles.container, error ? styles.error : undefined, props.style]}
+      backgroundColor={backgroundColor}
+      textStyle={[styles.title, props.textStyle]}
+      disabled={props.disabled}
+      loading={loading}
+      loadingIndicatorColor="white"
+      icon={icon ? icon : error ? 'ios-close-circle' : undefined}
+      rounded={rounded}
+    />
+  );
 }
+
+SubmitButton.defaultProps = defaultProps;
 
 const styles = StyleSheet.create({
   container: {
@@ -91,5 +98,3 @@ const styles = StyleSheet.create({
   },
   title: { color: 'white', fontWeight: '600', fontSize: 16 },
 });
-
-export default SubmitButton;

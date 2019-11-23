@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-client';
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import SubmitButton from '../../components/buttons/SubmitButton';
+import { SubmitButton } from '../../components/buttons/SubmitButton';
 import withErrorCard from '../../components/hocs/WithErrorCard';
 import { IEditProfileVariables } from './gql';
 

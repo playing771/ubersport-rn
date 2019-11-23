@@ -1,27 +1,27 @@
-import { ApolloError } from 'apollo-client';
-import React, { useCallback, useState } from 'react';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import React from 'react';
 import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../api/games/editGameMutation';
 import { IEditGameResult } from '../../api/games/types';
-import SubmitButton from '../../components/buttons/SubmitButton';
+import { SubmitButton } from '../../components/buttons/SubmitButton';
 import withErrorCard from '../../components/hocs/WithErrorCard';
+import { useErrorCard } from '../../components/hocs/WithErrorCard/useErrorCard';
+import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 
-interface Props extends NavigationInjectedProps {
+interface Props {
   variables: EditGameMutationVariables;
   disabled?: boolean;
 }
 
 const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
-function EditGameBtn({ variables, disabled, navigation }: Props) {
-  const [error, setError] = useState<ApolloError>();
-  const handleError = useCallback((err: ApolloError) => setError(err), []);
+export function EditGameBtn({ variables, disabled }: Props) {
+  const { error, toggleErrorCard } = useErrorCard();
+  const { navigate } = useNavigation();
   console.log('variables', variables);
 
   {
     const onComplete = (data: IEditGameResult) => {
-      navigation.navigate(NavigationRoot.GameInfo, {
+      navigate(NavigationRoot.GameInfo, {
         gameId: data.editGame.id,
       });
     };
@@ -32,7 +32,7 @@ function EditGameBtn({ variables, disabled, navigation }: Props) {
         title="Опубликовать изменения"
         variables={variables}
         onComplete={onComplete}
-        onError={handleError}
+        onError={toggleErrorCard}
         disabled={disabled}
         // refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
         error={error}
@@ -40,5 +40,3 @@ function EditGameBtn({ variables, disabled, navigation }: Props) {
     );
   }
 }
-
-export default withNavigation(EditGameBtn);

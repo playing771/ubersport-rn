@@ -1,29 +1,26 @@
-import * as React from 'react';
-import {
-  NavigationInjectedProps,
-  withNavigation,
-  StackActions,
-  NavigationActions,
-} from 'react-navigation';
+import React from 'react';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { CreateGameMutationVariables, CREATE_GAME_GQL } from '../../api/games/createGameMutation';
+import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import { ICreateGameResult } from '../../api/games/types';
+import { SubmitButton } from '../../components/buttons/SubmitButton';
+import withErrorCard from '../../components/hocs/WithErrorCard';
+import { useErrorCard } from '../../components/hocs/WithErrorCard/useErrorCard';
+import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 
-import { EditGameMutationVariables } from '../../api/games/editGameMutation';
-import handleApoloError from '../../utils/handleApoloError';
-import SubmitButton from '../../components/buttons/SubmitButton';
-
-interface Props {
+interface IProps {
   variables: CreateGameMutationVariables | EditGameMutationVariables;
   disabled?: boolean;
 }
 
-const NewGameBtn: React.FC<Props & NavigationInjectedProps> = ({
-  variables,
-  disabled,
-  navigation,
-}) => {
-  const onComplete = (data: ICreateGameResult) => {
+const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
+
+export function NewGameBtn({ variables, disabled }: IProps) {
+  const { error, toggleErrorCard } = useErrorCard();
+
+  function onComplete(data: ICreateGameResult) {
+    const { navigate, dispatch } = useNavigation();
     const resetAction = StackActions.reset({
       index: 0,
       actions: [
@@ -36,23 +33,22 @@ const NewGameBtn: React.FC<Props & NavigationInjectedProps> = ({
       ],
     });
 
-    navigation.dispatch(resetAction);
-    navigation.navigate(NavigationRoot.GameInfo, {
+    dispatch(resetAction);
+    navigate(NavigationRoot.GameInfo, {
       gameId: data.createGame.id,
     });
-  };
+  }
 
   return (
-    <SubmitButton
+    <SubmitButtonWithErrorCard
       gql={CREATE_GAME_GQL}
       title="Опубликовать"
       variables={variables}
       onComplete={onComplete}
-      onError={handleApoloError}
+      onError={toggleErrorCard}
       disabled={disabled}
-      refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
+      error={error}
+      refetchQueries={['getGamesWithFilters']} // TODO: change to using apolo cache
     />
   );
-};
-
-export default withNavigation(NewGameBtn);
+}

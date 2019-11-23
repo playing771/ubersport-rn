@@ -9,7 +9,7 @@ import useAppContext from '../../hooks/useAppContext';
 import GeneralGameInfo from './GeneralInfo';
 import useGameInfoQuery from './gql';
 import InfoCard from './InfoCard';
-import JoinGameBtn from './JoinGameBtn';
+import { JoinGameBtn } from './JoinGameBtn';
 
 export interface IProps {
   id: string;
