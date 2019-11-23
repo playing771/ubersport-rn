@@ -17,6 +17,7 @@ const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 function EditGameBtn({ variables, disabled, navigation }: Props) {
   const [error, setError] = useState<ApolloError>();
   const handleError = useCallback((err: ApolloError) => setError(err), []);
+  console.log('variables', variables);
 
   {
     const onComplete = (data: IEditGameResult) => {
@@ -33,7 +34,7 @@ function EditGameBtn({ variables, disabled, navigation }: Props) {
         onComplete={onComplete}
         onError={handleError}
         disabled={disabled}
-        refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
+        // refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
         error={error}
       />
     );

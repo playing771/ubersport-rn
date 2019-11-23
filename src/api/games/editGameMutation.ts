@@ -1,13 +1,18 @@
 import gql from 'graphql-tag';
+import { fullGameInfoFragment } from '../fragments';
 import { IAgeLimit, ILocation } from './types';
 
-// TODO: remove redundant data. Return only game ID
+const fragments = `
+  ${fullGameInfoFragment}
+`;
+
 export const EDIT_GAME_GQL = gql`
   mutation editGame($gameInput: GameUpdateInput!) {
     editGame(gameInput: $gameInput) {
-      id
+      ...fullGameInfoFragment
     }
   }
+  ${fragments}
 `;
 
 export interface EditGameMutationVariables {
