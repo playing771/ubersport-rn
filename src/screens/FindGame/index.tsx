@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 //   barStyle: 'light-content',
 // };
 
-FindGameScreen.navigationOptions = ({ navigation }) => {
+FindGameScreen.navigationOptions = ({ navigation }: any) => {
   const editGeoHandle = () => {
     navigation.navigate(NavigationRoot.Location);
   };

@@ -1,8 +1,8 @@
 import { ApolloError } from 'apollo-client';
 import React, { useCallback, useState } from 'react';
-import useForm from '../../../../components/hooks/UseForm';
 import UTextInput from '../../../../components/UTextInput';
 import useAppContext from '../../../../hooks/useAppContext';
+import useForm from '../../../../hooks/UseForm';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
 import SubmitButton from '../../SubmitButton';
