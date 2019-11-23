@@ -52,7 +52,7 @@ class GameLocation extends React.Component<IProps, IState> {
   private takeSnapshot = () => {
     const cb = (resolve: any, reject: any) => {
       if (this.mapRef.current) {
-        const snapshot = this.mapRef.current.takeSnapshot({ format: 'png' });
+        const snapshot = this.mapRef.current.takeSnapshot({ format: 'jpg' });
         snapshot.then((uri: string) => {
           this.setState({ mapSnapshot: uri }, () => resolve());
         });

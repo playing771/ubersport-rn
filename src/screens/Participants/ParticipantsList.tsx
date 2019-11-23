@@ -35,6 +35,10 @@ function ParticipantsList(props: IProps) {
     return <ULoader />;
   }
 
+  if (!data) {
+    return null;
+  }
+
   const { participants, author } = data.game;
   const { gameId } = props;
 

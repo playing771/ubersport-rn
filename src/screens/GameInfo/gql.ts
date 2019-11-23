@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { useMutation, useQuery } from 'react-apollo';
 import { fullGameInfoFragment } from '../../api/fragments';
 import { IGame, ILeaveGameResult } from '../../api/games/types';
 

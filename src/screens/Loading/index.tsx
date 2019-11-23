@@ -18,7 +18,7 @@ export default function LoadingScreen(props: IProps) {
   const { error, loading } = useAvaliableSportsQuery();
 
   const bootstrapAsync = async () => {
-    AsyncStorage.clear(); // TODO: REMOVE
+    // AsyncStorage.clear(); // TODO: REMOVE
     const user = await AsyncStorage.getItem('user');
 
     if (user) {

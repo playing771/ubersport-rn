@@ -1,8 +1,9 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import UButton from '../../components/buttons/UButton';
 import withSubmitModal from '../../components/hocs/WithSubmitModal';
-import { StyleSheet } from 'react-native';
-import { useLeaveGameMutation, ILeaveGameVariables } from '../GameInfo/gql';
+import handleApoloError from '../../utils/handleApoloError';
+import { ILeaveGameVariables, useLeaveGameMutation } from '../GameInfo/gql';
 
 interface IProps {
   variables: ILeaveGameVariables;
@@ -13,6 +14,9 @@ const UButtonWithSubmit = withSubmitModal(UButton);
 
 export default function RemoveParticipantBtn({ variables, disabled }: IProps) {
   const [leaveGame, { loading, error }] = useLeaveGameMutation();
+  if (error) {
+    console.log(handleApoloError(error));
+  }
 
   const kickBtnPressHandle = () => {
     leaveGame({ variables });
@@ -52,6 +56,7 @@ export default function RemoveParticipantBtn({ variables, disabled }: IProps) {
       backgroundColor="transparent"
       onSubmit={kickBtnPressHandle}
       submitText="Исключить участника"
+      loading={loading}
     />
   );
 }

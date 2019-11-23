@@ -1,7 +1,5 @@
-import React from 'react';
-import { View, ViewStyle, StyleSheet, StyleProp } from 'react-native';
-import { ComponentType } from 'react';
-import getRandomUser from '../../utils/getRandomUser';
+import React, { ComponentType } from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { IParticipant } from '../../api/games/types';
 
 type AvatarGroupProps = {

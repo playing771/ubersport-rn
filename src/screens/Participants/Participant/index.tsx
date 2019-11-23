@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-
-import { IParticipantWithAuthorState } from '../ParticipantsList';
-import { NavigationRoot } from '../../../navigation/roots';
-import RemoveParticipantBtn from '../RemoveParticipantBtn';
-import Card from '../../../components/GeneralCard';
-import ModalWithControls from '../ModalWithControls';
-import sharedStyles from '../../../sharedStyles';
 import { withNavigation } from 'react-navigation';
+import Card from '../../../components/GeneralCard';
 import useNavigation from '../../../hooks/useNavigation';
+import { NavigationRoot } from '../../../navigation/roots';
+import sharedStyles from '../../../sharedStyles';
+import ModalWithControls from '../ModalWithControls';
+import { IParticipantWithAuthorState } from '../ParticipantsList';
+import RemoveParticipantBtn from '../RemoveParticipantBtn';
 import ParticipantRow from './ParticipantRow';
 
 interface IProps extends IParticipantWithAuthorState {}
