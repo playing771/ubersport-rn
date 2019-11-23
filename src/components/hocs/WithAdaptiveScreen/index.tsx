@@ -1,8 +1,7 @@
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import * as React from 'react';
 import { Optionalize } from '../../../utils/types';
-import AdaptiveScreen from '../../AdaptiveScreen/index';
-import { IAdaptiveScreenProps } from '../../AdaptiveScreen/index';
-import hoistNonReactStatic from 'hoist-non-react-statics';
+import AdaptiveScreen, { IAdaptiveScreenProps } from '../../AdaptiveScreen/index';
 
 interface IWithAdaptiveScreenProps {}
 
@@ -21,7 +20,7 @@ const withAdaptiveScreen = <T extends object>(
     Optionalize<T, IWithAdaptiveScreenProps> & IProps,
     IState
   > {
-    public static displayName = `withSubmitModal(${displayName})`;
+    public static displayName = `withAdaptiveScreen(${displayName})`;
     render() {
       return (
         <AdaptiveScreen {...options}>

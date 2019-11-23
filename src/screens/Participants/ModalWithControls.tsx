@@ -12,8 +12,9 @@ interface IProps {
   gameId: string;
   participantId: string;
   openProfileHandle: (id: string) => void;
-  kickParticipantHandle: () => void;
+  onKickParticipant: () => void;
   isAuthor: boolean;
+  authorId: string;
 }
 
 const TITLE = 'Выберите действие';
@@ -29,20 +30,27 @@ const SelectionItemWithSubmit = withSubmitModal(SelectionItem);
 export default function ModalWithControls({
   participantId,
   openProfileHandle,
-  kickParticipantHandle,
+  onKickParticipant,
   isAuthor,
   gameId,
+  authorId,
 }: IProps) {
   const variables: ILeaveGameVariables = {
     userId: participantId,
     gameId,
   };
 
-  const [leaveGame, { loading, error }] = useLeaveGameMutation();
+  const [leaveGame, { loading, error, data }] = useLeaveGameMutation();
+
+  if (error || data) {
+    console.log('useLeaveGameMutation', error, data);
+
+    onKickParticipant();
+  }
 
   const kickBtnPressHandle = () => {
-    kickParticipantHandle();
     leaveGame({ variables });
+    // kickParticipantHandle();
   };
 
   return (
@@ -54,7 +62,7 @@ export default function ModalWithControls({
         wrapperStyle={styles.item}
         onPress={openProfileHandle}
       />
-      {isAuthor && (
+      {isAuthor && authorId !== participantId && (
         <View style={styles.itemWithModalWrapper}>
           <SelectionItemWithSubmit
             title="Исключить участника"

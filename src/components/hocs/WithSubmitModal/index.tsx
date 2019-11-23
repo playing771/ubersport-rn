@@ -1,64 +1,51 @@
-import * as React from 'react';
-import SubmitModal from './SubmitModal';
-import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
+import React from 'react';
+import useToggle from '../../../hooks/useToggle';
+import { Optionalize } from '../../../utils/types';
+import { SubmitModal } from './SubmitModal';
 
-export type IWithSubmitProps = {
+export interface IWithSubmitProps {
   toggleModal: () => void;
-};
+}
 
-type IProps = {
+interface IProps {
   onSubmit: (prop?: any) => void;
   submitText?: string;
   cancelText?: string;
   closeOnSubmi?: boolean;
-};
+}
 
 interface IRequiredProps {
   onPress?: any;
 }
 
-interface IState {
-  isVisible: boolean;
-}
-
 const withSubmitModal = <T extends IRequiredProps>(WrappedComponent: React.ComponentType<T>) => {
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  class ComponentWithSubmit extends React.Component<
-    Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps,
-    IState
-  > {
-    public static displayName = `withSubmitModal(${displayName})`;
+  function ComponentWithSubmit(
+    props: Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps
+  ) {
+    const [isVisible, openModal, closeModal] = useToggle();
 
-    state = {
-      isVisible: false,
-    };
-
-    toggleModal = (): Promise<void> => {
-      return new Promise(resolve => {
-        this.setState({ isVisible: !this.state.isVisible }, () => resolve());
-      });
-    };
-
-    render() {
-      return (
-        <>
+    return (
+      <>
+        {isVisible && (
           <SubmitModal
-            isVisible={this.state.isVisible}
-            onSubmit={this.props.onSubmit}
-            toggleModal={this.toggleModal}
-            submitText={this.props.submitText}
-            cancelText={this.props.cancelText}
-            closeOnSubmit={this.props.closeOnSubmi}
+            onSubmit={props.onSubmit}
+            closeModal={closeModal}
+            submitText={props.submitText}
+            cancelText={props.cancelText}
+            closeOnSubmit={props.closeOnSubmi}
           />
-          <WrappedComponent
-            {...(this.props as T & Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps)}
-            onPress={this.toggleModal}
-          />
-        </>
-      );
-    }
+        )}
+        <WrappedComponent
+          {...(props as T & Optionalize<T & IWithSubmitProps, IWithSubmitProps> & IProps)}
+          onPress={openModal}
+        />
+      </>
+    );
   }
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  ComponentWithSubmit.displayName = `withSubmitModal(${displayName})`;
+
   return hoistNonReactStatic(ComponentWithSubmit, WrappedComponent);
 };
 

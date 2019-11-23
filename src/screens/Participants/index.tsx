@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import ParticipantsList from './ParticipantsList';
+import { StyleSheet, Text, View } from 'react-native';
 import useNavigation from '../../hooks/useNavigation';
 import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
+import { ParticipantsList } from './ParticipantsList';
 
 interface IProps {}
 

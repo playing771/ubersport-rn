@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import Modal from 'react-native-modal';
-import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import shadeBlend from '../../../utils/shadeBlend';
 
 type IProps = {
-  isVisible: boolean;
-  toggleModal: () => Promise<void>;
+  // isVisible: boolean;
+  closeModal: () => void;
   onSubmit?: (prop?: any) => void;
   onCancel?: () => void;
   closeOnSubmit?: boolean; // для того, чтобы не вызывать стейт у unmounted компонента
@@ -17,15 +17,20 @@ const defaultProps = {
   closeOnSubmit: true,
 };
 
-const SubmitModal = (props: IProps) => {
+export function SubmitModal(props: IProps) {
   return (
-    <Modal isVisible={props.isVisible} style={s.modalContainer} onBackdropPress={props.toggleModal}>
+    <Modal
+      isVisible={true}
+      style={s.modalContainer}
+      onBackdropPress={props.closeModal}
+      backdropTransitionOutTiming={0} // stops modal "flickering", https://github.com/react-native-community/react-native-modal/issues/268#issuecomment-493464419
+    >
       <View style={s.modalContent}>
         <TouchableHighlight
           onPress={prop => {
             if (props.onSubmit) {
               if (props.closeOnSubmit) {
-                props.toggleModal();
+                props.closeModal();
               }
               props.onSubmit(prop);
             }
@@ -37,7 +42,8 @@ const SubmitModal = (props: IProps) => {
         </TouchableHighlight>
         <TouchableHighlight
           onPress={() => {
-            props.toggleModal();
+            props.closeModal();
+
             if (typeof props.onCancel !== 'undefined') {
               props.onCancel();
             }
@@ -50,7 +56,7 @@ const SubmitModal = (props: IProps) => {
       </View>
     </Modal>
   );
-};
+}
 
 const s = StyleSheet.create({
   modalContainer: { justifyContent: 'flex-end', margin: 0 },
@@ -81,5 +87,3 @@ const s = StyleSheet.create({
 });
 
 SubmitModal.defaultProps = defaultProps;
-
-export default SubmitModal;

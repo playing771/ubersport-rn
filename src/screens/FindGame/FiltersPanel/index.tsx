@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import ISport from '../../../api/sports/Sport.type';
+import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
+import { withModal } from '../../../components/hocs/WithModal';
+import ULoader from '../../../components/ULoader';
+import { HEADER_BACKGROUND } from '../../../constants/Colors';
+import useNavigation from '../../../hooks/useNavigation';
+import { NavigationRoot } from '../../../navigation/roots';
+import { IFindGameFilters, ISearchGameSort } from '../../FindGame';
 import FilterButton from './FilterButton';
 import SortModal from './sortModal';
-import { ISearchGameSort, IFindGameFilters } from '../../FindGame';
-import withModal from '../../../components/hocs/WithModal';
-import { NavigationRoot } from '../../../navigation/roots';
-import useNavigation from '../../../hooks/useNavigation';
-import useAvaliableSportsQuery from '../../../api/sports/useAvaliableSportsQuery';
-import ULoader from '../../../components/ULoader';
-import ISport from '../../../api/sports/Sport.type';
-import { HEADER_BACKGROUND } from '../../../constants/Colors';
 
 const sortValues: { [key in ISearchGameSort]: string } = {
   date: 'Новые',
@@ -37,8 +37,8 @@ export default function FiltersPanel({
 
   const filtersNavigateHandle = () => {
     navigate(NavigationRoot.SportFilters, {
-      changeSportFilterHanlde: changeSportFilterHanlde,
-      activeFilters: activeFilters,
+      changeSportFilterHanlde,
+      activeFilters,
     });
   };
 
@@ -52,16 +52,16 @@ export default function FiltersPanel({
           onPress={filtersNavigateHandle}
         />
       ) : (
-        <ULoader></ULoader>
+        <ULoader />
       )}
       <FilterButtonWithModal
         wrapperStyle={styles.buttonRight}
         title="Сортировка"
         value={sortValues[activeSort]}
-        modal={({ toggleModal }) => (
+        modal={({ closeModal }) => (
           <SortModal
             activeSort={activeSort}
-            onChange={sort => onChangeActiveSort(sort, toggleModal)}
+            onChange={sort => onChangeActiveSort(sort, closeModal)}
           />
         )}
       />

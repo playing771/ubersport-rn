@@ -1,22 +1,21 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import { withNavigation } from 'react-navigation';
 import Card from '../../../components/GeneralCard';
 import useNavigation from '../../../hooks/useNavigation';
 import { NavigationRoot } from '../../../navigation/roots';
 import sharedStyles from '../../../sharedStyles';
 import ModalWithControls from '../ModalWithControls';
 import { IParticipantWithAuthorState } from '../ParticipantsList';
-import RemoveParticipantBtn from '../RemoveParticipantBtn';
+import { RemoveParticipantBtn } from '../RemoveParticipantBtn';
 import ParticipantRow from './ParticipantRow';
 
-interface IProps extends IParticipantWithAuthorState {}
-
-const KICK_HANDLE_TIMEOUT = 100;
+interface IProps extends IParticipantWithAuthorState {
+  authorId: string;
+}
 
 // контейнер-элемент списка юзеров
-function Participant(props: IProps) {
+export function Participant(props: IProps) {
   const { navigate } = useNavigation();
 
   const openProfileHandle = (userId: string): void => {
@@ -34,7 +33,17 @@ function Participant(props: IProps) {
     return swipeoutBtns;
   };
 
-  const { nickname, dateOfBirth, lastName, firstName, isAuthor, id, avatar } = props;
+  const {
+    nickname,
+    dateOfBirth,
+    lastName,
+    firstName,
+    isAuthor,
+    id,
+    avatar,
+    authorId,
+    gameId,
+  } = props;
 
   return (
     <Card wrapperStyle={styles.card}>
@@ -42,7 +51,7 @@ function Participant(props: IProps) {
         backgroundColor="transparent"
         right={renderButtons()}
         close={true}
-        disabled={!isAuthor}
+        disabled={isDisalbed(authorId, isAuthor, id)}
       >
         <ParticipantRow
           nickname={nickname}
@@ -50,20 +59,17 @@ function Participant(props: IProps) {
           lastName={lastName}
           firstName={firstName}
           src={avatar}
-          modal={({ toggleModal }) => (
+          modal={({ closeModal }) => (
             <ModalWithControls
-              gameId={props.gameId}
+              gameId={gameId}
+              authorId={authorId}
               isAuthor={isAuthor}
               participantId={id}
               openProfileHandle={id => {
-                toggleModal();
+                closeModal();
                 openProfileHandle(id);
               }}
-              kickParticipantHandle={() => {
-                setTimeout(() => {
-                  toggleModal();
-                }, KICK_HANDLE_TIMEOUT);
-              }}
+              onKickParticipant={closeModal}
             />
           )}
         />
@@ -76,4 +82,8 @@ const styles = StyleSheet.create({
   card: { marginBottom: 5, ...sharedStyles.paddingHorizontal },
 });
 
-export default withNavigation(Participant);
+function isDisalbed(authorId: string, isAuthor: boolean, participantId: string) {
+  // нельзя кикать участника, если ты не автор,
+  // нельзя кикать себя
+  return !isAuthor || authorId === participantId;
+}

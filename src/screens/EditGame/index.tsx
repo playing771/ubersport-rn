@@ -9,7 +9,7 @@ import { IAgeLimit, ILocation } from '../../api/games/types';
 import withAdaptiveScreen, {
   IAdaptiveScreenOptions,
 } from '../../components/hocs/WithAdaptiveScreen';
-import withModal from '../../components/hocs/WithModal';
+import { withModal } from '../../components/hocs/WithModal';
 import withTouch from '../../components/hocs/WIthTouch';
 import { KeyboardView } from '../../components/KeyboardVew';
 import Section from '../../components/Layout/Section';
@@ -194,9 +194,9 @@ function EditGameScreen(props: IProps) {
                   ? () => <TimeLabel dateStart={dateStart} dateEnd={dateEnd} />
                   : DEFAULT_TIME_LABLE
               }
-              modal={({ toggleModal }) => (
+              modal={({ closeModal }) => (
                 <EditTimeModal
-                  onSave={(dStart: number, dEnd: number) => saveTime(dStart, dEnd, toggleModal)}
+                  onSave={(dStart: number, dEnd: number) => saveTime(dStart, dEnd, closeModal)}
                   dateStartRestrictions={getDateStartRestrictions()}
                   dateEndRestrictions={getDateEndRestrictions()}
                   dateStart={dateStart}

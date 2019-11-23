@@ -1,15 +1,12 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 
-export default function useToggle(initialState: boolean = false) {
+type IUseToggleTurple = [boolean, () => void, () => void, Dispatch<React.SetStateAction<boolean>>];
+
+export default function useToggle(initialState: boolean = false): IUseToggleTurple {
   const [isActive, setActive] = useState<boolean>(initialState);
 
   const activate = () => setActive(true);
   const deactivate = () => setActive(false);
 
-  return {
-    isActive,
-    activate,
-    deactivate,
-    toggle: setActive,
-  };
+  return [isActive, activate, deactivate, setActive];
 }

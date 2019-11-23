@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-
-import { Text, View, StyleSheet, ViewStyle } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import * as Permissions from 'expo-permissions';
-
-import withModal from '../../../components/hocs/WithModal';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import uploadAvatar from '../../../api/user/uploadAvatar';
+import { withModal } from '../../../components/hocs/WithModal';
 import withTouch from '../../../components/hocs/WIthTouch';
 import useAppContext from '../../../hooks/useAppContext';
-import uploadAvatar from '../../../api/user/uploadAvatar';
+import getFormData from '../../../utils/getFormData';
 import AvatarSelectModal from './Modal';
 import ProfileAvatar from './ProfileAvatar';
-import getFormData from '../../../utils/getFormData';
-import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 interface IProps {
   wrapperStyle?: ViewStyle;
@@ -84,12 +82,12 @@ const AvatarSelect = ({ wrapperStyle, onChange, value }: IProps) => {
     <View style={[styles.wrapper, wrapperStyle]}>
       <ClickableView
         style={styles.mainContainer}
-        modal={({ toggleModal }) => (
+        modal={({ closeModal }) => (
           <AvatarSelectModal
             avatar={value ? value : avatar}
-            useGaleryHandle={() => getImageHandle('GALLERY', toggleModal)}
-            useCameraHandle={() => getImageHandle('CAMERA', toggleModal)}
-            deleteImageHandle={() => deleteImageHandle(toggleModal)}
+            useGaleryHandle={() => getImageHandle('GALLERY', closeModal)}
+            useCameraHandle={() => getImageHandle('CAMERA', closeModal)}
+            deleteImageHandle={() => deleteImageHandle(closeModal)}
           />
         )}
       >

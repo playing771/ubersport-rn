@@ -1,84 +1,67 @@
-import * as React from 'react';
-import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
+import React from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Modal from 'react-native-modal';
+import useToggle from '../../../hooks/useToggle';
+import { Optionalize } from '../../../utils/types';
 import DefaultModal from './defaultModal';
-import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 const defaultAnimations = { in: 'fadeIn', out: 'fadeOut' };
 
-export type IWithModalProps = {
+export interface IWithModalProps {
   toggleModal: () => void;
-};
+}
 
 interface IRequiredProps {
   onPress?: (e: any) => void;
 }
 
-type IProps = {
-  modal?: (api: { toggleModal: () => void }) => JSX.Element;
+interface IProps {
+  modal?: (api: { closeModal: () => void }) => JSX.Element;
   animationIn?: any;
   animationOut?: any;
   modalStyle?: StyleProp<ViewStyle>;
-};
-
-interface IState {
-  isVisible: boolean;
 }
 
-const withModal = <T extends IRequiredProps>(WrappedComponent: React.ComponentType<T>) => {
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
-  class ComponentWithModal extends React.Component<
-    Optionalize<T & IWithModalProps, IWithModalProps> & IProps,
-    IState
-  > {
-    public static displayName = `withModal(${displayName})`;
+export const withModal = <T extends IRequiredProps>(WrappedComponent: React.ComponentType<T>) => {
+  function ComponentWithModal(props: Optionalize<T & IWithModalProps, IWithModalProps> & IProps) {
+    const [isVisible, openModal, closeModal] = useToggle();
 
-    static defaultProps = {
-      animationIn: defaultAnimations.in,
-      animationOut: defaultAnimations.out,
-    };
-
-    state = {
-      isVisible: false,
-    };
-
-    toggleModal = () => {
-      this.setState({ isVisible: !this.state.isVisible });
-    };
-
-    private getApi() {
+    function getApi() {
       return {
-        toggleModal: this.toggleModal,
+        closeModal,
       };
     }
 
-    render() {
-      return (
-        <>
-          <Modal
-            isVisible={this.state.isVisible}
-            style={[s.modalContainer, this.props.modalStyle]}
-            onBackdropPress={this.toggleModal}
-            animationIn={this.props.animationIn}
-            animationOut={this.props.animationOut}
-            backdropTransitionOutTiming={0} // stops modal "flickering", https://github.com/react-native-community/react-native-modal/issues/268#issuecomment-493464419
-          >
-            {this.props.modal ? this.props.modal(this.getApi()) : <DefaultModal />}
-          </Modal>
-          <WrappedComponent
-            {...(this.props as T & Optionalize<T & IWithModalProps, IWithModalProps> & IProps)}
-            onPress={this.toggleModal}
-          />
-        </>
-      );
-    }
+    return (
+      <>
+        <Modal
+          isVisible={isVisible}
+          style={[s.modalContainer, props.modalStyle]}
+          onBackdropPress={closeModal}
+          animationIn={props.animationIn}
+          animationOut={props.animationOut}
+          backdropTransitionOutTiming={0} // stops modal "flickering", https://github.com/react-native-community/react-native-modal/issues/268#issuecomment-493464419
+        >
+          {props.modal ? props.modal(getApi()) : <DefaultModal />}
+        </Modal>
+        <WrappedComponent
+          {...(props as T & Optionalize<T & IWithModalProps, IWithModalProps> & IProps)}
+          onPress={openModal}
+        />
+      </>
+    );
   }
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  ComponentWithModal.displayName = `withModal(${displayName})`;
+
+  ComponentWithModal.defaultProps = {
+    animationIn: defaultAnimations.in,
+    animationOut: defaultAnimations.out,
+  };
   return hoistNonReactStatic(ComponentWithModal, WrappedComponent);
 };
 
 const s = StyleSheet.create({
   modalContainer: { justifyContent: 'center', margin: 30 },
 });
-
-export default withModal;

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { IParticipant } from '../../../api/games/types';
 import UserAvatar from '../../../components/AvatarsGroup/UserAvatar';
-import withModal from '../../../components/hocs/WithModal';
+import { withModal } from '../../../components/hocs/WithModal';
 import withTouch from '../../../components/hocs/WIthTouch';
 import { getFullName, getUserAge } from './utils';
 
