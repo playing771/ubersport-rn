@@ -1,14 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import ProfileInfo from './Info';
-import { ScrollView } from 'react-native';
-import ProfileGamesList from './GamesList';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { GameStatus } from '../../api/games/types';
-
-import { NavigationRoot } from '../../navigation/roots';
 import useNavigation from '../../hooks/useNavigation';
+import { NavigationRoot } from '../../navigation/roots';
 import { BASE_PADDING } from '../../sharedStyles';
+import ProfileGamesList from './GamesList';
+import ProfileInfo from './Info';
 
 interface IProps {
   userId: string;
