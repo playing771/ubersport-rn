@@ -63,6 +63,7 @@ export function JoinGameBtn({ variables, disabled, style }: IProps) {
       style={[styles.mainContainer, style]}
       disabled={disabled}
       error={error}
+      refetchQueries={['getGamesWithFilters']}
       onPress={authCheck() ? undefined : () => navigate(NavigationRoot.NotAuthorized)}
     />
   );
