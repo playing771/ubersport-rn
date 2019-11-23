@@ -325,7 +325,7 @@ function getEditGameVariablesFromState(state: IState, gameId: string) {
     gameInput: {
       id: gameId,
       name: state.name,
-      // location: state.location!,
+      location: state.location,
       description: state.description,
       dateStart: state.dateStart!,
       dateEnd: state.dateStart,

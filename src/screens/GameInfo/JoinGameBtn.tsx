@@ -21,38 +21,6 @@ export function JoinGameBtn({ variables, disabled, style }: IProps) {
   const { navigate } = useNavigation();
   const { error, toggleErrorCard } = useErrorCard();
 
-  // const onUpdate = (cache: any, { data: { joinGame } }: { data: IJoinGameResult }) => {
-  //   try {
-  //     const queryVariables = {
-  //       participantsIds: [variables.userId],
-  //       status: GameStatus.Pending,
-  //     };
-  //     const getActiveUserGamesResult: IGetActiveUserGamesResult = cache.readQuery({
-  //       query: GET_USER_ACTIVE_GAMES_GQL,
-  //       variables: queryVariables,
-  //     });
-
-  //     const { games } = getActiveUserGamesResult;
-  //     const updatedGames = [...games.games];
-  //     const updatedActiveUSerGamesResult: IGetActiveUserGamesResult = {
-  //       games: {
-  //         count: games.count + 1,
-  //         games: updatedGames,
-  //         __typename: 'Games',
-  //       },
-  //     };
-  //     updatedActiveUSerGamesResult.games.games.push(joinGame);
-
-  //     // cache.writeQuery({
-  //     //   query: GET_USER_ACTIVE_GAMES_GQL,
-  //     //   variables: queryVariables,
-  //     //   data: updatedActiveUSerGamesResult,
-  //     // });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
     <SubmitButtonWithErrorCard
       gql={JOIN_GAME_GQL}

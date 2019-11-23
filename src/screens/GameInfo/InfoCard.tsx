@@ -2,14 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import EditBtn from '../../components/buttons/EditButton';
-import RoundButton from '../../components/buttons/RoundButton';
-import ErrorCard from '../../components/ErrorCard';
-import Card from '../../components/GeneralCard/index';
-import withSubmitModal from '../../components/hocs/WithSubmitModal';
+import Card from '../../components/GeneralCard';
 import Right from '../../components/Layout/Right';
 import Colors from '../../constants/Colors';
-import useAppContext from '../../hooks/useAppContext';
-import { useLeaveGameMutation } from './gql';
+import { LeaveGameBtn } from './LeaveGameBtn';
 
 const PARTICIPANT_TEXT = 'Вы участник';
 const AUTHOR_TEXT = 'Вы модератор';
@@ -20,19 +16,10 @@ interface IProps {
   gameId: string;
 }
 
-const LeaveGameButton = withSubmitModal(RoundButton);
-
-const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
-  const { user } = useAppContext();
-  const [leaveGame, { loading, error }] = useLeaveGameMutation();
-
-  const leaveGameHandle = () => {
-    leaveGame({ variables: { gameId, userId: user.id } });
-  };
-
+export function InfoCard({ onEditBtnPress, style, isAuthor, gameId }: IProps) {
   return (
     <>
-      {error && <ErrorCard error={error} />}
+      {/* {error && <ErrorCard error={error} />} */}
       <Card wrapperStyle={[styles.mainContainer, style]} disabled={true}>
         <View style={styles.content}>
           <Ionicons name="ios-checkmark-circle-outline" style={styles.icon} color="white" />
@@ -42,21 +29,13 @@ const InfoCard = ({ onEditBtnPress, style, isAuthor, gameId }: IProps) => {
 
           <Right centered={true} style={{ flexDirection: 'row' }}>
             {isAuthor && <EditBtn onPress={onEditBtnPress} />}
-            <LeaveGameButton
-              backgroundColor="#F7F5F3"
-              icon="ios-log-out"
-              onSubmit={leaveGameHandle}
-              style={styles.leaveGameBtn}
-              iconStyle={styles.leaveGameBtnIcon}
-              loadingIndicatorColor={Colors.purle}
-              loading={loading}
-            />
+            <LeaveGameBtn gameId={gameId} />
           </Right>
         </View>
       </Card>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -88,8 +67,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   icon: { fontSize: 30 },
-  leaveGameBtn: { marginLeft: 12, width: 36, height: 36, alignSelf: 'center' },
-  leaveGameBtnIcon: { color: Colors.purle, fontSize: 20 },
 });
-
-export default InfoCard;
