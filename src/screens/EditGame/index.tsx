@@ -6,15 +6,14 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import { IAgeLimit, ILocation } from '../../api/games/types';
-import withAdaptiveScreen, {
-  IAdaptiveScreenOptions,
-} from '../../components/hocs/WithAdaptiveScreen';
+import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen';
 import { withModal } from '../../components/hocs/WithModal';
 import withTouch from '../../components/hocs/WIthTouch';
 import { KeyboardView } from '../../components/KeyboardVew';
 import Section from '../../components/Layout/Section';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
+import sharedStyles from '../../sharedStyles';
 import { locationUtils } from '../../utils/location';
 import { EditGameBtn } from './EditGameBtn';
 import { NewGameBtn } from './NewGameBtn';
@@ -182,8 +181,8 @@ function EditGameScreen(props: IProps) {
 
   return (
     <>
-      <KeyboardView>
-        <ScrollView keyboardDismissMode="interactive" style={styles.container}>
+      <KeyboardView contentContainerStyle={sharedStyles.container}>
+        <ScrollView keyboardDismissMode="interactive" contentContainerStyle={styles.container}>
           <Section title={TIME_PLACE_TITLE}>
             <SectionItemWithModal
               icon="ios-calendar"
@@ -337,7 +336,7 @@ function getEditGameVariablesFromState(state: IState, gameId: string) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, position: 'relative' },
+  container: { position: 'relative' },
   mainText: { color: '#5F6B8D', fontWeight: '500' },
   // subTextContainer: { flexDirection: 'row', paddingTop: 5 },
   subText: {
@@ -355,4 +354,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAdaptiveScreen(EditGameScreen, adaptiveScreenOptions);
+export default EditGameScreen;

@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { HEADER_BACKGROUND } from './constants/Colors';
 import { isAndroid } from './utils/deviceInfo';
 
@@ -11,6 +11,10 @@ const sharedStyles = StyleSheet.create({
     borderBottomColor: '#303F79',
   },
   borderLessHeader: isAndroid ? { elevation: 0 } : { borderBottomWidth: 0 },
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
 });
 
 export default sharedStyles;
