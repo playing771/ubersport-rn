@@ -1,13 +1,13 @@
 import React from 'react';
-import Profile from '../Profile';
-import { gradient } from '../../constants/generalStyles';
-import useAuthCheck from '../../hooks/useAuthCheck';
-import useAppContext from '../../hooks/useAppContext';
-import EditProfileButton from './EditProfileButton';
-import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
-import shareStyles from '../../sharedStyles';
-import { NavigationRoot } from '../../navigation/roots';
 import { NavigationStackOptions } from 'react-navigation-stack';
+import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
+import { gradient } from '../../constants/generalStyles';
+import useAppContext from '../../hooks/useAppContext';
+import useAuthCheck from '../../hooks/useAuthCheck';
+import { NavigationRoot } from '../../navigation/roots';
+import shareStyles from '../../sharedStyles';
+import Profile from '../Profile';
+import EditProfileButton from './EditProfileButton';
 
 interface IProps {}
 
@@ -22,7 +22,7 @@ function MyProfileScreen(props: IProps) {
   );
 }
 
-MyProfileScreen.navigationOptions = ({ navigation }) => {
+MyProfileScreen.navigationOptions = ({ navigation }: any) => {
   const editBtnPressHandle = () => {
     navigation.navigate(NavigationRoot.EditProfile);
   };
