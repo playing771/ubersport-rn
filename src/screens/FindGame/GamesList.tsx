@@ -48,9 +48,3 @@ const styles = StyleSheet.create({
   listContainer: { paddingBottom: BASE_PADDING },
   card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
 });
-
-function wait(timeout: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-}

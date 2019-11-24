@@ -1,8 +1,7 @@
-import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import TabBarIcon from '../components/TabBarIcon';
+import Colors, { HEADER_BACKGROUND } from '../constants/Colors';
+import * as options from '../screens/bottomNavOptions';
 import EditGameScreen from '../screens/EditGame';
 import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
 import EditLocationScreen from '../screens/EditGame/Location';
@@ -10,7 +9,7 @@ import EditLocationScreen from '../screens/EditGame/Location';
 // import TestHookScreen from '../screens/TestHookScreen/index';
 import EditProfileScreen from '../screens/EditProfile';
 import FindGameScreen from '../screens/FindGame';
-import findGameBottomNav from '../screens/FindGame/bottomTabNav';
+// import findGameBottomNav from '../screens/FindGame/bottomNavOptions';
 import FindOwnLocationScreen from '../screens/FindGame/Location';
 import SportFilters from '../screens/FindGame/SportFilters';
 import GameInfoScreen from '../screens/GameInfo';
@@ -51,40 +50,28 @@ const NewGameStack = createStackNavigator({
   [NavigationRoot.EditLocation]: EditLocationScreen,
 });
 
-FindGameStack.navigationOptions = findGameBottomNav;
-
-export interface IFocused {
-  focused: boolean;
-}
-
-ProfileStack.navigationOptions = {
-  tabBarIcon: ({ focused }: IFocused) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-person` : 'md-information-circle'}
-    />
-  ),
-};
-
-NewGameStack.navigationOptions = {
-  tabBarIcon: ({ focused }: IFocused) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-add-circle-outline` : 'md-options'}
-    />
-  ),
-};
+FindGameStack.navigationOptions = options.FindGamebottomNavOptions;
+ProfileStack.navigationOptions = options.ProfileBottomNavOptions;
+NewGameStack.navigationOptions = options.NewGameBottomNavOptions;
 
 export default createBottomTabNavigator(
-  { NewGameStack, FindGameStack, ProfileStack },
+  { FindGameStack, NewGameStack, ProfileStack },
   {
     tabBarOptions: {
+      // tabStyle: { backgroundColor: Colors.tintColor },
+      activeTintColor: Colors.active,
+      inactiveTintColor: HEADER_BACKGROUND,
+
+      allowFontScaling: true,
       style: {
-        height: 45,
+        // height: 45,
+        // backgroundColor: HEADER_BACKGROUND,
+        paddingTop: 6,
+        paddingBottom: 6,
       },
-      showLabel: false,
+      // showLabel: true,
       // inactiveBackgroundColor: '#102044',
-      // activeBackgroundColor: '#102044'
+      // activeBackgroundColor: '#102044',
     },
   }
 );

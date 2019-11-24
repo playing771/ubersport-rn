@@ -1,21 +1,20 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
 
-interface ITabBarIconProps {
+interface IProps {
   name: string;
   focused: boolean;
 }
 
-const TabBarIcon: React.SFC<ITabBarIconProps> = props => {
+export function TabBarIcon({ name, focused }: IProps) {
   return (
     <Ionicons
-      name={props.name}
-      size={28}
+      name={name}
+      size={focused ? 28 : 24}
       // style={{ marginBottom: -3 }}
-      color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+      color={focused ? Colors.tabNavActive : Colors.tabNav}
+      // style={{ fontSize: 24 }}
     />
   );
-};
-
-export default TabBarIcon;
+}
