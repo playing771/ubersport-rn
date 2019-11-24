@@ -15,7 +15,7 @@ interface IProps {
 export default function FavouriteSportsTab({ userId }: IProps) {
   const { data, loading, error } = useEditProfileFavouriteSportsQuery({ id: userId });
 
-  const [newFavoriteSports, setNewFavoriteSports] = useState<number[] | null>(null);
+  const [newFavoriteSports, setNewFavoriteSports] = useState<number[]>([]);
 
   if (loading) {
     return <ULoader />;
@@ -23,6 +23,10 @@ export default function FavouriteSportsTab({ userId }: IProps) {
 
   if (error) {
     return <ErrorCard error={error} />;
+  }
+
+  if (!data) {
+    return null;
   }
 
   const changeSportsHandle = (sportIds: number[]) => {
@@ -33,9 +37,17 @@ export default function FavouriteSportsTab({ userId }: IProps) {
 
   return (
     <FormContainer withKeyboard={false}>
-      <View style={{ borderBottomWidth: 1, borderBottomColor: '#404F7A', borderStyle: 'solid' }}>
+      <View>
         <Text style={styles.sportsListTitle}>Выберите любимые виды спорта</Text>
       </View>
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: '#404F7A',
+          borderStyle: 'solid',
+          width: '40%',
+        }}
+      />
       <SportsList
         onChange={changeSportsHandle}
         style={styles.sportsList}

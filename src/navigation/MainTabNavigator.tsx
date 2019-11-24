@@ -6,7 +6,6 @@ import EditGameScreen from '../screens/EditGame';
 import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
 import EditLocationScreen from '../screens/EditGame/Location';
 // import SingInScreen from '../screens/SignInScreen/index';
-// import TestHookScreen from '../screens/TestHookScreen/index';
 import EditProfileScreen from '../screens/EditProfile';
 import FindGameScreen from '../screens/FindGame';
 // import findGameBottomNav from '../screens/FindGame/bottomNavOptions';
@@ -41,6 +40,7 @@ const FindGameStack = createStackNavigator({
   [NavigationRoot.Participants]: ParticipantsScreen,
   [NavigationRoot.Location]: FindOwnLocationScreen,
   [NavigationRoot.UserInfo]: UserInfoScreen,
+  [NavigationRoot.NotAuthorized]: NotAuthorizedScreen,
 });
 
 const NewGameStack = createStackNavigator({
@@ -48,6 +48,7 @@ const NewGameStack = createStackNavigator({
   [NavigationRoot.EditGame]: EditGameScreen,
   [NavigationRoot.GameInfo]: GameInfoScreen,
   [NavigationRoot.EditLocation]: EditLocationScreen,
+  [NavigationRoot.NotAuthorized]: NotAuthorizedScreen,
 });
 
 FindGameStack.navigationOptions = options.FindGamebottomNavOptions;

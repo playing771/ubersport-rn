@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavigationNavigatorProps, withNavigation } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import GradientWrapper from '../../components/AdaptiveScreen/GradientWrapper';
 import { gradient } from '../../constants/generalStyles';
@@ -9,7 +10,7 @@ import { NavigationRoot } from '../../navigation/roots';
 import Profile from '../Profile';
 import EditProfileButton from './EditProfileButton';
 
-interface IProps {}
+interface IProps extends NavigationNavigatorProps {}
 
 function MyProfileScreen(props: IProps) {
   const { user } = useAppContext();
@@ -36,4 +37,4 @@ MyProfileScreen.navigationOptions = ({ navigation }: any) => {
   return options;
 };
 
-export default MyProfileScreen;
+export default withNavigation(MyProfileScreen);

@@ -1,18 +1,14 @@
 import { createSwitchNavigator } from 'react-navigation';
-
-import MainTabNavigator from './MainTabNavigator';
-import LoadingScreen from '../screens/Loading/index';
 import { createStackNavigator } from 'react-navigation-stack';
+import LoadingScreen from '../screens/Loading/index';
 import SingInScreen from '../screens/SignInScreen/index';
-import NotAuthorizedScreen from '../screens/NotAuthorized';
+import MainTabNavigator from './MainTabNavigator';
 
 const AuthStack = createStackNavigator({
   SignIn: SingInScreen,
 });
 
 export default createSwitchNavigator({
-  // You could add another route here for authentication.
-  // Read more at https://reactnavigation.org/docs/en/auth-flow.html
   LOADING: LoadingScreen,
   MAIN: MainTabNavigator,
   AUTH: AuthStack,

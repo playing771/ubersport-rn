@@ -29,6 +29,10 @@ const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IPr
     return <ULoader />;
   }
 
+  if (!data || !data.games) {
+    return null;
+  }
+
   const games = data ? data.games.games : [];
 
   const renderItem = ({ item, index }: { item: IGame; index: number }) => (

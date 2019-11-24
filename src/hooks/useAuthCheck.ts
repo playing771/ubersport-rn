@@ -6,8 +6,8 @@ type ICheckType = 'boolean' | 'redirect';
 
 export default function useAuthCheck() {
   const { user, isLoggedIn } = useAppContext();
-  const { navigate } = useNavigation();
-  // console.log('useAuthCheck', user);
+  const navigation = useNavigation();
+  console.log('useAuthCheck', isLoggedIn);
 
   const authCheck = (checkType: ICheckType = 'boolean') => {
     // console.log('authCheck', checkType);
@@ -17,13 +17,12 @@ export default function useAuthCheck() {
     }
 
     if (checkType === 'redirect') {
-      console.log('REDIRECT');
-      // replace(NavigationRoot.NotAuthorized);
-      navigate(NavigationRoot.NotAuthorized);
+      // в тайпингах нет replace
+      (navigation as any).replace(NavigationRoot.NotAuthorized, {}, {});
     }
 
     return false;
   };
 
-  return { authCheck };
+  return { authCheck, isLoggedIn };
 }
