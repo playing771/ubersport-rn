@@ -66,8 +66,9 @@ export default function GeneralGameInfo({ game, onPressParticipants }: IProps) {
           />
           <Section.Item
             icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS} />}
-            label={game.description}
+            label={game.description || 'Нет описания'}
             labelStyle={{ color: '#5F6B8D' }}
+            style={{ minHeight: 140 }}
           />
         </Section>
       )}
