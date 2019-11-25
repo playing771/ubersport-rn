@@ -53,9 +53,12 @@ export default function SportsSelect({
   const loading = aLoading && fLoading;
 
   const sportsList = onlyUniqFromArrays(
-    aData.sports,
+    aData ? aData.sports : [],
     fData && fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports
   );
+
+  const sports =
+    (fData && fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports) || [];
 
   return (
     <ScrollView style={styles.container}>
@@ -65,7 +68,7 @@ export default function SportsSelect({
           <SportsListView
             loading={loading}
             selectedSports={selected}
-            sports={fData && fData.getFavouriteSports && fData.getFavouriteSports.favoriteSports}
+            sports={sports}
             onChangeHandle={toggleSelection}
             mode={mode}
           />

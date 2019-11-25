@@ -1,11 +1,11 @@
 import React from 'react';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { ISportsListProps } from '.';
 import ISport from '../../api/sports/Sport.type';
+import Colors from '../../constants/Colors';
 import ULoader from '../ULoader';
 import ToggleableItem, { SporstListItem, SporstListItemInner } from './SportsListItem';
-import { FlatList } from 'react-native-gesture-handler';
-import { StyleProp, TextStyle, StyleSheet, Text } from 'react-native';
-import { ISportsListProps } from '.';
-import Colors from '../../constants/Colors';
 import { ISelectionMode } from './SportsSelect';
 
 export const DEFAULT_SELECTION_MODE: ISelectionMode = 'MULTIPLE';
@@ -31,7 +31,7 @@ export default function SportsListView({
 }: IProps) {
   const renderItem = ({ item }: { item: ISport }) => {
     const active = selectedSports.some(si => item.id === si);
-    const exceedMaximum = selectionLimit && selectionLimit === selectedSports.length;
+    const exceedMaximum = (selectionLimit && selectionLimit === selectedSports.length) || false;
 
     const onPressHandle = (itemId: number) => {
       // отменяем, если превышен selection-лимит

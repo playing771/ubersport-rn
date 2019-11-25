@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import withTouch from '../../../components/hocs/WIthTouch';
-import { View, ViewStyle, StyleProp, StyleSheet, Text } from 'react-native';
 
 interface IProps {
   title: string;
@@ -8,14 +8,14 @@ interface IProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const FilterButton: React.FC<IProps> = props => {
+function FilterButton({ title, value, style }: IProps) {
   return (
-    <View style={[styles.container, props.style]}>
-      <Text style={styles.title}>{props.title}</Text>
-      <Text style={styles.value}>{props.value}</Text>
+    <View style={[styles.container, style]}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.value}>{value}</Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -35,6 +35,10 @@ export default function FiltersPanel({
   const { navigate } = useNavigation();
   const { data, loading, error } = useAvaliableSportsQuery();
 
+  if (!data) {
+    return null;
+  }
+
   const filtersNavigateHandle = () => {
     navigate(NavigationRoot.SportFilters, {
       changeSportFilterHanlde,

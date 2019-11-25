@@ -35,6 +35,10 @@ const FavouriteSportsList = (props: ISportsListProps) => {
     return <ULoader />;
   }
 
+  if (!data) {
+    return null;
+  }
+
   return <SportsListInner {...props} sports={data.getFavouriteSports.favoriteSports} />;
 };
 
