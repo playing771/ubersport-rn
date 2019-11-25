@@ -18,9 +18,9 @@ const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
 export function NewGameBtn({ variables, disabled }: IProps) {
   const { error, toggleErrorCard } = useErrorCard();
+  const { navigate, dispatch } = useNavigation();
 
   function onComplete(data: ICreateGameResult) {
-    const { navigate, dispatch } = useNavigation();
     const resetAction = StackActions.reset({
       index: 0,
       actions: [
