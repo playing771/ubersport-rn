@@ -12,31 +12,27 @@ import UserAvatar from '../../components/AvatarsGroup/UserAvatar';
 import ErrorCard from '../../components/ErrorCard';
 import ULoader from '../../components/ULoader/index';
 import Colors from '../../constants/Colors';
-import useNavigation from '../../hooks/useNavigation';
-import { NavigationRoot } from '../../navigation/roots';
 import getAgeFromBirthday from '../../utils/getAgeFromBirthday';
 
-// type IProps = {} & Partial<IGetUserResult> & NavigationScreenProps;
 interface IProps {
   id: string;
 }
 
-export default function ProfileInfo({ id }: IProps) {
-  const { navigate } = useNavigation();
-  const { data = {} as IGetUserInfoResult, loading, error } = useQuery<
-    IGetUserInfoResult,
-    IGetUserInfoVariables
-  >(GET_USER_INFO_GQL, { variables: { id } });
+export function ProfileInfo({ id }: IProps) {
+  const { data, loading, error } = useQuery<IGetUserInfoResult, IGetUserInfoVariables>(
+    GET_USER_INFO_GQL,
+    { variables: { id } }
+  );
 
   if (error) {
     return <ErrorCard error={error} />;
   }
 
-  const { getUser } = data;
+  if (!data) {
+    return null;
+  }
 
-  const editProfileHandle = () => {
-    navigate(NavigationRoot.EditProfile);
-  };
+  const { getUser } = data;
 
   if (loading || !getUser) {
     return <ULoader loading={loading} />;
@@ -83,10 +79,6 @@ function SexIcon({ sex }: { sex: ISex }) {
     />
   );
 }
-
-// function FemaleIcon() {
-//   return <Ionicons name="ios-female" size={18} style={[styles.sexicon, { color: Colors.purle }]} />;
-// }
 
 const styles = StyleSheet.create({
   container: {

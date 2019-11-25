@@ -5,6 +5,7 @@ import { ISex } from './types';
 export const GET_USER_INFO_GQL = gql`
   query getUser($id: String!) {
     getUser(id: $id) {
+      id
       nickname
       email
       firstName

@@ -1,4 +1,5 @@
 import { ApolloError } from 'apollo-client';
+import { DocumentNode } from 'graphql';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 import { SubmitButton } from '../../components/buttons/SubmitButton';
@@ -7,7 +8,7 @@ import { IEditProfileVariables } from './gql';
 
 interface IProps {
   variables: IEditProfileVariables;
-  gql: object;
+  gql: DocumentNode;
   style?: ViewStyle;
   disabled?: boolean;
   onError?: (err: ApolloError) => void;

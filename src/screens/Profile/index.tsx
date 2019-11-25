@@ -5,7 +5,7 @@ import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import { BASE_PADDING } from '../../sharedStyles';
 import ProfileGamesList from './GamesList';
-import ProfileInfo from './Info';
+import { ProfileInfo } from './Info';
 
 interface IProps {
   userId: string;

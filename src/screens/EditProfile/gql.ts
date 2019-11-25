@@ -21,12 +21,28 @@ export interface IEditProfileVariables {
 
 export interface IEditProfileResponse {
   id: string;
+  nickname: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  dateOfBirth: number;
+  sex: ISex;
+  avatar: string;
 }
 
 export const EDIT_PROFILE_MUTATION = gql`
   mutation($id: ID!, $userInput: UserInput) {
     editUser(id: $id, userInput: $userInput) {
       id
+      nickname
+      email
+      firstName
+      lastName
+      middleName
+      dateOfBirth
+      sex
+      avatar
     }
   }
 `;
