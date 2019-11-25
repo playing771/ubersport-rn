@@ -5,8 +5,10 @@ import { IEditProfileUserInfoVarialbles } from '../UserInfo/gql';
 export const EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY = gql`
   query getUserFavouriteSports($id: String!) {
     getUserFavouriteSports: getUser(id: $id) {
+      id
       favoriteSports {
         id
+        name
       }
     }
   }

@@ -48,5 +48,7 @@ export const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export function useEditUserProfileMutation() {
-  return useMutation<IEditProfileResponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION);
+  return useMutation<IEditProfileResponse, IEditProfileVariables>(EDIT_PROFILE_MUTATION, {
+    // refetchQueries: ['getUserFavouriteSports', 'getFavouriteSports'], // TODO: не работает
+  });
 }

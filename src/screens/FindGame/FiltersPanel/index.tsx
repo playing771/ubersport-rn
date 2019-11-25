@@ -94,7 +94,7 @@ function getFilterText(filter: IFindGameFilters, sports: ISport[]): string {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 65,
     flexDirection: 'row',
     // paddingTop: 10,
     backgroundColor: HEADER_BACKGROUND,

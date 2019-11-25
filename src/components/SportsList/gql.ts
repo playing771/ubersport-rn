@@ -1,11 +1,12 @@
-import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
+import { useQuery } from 'react-apollo';
 import ISport from '../../api/sports/Sport.type';
 import useAuthCheck from '../../hooks/useAuthCheck';
 
 export const GET_FAVOURITE_SPORTS_QUERY = gql`
   query getFavouriteSports($id: String!) {
     getFavouriteSports: getUser(id: $id) {
+      id
       favoriteSports {
         name
         id
