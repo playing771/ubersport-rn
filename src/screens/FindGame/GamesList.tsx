@@ -3,7 +3,7 @@ import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { IGame } from '../../api/games/types';
 import ErrorCard from '../../components/ErrorCard';
 import GameDetailsCard from '../../components/GameCard';
-import { HEADER_BACKGROUND } from '../../constants/Colors';
+import Colors from '../../constants/Colors';
 import { BASE_PADDING } from '../../sharedStyles';
 import { IFindGameFilters, ISearchGameSort } from '../FindGame';
 import useGamesListQuery from './gql';
@@ -37,14 +37,20 @@ export function GamesList({ onGameCardPress, filters, sort }: IProps) {
       contentContainerStyle={styles.listContainer}
       keyExtractor={keyExtractor}
       renderItem={renderGameItem}
+      showsVerticalScrollIndicator={false}
       refreshControl={
-        <RefreshControl refreshing={loading} onRefresh={refetch} tintColor={HEADER_BACKGROUND} />
+        <RefreshControl refreshing={loading} onRefresh={refetch} tintColor={Colors.purle} />
       }
     />
   );
 }
 
 const styles = StyleSheet.create({
-  listContainer: { paddingBottom: BASE_PADDING },
-  card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
+  listContainer: {
+    backgroundColor: '#F9F9FA',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    paddingBottom: BASE_PADDING,
+  },
+  card: { marginBottom: 12, borderBottomColor: '#9B9B9B' },
 });

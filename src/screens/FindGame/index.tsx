@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import { GameStatus } from '../../api/games/types';
@@ -7,7 +7,6 @@ import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
 import FiltersPanel from './FiltersPanel';
-import FindGameHeaderTitle from './FindGameHeaderTitle';
 import { GamesList } from './GamesList';
 import { IGamesListQueryFilters } from './gql';
 
@@ -16,15 +15,10 @@ interface IProps extends NavigationInjectedProps {}
 export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
 
-// const HEADER_EXPANDED_HEIGHT = 70;
-// const HEADER_COLLAPSED_HEIGHT = 0;
-
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
 
 function FindGameScreen(props: IProps) {
   const { navigate } = useNavigation();
-
-  // const [scrollY, setScrollY] = useState(new Animated.Value(0));
 
   const [sort, setSort] = useState<ISearchGameSort>('distance');
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
@@ -46,40 +40,7 @@ function FindGameScreen(props: IProps) {
     navigate(NavigationRoot.GameInfo, { gameId });
   };
 
-  // const headerHeight = scrollY.interpolate({
-  //   inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
-  //   outputRange: [HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT],
-  //   extrapolate: 'clamp',
-  // });
   return (
-    // <>
-    //   <StatusBar barStyle="light-content" />
-    //   {/* <UButton title="LOGIN" onPress={() => props.navigation.navigate(NavigationRoot.Auth)} /> */}
-    //   <Animated.View style={{ height: headerHeight }}>
-    //     <FiltersPanel
-    //       activeSort={sort}
-    //       activeFilters={activeFilters}
-    //       onChangeActiveSort={changeActiveSort}
-    //       changeSportFilterHanlde={changeSportFilterHanlde}
-    //     />
-    //   </Animated.View>
-    //   <ScrollView
-    //     showsVerticalScrollIndicator={false}
-    //     style={styles.listContainer}
-    //     scrollEventThrottle={16}
-    //     onScroll={Animated.event([
-    //       {
-    //         nativeEvent: {
-    //           contentOffset: {
-    //             y: scrollY,
-    //           },
-    //         },
-    //       },
-    //     ])}
-    //   >
-    //     <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
-    //   </ScrollView>
-    // </>
     <>
       <StatusBar barStyle="light-content" />
       <FiltersPanel
@@ -88,26 +49,11 @@ function FindGameScreen(props: IProps) {
         onChangeActiveSort={changeActiveSort}
         changeSportFilterHanlde={changeSportFilterHanlde}
       />
+
       <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  mainContainer: {},
-  listContainer: {
-    backgroundColor: '#FAFAFA',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  card: { marginBottom: 8, borderBottomColor: '#9B9B9B' },
-});
-
-// const screenOptions: IAdaptiveScreenOptions = {
-//   transparentHeader: true,
-//   gradient,
-//   barStyle: 'light-content',
-// };
 
 FindGameScreen.navigationOptions = ({ navigation }: any) => {
   const editGeoHandle = () => {
@@ -115,11 +61,10 @@ FindGameScreen.navigationOptions = ({ navigation }: any) => {
   };
 
   const headerOptions: NavigationStackOptions = {
-    // title: 'Поиск игр',
-    headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
+    title: 'Поиск игр',
+    // headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
     headerTitleStyle: {
       ...sharedStyles.headerTitleStyle,
-      fontSize: 22,
     },
     headerStyle: [sharedStyles.header, sharedStyles.borderLessHeader],
     // headerTransparent: true, // TODO: fix
