@@ -160,8 +160,12 @@ class SingInScreen extends React.Component<IProps, IState> {
       mutation: CREATE_USER_GQL,
       variables: signUpVariables,
     })
-      .then((data: any) => {})
-      .catch(error => {});
+      .then((data: any) => {
+        login(signUpVariables.email!, signUpVariables.password!).then(this.loginHandle);
+      })
+      .catch(error => {
+        console.log('ERROR', error);
+      });
     // console.log('DATA', data);
 
     // this.setState({ signUpVariables });
