@@ -275,7 +275,7 @@ function EditGameScreen(props: IProps) {
               label={() => (
                 <TextInput
                   multiline={true}
-                  style={[styles.subText, styles.noPadding]}
+                  style={[styles.description, styles.subText, styles.noPadding]}
                   placeholder={DESCRIPTION_PLACEHOLDER}
                   placeholderTextColor={styles.optionalText.color}
                   onChangeText={setGameDescription}
@@ -342,6 +342,7 @@ const styles = StyleSheet.create({
   container: { position: 'relative' },
   mainText: { color: '#5F6B8D', fontWeight: '500' },
   // subTextContainer: { flexDirection: 'row', paddingTop: 5 },
+  description: { minHeight: 80 },
   subText: {
     color: '#636F8F',
     paddingTop: 10,
