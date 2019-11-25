@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, View } from 'react-native';
+import { AsyncStorage, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import { CREATE_USER_GQL, ICreateUserMutationVariables } from '../../api/user/createUser';
@@ -8,13 +8,14 @@ import login, { IAuthResult } from '../../api/user/login';
 import { IUserWithToken } from '../../api/user/types';
 import UButton from '../../components/buttons/UButton';
 import ErrorCard from '../../components/ErrorCard/index';
-import withAdaptiveScreen from '../../components/hocs/WithAdaptiveScreen';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen/index';
 import withAppContext from '../../components/hocs/WithAppContext';
 import { KeyboardView } from '../../components/KeyboardVew';
 import UWizard from '../../components/UWizard/index';
+import UWizardStepIndicator from '../../components/UWizard/StepIndicator';
 import { NavigationRoot } from '../../navigation/roots';
 import { IAppContextInjectedProp } from '../../utils/context/sports';
+import { isAndroid } from '../../utils/deviceInfo';
 import SignUpActive from './email/active';
 import SignUpPassed from './email/passed';
 import favoriteSportsActive from './favoriteSports/active';
@@ -36,6 +37,7 @@ interface IState {
   userEmail: string;
   loading: boolean;
   badCredentials: boolean;
+  passed: number[];
   // signUpVariables?: ICreateUserMutationVariables;
 }
 
@@ -59,20 +61,17 @@ const steps = [
 class SingInScreen extends React.Component<IProps, IState> {
   static navigationOptions: NavigationStackOptions = {
     header: null,
-    // title: 'Вход или регистрация',
-    // headerTitleStyle: {
-    //   color: '#fff',
-    //   fontWeight: '400'
-    // },
-    // headerStyle: { backgroundColor: '#101F44' }
-    // headerTransparent: true // TODO: fixs
   };
+
+  // FIXME: passed - костыль, чтобы вставвить прогресс в хедер компонента, который не относится к UWizard.
+  // Внутри UWizard уже есть state с passed, сейчас мы дублируем этот стейт в 2х местах, передавая его снизу вверхы
 
   state: IState = {
     type: undefined,
     userEmail: '',
     loading: false,
     badCredentials: false,
+    passed: [],
   };
 
   loginHandle = async (data: IAuthResult) => {
@@ -141,6 +140,9 @@ class SingInScreen extends React.Component<IProps, IState> {
     });
   };
 
+  setPassed = (passed: number[]) => {
+    this.setState({ passed });
+  };
   hideBadCredentials = () => {
     this.setState({ badCredentials: false });
   };
@@ -194,36 +196,48 @@ class SingInScreen extends React.Component<IProps, IState> {
   private renderContent() {
     const { type, userEmail, loading, badCredentials } = this.state;
     return (
-      <KeyboardView>
-        {type === 'SIGNUP' || type === undefined ? (
-          <>
-            <UWizard
-              header={this.renderHeader(type)}
-              onStepPass={this.stepPassedHandle}
-              steps={steps}
-              submitHandle={this.signUp}
-            />
-            <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-            <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
-          </>
-        ) : (
-          <>
-            <LoginForm
-              userEmail={userEmail}
-              submitHandle={this.login}
-              loading={loading}
-              hideErroHandle={this.hideBadCredentials}
-              changeEmailHandle={this.changeEmailHandle}
-            />
-            <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-            <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
-            <ErrorCard
-              error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
-              show={badCredentials}
-            />
-          </>
-        )}
-      </KeyboardView>
+      <SafeAreaView style={[{ flex: 1 }, isAndroid ? styles.androidTopPadding : undefined]}>
+        <StatusBar barStyle="light-content" />
+        <View style={styles.headerContainer}>
+          {typeof this.renderHeader(type) === 'string' ? (
+            <Text style={styles.header}>{this.renderHeader(type)}</Text>
+          ) : (
+            this.renderHeader(type)
+          )}
+          <UWizardStepIndicator passed={this.state.passed} total={steps.length} />
+        </View>
+        <KeyboardView contentContainerStyle={{}}>
+          {type === 'SIGNUP' || type === undefined ? (
+            <>
+              <UWizard
+                header={this.renderHeader(type)}
+                onStepPass={this.stepPassedHandle} // FIXME: лютый костыль
+                setPassed={this.setPassed}
+                steps={steps}
+                submitHandle={this.signUp}
+              />
+              <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
+            </>
+          ) : (
+            <>
+              <LoginForm
+                userEmail={userEmail}
+                submitHandle={this.login}
+                loading={loading}
+                hideErroHandle={this.hideBadCredentials}
+                changeEmailHandle={this.changeEmailHandle}
+              />
+              <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
+              <ErrorCard
+                error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
+                show={badCredentials}
+              />
+            </>
+          )}
+        </KeyboardView>
+      </SafeAreaView>
     );
   }
 
@@ -275,6 +289,19 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 6,
     color: '#5F6B8D',
   },
+  androidTopPadding: { paddingTop: 24 },
+  headerContainer: {
+    // borderBottomColor: '#141720',
+    // borderBottomWidth: 2,
+    backgroundColor: '#505B77',
+  },
+  header: {
+    color: 'white',
+    paddingVertical: 12,
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
+  },
 });
 
-export default withNavigation(withAdaptiveScreen(SingInScreen, screenOptions));
+export default withNavigation(SingInScreen);

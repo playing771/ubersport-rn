@@ -1,11 +1,10 @@
 import React, { createRef, ReactNode } from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { deepCopy } from '../../utils/helpers';
 import { BOTTOM_BIG_NOTCH } from '../AdaptiveScreen/index';
 import UWizardItem from './Item';
-import UWizardStepIndicator from './StepIndicator';
 
 export interface IUWizardStep {
   active: any;
@@ -35,6 +34,7 @@ interface IProps {
   header: string | ReactNode;
   onStepPass?: (stepIndex: number, data: any) => void;
   style?: StyleProp<ViewStyle>;
+  setPassed: (passed: number[]) => void;
 }
 
 interface IState {
@@ -121,6 +121,7 @@ export default class UWizard extends React.Component<IProps, IState> {
     this.setState({ passed: _passed }, () => {
       if (this.props.onStepPass) {
         this.props.onStepPass(stepIndex, this.state.stepsDataMap[stepIndex]);
+        this.props.setPassed(this.state.passed);
       }
       setTimeout(() => {
         if (this.listRef) {
@@ -147,14 +148,14 @@ export default class UWizard extends React.Component<IProps, IState> {
 
         // extraScrollHeight={60}
       >
-        <View style={styles.headerContainer}>
+        {/* <View style={styles.headerContainer}>
           {typeof this.props.header === 'string' ? (
             <Text style={styles.header}>{this.props.header}</Text>
           ) : (
             this.props.header
           )}
-        </View>
-        <UWizardStepIndicator passed={this.state.passed} total={this.props.steps.length} />
+        </View> */}
+        {/* <UWizardStepIndicator passed={this.state.passed} total={this.props.steps.length} /> */}
         <FlatList
           // innerRef={this.listRef}
           // enableOnAndroid={true}

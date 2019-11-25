@@ -9,8 +9,8 @@ const fragments = `
 `;
 
 export const GET_GAMES_GQL = gql`
-  query getGamesWithFilters($filters: GameFiltersInput, $sort: SortInput) {
-    games(filters: $filters, sort: $sort) {
+  query getGamesWithFilters($filters: GameFiltersInput, $sort: SortInput, $page: PageInput) {
+    games(filters: $filters, sort: $sort, page: $page) {
       count
       games {
         ...fullGameInfoFragment
@@ -20,9 +20,15 @@ export const GET_GAMES_GQL = gql`
   ${fragments}
 `;
 
+interface IPagination {
+  pageNumber: number;
+  pageSize: number;
+}
+
 export interface IGamesListQueryVariables {
   filters: IGamesListQueryFilters;
   sort: ISearchGameSort;
+  page?: IPagination;
 }
 export interface IGamesListQueryFilters {
   sportIds?: number[];
