@@ -1,11 +1,11 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, StyleProp } from 'react-native';
-import ProgressBarCardBlock from './ProgressBarCardBlock';
-import AvatarsGroup from '../../AvatarsGroup/index';
-import UserAvatar from '../../AvatarsGroup/UserAvatar';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { IParticipant } from '../../../api/games/types';
 import Colors from '../../../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import AvatarsGroup from '../../AvatarsGroup/index';
+import UserAvatar from '../../AvatarsGroup/UserAvatar';
+import { ProgressBarCardBlock } from './ProgressBarCardBlock';
 
 interface IProps {
   textColor: string;
@@ -33,7 +33,7 @@ export default function ParticipantsCardBlock({ textColor, max, participants, st
           styleLast={{ backgroundColor: Colors.yellow }}
         />
       )}
-      {max && <ProgressBarCardBlock progress={getProgress(max, count)} />}
+      {<ProgressBarCardBlock progress={max ? getProgress(max, count) : 100} max={max} />}
     </View>
   );
 }

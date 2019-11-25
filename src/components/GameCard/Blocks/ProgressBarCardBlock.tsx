@@ -1,24 +1,25 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 interface IProps {
   progress: number;
+  max?: number;
 }
 
-const ProgressBarCardBlock = (props: IProps) => {
-  const styles = _getStyles(props.progress);
+export function ProgressBarCardBlock({ progress, max }: IProps) {
+  const styles = _getStyles(progress);
   return (
     <View style={styles.mainContainer}>
       <LinearGradient
-        colors={['#01EB51', '#82F748']}
+        colors={max ? ['#01EB51', '#82F748'] : ['#5F6D9B', '#9CABE2']}
         start={[0, 0]}
         end={[1, 1]}
         style={[styles.ProgressBarCardBlock, styles.shadow]}
       />
     </View>
   );
-};
+}
 
 const _getStyles = (progress: number) => {
   const styles = StyleSheet.create({
@@ -47,5 +48,3 @@ const _getStyles = (progress: number) => {
   });
   return styles;
 };
-
-export default ProgressBarCardBlock;
