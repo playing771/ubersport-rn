@@ -43,7 +43,7 @@ function ParticipantsCountBlock({
   count,
   textColor,
 }: {
-  max: number;
+  max?: number;
   count: number;
   textColor: string;
 }) {

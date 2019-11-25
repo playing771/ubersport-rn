@@ -12,7 +12,7 @@ export function ProgressBarCardBlock({ progress, max }: IProps) {
   return (
     <View style={styles.mainContainer}>
       <LinearGradient
-        colors={max ? ['#01EB51', '#82F748'] : ['#5F6D9B', '#9CABE2']}
+        colors={max ? ['#01EB51', '#82F748'] : ['#B3B9CF', '#929CC8']}
         start={[0, 0]}
         end={[1, 1]}
         style={[styles.ProgressBarCardBlock, styles.shadow]}
