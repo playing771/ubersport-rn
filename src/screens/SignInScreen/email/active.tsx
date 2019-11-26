@@ -1,10 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { AuthSession } from 'expo';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
+
+const redirectUrl = 'https://ubersport.ru/auth/google';
+const GOOGLE_WEB_APPID = '663195185664-q7n8a52ef30nq3htv4cr61lbkqso3b0k.apps.googleusercontent.com';
+const FB_APP_ID = '1375931069246551';
 
 interface IProps extends IActiveStepInjectedProps {
   // onSubmit: (index: number, data: string) => void;
@@ -12,6 +17,30 @@ interface IProps extends IActiveStepInjectedProps {
 }
 
 const SignUpActive = ({ onSubmit, index }: IProps) => {
+  const handleGoogleAuth = async () => {
+    const result = await AuthSession.startAsync({
+      authUrl:
+        `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `&client_id=${GOOGLE_WEB_APPID}` +
+        `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
+        `&response_type=code` +
+        `&access_type=offline` +
+        `&scope=profile`,
+    });
+    console.log('result', result);
+    return result;
+  };
+  const handleFacebookAuth = async () => {
+    // const facebookRedirectUrl = AuthSession.getRedirectUrl();
+    const result = await AuthSession.startAsync({
+      authUrl:
+        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
+        `&client_id=${FB_APP_ID}` +
+        `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
+    });
+    console.log('result', result);
+    return result;
+  };
   return (
     <>
       <AnimatedView
@@ -37,6 +66,7 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
             <EvilIcons name="sc-facebook" style={styles.fbIcon} />
           </UButton>*/}
           <UButton
+            onPress={handleGoogleAuth}
             style={{ flex: 1, height: 42, marginTop: 6 }}
             iconSize={24}
             rounded={true}
@@ -46,6 +76,7 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
             textStyle={{ fontSize: 16, fontWeight: '500' }}
           />
           <UButton
+            onPress={handleFacebookAuth}
             style={{ flex: 1, height: 42, marginTop: 12 }}
             iconSize={24}
             rounded={true}
