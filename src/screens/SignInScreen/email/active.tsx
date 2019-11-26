@@ -45,6 +45,15 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
             title="Войти с помощью Google"
             textStyle={{ fontSize: 16, fontWeight: '500' }}
           />
+          <UButton
+            style={{ flex: 1, height: 42, marginTop: 12 }}
+            iconSize={24}
+            rounded={true}
+            icon="logo-facebook"
+            backgroundColor="#3B5899"
+            title="Войти с помощью Facebook"
+            textStyle={{ fontSize: 16, fontWeight: '500' }}
+          />
         </View>
       </AnimatedView>
       <AnimatedView animation="fadeIn" useNativeDriver={true} duration={1100} delay={500}>
@@ -97,7 +106,8 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   socialContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     paddingVertical: 24,
   },
