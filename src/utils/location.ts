@@ -4,20 +4,45 @@ import { Region } from 'react-native-maps';
 import { ILocation } from '../api/games/types';
 import { isAndroid } from './deviceInfo';
 
+export const locationUtils = {
+  getMyLocationAsync,
+  getRegionFromLocation,
+  getFormattedAddress,
+  convertLocationToExpoLocation,
+  convertPositionToLocation,
+};
+
 async function getMyLocationAsync() {
   const { status } = await Permissions.askAsync(Permissions.LOCATION);
 
   if (status !== 'granted') {
-    throw new Error('Permission to access location was denied');
+    // throw new Error('Permission to access location was denied');
+    return;
   }
 
-  const location = await Location.getCurrentPositionAsync({
-    // on anroid it takew too long with hight accuracy
-    // https://github.com/expo/expo/issues/3433
-    accuracy: isAndroid ? Location.Accuracy.Low : Location.Accuracy.Low,
-  });
+  const location = await getNativeMyLocation();
+
+  // const location = await Location.getCurrentPositionAsync({
+  //   // on anroid it takew too long with hight accuracy
+  //   // https://github.com/expo/expo/issues/3433
+  //   accuracy: isAndroid ? Location.Accuracy.Low : Location.Accuracy.Low,
+  // });
 
   return location;
+}
+
+function getNativeMyLocation(): Promise<Position> {
+  // ?? ?????? ?????? location ?? expo ???????? ????? ????????
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        resolve(position);
+      },
+      error => {
+        reject(error);
+      }
+    );
+  });
 }
 
 function getRegionFromLocation(location: Location.LocationData): Region {
@@ -80,9 +105,16 @@ function convertLocationToExpoLocation(location: ILocation): Location.LocationDa
   };
 }
 
-export const locationUtils = {
-  getMyLocationAsync,
-  getRegionFromLocation,
-  getFormattedAddress,
-  convertLocationToExpoLocation,
-};
+function convertPositionToLocation(position: Position): Location.LocationData {
+  const { altitude, heading, speed, ...cordsData } = position.coords;
+  const location: Location.LocationData = {
+    coords: {
+      ...cordsData,
+      altitude: altitude ? altitude : 0,
+      heading: heading ? heading : 0,
+      speed: speed ? speed : 0,
+    },
+    timestamp: position.timestamp,
+  };
+  return location;
+}

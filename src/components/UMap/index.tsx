@@ -37,6 +37,7 @@ interface State {
   loading?: boolean;
   geoBusy: boolean;
   addressBarVisible: boolean;
+  loadingMyLocation: boolean;
 }
 
 const INITIAL_REGION = {
@@ -53,6 +54,7 @@ const initialState: State = {
   geoBusy: false,
   region: INITIAL_REGION,
   addressBarVisible: true,
+  loadingMyLocation: false,
 };
 
 export default class UMap extends React.Component<Props, State> {
@@ -76,6 +78,7 @@ export default class UMap extends React.Component<Props, State> {
         showMarker: false,
         geoBusy: false,
         addressBarVisible: false,
+        loadingMyLocation: false,
       }
     : initialState;
 
@@ -148,9 +151,13 @@ export default class UMap extends React.Component<Props, State> {
   };
 
   goToMyLocation = async () => {
+    this.setState({ loadingMyLocation: true });
     const myLocation = await locationUtils.getMyLocationAsync();
-
-    this.goToLocation(myLocation);
+    if (!myLocation) {
+      return null;
+    }
+    this.goToLocation(locationUtils.convertPositionToLocation(myLocation));
+    this.setState({ loadingMyLocation: false });
     return myLocation;
   };
 
@@ -225,7 +232,10 @@ export default class UMap extends React.Component<Props, State> {
                 </MapView>
               </View>
 
-              <MyLocationButton onPress={this.goToMyLocation} />
+              <MyLocationButton
+                onPress={this.goToMyLocation}
+                loading={this.state.loadingMyLocation}
+              />
               <SaveLocationButton onPress={this.submitLocation} />
               {this.state.loading ? (
                 <View style={styles.loaderWrapper}>

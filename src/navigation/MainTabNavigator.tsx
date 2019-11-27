@@ -4,7 +4,7 @@ import Colors, { HEADER_BACKGROUND } from '../constants/Colors';
 import * as options from '../screens/bottomNavOptions';
 import EditGameScreen from '../screens/EditGame';
 import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
-import EditLocationScreen from '../screens/EditGame/Location';
+import { EditLocationScreen } from '../screens/EditGame/Location';
 // import SingInScreen from '../screens/SignInScreen/index';
 import EditProfileScreen from '../screens/EditProfile';
 import FindGameScreen from '../screens/FindGame';

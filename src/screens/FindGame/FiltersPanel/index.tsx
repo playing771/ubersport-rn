@@ -11,7 +11,11 @@ import { IFindGameFilters, ISearchGameSort } from '../../FindGame';
 import FilterButton from './FilterButton';
 import SortModal from './sortModal';
 
-const sortValues: { [key in ISearchGameSort]: string } = {
+type ISortMap = {
+  [key in ISearchGameSort]: string;
+};
+
+const SORTS: ISortMap = {
   date: 'Новые',
   distance: 'Ближайшие',
   time: 'Скоро начало',
@@ -22,6 +26,7 @@ interface IProps {
   onChangeActiveSort: (sort: ISearchGameSort, toggleModal: () => void) => void;
   changeSportFilterHanlde: (ids: number[]) => void;
   activeFilters: IFindGameFilters;
+  myLocation?: Position;
 }
 
 const FilterButtonWithModal = withModal(FilterButton);
@@ -31,6 +36,7 @@ export default function FiltersPanel({
   activeFilters,
   activeSort,
   onChangeActiveSort,
+  myLocation,
 }: IProps) {
   const { navigate } = useNavigation();
   const { data, loading, error } = useAvaliableSportsQuery();
@@ -38,6 +44,10 @@ export default function FiltersPanel({
   if (!data) {
     return null;
   }
+
+  const { distance, ...rest } = SORTS;
+  const sortingMap = myLocation ? { ...rest, distance } : ({ ...rest } as ISortMap); // TODO: remove as assertion
+  const options = Object.keys(sortingMap) as ISearchGameSort[];
 
   const filtersNavigateHandle = () => {
     navigate(NavigationRoot.SportFilters, {
@@ -61,11 +71,13 @@ export default function FiltersPanel({
       <FilterButtonWithModal
         wrapperStyle={styles.buttonRight}
         title="Сортировка"
-        value={sortValues[activeSort]}
+        value={sortingMap[activeSort]}
         modal={({ closeModal }) => (
           <SortModal
             activeSort={activeSort}
             onChange={sort => onChangeActiveSort(sort, closeModal)}
+            myLocation={myLocation}
+            // options={options}
           />
         )}
       />

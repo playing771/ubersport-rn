@@ -1,17 +1,17 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
-  View,
-  TouchableHighlight,
-  StyleSheet,
-  GestureResponderEvent,
-  TextStyle,
-  ViewStyle,
-  TouchableHighlightProps,
-  StyleProp,
   ActivityIndicator,
+  GestureResponderEvent,
+  StyleProp,
+  StyleSheet,
   Text,
+  TextStyle,
+  TouchableHighlight,
+  TouchableHighlightProps,
+  View,
+  ViewStyle,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import shadeBlend from '../../../utils/shadeBlend';
 
 interface IButtonProps extends TouchableHighlightProps, IStyleProps {
@@ -26,6 +26,7 @@ interface IButtonProps extends TouchableHighlightProps, IStyleProps {
   onClickId?: string;
   loading?: boolean;
   onPress?: (e: GestureResponderEvent, onClickId?: string) => void;
+  disabledNoStyles?: boolean;
 }
 
 interface IStyleProps {
@@ -55,9 +56,9 @@ const defaultProps = {
   // square: false
 };
 
-type State = {
+interface State {
   isVisible: boolean;
-};
+}
 
 const initialState: State = {
   isVisible: false,
@@ -136,7 +137,9 @@ class UButton extends React.Component<IButtonProps, State> {
           disabled={this.props.disabled}
         >
           <>
-            {this.props.disabled && <View style={s.disabledWrapper} />}
+            {!this.props.disabledNoStyles && this.props.disabled && (
+              <View style={s.disabledWrapper} />
+            )}
             <View
               style={[
                 s.btnInnerContainer,

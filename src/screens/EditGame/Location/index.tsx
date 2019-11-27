@@ -1,70 +1,66 @@
 import { LocationData } from 'expo-location';
-import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
-import { NavigationStackOptions } from 'react-navigation-stack';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { ILocation } from '../../../api/games/types';
 import mapStyle from '../../../components/GameCard/mapStyle';
 import UMap from '../../../components/UMap';
+import { HEADER_BACKGROUND } from '../../../constants/Colors';
+import useNavigation from '../../../hooks/useNavigation';
+import sharedStyles from '../../../sharedStyles';
 import { locationUtils } from '../../../utils/location';
 
-interface IProps extends NavigationInjectedProps {}
-
-interface IState {
-  // location?: ILocation;
-  hasLocation: boolean;
-}
-
-const initialState: IState = {
-  hasLocation: false,
+const DEFAULT_LOCATION: Position = {
+  coords: {
+    latitude: 55.75,
+    longitude: 37.61,
+    accuracy: 1,
+    altitude: 20,
+    heading: 0,
+    speed: 0,
+    altitudeAccuracy: null,
+  },
+  timestamp: new Date().getMilliseconds(),
 };
 
-export default class EditLocationScreen extends React.Component<IProps, IState> {
-  static navigationOptions: NavigationStackOptions = {
-    // title: 'Карта',
-    headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
-    },
-    headerTransparent: true, // TODO: fix
-  };
+export function EditLocationScreen() {
+  const { getParam, goBack } = useNavigation();
+  const [location, setLocation] = useState<LocationData>();
 
-  state = initialState;
-  location: LocationData | null = null;
+  useEffect(() => {
+    (async function() {
+      const position = await locationUtils.getMyLocationAsync();
+      setLocation(locationUtils.convertPositionToLocation(position || DEFAULT_LOCATION));
+    })();
+  }, []);
 
-  constructor(props: IProps) {
-    super(props);
-
-    this.location = this.props.navigation.getParam('location');
+  function goBackWithLocation(backLocation: ILocation) {
+    const onChangeLocation = getParam('onLocationChange');
+    onChangeLocation(backLocation);
+    goBack();
   }
 
-  async componentDidMount() {
-    if (!this.location) {
-      this.location = await locationUtils.getMyLocationAsync();
-    }
-    this.setState({ hasLocation: true });
-  }
-
-  goBackWithLocation = (location: ILocation) => {
-    const onChangeLocation = this.props.navigation.getParam('onLocationChange');
-    onChangeLocation(location);
-    this.props.navigation.goBack();
-  };
-
-  public render() {
-    return (
-      <>
-        {this.state.hasLocation && (
-          <UMap
-            style={{ height: '100%' }}
-            customMapStyle={mapStyle}
-            // location={this.state.location}
-            initialLocation={this.location!}
-            dynamicMarker={true}
-            onChangeLocation={this.goBackWithLocation}
-            myLocation={true}
-          />
-        )}
-      </>
-    );
-  }
+  return (
+    <SafeAreaView style={[styles.container, sharedStyles.headerlessScreen]}>
+      <StatusBar barStyle="light-content" />
+      {location && (
+        <UMap
+          style={[styles.mapContainer]}
+          customMapStyle={mapStyle}
+          initialLocation={location}
+          dynamicMarker={true}
+          onChangeLocation={goBackWithLocation}
+          myLocation={true}
+        />
+      )}
+    </SafeAreaView>
+  );
 }
+
+EditLocationScreen.navigationOptions = {
+  header: null,
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: HEADER_BACKGROUND },
+  mapContainer: { height: '100%' },
+});
