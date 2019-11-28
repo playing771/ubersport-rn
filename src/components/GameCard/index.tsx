@@ -1,29 +1,28 @@
 import React from 'react';
-import { GestureResponderEvent, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { GestureResponderEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { IGame } from '../../api/games/types';
 import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import { getFormattedDate, getFormattedTime } from '../../utils/dateUtils';
 import CardPart from '../GeneralCard/CardPart';
 import Card from '../GeneralCard/index';
-import GameLocation from '../UMap/index';
 import HeaderCardBlock from './Blocks/HeaderCardBlock';
 import ParticipantsCardBlock from './Blocks/ParticipantsCardBlock';
 import SubCardBlock from './Blocks/SubCardBlock';
 import GameTitle from './GameTitle';
-import mapStyle from './mapStyle';
 
 interface IProps {
   game: IGame;
-  simple?: boolean;
   style?: StyleProp<ViewStyle>;
   onPress?: (gameId: string) => void;
   onParticipantsPress?: (e: GestureResponderEvent) => void;
 }
 
+const SIMPLE_CARD_AVATAR_GROUP_LIMIT = 5;
+
 const textColor = '#242223';
 
-export default function GameDetailsCard({ game, simple, style, onPress }: IProps) {
+export function GameDetailsCard({ game, style, onPress }: IProps) {
   const { navigate } = useNavigation();
 
   const cardPressHandle = (): void => {
@@ -53,10 +52,12 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
           <ParticipantsCardBlock
             textColor={textColor}
             max={game.maxParticipants}
+            min={game.minParticipants}
             participants={game.participants}
+            avatarGroupLimit={SIMPLE_CARD_AVATAR_GROUP_LIMIT}
           />
         </CardPart>
-        {!simple && (
+        {/* {!simple && (
           <CardPart padded={false} onPress={locationPressHandle}>
             <GameLocation
               style={styles.mapContainer}
@@ -66,13 +67,13 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
               static={true}
             />
           </CardPart>
-        )}
-        <View style={simple ? styles.SubCardBlockContainerSimple : styles.SubCardBlockContainer}>
+        )} */}
+        <View style={styles.SubCardBlockContainerSimple}>
           <SubCardBlock
             icon="ios-pin"
             mainText={game.location.address}
             textColor={textColor}
-            style={[styles.border, simple ? styles.roundedLeftBorder : undefined]}
+            style={[styles.border, styles.roundedLeftBorder]}
             iconColor={'#3B485A'}
           />
           <SubCardBlock
@@ -80,16 +81,10 @@ export default function GameDetailsCard({ game, simple, style, onPress }: IProps
             mainText={getFormattedDate(game.dateStart)}
             subText={getFormattedTime(game.dateStart)}
             textColor={textColor}
-            style={[styles.border, simple ? styles.roundedRightBorder : undefined]}
+            style={[styles.border, styles.roundedRightBorder]}
             iconColor={'#3B485A'}
           />
         </View>
-
-        {!simple && (
-          <CardPart bordered={false}>
-            <Text style={styles.description}>{game.description}</Text>
-          </CardPart>
-        )}
       </>
     </Card>
   );

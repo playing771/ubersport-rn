@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { IGame } from '../../api/games/types';
 import ErrorCard from '../../components/ErrorCard';
-import GameDetailsCard from '../../components/GameCard';
+import { GameDetailsCard } from '../../components/GameCard';
 import Colors from '../../constants/Colors';
 import { BASE_PADDING } from '../../sharedStyles';
 import { IFindGameFilters, ISearchGameSort } from '../FindGame';
@@ -37,7 +37,7 @@ export function GamesList({ onGameCardPress, filters, sort }: IProps) {
   const { games, count } = data.games;
 
   const renderGameItem = ({ item }: { item: IGame }) => (
-    <GameDetailsCard game={item} simple={true} style={styles.card} onPress={onGameCardPress} />
+    <GameDetailsCard game={item} style={styles.card} onPress={onGameCardPress} />
   );
 
   return (
