@@ -10,12 +10,25 @@ import MapCrosshair from './MapCrosshair';
 import MyLocationButton from './MyLocationButton';
 import SaveLocationButton from './SaveLocationButton';
 
-interface StyleProps {
+interface IStyleProps {
   style?: StyleProp<ViewStyle>;
   customMapStyle?: any;
 }
 
-type Props = {
+// const DEFAULT_LOCATION: Position = {
+//   coords: {
+//     latitude: 55.75,
+//     longitude: 37.61,
+//     accuracy: 1,
+//     altitude: 20,
+//     heading: 0,
+//     speed: 0,
+//     altitudeAccuracy: null,
+//   },
+//   timestamp: new Date().getMilliseconds(),
+// };
+
+interface IProps extends IStyleProps {
   onPress?: (LocationCoords: LatLng) => void;
   onChangeLocation?: (location: ILocation) => void;
   myLocation?: boolean;
@@ -24,11 +37,11 @@ type Props = {
   dynamicMarker?: boolean;
   addressBar?: boolean;
   static?: boolean;
-} & StyleProps;
+}
 
 const defaultProps = { addressBar: true };
 
-interface State {
+interface IState {
   // LocationCoords?: LatLng;
   region: Region;
   address: string;
@@ -47,7 +60,7 @@ const INITIAL_REGION = {
   longitudeDelta: 0.05,
 };
 
-const initialState: State = {
+const initialState: IState = {
   address: '',
   showMarker: false,
   loading: true,
@@ -57,7 +70,7 @@ const initialState: State = {
   loadingMyLocation: false,
 };
 
-export default class UMap extends React.Component<Props, State> {
+export default class UMap extends React.Component<IProps, IState> {
   static defaultProps = defaultProps;
 
   mapTimer?: any;
@@ -67,13 +80,10 @@ export default class UMap extends React.Component<Props, State> {
 
   mapRef = React.createRef<MapView>();
 
-  state: State = this.props.location
+  state: IState = this.props.location
     ? {
         address: this.props.location.address,
-        // LocationCoords: {
-        //   latitude: this.props.location.latitude,
-        //   longitude: this.props.location.longitude
-        // },
+
         region: INITIAL_REGION,
         showMarker: false,
         geoBusy: false,
@@ -85,6 +95,14 @@ export default class UMap extends React.Component<Props, State> {
   componentWillUnmount() {
     if (typeof this.mapTimer !== 'undefined') {
       clearTimeout(this.mapTimer);
+    }
+  }
+
+  componentDidMount() {
+    // ???? ??? ???????? ?????????, ????? ???????? ?????????? ?????????? ????????????
+
+    if (!this.props.initialLocation) {
+      this.goToMyLocation();
     }
   }
 
@@ -236,7 +254,7 @@ export default class UMap extends React.Component<Props, State> {
                 onPress={this.goToMyLocation}
                 loading={this.state.loadingMyLocation}
               />
-              <SaveLocationButton onPress={this.submitLocation} />
+              <SaveLocationButton onPress={this.submitLocation} disabled={geoBusy} />
               {this.state.loading ? (
                 <View style={styles.loaderWrapper}>
                   <ULoader style={styles.loader} size="large" color="#434E77" />
