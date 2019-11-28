@@ -28,8 +28,6 @@ export default function ParticipantsCardBlock({
 }: IProps) {
   const count = participants ? participants.length : 0;
 
-  console.log('avatarGroupLimit', avatarGroupLimit);
-
   return (
     <View style={style}>
       <View style={styles.topBarContainer}>

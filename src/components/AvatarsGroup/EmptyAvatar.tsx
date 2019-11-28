@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 interface IProps {
   size?: number;
@@ -32,6 +32,8 @@ function getStyles(size?: number) {
       height: size ? size : PICTURE_SIZE,
       borderRadius: size ? size : PICTURE_SIZE,
       overflow: 'hidden',
+      borderColor: 'white',
+      borderWidth: 1,
     },
     avatarIcon: { alignSelf: 'center' },
   });
