@@ -1,9 +1,9 @@
 import * as validator from 'validator';
+import { ObjectMap } from '../../utils/types';
 
-export type EmptyCallbackFn = () => void;
 export type ErrorCallbackFn = (name: string, unmetRule: string | null) => void;
 
-export function validate(value: any, validation: any) {
+export function validate(value: any, validation: ObjectMap | undefined | string): string | null {
   const fieldsToValidate: any = {};
   let trimmedValidation: string;
 
@@ -13,7 +13,9 @@ export function validate(value: any, validation: any) {
         fieldsToValidate[property] = validation[property];
       });
       break;
-
+    case 'undefined': {
+      return null;
+    }
     case 'string':
     default:
       if (!validation.length) {

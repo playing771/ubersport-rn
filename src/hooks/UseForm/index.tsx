@@ -1,39 +1,57 @@
 import { useEffect, useState } from 'react';
+import { ObjectMap, SimpleCallback } from '../../utils/types';
 import { useFormInput } from './useFormInput';
-import { EmptyCallbackFn } from './utils';
+import { formUtils } from './utils';
 
-interface IFormDataMap {
-  [key: string]: string;
-}
-
-export default function useForm(initialValues: IFormDataMap = {}) {
-  const formHandler = useState(initialValues);
-  const errorHandler = useState<IFormDataMap>({});
+type ErrorsMap = ObjectMap<string | null>;
+// provide validationMap only if useTextInput is not used
+export default function useForm(initialValues: ObjectMap = {}, validationMap?: ObjectMap<string>) {
+  const formHandler = useState<ObjectMap>(initialValues);
+  const errorHandler = useState<ErrorsMap>({});
 
   const [isMounted, setMounted] = useState(false);
   const [values, setValues] = formHandler;
   const [errors, setErrors] = errorHandler;
+  // console.log('useForm');
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleError = (name: string, unmetRule: any) => {
+    const erorrsCopy: ErrorsMap = Object.assign({}, errors);
+
     if (!unmetRule) {
-      delete errors[name]; // TODO: change delete
+      erorrsCopy[name] = null;
     } else {
-      errors[name] = unmetRule;
+      erorrsCopy[name] = unmetRule;
     }
-    setErrors(errors); // TODO: null if empty
+
+    setErrors(erorrsCopy); // TODO: null if empty
   };
+
+  useEffect(() => {
+    // validate if validationMap is provided
+    if (validationMap) {
+      const unmetRules = Object.keys(values).reduce<ErrorsMap>((unmetRulesMap, name) => {
+        const unmetRule = formUtils.validate(values[name], validationMap[name]);
+
+        unmetRulesMap[name] = unmetRule;
+
+        return unmetRulesMap;
+      }, {});
+
+      setErrors(unmetRules);
+    }
+  }, [values, validationMap]);
 
   const useTextInput = <T extends unknown = any>(
     name: string,
     validation: string,
-    callback?: EmptyCallbackFn
+    callback?: SimpleCallback
   ) => useFormInput<T>(name, formHandler, validation, handleError, callback);
 
-  const isValid = isMounted && !Object.values(errors).length;
+  const isValid = isMounted && !Object.values(errors).some(err => err !== null);
 
   return {
     values,

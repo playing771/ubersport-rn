@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { EmptyCallbackFn, ErrorCallbackFn, formUtils } from './utils';
+import { SimpleCallback } from '../../utils/types';
+import { ErrorCallbackFn, formUtils } from './utils';
 
 export function useFormInput<T = any>(
   name: string,
   formHandler: [any, any],
   validation: string = '',
   handleError: ErrorCallbackFn,
-  callback?: EmptyCallbackFn
+  callback?: SimpleCallback
 ) {
   const [formData, setFormData] = formHandler;
   const formValue = formData[name] || '';
