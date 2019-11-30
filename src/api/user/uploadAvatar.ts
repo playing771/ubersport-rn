@@ -1,5 +1,7 @@
+import { BASE_URL } from '../../constants/Api';
+
 async function uploadAvatar(body: any, auth: string): Promise<any> {
-  const response = await fetch('https://ubersport.ru/file/upload/avatar', {
+  const response = await fetch(`${BASE_URL}/file/upload/avatar`, {
     method: 'POST',
     body,
     headers: {

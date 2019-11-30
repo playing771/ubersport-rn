@@ -6,8 +6,9 @@ import * as validator from 'validator';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
+import { BASE_URL } from '../../../constants/Api';
 
-const redirectUrl = 'https://ubersport.ru/auth/google';
+const redirectUrl = `${BASE_URL}/auth/google`;
 const GOOGLE_WEB_APPID = '663195185664-q7n8a52ef30nq3htv4cr61lbkqso3b0k.apps.googleusercontent.com';
 const FB_APP_ID = '1375931069246551';
 

@@ -1,5 +1,6 @@
 import IUser from './types';
 import { Omit } from 'react-navigation';
+import { BASE_URL } from '../../constants/Api';
 
 interface IUserResult extends Omit<IUser, 'id'> {
   _id: string;
@@ -11,7 +12,7 @@ export interface IAuthResult {
 }
 
 async function login(email: string, password: string): Promise<IAuthResult> {
-  const response = await fetch('https://ubersport.ru/auth/login', {
+  const response = await fetch(`${BASE_URL}auth/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
