@@ -1,5 +1,6 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { IAgeLimit, ILocation } from '../../../api/games/types';
+import useForm from '../../../hooks/UseForm';
 import { SimpleCallback } from '../../../utils/types';
 
 interface IState {
@@ -26,9 +27,17 @@ const initialState: IState = {
   ageLimit: { min: 0, max: 0 },
 };
 
+const ValidationMap = { name: 'isRequired', dateStart: 'isRequired', location: 'isRequired' };
+
 export function useEditGameForm(gameData: IState = initialState) {
   const [formState, dispatch] = useReducer(reducer, gameData);
-  return { formState, dispatch };
+  const { setValues, isValid } = useForm(formState, ValidationMap);
+
+  useEffect(() => {
+    setValues(formState);
+  }, [formState]);
+
+  return { formState, dispatch, isValid };
 }
 
 function reducer(state: IState, action: EditGameActions): IState {

@@ -36,19 +36,21 @@ function EditGameScreen() {
   const navigationSportId = getParam('sportId');
   const gameEditData: IGameEditData | undefined = getParam('gameEditData');
 
-  const { formState, dispatch } = useEditGameForm(gameEditData);
+  const { formState, dispatch, isValid } = useEditGameForm(gameEditData);
 
   const gameSportId: number = navigationSportId ? navigationSportId : gameEditData!.sportId;
   const gameId: string | undefined = gameEditData ? gameEditData.id : undefined;
 
   function renderSubmitButton() {
     return gameId ? (
-      <EditGameBtn // TODO: validation!!!
+      <EditGameBtn
         variables={getEditGameVariablesFromState(formState, gameId)}
+        disabled={!isValid}
       />
     ) : (
-      <NewGameBtn // TODO: validation!!!
+      <NewGameBtn
         variables={getNewGameVariablesFromState(formState, user.id, gameSportId)}
+        disabled={!isValid}
       />
     );
   }
