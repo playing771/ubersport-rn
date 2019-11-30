@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const DEFAULT_VERTICAL_OFFSET = 128;
 
-interface IProps {
+interface IProps extends IDefaultProps {
   style?: ViewStyle;
   contentContainerStyle?: ViewStyle;
   scrollEnabled?: boolean;
@@ -15,19 +15,20 @@ interface IDefaultProps {
   keyboardVerticalOffset: number;
 }
 
-export function KeyboardView(props: IProps & IDefaultProps) {
+export function KeyboardView(props: IProps) {
   const { style, contentContainerStyle, scrollEnabled, keyboardVerticalOffset, children } = props;
 
   return (
     <KeyboardAwareScrollView
-      keyboardShouldPersistTaps="always"
-      keyboardDismissMode="interactive"
-      style={style}
-      contentContainerStyle={contentContainerStyle}
-      scrollEnabled={scrollEnabled}
-      alwaysBounceVertical={false}
-      extraHeight={keyboardVerticalOffset}
+      // keyboardShouldPersistTaps="always"
+      // keyboardDismissMode="interactive"
+      // style={style}
+      // contentContainerStyle={contentContainerStyle}
+      // scrollEnabled={scrollEnabled}
+      // alwaysBounceVertical={false}
+      extraHeight={0}
       enableOnAndroid={true}
+      // extraScrollHeight={128}
       // behavior="position"
     >
       {children}

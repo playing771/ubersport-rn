@@ -31,6 +31,7 @@ UbSection.Title = UbSectionTitle;
 
 const styles = StyleSheet.create({
   mainContainer: {
+    // flex: 1,
     // backgroundColor: 'white',
   },
   titleContainer: {

@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { Text, StyleSheet, View } from 'react-native';
-import withTouch from '../../../components/hocs/WIthTouch';
+import React, { ReactElement } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import withTouch from '../../../../components/hocs/WIthTouch';
 
 interface IProps {
   icon: string;

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { IPickerValue } from '../../../components/pickers/BasePicker/types';
-import SinglePicker from '../../../components/pickers/SinglePicker';
+import { StyleSheet, View } from 'react-native';
+import { IPickerValue } from '../../../../components/pickers/BasePicker/types';
+import SinglePicker from '../../../../components/pickers/SinglePicker';
 
 export interface IRestrictions {
   min: number;

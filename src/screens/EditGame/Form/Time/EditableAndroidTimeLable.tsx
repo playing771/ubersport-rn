@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import withTouch from '../../../components/hocs/WIthTouch';
+import withTouch from '../../../../components/hocs/WIthTouch';
 
 interface IProps {
   label: string;

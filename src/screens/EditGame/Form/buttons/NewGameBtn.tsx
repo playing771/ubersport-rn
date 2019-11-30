@@ -1,13 +1,16 @@
 import React from 'react';
 import { NavigationActions, StackActions } from 'react-navigation';
-import { CreateGameMutationVariables, CREATE_GAME_GQL } from '../../api/games/createGameMutation';
-import { EditGameMutationVariables } from '../../api/games/editGameMutation';
-import { ICreateGameResult } from '../../api/games/types';
-import { SubmitButton } from '../../components/buttons/SubmitButton';
-import withErrorCard from '../../components/hocs/WithErrorCard';
-import { useErrorCard } from '../../components/hocs/WithErrorCard/useErrorCard';
-import useNavigation from '../../hooks/useNavigation';
-import { NavigationRoot } from '../../navigation/roots';
+import {
+  CreateGameMutationVariables,
+  CREATE_GAME_GQL,
+} from '../../../../api/games/createGameMutation';
+import { EditGameMutationVariables } from '../../../../api/games/editGameMutation';
+import { ICreateGameResult } from '../../../../api/games/types';
+import { SubmitButton } from '../../../../components/buttons/SubmitButton';
+import withErrorCard from '../../../../components/hocs/WithErrorCard';
+import { useErrorCard } from '../../../../components/hocs/WithErrorCard/useErrorCard';
+import useNavigation from '../../../../hooks/useNavigation';
+import { NavigationRoot } from '../../../../navigation/roots';
 
 interface IProps {
   variables: CreateGameMutationVariables | EditGameMutationVariables;
@@ -41,6 +44,7 @@ export function NewGameBtn({ variables, disabled }: IProps) {
 
   return (
     <SubmitButtonWithErrorCard
+      style={{ marginTop: 'auto' }}
       gql={CREATE_GAME_GQL}
       title="Опубликовать"
       variables={variables}

@@ -1,19 +1,20 @@
 import { LocationData } from 'expo-location';
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { ILocation } from '../../../api/games/types';
-import mapStyle from '../../../components/GameCard/mapStyle';
-import UMap from '../../../components/UMap';
-import { HEADER_BACKGROUND } from '../../../constants/Colors';
-import useNavigation from '../../../hooks/useNavigation';
-import sharedStyles from '../../../sharedStyles';
+import { ILocation } from '../../../../api/games/types';
+import mapStyle from '../../../../components/GameCard/mapStyle';
+import UMap from '../../../../components/UMap';
+import { HEADER_BACKGROUND } from '../../../../constants/Colors';
+import useNavigation from '../../../../hooks/useNavigation';
+import sharedStyles from '../../../../sharedStyles';
+import { EditGameActions } from '../useEditGameForm';
 
 export function EditLocationScreen() {
   const { getParam, goBack } = useNavigation();
 
-  function goBackWithLocation(backLocation: ILocation) {
-    const onChangeLocation = getParam('onLocationChange');
-    onChangeLocation(backLocation);
+  function goBackWithLocation(location: ILocation) {
+    const onChangeLocation: Dispatch<EditGameActions> = getParam('onLocationChange');
+    onChangeLocation({ type: 'editLocation', payload: { location } });
     goBack();
   }
 

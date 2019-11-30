@@ -8,7 +8,7 @@ import SportIcon from '../../components/GameCard/SportIcon';
 import GameLocationStatic from '../../components/GameLocationStatic';
 import withTouch from '../../components/hocs/WIthTouch';
 import Section from '../../components/Layout/Section';
-import TimeLabel from '../EditGame/Time/TimeLabel';
+import TimeLabel from '../EditGame/Form/Time/TimeLabel';
 
 interface IProps {
   game: IGame;

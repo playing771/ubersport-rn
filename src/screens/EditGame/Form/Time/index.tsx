@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/ru';
-
-import UButton from '../../../components/buttons/UButton';
-import { EditableDateItem } from './Item';
-import withExpand from '../../../components/hocs/WIthExpand';
-
-import { ExpandDirection } from '../../../components/Expandable';
-import DualTimePicker from '../../../components/pickers/DualTimePicker';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import UButton from '../../../../components/buttons/UButton';
+import { ExpandDirection } from '../../../../components/Expandable';
+import withExpand from '../../../../components/hocs/WIthExpand';
+import CalendarPicker from '../../../../components/pickers/CalendarPicker';
+import DatePicker from '../../../../components/pickers/DatePicker';
+import DualTimePicker from '../../../../components/pickers/DualTimePicker';
+import useAndroidTimePicker from '../../../../components/pickers/useAndroidTimePicker';
+import { BASE_PADDING } from '../../../../sharedStyles';
+import { getFormattedDate, getFormattedTime } from '../../../../utils/dateUtils';
+import { isAndroid, isIOS } from '../../../../utils/deviceInfo';
 import { IRestrictions } from '../People';
-import CalendarPicker from '../../../components/pickers/CalendarPicker';
-import { isIOS, isAndroid } from '../../../utils/deviceInfo';
-import DatePicker from '../../../components/pickers/DatePicker';
-
 import EditableAndroidTimeLable from './EditableAndroidTimeLable';
-import { getFormattedTime, getFormattedDate } from '../../../utils/dateUtils';
-import useAndroidTimePicker from '../../../components/pickers/useAndroidTimePicker';
-import { BASE_PADDING } from '../../../sharedStyles';
-import { getInitialStartingTime, getInittalEndingTime, getGameLength, getTimeLable } from './utils';
+import { EditableDateItem } from './Item';
+import { getGameLength, getInitialStartingTime, getInittalEndingTime, getTimeLable } from './utils';
 
 const ExpandableDatePicker = withExpand(DatePicker);
 const ExpandableCalendar = withExpand(CalendarPicker);

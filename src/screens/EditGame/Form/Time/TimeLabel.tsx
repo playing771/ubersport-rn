@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { getFormattedDate, getFormattedTime } from '../../../utils/dateUtils';
+import { StyleSheet, Text, View } from 'react-native';
+import { getFormattedDate, getFormattedTime } from '../../../../utils/dateUtils';
 
 interface IProps {
   dateStart: number;
@@ -20,7 +20,7 @@ function TimeLabel({ dateStart, dateEnd }: IProps) {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainText: { color: '#5F6B8D' },

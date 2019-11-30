@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment';
-import { getFormattedTime } from '../../../utils/dateUtils';
+import { getFormattedTime } from '../../../../utils/dateUtils';
 
 const DEFAULT_GAME_LENGTH = 2; // 2h
 const DEFAULT_NEW_GAME_TIMEOUT = 15; // 15 minutes
