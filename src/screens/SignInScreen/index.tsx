@@ -16,6 +16,7 @@ import UWizardStepIndicator from '../../components/UWizard/StepIndicator';
 import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
 import { IAppContextInjectedProp } from '../../utils/context/sports';
+import { isAndroid } from '../../utils/deviceInfo';
 import SignUpActive from './email/active';
 import SignUpPassed from './email/passed';
 import favoriteSportsActive from './favoriteSports/active';
@@ -206,7 +207,10 @@ class SingInScreen extends React.Component<IProps, IState> {
           )}
           <UWizardStepIndicator passed={this.state.passed} total={steps.length} />
         </View>
-        <KeyboardView contentContainerStyle={{}}>
+        <KeyboardView
+          extraScrollHeight={isAndroid ? 120 : 0}
+          keyboardVerticalOffset={isAndroid ? 60 : 120}
+        >
           {type === 'SIGNUP' || type === undefined ? (
             <>
               <UWizard

@@ -31,7 +31,7 @@ const NAME_LABLE = 'Название';
 const MIN_PEOPLE = 'Минимум участников';
 const MAX_PEOPLE = 'Максимум участников';
 const NAME_PLACEHOLDER = 'Название игры (обязательно)';
-const DESCRIPTION_PLACEHOLDER = 'Описание игры (опционально)';
+const DESCRIPTION_PLACEHOLDER = 'Описание игры';
 
 const ICON_PARAMS = { color: '#B1B2B4', size: 20 };
 const ICON_PARAMS_SM = { color: '#B1B2B4', size: 16 };

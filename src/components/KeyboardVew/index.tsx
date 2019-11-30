@@ -9,6 +9,7 @@ interface IProps extends IDefaultProps {
   contentContainerStyle?: ViewStyle;
   scrollEnabled?: boolean;
   children: ReactElement | ReactElement[];
+  extraScrollHeight?: number;
 }
 
 interface IDefaultProps {
@@ -16,20 +17,26 @@ interface IDefaultProps {
 }
 
 export function KeyboardView(props: IProps) {
-  const { style, contentContainerStyle, scrollEnabled, keyboardVerticalOffset, children } = props;
+  const {
+    style,
+    contentContainerStyle,
+    scrollEnabled,
+    keyboardVerticalOffset,
+    extraScrollHeight,
+    children,
+  } = props;
 
   return (
     <KeyboardAwareScrollView
-      // keyboardShouldPersistTaps="always"
-      // keyboardDismissMode="interactive"
-      // style={style}
-      // contentContainerStyle={contentContainerStyle}
-      // scrollEnabled={scrollEnabled}
-      // alwaysBounceVertical={false}
-      extraHeight={0}
+      keyboardShouldPersistTaps="always"
+      keyboardDismissMode="interactive"
+      style={style}
+      contentContainerStyle={contentContainerStyle}
+      scrollEnabled={scrollEnabled}
+      alwaysBounceVertical={false}
+      extraHeight={keyboardVerticalOffset}
       enableOnAndroid={true}
-      // extraScrollHeight={128}
-      // behavior="position"
+      extraScrollHeight={extraScrollHeight}
     >
       {children}
     </KeyboardAwareScrollView>
