@@ -6,6 +6,7 @@ import { HttpLink } from 'apollo-link-http';
 import { AsyncStorage } from 'react-native';
 import { IUserWithToken } from './api/user/types';
 import { resolvers, typeDefs } from './store/resolvers';
+import { BASE_URL } from './constants/Api';
 
 const cache = new InMemoryCache();
 
@@ -27,9 +28,7 @@ const authLink = setContext(async (req, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: 'https://ubersport.ru/graphql',
-  // uri: 'http://192.168.0.160:3000/graphql',
-  // uri: 'http://10.1.32.107:3333/graphql',
+  uri: `${BASE_URL}/graphql`,
 });
 
 export const client = new ApolloClient({
