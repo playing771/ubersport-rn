@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import React, { ReactNode } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 interface IProps {
-  children: ReactElement | ReactElement[];
+  children: ReactNode | ReactNode[];
   style?: ViewStyle;
 }
 
@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 4,
     paddingHorizontal: 18,
-    paddingVertical: 10
-  }
+    paddingVertical: 10,
+  },
 });

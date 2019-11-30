@@ -6,7 +6,7 @@ import ErrorCard from '../../components/ErrorCard';
 import Card from '../../components/GeneralCard';
 import ULoader from '../../components/ULoader/index';
 import useAppContext from '../../hooks/useAppContext';
-import GeneralGameInfo from './GeneralInfo';
+import { GeneralGameInfo } from './GeneralInfo';
 import useGameInfoQuery from './gql';
 import { InfoCard } from './InfoCard';
 import { JoinGameBtn } from './JoinGameBtn';

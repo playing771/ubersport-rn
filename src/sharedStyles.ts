@@ -21,6 +21,7 @@ const sharedStyles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
+  headerlessScreen: isAndroid ? { paddingTop: 24 } : {},
 });
 
 export default sharedStyles;

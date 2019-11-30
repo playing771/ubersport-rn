@@ -1,30 +1,42 @@
-import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import { GameStatus } from '../../api/games/types';
+import { HEADER_BACKGROUND } from '../../constants/Colors';
 import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
+import { locationUtils } from '../../utils/location';
 import FiltersPanel from './FiltersPanel';
 import { GamesList } from './GamesList';
 import { IGamesListQueryFilters } from './gql';
-
-interface IProps extends NavigationInjectedProps {}
 
 export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
 
-function FindGameScreen(props: IProps) {
+function FindGameScreen() {
   const { navigate } = useNavigation();
 
-  const [sort, setSort] = useState<ISearchGameSort>('distance');
+  // TODO: merge states in one to prevent 2 renders
+  const [sort, setSort] = useState<ISearchGameSort>('date');
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
     sportIds: undefined,
     status: GameStatus.Pending,
   });
+  const [myLocation, setMyLocation] = useState<Position>();
+
+  useEffect(() => {
+    (async function() {
+      const location = await locationUtils.getMyLocationAsync();
+
+      if (location) {
+        setMyLocation(location);
+        setSort('distance');
+      }
+    })();
+  }, []);
 
   const changeActiveSort = (sorting: ISearchGameSort, toggleModal: () => void) => {
     toggleModal();
@@ -41,36 +53,33 @@ function FindGameScreen(props: IProps) {
   };
 
   return (
-    <>
-      <StatusBar barStyle="light-content" />
-      <FiltersPanel
-        activeSort={sort}
-        activeFilters={activeFilters}
-        onChangeActiveSort={changeActiveSort}
-        changeSportFilterHanlde={changeSportFilterHanlde}
-      />
-
-      <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
-    </>
+    <SafeAreaView style={[styles.container, sharedStyles.headerlessScreen]}>
+      <View style={styles.contentContainer}>
+        <StatusBar barStyle="light-content" />
+        <FiltersPanel
+          activeSort={sort}
+          activeFilters={activeFilters}
+          onChangeActiveSort={changeActiveSort}
+          changeSportFilterHanlde={changeSportFilterHanlde}
+          myLocation={myLocation}
+        />
+        <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
+      </View>
+    </SafeAreaView>
   );
 }
 
 FindGameScreen.navigationOptions = ({ navigation }: any) => {
-  const editGeoHandle = () => {
-    navigation.navigate(NavigationRoot.Location);
-  };
-
   const headerOptions: NavigationStackOptions = {
-    title: 'Поиск игр',
-    // headerLeft: () => <FindGameHeaderTitle editGeoHandle={editGeoHandle} />,
-    headerTitleStyle: {
-      ...sharedStyles.headerTitleStyle,
-    },
-    headerStyle: [sharedStyles.header, sharedStyles.borderLessHeader],
-    // headerTransparent: true, // TODO: fix
+    header: null,
   };
 
   return headerOptions;
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: HEADER_BACKGROUND, paddingTop: 24 },
+  contentContainer: { flex: 1, backgroundColor: '#F9F9FA' },
+});
 
 export default FindGameScreen;

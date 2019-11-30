@@ -14,8 +14,8 @@ import { KeyboardView } from '../../components/KeyboardVew';
 import UWizard from '../../components/UWizard/index';
 import UWizardStepIndicator from '../../components/UWizard/StepIndicator';
 import { NavigationRoot } from '../../navigation/roots';
+import sharedStyles from '../../sharedStyles';
 import { IAppContextInjectedProp } from '../../utils/context/sports';
-import { isAndroid } from '../../utils/deviceInfo';
 import SignUpActive from './email/active';
 import SignUpPassed from './email/passed';
 import favoriteSportsActive from './favoriteSports/active';
@@ -196,7 +196,7 @@ class SingInScreen extends React.Component<IProps, IState> {
   private renderContent() {
     const { type, userEmail, loading, badCredentials } = this.state;
     return (
-      <SafeAreaView style={[{ flex: 1 }, isAndroid ? styles.androidTopPadding : undefined]}>
+      <SafeAreaView style={[styles.container, sharedStyles.headerlessScreen]}>
         <StatusBar barStyle="light-content" />
         <View style={styles.headerContainer}>
           {typeof this.renderHeader(type) === 'string' ? (
@@ -253,6 +253,7 @@ const screenOptions: IAdaptiveScreenOptions = {
 };
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
   mainContainer: {
     flex: 1,
     backgroundColor: '#101F44',

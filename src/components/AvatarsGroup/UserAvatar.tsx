@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, ViewStyle, ImageStyle, StyleSheet, TextStyle, StyleProp } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { FILES_URL } from '../../constants/Api';
+import Colors from '../../constants/Colors';
 import UImage from '../UImage';
 import ULoader from '../ULoader';
-import { FILES_URL } from '../../constants/Api';
 import EmptyAvatar from './EmptyAvatar';
 
 type UserAvatarProps = {
@@ -38,10 +39,10 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
             uri: `${FILES_URL}/${src}`,
           }}
         />
-      ) : (
+      ) : !count ? (
         <EmptyAvatar size={size} />
-
-        // <View style={s.counterContainer}>{count && <Text style={s.counter}>+{count}</Text>}</View>
+      ) : (
+        <View style={s.counterContainer}>{count && <Text style={s.counter}>+{count}</Text>}</View>
       )}
     </View>
   );
@@ -59,28 +60,28 @@ const getStyle = (size: number, counterColor: string, imageBorderWidthRatio: num
       justifyContent: 'center',
     },
 
-    // counterContainer: {
-    //   borderRadius: (size * 0.9) / 2,
-    //   width: size * 0.9,
-    //   height: size * 0.9,
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    //   backgroundColor: counterColor,
-    // },
+    counterContainer: {
+      borderRadius: (size * 0.9) / 2,
+      width: size * 0.9,
+      height: size * 0.9,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.purle,
+    },
     image: {
       width: size * imageBorderWidthRatio,
       height: size * imageBorderWidthRatio,
     },
-    counter: { color: '#76706f', fontWeight: '600', fontSize: 12 },
+    counter: { color: 'white', fontWeight: '600', fontSize: 12 },
   });
 };
 
-interface Style {
-  imageContainer: ViewStyle;
-  counterContainer: ViewStyle;
-  image: ImageStyle;
-  counter: TextStyle;
-}
+// interface Style {
+//   imageContainer: ViewStyle;
+//   counterContainer: ViewStyle;
+//   image: ImageStyle;
+//   counter: TextStyle;
+// }
 
 UserAvatar.defaultProps = defaultProps;
 

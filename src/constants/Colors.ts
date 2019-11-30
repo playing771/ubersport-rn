@@ -19,6 +19,7 @@ const Colors = {
   purle: '#F84472',
   tabNavActive: '#F84472',
   tabNav: '#1E3458',
+  grey: '#D1D5DB',
 };
 
 export const HEADER_BACKGROUND = '#141F42'; // #1E3458

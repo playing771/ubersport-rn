@@ -5,9 +5,10 @@ import UButton from '../buttons/UButton';
 
 interface IProps {
   onPress: () => void;
+  disabled: boolean;
 }
 
-export default function SaveLocationButton({ onPress }: IProps) {
+export default function SaveLocationButton({ onPress, disabled }: IProps) {
   return (
     <UButton
       style={styles.submitBtn}
@@ -18,6 +19,7 @@ export default function SaveLocationButton({ onPress }: IProps) {
       backgroundColor={Colors.green}
       rounded={true}
       onPress={onPress}
+      disabled={disabled}
     />
   );
 }

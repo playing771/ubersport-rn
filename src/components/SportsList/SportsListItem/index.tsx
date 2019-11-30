@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
-import { View, Text, StyleSheet, ViewStyle, StyleProp, TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { ReactElement } from 'react';
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import Colors from '../../../constants/Colors';
 import withToggle, { IWithToggleProps } from '../../hocs/WithToggle';
 import withTouch from '../../hocs/WIthTouch';

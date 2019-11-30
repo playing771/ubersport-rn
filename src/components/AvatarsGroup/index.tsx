@@ -2,27 +2,24 @@ import React, { ComponentType } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { IParticipant } from '../../api/games/types';
 
-type AvatarGroupProps = {
+interface IProps extends IDefaultProps {
   style?: StyleProp<ViewStyle>;
   users: IParticipant[];
-  limit?: number;
   styleLast?: StyleProp<ViewStyle>;
   AvatarCmp: ComponentType<any>;
-} & typeof defaultProps;
+}
+
+interface IDefaultProps {
+  limit: number;
+  avatarSize: number;
+}
 
 const defaultProps = {
   limit: 4,
   avatarSize: 40,
 };
 
-const AvatarsGroup: React.SFC<AvatarGroupProps> = ({
-  style,
-  users,
-  limit,
-  AvatarCmp,
-  styleLast,
-  avatarSize,
-}) => {
+export function AvatarsGroup({ style, users, limit, AvatarCmp, styleLast, avatarSize }: IProps) {
   return (
     <View style={[style, s.container]}>
       {users.slice(0, limit).map((user, index) => {
@@ -43,7 +40,7 @@ const AvatarsGroup: React.SFC<AvatarGroupProps> = ({
       )}
     </View>
   );
-};
+}
 
 interface Style {
   container: ViewStyle;
@@ -60,11 +57,3 @@ const s = StyleSheet.create<Style>({
 });
 
 AvatarsGroup.defaultProps = defaultProps;
-
-type OuterProps = Pick<
-  AvatarGroupProps,
-  Exclude<keyof AvatarGroupProps, keyof typeof defaultProps>
-> &
-  Partial<typeof defaultProps>;
-
-export default AvatarsGroup as React.SFC<OuterProps>;

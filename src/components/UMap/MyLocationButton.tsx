@@ -4,9 +4,10 @@ import UButton from '../buttons/UButton';
 
 interface IProps {
   onPress: () => void;
+  loading: boolean;
 }
 
-export default function MyLocationButton({ onPress }: IProps) {
+export default function MyLocationButton({ onPress, loading }: IProps) {
   return (
     <UButton
       icon="ios-compass"
@@ -15,14 +16,17 @@ export default function MyLocationButton({ onPress }: IProps) {
       iconStyle={styles.icon}
       rounded={true}
       onPress={onPress}
+      loading={loading}
+      disabled={loading}
+      disabledNoStyles={true}
     />
   );
 }
 
 const styles = StyleSheet.create({
   compassBtn: {
-    // width: 40,
-    // height: 40,
+    width: 52,
+    height: 48,
     position: 'absolute',
     bottom: 70,
     right: 10,

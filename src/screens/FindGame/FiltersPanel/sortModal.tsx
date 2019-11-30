@@ -1,26 +1,34 @@
+import { LocationData } from 'expo-location';
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import ToggleableItem, { SporstListItemInner } from '../../../components/SportsList/SportsListItem';
+import UModal from '../../../components/UModal';
 import Colors from '../../../constants/Colors';
 import { ISearchGameSort } from '../../FindGame';
-import ToggleableItem from '../../../components/SportsList/SportsListItem';
-import UModal from '../../../components/UModal';
 
 interface IProps {
   onChange: (itemId: ISearchGameSort) => void;
   activeSort: ISearchGameSort;
+  myLocation?: LocationData;
 }
 
 const SortModal = (props: IProps) => {
   return (
     <UModal>
       <Text style={styles.header}>Сортировка</Text>
-      <ToggleableItem
-        onPress={props.onChange}
-        itemId="distance"
-        active={props.activeSort === 'distance'}
-      >
-        Ближайшие
-      </ToggleableItem>
+      {props.myLocation ? (
+        <ToggleableItem
+          onPress={props.onChange}
+          itemId="distance"
+          active={props.activeSort === 'distance'}
+        >
+          Ближайшие
+        </ToggleableItem>
+      ) : (
+        <SporstListItemInner textStyle={{ color: 'grey', fontWeight: '300' }}>
+          Ближайшие
+        </SporstListItemInner>
+      )}
       <ToggleableItem onPress={props.onChange} itemId="time" active={props.activeSort === 'time'}>
         Скоро начало
       </ToggleableItem>

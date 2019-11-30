@@ -1,70 +1,44 @@
 import { LocationData } from 'expo-location';
-import * as React from 'react';
-import { NavigationInjectedProps } from 'react-navigation';
-import { NavigationStackOptions } from 'react-navigation-stack';
+import React from 'react';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { ILocation } from '../../../api/games/types';
 import mapStyle from '../../../components/GameCard/mapStyle';
 import UMap from '../../../components/UMap';
-import { locationUtils } from '../../../utils/location';
+import { HEADER_BACKGROUND } from '../../../constants/Colors';
+import useNavigation from '../../../hooks/useNavigation';
+import sharedStyles from '../../../sharedStyles';
 
-interface IProps extends NavigationInjectedProps {}
+export function EditLocationScreen() {
+  const { getParam, goBack } = useNavigation();
 
-interface IState {
-  // location?: ILocation;
-  hasLocation: boolean;
+  function goBackWithLocation(backLocation: ILocation) {
+    const onChangeLocation = getParam('onLocationChange');
+    onChangeLocation(backLocation);
+    goBack();
+  }
+
+  const location: LocationData | undefined = getParam('location');
+
+  return (
+    <SafeAreaView style={[styles.container, sharedStyles.headerlessScreen]}>
+      <StatusBar barStyle="light-content" />
+      <UMap
+        style={[styles.mapContainer]}
+        customMapStyle={mapStyle}
+        initialLocation={location}
+        dynamicMarker={true}
+        onChangeLocation={goBackWithLocation}
+        myLocation={true}
+      />
+    </SafeAreaView>
+  );
 }
 
-const initialState: IState = {
-  hasLocation: false,
+EditLocationScreen.navigationOptions = {
+  header: null,
 };
 
-export default class EditLocationScreen extends React.Component<IProps, IState> {
-  static navigationOptions: NavigationStackOptions = {
-    // title: 'Карта',
-    headerTitleStyle: {
-      color: '#fff',
-      fontWeight: '400',
-    },
-    headerTransparent: true, // TODO: fix
-  };
-
-  state = initialState;
-  location: LocationData | null = null;
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.location = this.props.navigation.getParam('location');
-  }
-
-  async componentDidMount() {
-    if (!this.location) {
-      this.location = await locationUtils.getMyLocationAsync();
-    }
-    this.setState({ hasLocation: true });
-  }
-
-  goBackWithLocation = (location: ILocation) => {
-    const onChangeLocation = this.props.navigation.getParam('onLocationChange');
-    onChangeLocation(location);
-    this.props.navigation.goBack();
-  };
-
-  public render() {
-    return (
-      <>
-        {this.state.hasLocation && (
-          <UMap
-            style={{ height: '100%' }}
-            customMapStyle={mapStyle}
-            // location={this.state.location}
-            initialLocation={this.location!}
-            dynamicMarker={true}
-            onChangeLocation={this.goBackWithLocation}
-            myLocation={true}
-          />
-        )}
-      </>
-    );
-  }
-}
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: HEADER_BACKGROUND },
+  mapContainer: { height: '100%' },
+});

@@ -14,65 +14,63 @@ interface IProps {
   game: IGame;
   onPressParticipants: () => void;
 }
-
+const FULL_CARD_AVATAR_GROUP_LIMIT = 7;
 const ICON_PARAMS = { color: '#B1B2B4', size: 20 };
 
 const ParticipantsTouchable = withTouch(Participants);
 
-export default function GeneralGameInfo({ game, onPressParticipants }: IProps) {
+export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
   return (
-    <>
-      {game && (
-        <Section>
-          <Section.Item
-            icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
-            iconPosition="BOTTOM"
-            label={() => (
-              <View>
-                <Text
-                  style={styles.subText}
-                >{`${game.author.nickname}'s игра в ${game.sport.name}`}</Text>
-                <Text style={styles.mainText}>{game.name}</Text>
-              </View>
-            )}
-            side={<SportIcon sport="Football" />}
-          />
-          <Section.Item
-            icon={<MaterialIcons name="public" {...ICON_PARAMS} />}
-            label={'Открытая игра'}
-            labelStyle={{ color: '#5F6B8D' }}
-          />
-          <Section.Item
-            icon="ios-calendar"
-            label={() => <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
-            labelStyle={{ color: '#5F6B8D' }}
-          />
-          <Section.Item
-            icon="ios-pin"
-            label={game.location.address}
-            labelStyle={{ color: '#5F6B8D' }}
-          />
-          <GameLocationStatic
-            style={styles.mapContainer}
-            customMapStyle={mapStyle}
-            location={game.location}
-          />
-          <ParticipantsTouchable
-            textColor={'#5F6B8D'}
-            max={game.minParticipants}
-            participants={game.participants}
-            style={styles.capacityContainer}
-            onPress={onPressParticipants}
-          />
-          <Section.Item
-            icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS} />}
-            label={game.description || 'Нет описания'}
-            labelStyle={{ color: '#5F6B8D' }}
-            style={{ minHeight: 140 }}
-          />
-        </Section>
-      )}
-    </>
+    <Section>
+      <Section.Item
+        icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
+        iconPosition="BOTTOM"
+        label={() => (
+          <View>
+            <Text
+              style={styles.subText}
+            >{`${game.author.nickname}'s игра в ${game.sport.name}`}</Text>
+            <Text style={styles.mainText}>{game.name}</Text>
+          </View>
+        )}
+        side={<SportIcon sport="Football" />}
+      />
+      <Section.Item
+        icon={<MaterialIcons name="public" {...ICON_PARAMS} />}
+        label={'Открытая игра'}
+        labelStyle={{ color: '#5F6B8D' }}
+      />
+      <Section.Item
+        icon="ios-calendar"
+        label={() => <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
+        labelStyle={{ color: '#5F6B8D' }}
+      />
+      <Section.Item
+        icon="ios-pin"
+        label={game.location.address}
+        labelStyle={{ color: '#5F6B8D' }}
+      />
+      <GameLocationStatic
+        style={styles.mapContainer}
+        customMapStyle={mapStyle}
+        location={game.location}
+      />
+      <ParticipantsTouchable
+        textColor={'#5F6B8D'}
+        max={game.maxParticipants}
+        min={game.minParticipants}
+        participants={game.participants}
+        style={styles.capacityContainer}
+        onPress={onPressParticipants}
+        avatarGroupLimit={FULL_CARD_AVATAR_GROUP_LIMIT}
+      />
+      <Section.Item
+        icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS} />}
+        label={game.description || 'Без описания'}
+        labelStyle={{ color: '#5F6B8D' }}
+        style={{ minHeight: 140 }}
+      />
+    </Section>
   );
 }
 
