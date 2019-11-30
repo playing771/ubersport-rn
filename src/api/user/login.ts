@@ -12,7 +12,7 @@ export interface IAuthResult {
 }
 
 async function login(email: string, password: string): Promise<IAuthResult> {
-  const response = await fetch(`${BASE_URL}auth/login`, {
+  const response = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
