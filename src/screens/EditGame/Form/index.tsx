@@ -70,7 +70,11 @@ export function EditGameForm({
   };
 
   return (
-    <ScrollView keyboardDismissMode="interactive" contentContainerStyle={sharedStyles.container}>
+    <ScrollView
+      keyboardDismissMode="interactive"
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={sharedStyles.container}
+    >
       <Section title={TIME_PLACE_TITLE}>
         <SectionItemWithModal
           icon="ios-calendar"

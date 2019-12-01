@@ -18,7 +18,7 @@ const Profile = ({ userId }: IProps) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <ProfileInfo id={userId} />
       <View style={styles.subContainer}>
         <ProfileGamesList

@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-navigation';
-import { NavigationStackOptions } from 'react-navigation-stack';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
 import { EditGameMutationVariables } from '../../api/games/editGameMutation';
 import { IAgeLimit, ILocation } from '../../api/games/types';
@@ -58,6 +57,7 @@ function EditGameScreen() {
   return (
     <View style={sharedStyles.container}>
       <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
         enableOnAndroid={true}
         extraHeight={isIOS ? 120 : 75}
         extraScrollHeight={isAndroid ? 120 : 0}
@@ -71,9 +71,13 @@ function EditGameScreen() {
   );
 }
 
-const headerOptions: NavigationStackOptions = {
-  title: 'Новая игра',
-  ...defaultHeaderOptions,
+const headerOptions = ({ navigation }: any) => {
+  const gameEditData: IGameEditData | undefined = navigation.getParam('gameEditData');
+
+  return {
+    title: gameEditData ? 'Редактирование игры' : 'Новая игра',
+    ...defaultHeaderOptions,
+  };
 };
 
 EditGameScreen.navigationOptions = headerOptions;

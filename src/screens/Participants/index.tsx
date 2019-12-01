@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useNavigation from '../../hooks/useNavigation';
 import sharedStyles, { BASE_PADDING } from '../../sharedStyles';
@@ -16,13 +16,16 @@ export default function ParticipantsScreen(props: IProps) {
   const gameId = getParam('gameId');
 
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView
+      style={[sharedStyles.container, styles.mainContainer]}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.titleContainer}>
         <Text style={styles.mainText}>{TITLE}</Text>
         <Text style={styles.subText}>{SUB_TITLE}</Text>
       </View>
       <ParticipantsList gameId={gameId} />
-    </View>
+    </ScrollView>
   );
 }
 

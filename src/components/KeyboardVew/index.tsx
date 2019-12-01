@@ -29,6 +29,7 @@ export function KeyboardView(props: IProps) {
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}
       keyboardDismissMode="interactive"
       style={style}
       contentContainerStyle={contentContainerStyle}
