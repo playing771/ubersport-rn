@@ -31,6 +31,7 @@ export function LeaveGameBtn({ gameId }: IProps) {
       loadingIndicatorColor={Colors.purle}
       loading={loading}
       error={error}
+      submitText="Выйти из игры"
     />
   );
 }

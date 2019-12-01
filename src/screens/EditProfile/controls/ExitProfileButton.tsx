@@ -23,6 +23,7 @@ export default function HeaderRightButton() {
       style={styles.button}
       textStyle={styles.buttonText}
       onSubmit={pressHandle}
+      submitText="Выйти из профиля"
     >
       <Ionicons name="ios-log-out" size={30} color={Colors.purle} />
     </WithModalButton>
