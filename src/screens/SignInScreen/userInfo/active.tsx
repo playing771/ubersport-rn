@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
@@ -25,19 +25,10 @@ const UserInfoActive = ({ onSubmit, index }: IProps) => {
         useNativeDriver={true}
         style={[styles.titleContainer, styles.userInfoContainer]}
       >
-        <Text style={styles.mainText}>
-          Пожалуйста, укажите дополнительную информацию о себе
-        </Text>
-        <Text style={styles.subText}>
-          Обязательные поля отмечены звездочкой
-        </Text>
+        <Text style={styles.mainText}>Пожалуйста, укажите дополнительную информацию о себе</Text>
+        <Text style={styles.subText}>Обязательные поля отмечены звездочкой</Text>
       </AnimatedView>
-      <AnimatedView
-        animation="fadeIn"
-        useNativeDriver={true}
-        duration={1100}
-        delay={500}
-      >
+      <AnimatedView animation="fadeIn" useNativeDriver={true} duration={1100} delay={500}>
         <View style={styles.inputsContainer}>
           <SignInFormInput
             textContentType="username"
@@ -75,12 +66,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#505B77',
     padding: 16,
     borderRadius: 14,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   },
   mainText: { color: 'white', fontWeight: '600' },
   subText: { color: '#CBD6F2', marginTop: 6 },
   inputsContainer: { marginTop: 6 },
-  userInfoContainer: { marginTop: 12, paddingRight: 24 }
+  userInfoContainer: { marginTop: 12, paddingRight: 24 },
 });
 
 export default UserInfoActive;

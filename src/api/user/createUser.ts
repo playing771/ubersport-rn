@@ -1,5 +1,5 @@
-import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 import { userInfoFragment } from '../fragments';
 import IUser from './types';
 
@@ -17,6 +17,7 @@ export const CREATE_USER_GQL = gql`
     $lastName: String
     $middleName: String
     $dateOfBirth: Float
+    $favoriteSports: [Float]
   ) {
     createUser(
       userInput: {
@@ -27,6 +28,7 @@ export const CREATE_USER_GQL = gql`
         lastName: $lastName
         middleName: $middleName
         dateOfBirth: $dateOfBirth
+        favoriteSports: $favoriteSports
       }
     ) {
       ...userInfoFragment

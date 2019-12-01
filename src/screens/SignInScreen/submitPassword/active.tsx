@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
@@ -23,11 +23,8 @@ const SubmitPasswordActive = ({ onSubmit, index }: IProps) => {
 };
 
 export const submitPasswordValidateFn = (data: string, prevData: string) => {
-  const mp =
-    typeof data === 'string' &&
-    typeof prevData === 'string' &&
-    data === prevData;
-  console.log(data, prevData, mp);
+  const mp = typeof data === 'string' && typeof prevData === 'string' && data === prevData;
+  // console.log(data, prevData, mp);
 
   return mp;
 };
@@ -38,12 +35,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#505B77',
     padding: 16,
     borderRadius: 14,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   },
   mainText: { color: 'white', fontWeight: '600' },
   subText: { color: '#CBD6F2', marginTop: 6 },
 
-  inputsContainer: {}
+  inputsContainer: {},
 });
 
 export default SubmitPasswordActive;

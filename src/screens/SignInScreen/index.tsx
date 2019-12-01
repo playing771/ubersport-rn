@@ -17,13 +17,13 @@ import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
 import { IAppContextInjectedProp } from '../../utils/context/sports';
 import { isAndroid } from '../../utils/deviceInfo';
-import SignUpActive from './email/active';
+import SignUpActive, { validateEmail } from './email/active';
 import SignUpPassed from './email/passed';
 import favoriteSportsActive from './favoriteSports/active';
 import LoginForm from './LoginForm/index';
-import PasswordActive from './password/active';
+import PasswordActive, { passwordValidateFn } from './password/active';
 import PasswordPassed from './password/passed';
-import SubmitPasswordActive from './submitPassword/active';
+import SubmitPasswordActive, { submitPasswordValidateFn } from './submitPassword/active';
 import SubmitPasswordPassed from './submitPassword/passed';
 import SignInScreenTitle from './Title';
 import UserInfoActive from './userInfo/active';
@@ -43,18 +43,24 @@ interface IState {
 }
 
 const steps = [
-  { active: SignUpActive, passed: SignUpPassed }, // validateFn: validateEmail
+  { active: SignUpActive, passed: SignUpPassed, validateFn: validateEmail }, // validateFn: validateEmail
   {
     active: PasswordActive,
     passed: PasswordPassed,
-    // validateFn: passwordValidateFn
+    validateFn: passwordValidateFn,
   },
   {
     active: SubmitPasswordActive,
     passed: SubmitPasswordPassed,
-    // validateFn: submitPasswordValidateFn
+    validateFn: submitPasswordValidateFn,
   },
-  { active: UserInfoActive, passed: UserInfoPassed },
+  {
+    active: UserInfoActive,
+    passed: UserInfoPassed,
+    validateFn: (data: any) => {
+      return data && data.login.length;
+    },
+  },
   { active: favoriteSportsActive },
 ];
 
@@ -157,8 +163,12 @@ class SingInScreen extends React.Component<IProps, IState> {
       lastName: result[3].lastName,
       // middleName?: string;
       // dateOfBirth?: number;
-      favoriteSports: result[4].favoriteSports,
+      favoriteSports: result[4],
     };
+    console.log('result', result);
+
+    console.log('signUpVariables', signUpVariables);
+
     mutate({
       mutation: CREATE_USER_GQL,
       variables: signUpVariables,
