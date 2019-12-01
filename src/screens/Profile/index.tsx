@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { GameStatus } from '../../api/games/types';
 import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
@@ -19,6 +19,7 @@ const Profile = ({ userId }: IProps) => {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <StatusBar barStyle="light-content" />
       <ProfileInfo id={userId} />
       <View style={styles.subContainer}>
         <ProfileGamesList

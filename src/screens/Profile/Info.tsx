@@ -50,8 +50,9 @@ export function ProfileInfo({ id }: IProps) {
           <Text style={styles.subMinText}>{`@${nickname}`}</Text>
           <SexIcon sex={sex} />
         </View>
-
-        <Text style={styles.mainText}>{`${lastName} ${firstName}`}</Text>
+        {(!!lastName || !!firstName) && (
+          <Text style={styles.mainText}>{`${lastName} ${firstName}`}</Text>
+        )}
         {dateOfBirth && <Text style={styles.subText}>{getUserAge(dateOfBirth)}</Text>}
       </View>
       <View style={styles.moreInfo}>{/* <Ionicons name="arrow-forward" size={24} /> */}</View>
