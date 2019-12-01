@@ -57,6 +57,7 @@ function EditGameScreen() {
   return (
     <View style={sharedStyles.container}>
       <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         enableOnAndroid={true}
         extraHeight={isIOS ? 120 : 75}

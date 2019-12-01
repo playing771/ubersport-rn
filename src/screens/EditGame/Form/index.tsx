@@ -74,6 +74,7 @@ export function EditGameForm({
       keyboardDismissMode="interactive"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={sharedStyles.container}
+      keyboardShouldPersistTaps="always"
     >
       <Section title={TIME_PLACE_TITLE}>
         <SectionItemWithModal

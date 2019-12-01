@@ -162,6 +162,7 @@ export default class UWizard extends React.Component<IProps, IState> {
           ref={ref => {
             this.listRef = ref;
           }}
+          keyboardShouldPersistTaps={true}
           // extraScrollHeight={160}
           contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH } : undefined}
           style={styles.listContainer}
