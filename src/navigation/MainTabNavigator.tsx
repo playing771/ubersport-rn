@@ -62,10 +62,11 @@ export default createBottomTabNavigator(
       activeTintColor: Colors.active,
       inactiveTintColor: HEADER_BACKGROUND,
 
-      allowFontScaling: true,
+      // allowFontScaling: true,
       style: {
         paddingTop: 6,
-        paddingBottom: 6,
+        marginBottom: 6,
+        // height: 65,
       },
     },
   }

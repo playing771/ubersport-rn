@@ -45,6 +45,7 @@ export function ParticipantsList(props: IProps) {
   return (
     <FlatList
       data={getParticipantsWithAuthorState(participants, author.id, user.id, gameId)}
+      scrollEnabled={false}
       contentContainerStyle={styles.list}
       renderItem={ParticipantItem}
       keyExtractor={keyExtractor}

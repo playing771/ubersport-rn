@@ -16,10 +16,7 @@ export default function ParticipantsScreen(props: IProps) {
   const gameId = getParam('gameId');
 
   return (
-    <ScrollView
-      style={[sharedStyles.container, styles.mainContainer]}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView contentContainerStyle={styles.mainContainer} showsVerticalScrollIndicator={false}>
       <View style={styles.titleContainer}>
         <Text style={styles.mainText}>{TITLE}</Text>
         <Text style={styles.subText}>{SUB_TITLE}</Text>
