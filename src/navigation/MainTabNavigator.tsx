@@ -59,20 +59,14 @@ export default createBottomTabNavigator(
   { FindGameStack, NewGameStack, ProfileStack },
   {
     tabBarOptions: {
-      // tabStyle: { backgroundColor: Colors.tintColor },
       activeTintColor: Colors.active,
       inactiveTintColor: HEADER_BACKGROUND,
 
       allowFontScaling: true,
       style: {
-        // height: 45,
-        // backgroundColor: HEADER_BACKGROUND,
         paddingTop: 6,
         paddingBottom: 6,
       },
-      // showLabel: true,
-      // inactiveBackgroundColor: '#102044',
-      // activeBackgroundColor: '#102044',
     },
   }
 );

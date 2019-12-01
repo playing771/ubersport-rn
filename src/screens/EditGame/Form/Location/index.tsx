@@ -10,12 +10,13 @@ import sharedStyles from '../../../../sharedStyles';
 import { EditGameActions } from '../useEditGameForm';
 
 export function EditLocationScreen() {
-  const { getParam, goBack } = useNavigation();
+  const { getParam, dismiss } = useNavigation();
 
   function goBackWithLocation(location: ILocation) {
     const onChangeLocation: Dispatch<EditGameActions> = getParam('onLocationChange');
     onChangeLocation({ type: 'editLocation', payload: { location } });
-    goBack();
+    // не понял чем отличается от goBack, но последний иногда кидает на ввыбор типа игры
+    dismiss();
   }
 
   const location: LocationData | undefined = getParam('location');
