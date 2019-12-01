@@ -9,5 +9,6 @@ export type TouchableHighlightPressHandler = (event: GestureResponderEvent, para
 export type Optionalize<T extends K, K> = Omit<T, keyof K>;
 
 export type SimpleCallback = () => void;
+export type Callback<V = any> = (value: V) => void;
 
 export type ObjectMap<V = any, K extends string = string> = { [key in K]: V };

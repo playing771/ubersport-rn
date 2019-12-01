@@ -2,8 +2,8 @@ import getAgeFromBirthday from '../../../utils/getAgeFromBirthday';
 
 export function getUserAge(birthday?: number): string {
   let age: string;
-  if (typeof birthday === 'undefined') {
-    age = 'Возраст неизвестен';
+  if (!birthday) {
+    age = '';
   } else {
     age = getAgeFromBirthday(birthday) + ' Лет';
   }

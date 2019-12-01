@@ -4,7 +4,7 @@ import { IParticipant } from '../../../api/games/types';
 import UserAvatar from '../../../components/AvatarsGroup/UserAvatar';
 import { withModal } from '../../../components/hocs/WithModal';
 import withTouch from '../../../components/hocs/WIthTouch';
-import { getFullName, getUserAge } from './utils';
+import { getFullName } from './utils';
 
 interface IProps extends Partial<IParticipant> {
   src: string | null;
@@ -15,9 +15,7 @@ function ParticipantRow({ src, nickname, dateOfBirth, lastName, firstName }: IPr
     <View style={styles.mainContainer}>
       <UserAvatar src={src} size={60} style={styles.avatarContainer} />
       <View style={styles.textContainer}>
-        <Text style={styles.mainText}>
-          {nickname}, {getUserAge(dateOfBirth)}
-        </Text>
+        <Text style={styles.mainText}>{nickname}</Text>
         <Text style={styles.subText}>{getFullName(lastName, firstName)}</Text>
       </View>
     </View>

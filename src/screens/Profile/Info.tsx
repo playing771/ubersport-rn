@@ -52,7 +52,7 @@ export function ProfileInfo({ id }: IProps) {
         </View>
 
         <Text style={styles.mainText}>{`${lastName} ${firstName}`}</Text>
-        <Text style={styles.subText}>{getUserAge(dateOfBirth)} - Moscow</Text>
+        {dateOfBirth && <Text style={styles.subText}>{getUserAge(dateOfBirth)}</Text>}
       </View>
       <View style={styles.moreInfo}>{/* <Ionicons name="arrow-forward" size={24} /> */}</View>
     </View>

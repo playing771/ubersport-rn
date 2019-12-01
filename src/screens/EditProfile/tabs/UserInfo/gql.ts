@@ -10,6 +10,7 @@ export const EDIT_PROFILE_USER_INFO_QUERY = gql`
       lastName
       sex
       avatar
+      dateOfBirth
     }
   }
 `;

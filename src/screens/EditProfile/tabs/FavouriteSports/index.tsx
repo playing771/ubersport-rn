@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import ErrorCard from '../../../../components/ErrorCard';
 import SportsList from '../../../../components/SportsList';
 import ULoader from '../../../../components/ULoader';
+import SubmitButton from '../../controls/SubmitButton';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION } from '../../gql';
-import SubmitButton from '../../SubmitButton';
 import { useEditProfileFavouriteSportsQuery } from './gql';
 
 interface IProps {

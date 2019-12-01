@@ -7,9 +7,10 @@ import ULoader from '../../../../components/ULoader/index';
 import UTextInput from '../../../../components/UTextInput/index';
 import { deepOmit } from '../../../../utils/helpers';
 import AvatarSelect from '../../AvatarSelect';
+import { ProfileAgeInput } from '../../controls/AgeInput';
+import SubmitButton from '../../controls/SubmitButton';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
-import SubmitButton from '../../SubmitButton';
 import { useEditProfileInfoQuery } from './gql';
 
 interface IProps {
@@ -22,6 +23,7 @@ export interface IEditProfileUserInfo {
   lastName?: string;
   sex?: ISex;
   avatar?: string | null;
+  dateOfBirth?: number;
 }
 
 export default function UserInfoTab({ id }: IProps) {
@@ -55,10 +57,11 @@ export default function UserInfoTab({ id }: IProps) {
     setNewInfo({ ...newInfo, sex: sex as ISex });
   };
 
-  const changeAvatarHandle = (newAvatar: string | null) => {
-    // console.log('changeAvatarHandle', newAvatar);
-    console.log('newAvatar', newAvatar);
+  const changeDateOfBirth = (dateOfBirth: number) => {
+    setNewInfo({ ...newInfo, dateOfBirth });
+  };
 
+  const changeAvatarHandle = (newAvatar: string | null) => {
     setNewInfo({ ...newInfo, avatar: newAvatar });
   };
 
@@ -93,6 +96,11 @@ export default function UserInfoTab({ id }: IProps) {
         initialValue={data.getUserInfo.nickname}
         onChangeText={changeNicknameHandle}
       />
+      <ProfileAgeInput
+        initialDate={data.getUserInfo.dateOfBirth}
+        changeDateHandle={changeDateOfBirth}
+      />
+
       <EditSex
         options={[
           { label: 'Мужской', value: 'MALE' },

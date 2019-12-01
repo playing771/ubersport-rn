@@ -3,9 +3,9 @@ import React, { useCallback, useState } from 'react';
 import UTextInput from '../../../../components/UTextInput';
 import useAppContext from '../../../../hooks/useAppContext';
 import useForm from '../../../../hooks/UseForm';
+import SubmitButton from '../../controls/SubmitButton';
 import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
-import SubmitButton from '../../SubmitButton';
 
 export default function ChangePasswordTab() {
   const { user } = useAppContext();

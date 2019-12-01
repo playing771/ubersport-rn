@@ -63,6 +63,7 @@ function FindGameScreen() {
           changeSportFilterHanlde={changeSportFilterHanlde}
           myLocation={myLocation}
         />
+
         <GamesList onGameCardPress={onGameCardPress} sort={sort} filters={activeFilters} />
       </View>
     </SafeAreaView>

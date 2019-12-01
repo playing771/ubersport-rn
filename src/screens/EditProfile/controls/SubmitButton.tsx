@@ -2,9 +2,9 @@ import { ApolloError } from 'apollo-client';
 import { DocumentNode } from 'graphql';
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { SubmitButton } from '../../components/buttons/SubmitButton';
-import withErrorCard from '../../components/hocs/WithErrorCard';
-import { IEditProfileVariables } from './gql';
+import { SubmitButton } from '../../../components/buttons/SubmitButton';
+import withErrorCard from '../../../components/hocs/WithErrorCard';
+import { IEditProfileVariables } from '../gql';
 
 interface IProps {
   variables: IEditProfileVariables;

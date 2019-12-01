@@ -4,7 +4,7 @@ import UTabsView from '../../components/UTabView';
 import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useAppContext from '../../hooks/useAppContext';
 import useNavigation from '../../hooks/useNavigation';
-import HeaderRightButton from './ExitProfileButton';
+import HeaderRightButton from './controls/ExitProfileButton';
 import ChangePasswordTab from './tabs/ChangePassword/';
 import FavouriteSportsTab from './tabs/FavouriteSports/index';
 import UserInfoTab from './tabs/UserInfo/';
