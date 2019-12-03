@@ -17,20 +17,27 @@ export default function ChangePasswordTab() {
     id: user.id,
     userInput: { password: values.newPassword },
   };
+
+  const valid = isValid && values.newPassword === values.repeat;
+
   return (
     <FormContainer>
-      {/* <UTextInput label="Старый пароль" {...useTextInput('old', 'isRequired')} /> */}
       <UTextInput
         secureTextEntry={true}
         label="Новый пароль"
         {...useTextInput('newPassword', 'isRequired')}
+      />
+      <UTextInput
+        label="Подтвердите пароль (повторно)"
+        secureTextEntry={true}
+        {...useTextInput('repeat', 'isRequired')}
       />
       <SubmitButton
         gql={EDIT_PROFILE_MUTATION}
         variables={newInput}
         onError={handleError}
         error={error}
-        disabled={!isValid}
+        disabled={!valid}
       />
     </FormContainer>
   );

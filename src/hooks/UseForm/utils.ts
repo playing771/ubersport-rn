@@ -51,7 +51,6 @@ export function validate(value: any, validation: ObjectMap | undefined | string)
           isValid = false;
         }
         break;
-
       default:
         switch (options) {
           case true:

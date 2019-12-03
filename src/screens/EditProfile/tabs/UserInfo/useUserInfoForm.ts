@@ -7,7 +7,6 @@ export function useUserInfoForm() {
 
   const { isValid, setValues } = useForm(newInfo, {
     nickname: 'isRequired',
-    lastName: 'isRequired',
   });
 
   useEffect(() => {
