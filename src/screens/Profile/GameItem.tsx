@@ -12,7 +12,7 @@ interface IProps {
 
 const GameItem = ({ game, onCardPress, style }: IProps) => {
   return (
-    <View style={style}>
+    <View style={[style]}>
       <Text style={styles.date}>{dateToString(game.creationDate)}</Text>
       <SportCard
         sport={{ ...game.sport }}
@@ -22,12 +22,12 @@ const GameItem = ({ game, onCardPress, style }: IProps) => {
         title={game.name}
         onPress={() => onCardPress(game.id)}
       />
-      <View style={styles.gameInfoContainer}>
-        {/* <View style={styles.authorInfoContainer}>
+      {/* <View style={styles.gameInfoContainer}>
+        <View style={styles.authorInfoContainer}>
           <UserAvatar src={game.author.avatar} size={24} />
           <Text style={styles.nickname}>{game.author.nickname}</Text>
-        </View> */}
-      </View>
+        </View>
+      </View> */}
     </View>
   );
 };
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {},
   sportCard: {
     width: 150,
-    minHeight: 80,
+    height: 140,
     marginRight: 10,
     // backgroundColor: "#51A9FF",
     backgroundColor: 'white',

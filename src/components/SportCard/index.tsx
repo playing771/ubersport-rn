@@ -65,7 +65,11 @@ export function SportCard(props: IProps) {
               color={props.iconColor ? props.iconColor : params.color}
             />
           )}
-          <Text style={[styles.cardTitle, { color: params.color }, props.textStyle]}>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={[styles.cardTitle, { color: params.color }, props.textStyle]}
+          >
             {props.title ? props.title : sport.name}
           </Text>
         </View>

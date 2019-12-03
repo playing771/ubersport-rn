@@ -30,7 +30,9 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
             <Text
               style={styles.subText}
             >{`${game.author.nickname}'s игра в ${game.sport.name}`}</Text>
-            <Text style={styles.mainText}>{game.name}</Text>
+            <Text numberOfLines={2} ellipsizeMode="tail" style={styles.mainText}>
+              {game.name}
+            </Text>
           </View>
         )}
         side={<SportIcon sportId={game.sport.id} />}

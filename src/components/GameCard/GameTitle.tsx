@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   textColor: string;
@@ -11,7 +11,9 @@ const GameTitle: React.SFC<Props> = props => {
   const _styles = _getStyles(props.textColor);
   return (
     <View style={_styles.mainContainer}>
-      <Text style={_styles.mainText}>{props.title}</Text>
+      <Text style={_styles.mainText} numberOfLines={2} ellipsizeMode="tail">
+        {props.title}
+      </Text>
       {/* <Text style={_styles.subText}>{`${_getTime(props.length)} ЧАСОВ`}</Text> */}
     </View>
   );
@@ -31,14 +33,14 @@ const _getStyles = (textColor: string) => {
     mainText: {
       color: textColor,
       fontWeight: '800',
-      fontSize: 18
+      fontSize: 18,
     },
     subText: {
       color: textColor,
       fontWeight: '500',
       fontSize: 14,
-      marginTop: 2
-    }
+      marginTop: 2,
+    },
   });
   return _styles;
 };
