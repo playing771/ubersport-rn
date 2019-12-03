@@ -54,7 +54,7 @@ export function SubmitButton(props: IProps) {
   }
 
   function handleClick() {
-    if (onPress) {
+    if (onPress && !loading) {
       onPress();
     } else {
       mutate({ variables, refetchQueries });

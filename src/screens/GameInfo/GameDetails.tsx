@@ -35,6 +35,7 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
   const { game } = data;
 
   const isParticipant = isParticipantCheck(user.id, game.participants);
+  const isFull = !!game.maxParticipants && game.participants.length >= game.maxParticipants;
 
   return game ? (
     <View style={styles.mainContainer}>
@@ -51,7 +52,9 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
           <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
         </Card>
       </ScrollView>
-      {!isParticipant && <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} />}
+      {!isParticipant && (
+        <JoinGameBtn variables={{ gameId: game.id, userId: user.id }} isFull={isFull} />
+      )}
     </View>
   ) : (
     <ULoader />

@@ -12,11 +12,12 @@ interface IProps {
   variables: JoinGameMutationVariables;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  isFull: boolean;
 }
 
 const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
-export function JoinGameBtn({ variables, disabled, style }: IProps) {
+export function JoinGameBtn({ variables, disabled, style, isFull }: IProps) {
   const { authCheck } = useAuthCheck();
   const { navigate } = useNavigation();
   const { error, toggleErrorCard } = useErrorCard();
@@ -25,11 +26,11 @@ export function JoinGameBtn({ variables, disabled, style }: IProps) {
     <SubmitButtonWithErrorCard
       gql={JOIN_GAME_GQL}
       variables={variables}
-      title="Участвовать"
+      title={!isFull ? 'Участвовать' : 'Нет свободных мест'}
       // onUpdate={onUpdate}
       onError={toggleErrorCard}
       style={[styles.mainContainer, style]}
-      disabled={disabled}
+      disabled={disabled || isFull}
       error={error}
       refetchQueries={['getGamesWithFilters']}
       onPress={authCheck() ? undefined : () => navigate(NavigationRoot.NotAuthorized)}
