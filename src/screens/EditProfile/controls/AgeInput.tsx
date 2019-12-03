@@ -24,10 +24,14 @@ export function ProfileAgeInput({ initialDate, changeDateHandle }: IProps) {
   const [date, setDate] = useState(initialDate ? new Date(initialDate) : undefined);
 
   function birthdayLabelAndroidPressHandle() {
-    useAndroidDatePicker(date, newDate => {
-      setDate(newDate);
-      changeDateHandle(+newDate);
-    });
+    useAndroidDatePicker(
+      date,
+      newDate => {
+        setDate(newDate);
+        changeDateHandle(+newDate);
+      },
+      new Date()
+    );
   }
 
   function onChange(newDate: Date) {
@@ -60,6 +64,7 @@ function ModalContent({ date, onChange }: { date: Date | undefined; onChange: Ca
         date={date ? date : new Date()}
         onDateChange={onChange}
         mode="date"
+        maximumDate={new Date()}
       />
     </UModal>
   );
