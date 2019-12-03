@@ -25,10 +25,11 @@ export default function ChangePasswordTab() {
       <UTextInput
         secureTextEntry={true}
         label="Новый пароль"
-        {...useTextInput('newPassword', 'isRequired')}
+        placeholder="Минимум 6 символов"
+        {...useTextInput('newPassword', { isRequired: 'true', isLength: { min: 6 } })}
       />
       <UTextInput
-        label="Подтвердите пароль (повторно)"
+        label="Подтвердите пароль"
         secureTextEntry={true}
         {...useTextInput('repeat', 'isRequired')}
       />

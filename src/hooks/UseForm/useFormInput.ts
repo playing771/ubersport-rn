@@ -5,7 +5,7 @@ import { ErrorCallbackFn, formUtils } from './utils';
 export function useFormInput<T = any>(
   name: string,
   formHandler: [any, any],
-  validation: string = '',
+  validation: any = '',
   handleError: ErrorCallbackFn,
   callback?: SimpleCallback
 ) {

@@ -47,7 +47,7 @@ export default function useForm(initialValues: ObjectMap = {}, validationMap?: O
 
   const useTextInput = <T extends unknown = any>(
     name: string,
-    validation: string,
+    validation: any,
     callback?: SimpleCallback
   ) => useFormInput<T>(name, formHandler, validation, handleError, callback);
 
