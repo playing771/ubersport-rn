@@ -1,21 +1,13 @@
-import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import getSportIcon from '../../constants/getSportIcon';
-import { StyleSheet, ViewStyle, StyleProp } from 'react-native';
 
 interface IProps {
-  sport: string;
+  sportId: number;
   style?: StyleProp<ViewStyle>;
 }
 
-const SportIcon = ({ sport, style }: IProps) => {
-  return (
-    <Ionicons name={getSportIcon(sport)} size={35} color={'#3B485A'} style={[styles.main, style]} />
-  );
-};
-
-const styles = StyleSheet.create({
-  main: {},
-});
-
-export default SportIcon;
+export function SportIcon({ sportId, style }: IProps) {
+  return <Ionicons name={getSportIcon(sportId)} size={35} color={'#3B485A'} style={style} />;
+}

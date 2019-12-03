@@ -1,19 +1,23 @@
-import * as React from 'react';
-import { TextStyle, StyleProp, GestureResponderEvent, StyleSheet } from 'react-native';
-import Card from '../GeneralCard/index';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import {
+  GestureResponderEvent,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
+import ISport from '../../api/sports/Sport.type';
 import getSportIcon from '../../constants/getSportIcon';
-import { Text, ViewStyle, View } from 'react-native';
+import Card from '../GeneralCard/index';
 
-export interface CardNameObj {
-  id: string | number;
-  name: string;
-}
-export interface NewGameCardProps {
-  sport: CardNameObj;
+interface IProps {
+  sport: ISport;
   textStyle?: StyleProp<TextStyle>;
   style?: StyleProp<ViewStyle>;
-  onPress?: (sport: CardNameObj) => void;
+  onPress?: (sport: ISport) => void;
   onShowUnderlay?: (value?: string) => void;
   onHideUnderlay?: () => void;
   iconColor?: string;
@@ -27,7 +31,7 @@ const params = {
   color: '#999a9b',
 };
 
-const SportCard = (props: NewGameCardProps): JSX.Element => {
+export function SportCard(props: IProps) {
   const { onPress, sport } = props;
   const _onPress = (e: GestureResponderEvent) => {
     if (onPress) {
@@ -41,7 +45,7 @@ const SportCard = (props: NewGameCardProps): JSX.Element => {
       // onShowUnderlay={onShowUnderlay}
       // onHideUnderlay={onHideUnderlay}
       onPress={_onPress}
-      wrapperStyle={[s.cardContainer, props.style]}
+      wrapperStyle={[styles.cardContainer, props.style]}
       // name={sport.name}
       id={String(sport.id)}
       renderContent={() => (
@@ -55,22 +59,22 @@ const SportCard = (props: NewGameCardProps): JSX.Element => {
             props.image()
           ) : (
             <Ionicons
-              name={getSportIcon(sport.name)}
+              name={getSportIcon(sport.id)}
               size={params.size}
-              style={s.cardImage}
+              style={styles.cardImage}
               color={props.iconColor ? props.iconColor : params.color}
             />
           )}
-          <Text style={[s.cardTitle, { color: params.color }, props.textStyle]}>
+          <Text style={[styles.cardTitle, { color: params.color }, props.textStyle]}>
             {props.title ? props.title : sport.name}
           </Text>
         </View>
       )}
     />
   );
-};
+}
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
   cardContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -79,5 +83,3 @@ const s = StyleSheet.create({
   cardTitle: { fontWeight: '600', paddingVertical: 5, textAlign: 'center' },
   cardImage: { textAlign: 'center' },
 });
-
-export default SportCard;

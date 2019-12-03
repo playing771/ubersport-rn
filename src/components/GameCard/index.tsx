@@ -6,7 +6,7 @@ import { NavigationRoot } from '../../navigation/roots';
 import { getFormattedDate, getFormattedTime } from '../../utils/dateUtils';
 import CardPart from '../GeneralCard/CardPart';
 import Card from '../GeneralCard/index';
-import HeaderCardBlock from './Blocks/HeaderCardBlock';
+import { HeaderCardBlock } from './Blocks/HeaderCardBlock';
 import ParticipantsCardBlock from './Blocks/ParticipantsCardBlock';
 import SubCardBlock from './Blocks/SubCardBlock';
 import GameTitle from './GameTitle';
@@ -39,7 +39,7 @@ export function GameDetailsCard({ game, style, onPress }: IProps) {
     <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
       <>
         <CardPart bordered={false}>
-          <HeaderCardBlock textColor={textColor} author={game.author} sport={game.sport.name} />
+          <HeaderCardBlock textColor={textColor} author={game.author} sportId={game.sport.id} />
         </CardPart>
         <CardPart bordered={false}>
           <GameTitle

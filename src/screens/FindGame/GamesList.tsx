@@ -1,11 +1,13 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { IGame } from '../../api/games/types';
 import ErrorCard from '../../components/ErrorCard';
 import { GameDetailsCard } from '../../components/GameCard';
+import ULoader from '../../components/ULoader';
 import Colors from '../../constants/Colors';
 import { BASE_PADDING } from '../../sharedStyles';
 import { IFindGameFilters, ISearchGameSort } from '../FindGame';
+import { EmptyGameCard } from './EmptyCard';
 import useGamesListQuery from './gql';
 
 const keyExtractor = (item: IGame) => item.id;
@@ -28,22 +30,28 @@ export function GamesList({ onGameCardPress, filters, sort }: IProps) {
     return <ErrorCard error={error} />;
   }
 
-  if (!data) {
-    return null;
+  if (loading) {
+    return <ULoader />;
   }
 
-  // console.log('data.games', data.games);
+  if (!data || !data.games) {
+    return (
+      <View style={styles.listContainer}>
+        <EmptyGameCard />
+      </View>
+    );
+  }
 
   const { games, count } = data.games;
 
   const renderGameItem = ({ item }: { item: IGame }) => (
-    <GameDetailsCard game={item} style={styles.card} onPress={onGameCardPress} />
+    <GameDetailsCard game={item} style={[styles.card]} onPress={onGameCardPress} />
   );
 
   return (
     <FlatList
       data={games}
-      contentContainerStyle={[styles.listContainer]}
+      contentContainerStyle={styles.listContainer}
       keyExtractor={keyExtractor}
       renderItem={renderGameItem}
       showsVerticalScrollIndicator={false}

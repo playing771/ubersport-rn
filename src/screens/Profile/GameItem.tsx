@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, View, ViewStyle } from 'react-native';
-import SportCard from '../../components/SportCard/index';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { IGame } from '../../api/games/types';
+import { SportCard } from '../../components/SportCard/index';
 import dateToString from '../../utils/toDateString';
 
 interface IProps {

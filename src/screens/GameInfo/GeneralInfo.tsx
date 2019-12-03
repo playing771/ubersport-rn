@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { IGame } from '../../api/games/types';
 import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
 import mapStyle from '../../components/GameCard/mapStyle';
-import SportIcon from '../../components/GameCard/SportIcon';
+import { SportIcon } from '../../components/GameCard/SportIcon';
 import GameLocationStatic from '../../components/GameLocationStatic';
 import withTouch from '../../components/hocs/WIthTouch';
 import Section from '../../components/Layout/Section';
@@ -33,7 +33,7 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
             <Text style={styles.mainText}>{game.name}</Text>
           </View>
         )}
-        side={<SportIcon sport="Football" />}
+        side={<SportIcon sportId={game.sport.id} />}
       />
       <Section.Item
         icon={<MaterialIcons name="public" {...ICON_PARAMS} />}
