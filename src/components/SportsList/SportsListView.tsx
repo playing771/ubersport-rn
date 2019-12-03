@@ -81,6 +81,7 @@ export default function SportsListView({
       // extraData={exclude.length}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
     />
   ) : (
     <SporstListItemInner textStyle={{ color: '#B7B7B7', fontSize: 16 }}>Пусто</SporstListItemInner>
