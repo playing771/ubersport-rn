@@ -18,13 +18,13 @@ export const EDIT_GAME_GQL = gql`
 export interface EditGameMutationVariables {
   gameInput: {
     id: string;
-    name?: string;
-    location?: ILocation;
+    name: string;
+    location: ILocation;
     description?: string;
     maxParticipants?: number;
     minParticipants?: number;
     ageLimit?: IAgeLimit;
-    dateEnd?: number;
-    dateStart?: number;
+    dateEnd: number;
+    dateStart: number;
   };
 }
