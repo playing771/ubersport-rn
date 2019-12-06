@@ -18,7 +18,7 @@ interface IProps {
 const ProfileGamesList = ({ userId, onGamePress, status, title, emptyText }: IProps) => {
   const { data, error, loading } = useGamesListQuery({
     filters: { participantsIds: [userId], status },
-    sort: 'date',
+    sort: { sort: 'date', sortOrder: 'DESC' },
   });
 
   if (error) {
