@@ -6,6 +6,7 @@ import { CREATE_USER_GQL, ICreateUserMutationVariables } from '../../api/user/cr
 import emailValidate, { IExistEmail } from '../../api/user/emailValidate';
 import login, { IAuthResult } from '../../api/user/login';
 import { IUserWithToken } from '../../api/user/types';
+import UButton from '../../components/buttons/UButton';
 import ErrorCard from '../../components/ErrorCard/index';
 import { IAdaptiveScreenOptions } from '../../components/hocs/WithAdaptiveScreen/index';
 import withAppContext from '../../components/hocs/WithAppContext';
@@ -229,8 +230,8 @@ class SingInScreen extends React.Component<IProps, IState> {
                 steps={steps}
                 submitHandle={this.signUp}
               />
-              {/* <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} /> */}
+              <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
             </>
           ) : (
             <>
@@ -241,8 +242,8 @@ class SingInScreen extends React.Component<IProps, IState> {
                 hideErroHandle={this.hideBadCredentials}
                 changeEmailHandle={this.changeEmailHandle}
               />
-              {/* <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
-              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} /> */}
+              <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
+              <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} />
               <ErrorCard
                 error="Неверно указан пароль. Пожалуйста, попробуйте еще раз!"
                 show={badCredentials}

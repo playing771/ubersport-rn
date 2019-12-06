@@ -4,11 +4,11 @@ import { StyleSheet, Text } from 'react-native';
 import ToggleableItem, { SporstListItemInner } from '../../../components/SportsList/SportsListItem';
 import UModal from '../../../components/UModal';
 import Colors from '../../../constants/Colors';
-import { ISearchGameSort } from '../../FindGame';
+import { SortType } from '../../../utils/types';
 
 interface IProps {
-  onChange: (itemId: ISearchGameSort) => void;
-  activeSort: ISearchGameSort;
+  onChange: (itemId: SortType) => void;
+  activeSort: SortType;
   myLocation?: LocationData;
 }
 

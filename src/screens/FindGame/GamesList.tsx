@@ -6,7 +6,8 @@ import { GameDetailsCard } from '../../components/GameCard';
 import ULoader from '../../components/ULoader';
 import Colors from '../../constants/Colors';
 import { BASE_PADDING } from '../../sharedStyles';
-import { IFindGameFilters, ISearchGameSort } from '../FindGame';
+import { Sort } from '../../utils/types';
+import { IFindGameFilters } from '../FindGame';
 import { EmptyGameCard } from './EmptyCard';
 import useGamesListQuery from './gql';
 
@@ -16,7 +17,7 @@ const PAGE_SIZE = 4;
 export interface IProps {
   onGameCardPress: (gameId: string) => void;
   filters: IFindGameFilters;
-  sort: ISearchGameSort;
+  sort: Sort;
 }
 
 export function GamesList({ onGameCardPress, filters, sort }: IProps) {

@@ -7,23 +7,20 @@ import ULoader from '../../../components/ULoader';
 import { HEADER_BACKGROUND } from '../../../constants/Colors';
 import useNavigation from '../../../hooks/useNavigation';
 import { NavigationRoot } from '../../../navigation/roots';
-import { IFindGameFilters, ISearchGameSort } from '../../FindGame';
+import { ObjectMap, SortType } from '../../../utils/types';
+import { IFindGameFilters } from '../../FindGame';
 import FilterButton from './FilterButton';
 import SortModal from './sortModal';
 
-type ISortMap = {
-  [key in ISearchGameSort]: string;
-};
-
-const SORTS: ISortMap = {
+const SORTS: ObjectMap<string, SortType> = {
   date: 'Новые',
   distance: 'Ближайшие',
   time: 'Скоро начало',
 };
 
 interface IProps {
-  activeSort: ISearchGameSort;
-  onChangeActiveSort: (sort: ISearchGameSort, toggleModal: () => void) => void;
+  activeSort: SortType;
+  onChangeActiveSort: (sort: SortType, toggleModal: () => void) => void;
   changeSportFilterHanlde: (ids: number[]) => void;
   activeFilters: IFindGameFilters;
   myLocation?: Position;
@@ -46,8 +43,7 @@ export default function FiltersPanel({
   }
 
   const { distance, ...rest } = SORTS;
-  const sortingMap = myLocation ? { ...rest, distance } : ({ ...rest } as ISortMap); // TODO: remove as assertion
-  const options = Object.keys(sortingMap) as ISearchGameSort[];
+  const sortingMap = myLocation ? { ...rest, distance } : { ...rest };
 
   const filtersNavigateHandle = () => {
     navigate(NavigationRoot.SportFilters, {

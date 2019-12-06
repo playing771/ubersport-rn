@@ -7,12 +7,18 @@ import useNavigation from '../../hooks/useNavigation';
 import { NavigationRoot } from '../../navigation/roots';
 import sharedStyles from '../../sharedStyles';
 import { locationUtils } from '../../utils/location';
+import { ObjectMap, Sort, SortType } from '../../utils/types';
 import FiltersPanel from './FiltersPanel';
 import { GamesList } from './GamesList';
 import { IGamesListQueryFilters } from './gql';
 
-export type ISearchGameSort = 'time' | 'distance' | 'date';
 export type IFindGameFilters = IGamesListQueryFilters;
+
+const SORTS: ObjectMap<Sort, SortType> = {
+  time: { sort: 'time', sortOrder: 'ASC' }, // Скоро начало
+  date: { sort: 'date', sortOrder: 'DESC' }, // Новые
+  distance: { sort: 'distance', sortOrder: 'DESC' }, // Ближайшие
+};
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
 
@@ -20,7 +26,7 @@ function FindGameScreen() {
   const { navigate } = useNavigation();
 
   // TODO: merge states in one to prevent 2 renders
-  const [sort, setSort] = useState<ISearchGameSort>('date');
+  const [sort, setSort] = useState<Sort>(SORTS.date);
   const [activeFilters, setFilters] = useState<IFindGameFilters>({
     sportIds: undefined,
     status: GameStatus.Pending,
@@ -28,19 +34,19 @@ function FindGameScreen() {
   const [myLocation, setMyLocation] = useState<Position>();
 
   useEffect(() => {
-    (async function() {
-      const location = await locationUtils.getMyLocationAsync();
-
-      if (location) {
-        setMyLocation(location);
-        setSort('distance');
-      }
-    })();
+    getMyLocation();
   }, []);
 
-  const changeActiveSort = (sorting: ISearchGameSort, toggleModal: () => void) => {
+  const changeActiveSort = async (sortingType: SortType, toggleModal: () => void) => {
     toggleModal();
-    setSort(sorting);
+    setSort(SORTS[sortingType]);
+    if (sortingType === 'distance') {
+      // await getMyLocation();
+      if (myLocation) {
+        const { latitude, longitude } = myLocation.coords;
+        setFilters({ ...activeFilters, location: { latitude, longitude } });
+      }
+    }
   };
 
   const changeSportFilterHanlde = (sportIds: number[]) => {
@@ -52,12 +58,21 @@ function FindGameScreen() {
     navigate(NavigationRoot.GameInfo, { gameId });
   };
 
+  async function getMyLocation() {
+    const location = await locationUtils.getMyLocationAsync();
+
+    if (location) {
+      setMyLocation(location);
+      // setSort(SORTS.distance);
+    }
+  }
+
   return (
     <SafeAreaView style={[styles.container, sharedStyles.headerlessScreen]}>
       <View style={styles.contentContainer}>
         <StatusBar barStyle="light-content" />
         <FiltersPanel
-          activeSort={sort}
+          activeSort={sort.sort}
           activeFilters={activeFilters}
           onChangeActiveSort={changeActiveSort}
           changeSportFilterHanlde={changeSportFilterHanlde}
