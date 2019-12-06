@@ -12,7 +12,6 @@ import useAndroidTimePicker from '../../../../components/pickers/useAndroidTimeP
 import { BASE_PADDING } from '../../../../sharedStyles';
 import { getFormattedDate, getFormattedTime } from '../../../../utils/dateUtils';
 import { isAndroid, isIOS } from '../../../../utils/deviceInfo';
-import { IRestrictions } from '../People';
 import EditableAndroidTimeLable from './EditableAndroidTimeLable';
 import { EditableDateItem } from './Item';
 import { getGameLength, getInitialStartingTime, getInittalEndingTime, getTimeLable } from './utils';
@@ -30,8 +29,8 @@ const EXPAND_SETTINGS = {
 
 export interface IProps {
   onSave: (dateStart: number, dateEnd: number) => void;
-  dateStartRestrictions: IRestrictions;
-  dateEndRestrictions: IRestrictions;
+  // dateStartRestrictions: IRestrictions;
+  // dateEndRestrictions: IRestrictions;
   dateStart?: number;
   dateEnd?: number;
 }
@@ -43,6 +42,8 @@ export default function EditTimeModal(props: IProps) {
   const [dateEnd, setDateEnd] = useState<number>(
     props.dateEnd ? props.dateEnd : getInittalEndingTime(dateStart)
   );
+
+  const minDate = new Date();
 
   function dateStartPressHandle() {
     useAndroidTimePicker(dateStart, timeStartChangeHandle);
@@ -114,7 +115,7 @@ export default function EditTimeModal(props: IProps) {
         label={getTimeLable(dateStart, dateEnd)}
         extra={getGameLength(dateStart, dateEnd)}
         icon="ios-timer"
-        style={{ marginBottom: 12 }}
+        style={styles.item}
         renderInput={({ expanded }) => (
           <ExpandableDualTimeInput
             onDateStartChange={timeStartChangeHandle}
@@ -122,6 +123,7 @@ export default function EditTimeModal(props: IProps) {
             dateStart={dateStart}
             dateEnd={dateEnd}
             expanded={expanded}
+            min={minDate}
             {...EXPAND_SETTINGS}
           />
         )}
@@ -133,7 +135,7 @@ export default function EditTimeModal(props: IProps) {
     return (
       <EditableDateItem
         label={getFormattedDate(dateStart, 'dddd, MMM DD ')}
-        style={{ marginBottom: 12 }}
+        style={styles.item}
         icon="ios-calendar"
         renderInput={({ expanded }) =>
           isIOS ? (
@@ -145,10 +147,10 @@ export default function EditTimeModal(props: IProps) {
             />
           ) : (
             <ExpandableCalendar
+              onChange={onDatePickerChange}
+              value={dateStart}
               expanded={expanded}
               {...EXPAND_SETTINGS}
-              value={dateStart}
-              onChange={onDatePickerChange}
             />
           )
         }
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: 'hidden',
   },
+  item: { marginBottom: 12 },
   saveBtn: { width: '100%', height: 50 },
   saveBtnText: { fontWeight: '600', fontSize: 16 },
   itemContainer: { marginBottom: BASE_PADDING }, // compensate bottom padding if no renderInput provided

@@ -1,8 +1,5 @@
 import React from 'react';
-import { StyleProp, ViewStyle, TextStyle, Text, View, StyleSheet } from 'react-native';
-import UPickerGroup from '../BasePicker';
-import PickerPart from '../BasePicker/PickerPart';
-import { TimePickerUtils } from '../TimePicker/utils';
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import TimePicker from '../TimePicker';
 
 interface IProps extends IStyleProps {
@@ -10,6 +7,7 @@ interface IProps extends IStyleProps {
   dateEnd: number;
   onDateStartChange: (dateStart: number) => void;
   onDateEndChange: (dateEnd: number) => void;
+  min?: Date;
 }
 
 interface IStyleProps {
@@ -22,11 +20,12 @@ export default function DualTimePicker({
   dateEnd,
   onDateStartChange,
   onDateEndChange,
+  min,
 }: IProps) {
   return (
     <View style={styles.wrapper}>
       <View style={[styles.fake, styles.fakeSide]} />
-      <TimePicker onChange={onDateStartChange} value={dateStart} />
+      <TimePicker onChange={onDateStartChange} value={dateStart} min={min} />
       <View style={[styles.fakeMid, styles.fake]}>
         <Text style={styles.fakeSymb}>-</Text>
       </View>

@@ -54,8 +54,6 @@ export interface IGamesListResult {
 }
 
 export default function useGamesListQuery(variables: IGamesListQueryVariables) {
-  console.log('useGamesListQuery', variables);
-
   return useQuery<IGamesListResult, IGamesListQueryVariables>(GET_GAMES_GQL, {
     variables,
     // fetchPolicy: 'no-cache',

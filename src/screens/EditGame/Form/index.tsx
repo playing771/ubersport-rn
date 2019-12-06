@@ -91,8 +91,8 @@ export function EditGameForm({
               onSave={(dateStart: number, dateEnd: number) =>
                 dispatch({ type: 'editTime', payload: { dateEnd, dateStart, cbFn: closeModal } })
               }
-              dateStartRestrictions={getDateStartRestrictions(dateEnd)}
-              dateEndRestrictions={getDateEndRestrictions(dateStart)}
+              // dateStartRestrictions={getDateStartRestrictions(dateEnd)}
+              // dateEndRestrictions={getDateEndRestrictions(dateStart)}
               dateStart={dateStart}
               dateEnd={dateEnd}
             />
@@ -212,23 +212,23 @@ function getmaxParticipantsRestrictions(minParticipants?: number) {
   return restrictions;
 }
 
-function getDateStartRestrictions(dateEnd?: number) {
-  const dE = dateEnd || 0;
-  const restrictions: IRestrictions = {
-    min: 0,
-    max: dateEnd === 0 ? Math.max(dE, MAX_PEOPLE_COUNT) : dE - 1,
-  };
-  return restrictions;
-}
+// function getDateStartRestrictions(dateEnd?: number) {
+//   const dE = dateEnd || 0;
+//   const restrictions: IRestrictions = {
+//     min: 0,
+//     max: dateEnd === 0 ? Math.max(dE, MAX_PEOPLE_COUNT) : dE - 1,
+//   };
+//   return restrictions;
+// }
 
-function getDateEndRestrictions(dateStart?: number) {
-  const dS = dateStart;
-  const restrictions: IRestrictions = {
-    min: dS!, // TODO: remove "!"
-    max: MAX_PEOPLE_COUNT,
-  };
-  return restrictions;
-}
+// function getDateEndRestrictions(dateStart?: number) {
+//   const dS = dateStart;
+//   const restrictions: IRestrictions = {
+//     min: dS!, // TODO: remove "!"
+//     max: MAX_PEOPLE_COUNT,
+//   };
+//   return restrictions;
+// }
 
 const styles = StyleSheet.create({
   container: { position: 'relative' },
