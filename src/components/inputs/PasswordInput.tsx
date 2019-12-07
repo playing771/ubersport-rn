@@ -29,11 +29,12 @@ export function PasswordInput(props: IProps) {
         containerStyle={styles.inputWrapper}
         {...props}
       />
+
       <EyeButton
         size={18}
         name={isActive ? 'ios-eye' : 'ios-eye-off'}
         color="#5F6B8D"
-        style={styles.eyeIcon}
+        wrapperStyle={styles.eyeIcon}
         onPress={hadleEyePress}
       />
     </>
@@ -47,5 +48,13 @@ const styles = StyleSheet.create({
     height: 42,
     color: '#5F6B8D',
   },
-  eyeIcon: { position: 'absolute', right: 12, bottom: 10 },
+  eyeIcon: {
+    width: 42,
+    height: 42,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

@@ -1,9 +1,7 @@
-import * as React from 'react';
-import { ComponentType } from 'react';
-import { TouchableOpacity, GestureResponderEvent } from 'react-native';
-import { Optionalize } from '../../../utils/types';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { StyleProp, ViewStyle } from 'react-native';
+import React, { ComponentType } from 'react';
+import { GestureResponderEvent, StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
+import { Optionalize } from '../../../utils/types';
 
 export interface IWithTouchInjectedProps {
   onPress?: (id?: string | any, e?: GestureResponderEvent) => void;
@@ -36,7 +34,8 @@ const withTouch = <P extends object>(
     }
 
     render() {
-      const { wrapperStyle, ...rest } = this.props;
+      // исключаем onPress из props, иначе появляется подсветка при клике
+      const { wrapperStyle, onPress, ...rest } = this.props;
       return (
         <TouchableOpacity
           onPress={this.onPress}
