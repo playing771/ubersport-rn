@@ -1,5 +1,5 @@
-import React, { createRef, ReactNode } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { createRef } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { deepCopy } from '../../utils/helpers';
@@ -31,7 +31,7 @@ export interface IPassedStepInjectedProps {
 interface IProps {
   steps: IUWizardStepOmitIndex[];
   submitHandle: (result: { [key: number]: any }, mutate: (mutation: any) => Promise<any>) => void;
-  header: string | ReactNode;
+  // header: string | ReactNode;
   onStepPass?: (stepIndex: number, data: any) => void;
   style?: StyleProp<ViewStyle>;
   setPassed: (passed: number[]) => void;
@@ -103,6 +103,7 @@ export default class UWizard extends React.Component<IProps, IState> {
           nextPassed={this.state.passed.includes(item.index + 1)}
           index={item.index}
           toggleActiveStep={this.toggleActiveStep}
+          onSubmit={this.handleSaveData}
         />
       </UWizardItem>
     ) : null;
@@ -143,39 +144,27 @@ export default class UWizard extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <View
-        style={[styles.mainContainer, this.props.style]}
+      <FlatList
+        ref={ref => {
+          this.listRef = ref;
+        }}
+        keyboardShouldPersistTaps={true}
+        // extraScrollHeight={160}
+        contentContainerStyle={[
+          styles.mainContainer,
+          this.props.style,
+          isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH } : undefined,
+        ]}
+        style={styles.listContainer}
+        data={addIndexes(this.props.steps)}
+        renderItem={this.renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        onLayout={e => {
+          const height = e.nativeEvent.layout.height;
 
-        // extraScrollHeight={60}
-      >
-        {/* <View style={styles.headerContainer}>
-          {typeof this.props.header === 'string' ? (
-            <Text style={styles.header}>{this.props.header}</Text>
-          ) : (
-            this.props.header
-          )}
-        </View> */}
-        {/* <UWizardStepIndicator passed={this.state.passed} total={this.props.steps.length} /> */}
-        <FlatList
-          // innerRef={this.listRef}
-          // enableOnAndroid={true}
-          ref={ref => {
-            this.listRef = ref;
-          }}
-          keyboardShouldPersistTaps={true}
-          // extraScrollHeight={160}
-          contentContainerStyle={isIphoneX() ? { paddingBottom: BOTTOM_BIG_NOTCH } : undefined}
-          style={styles.listContainer}
-          data={addIndexes(this.props.steps)}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          onLayout={e => {
-            const height = e.nativeEvent.layout.height;
-
-            this.setState({ offset: height });
-          }}
-        />
-      </View>
+          this.setState({ offset: height });
+        }}
+      />
     );
   }
 }

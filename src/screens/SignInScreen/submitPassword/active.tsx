@@ -1,20 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
+import { PasswordInput } from '../../../components/inputs/PasswordInput';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
-import SignInFormInput from '../Input';
 
 interface IProps extends IActiveStepInjectedProps {}
 
-const SubmitPasswordActive = ({ onSubmit, index }: IProps) => {
+const SubmitPasswordActive = ({ onSubmit, index, prevData }: IProps) => {
   return (
     <AnimatedView animation="fadeIn" useNativeDriver={true} duration={500}>
       <View style={styles.inputsContainer}>
-        <SignInFormInput
-          textContentType="password"
-          secureTextEntry={true}
+        <PasswordInput
           placeholder="Повторите пароль"
-          icon="ios-key"
           onChangeText={text => onSubmit(index, text)}
         />
       </View>

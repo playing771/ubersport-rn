@@ -4,9 +4,10 @@ import { View as AnimatedView } from 'react-native-animatable';
 import UButton from '../../../components/buttons/UButton/index';
 import Colors from '../../../constants/Colors';
 import useForm from '../../../hooks/UseForm/index';
+import useNavigation from '../../../hooks/useNavigation';
+import { NavigationRoot } from '../../../navigation/roots';
 import SignInFormInput from '../Input';
 import PassedItemContainer from '../PassedItemContainer';
-import SignInScreenTitle from '../Title';
 
 interface IProps {
   userEmail: string;
@@ -16,23 +17,27 @@ interface IProps {
   changeEmailHandle: () => void;
 }
 
-const LoginForm = ({
+export function LoginForm({
   userEmail,
   submitHandle,
   loading,
   hideErroHandle,
   changeEmailHandle,
-}: IProps) => {
+}: IProps) {
   const { values, useTextInput, isValid } = useForm({ password: '' });
-  // console.log('values', values);
+  const { navigate } = useNavigation();
 
-  const pressBtnHandle = () => {
+  function pressBtnHandle() {
     submitHandle(userEmail, values.password);
-  };
+  }
+
+  function goBack() {
+    navigate(NavigationRoot.FindGame);
+  }
 
   return (
     <>
-      <SignInScreenTitle user={userEmail} text="Здравствуйте" />
+      {/* <SignInScreenTitle user={userEmail} text="Здравствуйте" onPress={goBack} /> */}
       <View style={styles.mainContainer}>
         <AnimatedView animation="fadeIn" duration={1100} useNativeDriver={true}>
           <View style={styles.titleContainer}>
@@ -71,7 +76,7 @@ const LoginForm = ({
       </View>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, paddingTop: 24, paddingHorizontal: 24 },
@@ -89,5 +94,3 @@ const styles = StyleSheet.create({
   submitButton: { marginTop: 12, height: 42, borderRadius: 6 },
   submitButtonTitle: { fontSize: 16, fontWeight: '500' },
 });
-
-export default LoginForm;

@@ -1,12 +1,12 @@
+import { AuthSession } from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { AuthSession } from 'expo';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
-import SignInFormInput from '../Input';
 import { BASE_URL } from '../../../constants/Api';
+import SignInFormInput from '../Input';
 
 const redirectUrl = `${BASE_URL}/auth/google`;
 const GOOGLE_WEB_APPID = '663195185664-q7n8a52ef30nq3htv4cr61lbkqso3b0k.apps.googleusercontent.com';
@@ -28,7 +28,6 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
         `&access_type=offline` +
         `&scope=profile`,
     });
-    console.log('result', result);
     return result;
   };
   const handleFacebookAuth = async () => {
@@ -39,7 +38,7 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
         `&client_id=${FB_APP_ID}` +
         `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
     });
-    console.log('result', result);
+
     return result;
   };
   return (
@@ -97,6 +96,7 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
             icon="ios-person"
             onChangeText={text => onSubmit(index, text)}
             autoCapitalize="none"
+            autoCompleteType="email"
           />
         </View>
       </AnimatedView>

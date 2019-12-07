@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
+import { PasswordInput } from '../../../components/inputs/PasswordInput';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
-import SignInFormInput from '../Input';
 
 interface IProps extends IActiveStepInjectedProps {}
 
@@ -18,18 +18,10 @@ const PasswordActive = ({ onSubmit, index }: IProps) => {
         <Text style={styles.mainText}>Придумайте пароль для входа</Text>
         <Text style={styles.subText}>Минимум 6 символов</Text>
       </AnimatedView>
-      <AnimatedView
-        animation="fadeIn"
-        useNativeDriver={true}
-        duration={1100}
-        delay={500}
-      >
+      <AnimatedView animation="fadeIn" useNativeDriver={true} duration={1100} delay={500}>
         <View style={styles.inputsContainer}>
-          <SignInFormInput
-            textContentType="password"
-            secureTextEntry={true}
+          <PasswordInput
             placeholder="Введите пароль"
-            icon="ios-key"
             onChangeText={text => onSubmit(index, text)}
           />
         </View>
@@ -48,11 +40,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#505B77',
     padding: 16,
     borderRadius: 14,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   },
   mainText: { color: 'white', fontWeight: '600' },
   subText: { color: '#CBD6F2', marginTop: 6 },
-  inputsContainer: { marginTop: 6 }
+  inputsContainer: { marginTop: 6 },
   // inputWrapper: { marginTop: 12 },
   // input: {
   //   backgroundColor: 'white',
