@@ -94,7 +94,7 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
             textContentType="emailAddress"
             placeholder="Введите email"
             icon="ios-person"
-            onChangeText={text => onSubmit(index, text)}
+            onChangeText={text => onSubmit(index, text.trim())}
             autoCapitalize="none"
             autoCompleteType="email"
           />
