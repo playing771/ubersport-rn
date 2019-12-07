@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DatePickerIOS, StyleSheet, Text, View } from 'react-native';
 import { withModal } from '../../../components/hocs/WithModal';
+import withTouch from '../../../components/hocs/WIthTouch';
 import { useAndroidDatePicker } from '../../../components/pickers/useAndroidDatePicker';
 import UModal from '../../../components/UModal';
 import { getFormattedDate } from '../../../utils/dateUtils';
@@ -17,8 +18,8 @@ const BIRTHDAY_DATE_FORMAT = 'DD MMMM YYYY';
 
 // FIXME: теряется typings children у withModal
 
-const BirthdayLabelIos = withModal(Text);
-const BirthdayLabelAndroid = Text;
+const TouchableView = withTouch(View);
+const ModalableView = withModal(TouchableView);
 
 export function ProfileAgeInput({ initialDate, changeDateHandle }: IProps) {
   const [date, setDate] = useState(initialDate ? new Date(initialDate) : undefined);
@@ -39,19 +40,16 @@ export function ProfileAgeInput({ initialDate, changeDateHandle }: IProps) {
     changeDateHandle(+newDate);
   }
 
-  return (
-    <View>
+  return isIOS ? (
+    <ModalableView modal={() => <ModalContent date={date} onChange={onChange} />}>
       <Text style={styles.label}>Дата рождения</Text>
-      {isIOS ? (
-        <BirthdayLabelIos modal={() => <ModalContent date={date} onChange={onChange} />}>
-          {date ? getFormattedDate(+date, BIRTHDAY_DATE_FORMAT) : 'Не указано'}
-        </BirthdayLabelIos>
-      ) : (
-        <BirthdayLabelAndroid onPress={birthdayLabelAndroidPressHandle}>
-          {date ? getFormattedDate(+date, BIRTHDAY_DATE_FORMAT) : 'Не указано'}
-        </BirthdayLabelAndroid>
-      )}
-    </View>
+      <Text>{date ? getFormattedDate(+date, BIRTHDAY_DATE_FORMAT) : 'Не указано'}</Text>
+    </ModalableView>
+  ) : (
+    <TouchableView onPress={birthdayLabelAndroidPressHandle}>
+      <Text style={styles.label}>Дата рождения</Text>
+      <Text>{date ? getFormattedDate(+date, BIRTHDAY_DATE_FORMAT) : 'Не указано'}</Text>
+    </TouchableView>
   );
 }
 
