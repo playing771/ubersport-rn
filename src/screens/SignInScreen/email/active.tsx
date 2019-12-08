@@ -31,15 +31,16 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
     } as any);
     if (result.type === 'success') {
       const { user } = result;
-      mutate({
-        variables: {
-          email: user.email,
-          firstName: user.givenName,
-          lastName: user.familyName,
-          avatar: user.photoUrl,
-          external: 'google',
-        },
-      });
+      // mutate({
+      //   variables: {
+      //     email: user.email,
+      //     firstName: user.givenName,
+      //     lastName: user.familyName,
+      //     avatar: user.photoUrl,
+      //     external: 'google',
+      //   },
+      // });
+      Alert.alert('Logged in!', `Hi ${user.email} \n ${user.familyName} ${user.givenName}!`);
     }
   };
   const handleFacebookAuth = async () => {
