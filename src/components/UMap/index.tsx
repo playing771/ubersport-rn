@@ -198,7 +198,7 @@ export default class UMap extends React.Component<IProps, IState> {
     if (this.props.onChangeLocation) {
       this.props.onChangeLocation({
         // ...assembleLatLng(this.state.region),
-        coordinates: [this.state.region.longitude, this.state.region.latitude],
+        coordinates: [this.state.region.latitude, this.state.region.longitude],
         address: this.state.address,
       });
     }

@@ -17,7 +17,7 @@ export type IFindGameFilters = IGamesListQueryFilters;
 const SORTS: ObjectMap<Sort, SortType> = {
   time: { sort: 'time', sortOrder: 'ASC' }, // Скоро начало
   date: { sort: 'date', sortOrder: 'DESC' }, // Новые
-  distance: { sort: 'distance', sortOrder: 'DESC' }, // Ближайшие
+  distance: { sort: 'distance', sortOrder: 'ASC' }, // Ближайшие
 };
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
@@ -44,6 +44,7 @@ function FindGameScreen() {
       // await getMyLocation();
       if (myLocation) {
         const { latitude, longitude } = myLocation.coords;
+
         setFilters({ ...activeFilters, location: { latitude, longitude } });
       }
     }

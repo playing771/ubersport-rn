@@ -63,7 +63,7 @@ export interface IGame {
 type longitude = number;
 type latitude = number;
 export interface ILocation {
-  coordinates: [longitude, latitude];
+  coordinates: [latitude, longitude];
   address: string;
 }
 
