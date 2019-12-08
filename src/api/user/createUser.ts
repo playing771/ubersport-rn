@@ -18,6 +18,7 @@ export const CREATE_USER_GQL = gql`
     $middleName: String
     $dateOfBirth: Float
     $favoriteSports: [Float]
+    $external: String
   ) {
     createUser(
       userInput: {
@@ -29,6 +30,7 @@ export const CREATE_USER_GQL = gql`
         middleName: $middleName
         dateOfBirth: $dateOfBirth
         favoriteSports: $favoriteSports
+        external: $external
       }
     ) {
       ...userInfoFragment
@@ -57,6 +59,7 @@ export interface ICreateUserMutationVariables {
   middleName?: string;
   dateOfBirth?: number;
   favoriteSports: string[];
+  external?: string;
 }
 
 export interface ICreateUserResult {

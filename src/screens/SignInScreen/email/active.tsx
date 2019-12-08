@@ -1,16 +1,20 @@
-import { AuthSession } from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import * as Facebook from 'expo-facebook';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
+import * as Google from 'expo-google-app-auth';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import { BASE_URL } from '../../../constants/Api';
 import SignInFormInput from '../Input';
+import { useMutation } from 'react-apollo';
+import { CREATE_USER_GQL } from '../../../api/user/createUser';
 
-const redirectUrl = `${BASE_URL}/auth/google`;
-const GOOGLE_WEB_APPID = '663195185664-q7n8a52ef30nq3htv4cr61lbkqso3b0k.apps.googleusercontent.com';
 const FB_APP_ID = '1375931069246551';
+const GOOGLE_ANDROID_ID =
+  '663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com';
+const GOOGLE_IOS_ID = '663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com';
 
 interface IProps extends IActiveStepInjectedProps {
   // onSubmit: (index: number, data: string) => void;
@@ -18,28 +22,50 @@ interface IProps extends IActiveStepInjectedProps {
 }
 
 const SignUpActive = ({ onSubmit, index }: IProps) => {
+  const [mutate, { loading, error, data }] = useMutation(CREATE_USER_GQL);
   const handleGoogleAuth = async () => {
-    const result = await AuthSession.startAsync({
-      authUrl:
-        `https://accounts.google.com/o/oauth2/v2/auth?` +
-        `&client_id=${GOOGLE_WEB_APPID}` +
-        `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
-        `&response_type=code` +
-        `&access_type=offline` +
-        `&scope=profile`,
-    });
-    return result;
+    const result = await Google.logInAsync({
+      androidClientId: GOOGLE_ANDROID_ID,
+      iosClientId: GOOGLE_IOS_ID,
+      scopes: ['profile', 'email'],
+    } as any);
+    if (result.type === 'success') {
+      const { user } = result;
+      mutate({
+        variables: {
+          email: user.email,
+          firstName: user.givenName,
+          lastName: user.familyName,
+          avatar: user.photoUrl,
+          external: 'google',
+        },
+      });
+    }
   };
   const handleFacebookAuth = async () => {
     // const facebookRedirectUrl = AuthSession.getRedirectUrl();
-    const result = await AuthSession.startAsync({
-      authUrl:
-        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
-        `&client_id=${FB_APP_ID}` +
-        `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
-    });
+    try {
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync(FB_APP_ID, {
+        permissions: ['public_profile'],
+      });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        console.log('response', response);
 
-    return result;
+        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
   };
   return (
     <>
