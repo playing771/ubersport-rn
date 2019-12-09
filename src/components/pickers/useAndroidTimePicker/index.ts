@@ -1,8 +1,11 @@
 import { TimePickerAndroid } from 'react-native';
 
+const ROUND_TO_MINUTES = 15;
+
 export default async function useAndroidTimePicker(
   value: number,
-  onChange: (newDate: number, hour: number, minute: number) => void
+  onChange: (newDate: number, hour: number, minute: number) => void,
+  min?: Date
 ) {
   const response = await TimePickerAndroid.open({
     hour: new Date(value).getHours(),
@@ -13,8 +16,17 @@ export default async function useAndroidTimePicker(
 
   const { action, hour, minute } = response as any; // hack because of bad typings
   if (action === TimePickerAndroid.timeSetAction) {
-    const newDate = new Date(value);
-    newDate.setHours(hour, minute);
+    const date = new Date(value);
+
+    date.setHours(hour, minute);
+    const interval = 1000 * 60 * ROUND_TO_MINUTES; // 15 min
+    // если есть min и выбранное время меньше, то оставляем значение min
+    // + округялем до interval вверх
+    const newDate =
+      !min || date.valueOf() > min.valueOf()
+        ? date
+        : new Date(Math.ceil(min.getTime() / interval) * interval);
+
     onChange(Number(newDate), hour, minute);
   }
 }
