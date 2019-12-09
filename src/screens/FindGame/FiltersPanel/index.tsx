@@ -83,7 +83,7 @@ export default function FiltersPanel({
 
 function getFilterText(filter: IFindGameFilters, sports: ISport[]): string {
   if (!filter.sportIds || filter.sportIds.length === 0) {
-    return 'не выбрано';
+    return 'любой';
   }
 
   if (filter.sportIds.length === 1) {

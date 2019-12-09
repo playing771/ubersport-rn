@@ -35,7 +35,7 @@ export function GamesList({ onGameCardPress, filters, sort }: IProps) {
     return <ULoader />;
   }
 
-  if (!data || !data.games) {
+  if (!data || !data.games.games.length) {
     return (
       <View style={styles.listContainer}>
         <EmptyGameCard />
