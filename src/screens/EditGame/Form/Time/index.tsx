@@ -46,11 +46,11 @@ export default function EditTimeModal(props: IProps) {
   const minDate = new Date();
 
   function dateStartPressHandle() {
-    useAndroidTimePicker(dateStart, timeStartChangeHandle);
+    useAndroidTimePicker(dateStart, timeStartChangeHandle, minDate);
   }
 
   function dateEndPressHandle() {
-    useAndroidTimePicker(dateEnd, timeEndChangeHandle);
+    useAndroidTimePicker(dateEnd, timeEndChangeHandle, minDate);
   }
 
   function timeStartChangeHandle(newDate: number) {
