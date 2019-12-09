@@ -6,10 +6,7 @@ import * as validator from 'validator';
 import * as Google from 'expo-google-app-auth';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
-import { BASE_URL } from '../../../constants/Api';
 import SignInFormInput from '../Input';
-import { useMutation } from 'react-apollo';
-import { CREATE_USER_GQL } from '../../../api/user/createUser';
 
 const FB_APP_ID = '1375931069246551';
 const GOOGLE_ANDROID_ID =
@@ -21,8 +18,7 @@ interface IProps extends IActiveStepInjectedProps {
   // index: number;
 }
 
-const SignUpActive = ({ onSubmit, index }: IProps) => {
-  const [mutate, { loading, error, data }] = useMutation(CREATE_USER_GQL);
+const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleGoogleAuth = async () => {
     const result = await Google.logInAsync({
       androidClientId: GOOGLE_ANDROID_ID,
@@ -31,16 +27,11 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
     } as any);
     if (result.type === 'success') {
       const { user } = result;
-      // mutate({
-      //   variables: {
-      //     email: user.email,
-      //     firstName: user.givenName,
-      //     lastName: user.familyName,
-      //     avatar: user.photoUrl,
-      //     external: 'google',
-      //   },
-      // });
-      Alert.alert('Logged in!', `Hi ${user.email} \n ${user.familyName} ${user.givenName}!`);
+      if (onSkip) {
+        onSkip(user);
+      }
+    } else {
+      Alert.alert('Something go wrong');
     }
   };
   const handleFacebookAuth = async () => {
@@ -53,14 +44,15 @@ const SignUpActive = ({ onSubmit, index }: IProps) => {
         permissions,
         declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync(FB_APP_ID, {
-        permissions: ['public_profile'],
+        permissions: ['public_profile', 'first_name', 'last_name', 'email'],
       });
       if (type === 'success') {
         // Get the user's name using Facebook's Graph API
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-        console.log('response', response);
 
-        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+        const res = await response.json();
+        console.log('res', res);
+        Alert.alert('Logged in!', `Hi ${res.name}!`);
       } else {
         // type === 'cancel'
       }

@@ -4,14 +4,16 @@ import { View as AnimatedView } from 'react-native-animatable';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
 
-interface IProps extends IActiveStepInjectedProps {}
+interface IProps extends IActiveStepInjectedProps {
+  data: { [key: number]: any };
+}
 
-const initialInfoState = { name: '', lastName: '', login: '' };
+// const initialInfoState = { name: '', lastName: '', login: '' };
 
-const UserInfoActive = ({ onSubmit, index }: IProps) => {
-  const [name, setName] = useState(initialInfoState.name);
-  const [lastName, setLastName] = useState(initialInfoState.lastName);
-  const [login, setLogin] = useState(initialInfoState.login);
+const UserInfoActive = ({ onSubmit, index, data }: IProps) => {
+  const [name, setName] = useState((data[index] && data[index].name) || '');
+  const [lastName, setLastName] = useState((data[index] && data[index].lastName) || '');
+  const [login, setLogin] = useState((data[index] && data[index].login) || '');
 
   useEffect(() => {
     onSubmit(index, { name, lastName, login });
@@ -41,6 +43,7 @@ const UserInfoActive = ({ onSubmit, index }: IProps) => {
             textContentType="familyName"
             placeholder="Укажите фамилию"
             icon="ios-contact"
+            value={lastName}
             onChangeText={text => setLastName(text)}
           />
           <SignInFormInput

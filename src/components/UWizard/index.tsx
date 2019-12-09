@@ -17,6 +17,7 @@ type IUWizardStepOmitIndex = Omit<IUWizardStep, 'index'>;
 
 export interface IActiveStepInjectedProps {
   onSubmit: (index: number, data?: any) => void;
+  onSkip?: (data: any) => void;
   index: number;
   prevData?: any;
 }
@@ -59,7 +60,17 @@ export default class UWizard extends React.Component<IProps, IState> {
       return this.renderActiveItem(item);
     }
   };
-
+  handleSkip = (data: any) => {
+    const stepsDataMap: any = {
+      '0': data.email,
+      '3': {
+        name: data.givenName,
+        lastName: data.familyName,
+        login: data.email,
+      },
+    };
+    this.setState({ stepsDataMap, offset: 0 }, () => this.toggleActiveStep(0));
+  };
   private renderActiveItem = (item: IUWizardStep) => {
     const ActiveItemComponent = item.active; // TODO: typings!
 
@@ -82,8 +93,10 @@ export default class UWizard extends React.Component<IProps, IState> {
       >
         <ActiveItemComponent
           index={item.index}
+          data={this.state.stepsDataMap}
           prevData={this.state.stepsDataMap[item.index - 1]}
           onSubmit={this.handleSaveData}
+          onSkip={this.handleSkip}
         />
       </UWizardItem>
     ) : null;
@@ -110,6 +123,8 @@ export default class UWizard extends React.Component<IProps, IState> {
   };
 
   toggleActiveStep = (stepIndex: number) => {
+    console.log('stepIndex ', stepIndex);
+
     // если степ уже активен, убираем все степы после него
     // иначе добавляем степ с данным индексом
 
