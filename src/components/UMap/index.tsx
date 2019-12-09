@@ -1,8 +1,10 @@
 import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import * as React from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { ILocation } from '../../api/games/types';
+import { isIOS } from '../../utils/deviceInfo';
 import { locationUtils } from '../../utils/location';
 import ULoader from '../ULoader';
 import AddressBar from './AddressBar';
@@ -134,8 +136,14 @@ export default class UMap extends React.Component<IProps, IState> {
   }
 
   private getGeoDataFromLatLng = async (LocationCoords: Location.GeocodedLocation) => {
-    const address = Location.reverseGeocodeAsync(LocationCoords);
-    return address;
+    try {
+      // On Android, you must request a location permission (Permissions.LOCATION) from the user before geocoding can be used.
+      const address = await Location.reverseGeocodeAsync(LocationCoords);
+
+      return address;
+    } catch (error) {
+      return [];
+    }
   };
 
   private takeSnapshot = () => {
@@ -162,6 +170,12 @@ export default class UMap extends React.Component<IProps, IState> {
   }
 
   private changeRegion = async (region: Region) => {
+    const androidPermissionsGranted = await checkAndroidLocationPermission();
+    // ?? ???????? location permissions ?????????? ??? ?????? ?????????
+    if (!androidPermissionsGranted) {
+      return;
+    }
+
     this.setState({ addressBarVisible: true, geoBusy: true });
     const address: string = await this.updateAdress(region);
     this.toggleGeoBusy(false);
@@ -172,9 +186,16 @@ export default class UMap extends React.Component<IProps, IState> {
   };
 
   goToMyLocation = async () => {
+    const androidPermissionsGranted = await checkAndroidLocationPermission();
+    if (!androidPermissionsGranted) {
+      return;
+    }
+
     this.setState({ loadingMyLocation: true });
     const myLocation = await locationUtils.getMyLocationAsync();
+
     if (!myLocation) {
+      this.setState({ loadingMyLocation: false });
       return null;
     }
     this.goToLocation(locationUtils.convertPositionToLocation(myLocation));
@@ -298,3 +319,13 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
 });
+
+async function checkAndroidLocationPermission() {
+  if (isIOS) {
+    return true;
+  }
+  const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+  // ?? ???????? location permissions ?????????? ??? ?????? ?????????
+  return status === 'granted';
+}
