@@ -67,10 +67,10 @@ class GameLocation extends React.Component<IProps, IState> {
   };
 
   public render() {
-    const { style, customMapStyle, location } = this.props;
+    const { style, customMapStyle } = this.props;
     const latLng = {
-      latitude: this.props.location.coordinates[1],
-      longitude: this.props.location.coordinates[0],
+      latitude: this.props.location.coordinates[0],
+      longitude: this.props.location.coordinates[1],
     };
     return (
       <View style={[styles.container, style]}>
