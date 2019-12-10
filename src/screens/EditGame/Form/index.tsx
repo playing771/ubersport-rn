@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LocationData } from 'expo-location';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, ReactNode } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { IAgeLimit, ILocation } from '../../../api/games/types';
@@ -46,6 +46,7 @@ interface IProps {
   maxParticipants?: number;
   ageLimit?: IAgeLimit;
   dispatch: Dispatch<EditGameActions>;
+  children?: ReactNode;
 }
 
 export function EditGameForm({
@@ -57,6 +58,7 @@ export function EditGameForm({
   minParticipants,
   maxParticipants,
   dispatch,
+  children,
 }: IProps) {
   const { navigate } = useNavigation();
 
@@ -73,7 +75,7 @@ export function EditGameForm({
     <ScrollView
       keyboardDismissMode="interactive"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={sharedStyles.container}
+      contentContainerStyle={[sharedStyles.container]}
       keyboardShouldPersistTaps="always"
     >
       <Section title={TIME_PLACE_TITLE}>
@@ -190,6 +192,8 @@ export function EditGameForm({
           icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS_SM} />}
         />
       </Section>
+
+      <View style={styles.controls}>{children}</View>
     </ScrollView>
   );
 }
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
   container: { position: 'relative' },
   mainText: { color: '#5F6B8D', fontWeight: '500' },
   // subTextContainer: { flexDirection: 'row', paddingTop: 5 },
-  description: { minHeight: 80, textAlignVertical: 'top' },
+  description: { minHeight: 35, textAlignVertical: 'top' },
   subText: {
     color: '#636F8F',
     paddingTop: 10,
@@ -248,4 +252,5 @@ const styles = StyleSheet.create({
   noPadding: {
     paddingTop: 0,
   },
+  controls: { paddingHorizontal: 24 },
 });

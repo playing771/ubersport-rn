@@ -24,7 +24,7 @@ export default function LoadingScreen(props: IProps) {
     if (user) {
       setUser(JSON.parse(user));
     }
-
+    // props.navigation.navigate(NavigationRoot.EditGame, { sportId: 1 });
     // props.navigation.navigate(NavigationRoot.Auth);
     props.navigation.navigate(NavigationRoot.FindGame);
     // props.navigation.navigate(NavigationRoot.Location);

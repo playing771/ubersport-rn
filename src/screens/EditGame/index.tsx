@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-navigation';
 import { CreateGameMutationVariables } from '../../api/games/createGameMutation';
@@ -28,7 +28,7 @@ export interface IGameEditData {
   id: string;
 }
 
-function EditGameScreen() {
+export function EditGameScreen() {
   const { user } = useAppContext();
   const { getParam } = useNavigation();
 
@@ -45,29 +45,33 @@ function EditGameScreen() {
       <EditGameBtn
         variables={getEditGameVariablesFromState(formState, gameId)}
         disabled={!isValid}
+        style={styles.submitButton}
       />
     ) : (
       <NewGameBtn
         variables={getNewGameVariablesFromState(formState, user.id, gameSportId)}
         disabled={!isValid}
+        style={styles.submitButton}
       />
     );
   }
 
   return (
-    <View style={sharedStyles.container}>
+    <View style={[sharedStyles.container]}>
       <KeyboardAwareScrollView
+        // contentContainerStyle={{ backgroundColor: 'green' }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         enableOnAndroid={true}
-        extraHeight={isIOS ? 120 : 75}
+        extraHeight={isIOS ? 140 : 75}
         extraScrollHeight={isAndroid ? 120 : 0}
       >
-        <SafeAreaView style={sharedStyles.container}>
-          <EditGameForm {...formState} dispatch={dispatch} />
+        <SafeAreaView style={[sharedStyles.container]}>
+          <EditGameForm {...formState} dispatch={dispatch}>
+            {renderSubmitButton()}
+          </EditGameForm>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-      {renderSubmitButton()}
     </View>
   );
 }
@@ -114,4 +118,6 @@ function getEditGameVariablesFromState(state: IEditGameState, gameId: string) {
   return variables;
 }
 
-export default EditGameScreen;
+const styles = StyleSheet.create({
+  submitButton: { borderRadius: 6, marginTop: 24 },
+});

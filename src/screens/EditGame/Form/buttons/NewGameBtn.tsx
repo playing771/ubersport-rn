@@ -1,4 +1,5 @@
 import React from 'react';
+import { ViewStyle } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import {
   CreateGameMutationVariables,
@@ -15,11 +16,12 @@ import { NavigationRoot } from '../../../../navigation/roots';
 interface IProps {
   variables: CreateGameMutationVariables | EditGameMutationVariables;
   disabled?: boolean;
+  style?: ViewStyle;
 }
 
 const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
-export function NewGameBtn({ variables, disabled }: IProps) {
+export function NewGameBtn({ variables, disabled, style }: IProps) {
   const { error, toggleErrorCard } = useErrorCard();
   const { navigate, dispatch } = useNavigation();
 
@@ -44,7 +46,7 @@ export function NewGameBtn({ variables, disabled }: IProps) {
 
   return (
     <SubmitButtonWithErrorCard
-      style={{ marginTop: 'auto' }}
+      style={style}
       gql={CREATE_GAME_GQL}
       title="Опубликовать"
       variables={variables}
