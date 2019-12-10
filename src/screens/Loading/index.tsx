@@ -6,6 +6,8 @@ import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 import ErrorCard from '../../components/ErrorCard';
 import useAppContext from '../../hooks/useAppContext';
 import { NavigationRoot } from '../../navigation/roots';
+import { uknonwUser } from '../../utils/context/sports';
+import { useTokenCheck } from './useTokenCheck';
 
 interface IProps extends NavigationInjectedProps {}
 
@@ -14,21 +16,33 @@ const TITLE = 'Загрузка';
 
 export default function LoadingScreen(props: IProps) {
   const { setUser } = useAppContext();
+  // проверяем токен в заголовках на валидность
+  const { error: checkError, loading: checkLoading } = useTokenCheck();
+
   // получаем доступные виды спорта и храняим их в аполо кэш
   const { error, loading } = useAvaliableSportsQuery();
 
   const bootstrapAsync = async () => {
-    // AsyncStorage.clear(); // TODO: REMOVE
     const user = await AsyncStorage.getItem('user');
 
-    if (user) {
+    if (user && !checkError && !checkLoading) {
       setUser(JSON.parse(user));
+    }
+    // евсли токен не проходит проверку, ставим анонима
+    if (checkError) {
+      setUser(uknonwUser);
+    }
+
+    if (!loading) {
+      props.navigation.navigate(NavigationRoot.FindGame);
     }
     // props.navigation.navigate(NavigationRoot.EditGame, { sportId: 1 });
     // props.navigation.navigate(NavigationRoot.Auth);
-    props.navigation.navigate(NavigationRoot.FindGame);
+
     // props.navigation.navigate(NavigationRoot.Location);
     // props.navigation.navigate(NavigationRoot.Participants, { gameId: '5d6c14e9cb86d50025bc77f9' });
+
+    // AsyncStorage.clear(); // TODO: REMOVE
   };
 
   if (error) {
@@ -40,7 +54,7 @@ export default function LoadingScreen(props: IProps) {
     );
   }
 
-  if (!loading && !error) {
+  if (!loading && !checkLoading && !error) {
     bootstrapAsync();
   }
 

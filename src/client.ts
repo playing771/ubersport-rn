@@ -5,13 +5,14 @@ import { setContext } from 'apollo-link-context';
 import { HttpLink } from 'apollo-link-http';
 import { AsyncStorage } from 'react-native';
 import { IUserWithToken } from './api/user/types';
-import { resolvers, typeDefs } from './store/resolvers';
 import { BASE_URL } from './constants/Api';
+import { resolvers, typeDefs } from './store/resolvers';
 
 const cache = new InMemoryCache();
 
 const authLink = setContext(async (req, { headers }) => {
   const user = await AsyncStorage.getItem('user');
+
   const token = user ? (JSON.parse(user) as IUserWithToken).token : undefined;
   if (user) {
     console.log('nickname', JSON.parse(user).nickname);
