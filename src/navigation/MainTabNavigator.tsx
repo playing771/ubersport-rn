@@ -6,7 +6,7 @@ import { EditGameScreen } from '../screens/EditGame';
 import { EditLocationScreen } from '../screens/EditGame/Form/Location';
 import ChooseGameTypeScreen from '../screens/EditGame/GameTypeSelect';
 // import SingInScreen from '../screens/SignInScreen/index';
-import EditProfileScreen from '../screens/EditProfile';
+import { EditProfileScreen } from '../screens/EditProfile';
 import { FindGameScreen } from '../screens/FindGame';
 // import findGameBottomNav from '../screens/FindGame/bottomNavOptions';
 import FindOwnLocationScreen from '../screens/FindGame/Location';

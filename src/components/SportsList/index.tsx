@@ -4,6 +4,7 @@ import ISport from '../../api/sports/Sport.type';
 import useAvaliableSportsQuery from '../../api/sports/useAvaliableSportsQuery';
 import onlyUniqFromArrays from '../../utils/onlyUniqsFromArrays';
 import ErrorCard from '../ErrorCard';
+import ULoader from '../ULoader';
 import SportsListInner from './SportsListInner';
 
 interface IStyleProps {
@@ -27,6 +28,10 @@ const SportsList = ({ exclude = [], ...props }: ISportsListProps) => {
 
   if (error) {
     return <ErrorCard error={error} />;
+  }
+
+  if (!data) {
+    return <ULoader />;
   }
 
   const uniqSports = onlyUniqFromArrays(data.sports, exclude);

@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationStackOptions } from 'react-navigation-stack';
+import React, { useState } from 'react';
 import UTabsView from '../../components/UTabView';
 import { defaultHeaderOptions } from '../../defaultHeaderOptions';
 import useAppContext from '../../hooks/useAppContext';
 import useNavigation from '../../hooks/useNavigation';
 import HeaderRightButton from './controls/ExitProfileButton';
 import ChangePasswordTab from './tabs/ChangePassword/';
-import FavouriteSportsTab from './tabs/FavouriteSports/index';
-import UserInfoTab from './tabs/UserInfo/';
-
-interface IProps extends NavigationStackOptions {}
+import FavouriteSportsTab from './tabs/FavouriteSports';
+import UserInfoTab from './tabs/UserInfo';
 
 const initialNavState = {
   index: 0,
@@ -20,7 +17,7 @@ const initialNavState = {
   ],
 };
 
-const EditProfileScreen = (props: IProps) => {
+export function EditProfileScreen() {
   const { user } = useAppContext();
   const { setParams } = useNavigation();
 
@@ -32,10 +29,10 @@ const EditProfileScreen = (props: IProps) => {
     3: () => <ChangePasswordTab />,
   };
 
-  useEffect(() => {
-    setParams({ test: 'test' }); // TODO: check???
-    // setSports(getUser.favoriteSports.map(sport => sport.id));
-  }, []);
+  // useEffect(() => {
+  //   setParams({ test: 'test' }); // TODO: check???
+  //   // setSports(getUser.favoriteSports.map(sport => sport.id));
+  // }, []);
 
   const selectTabHandle = (index: number) => {
     setTabState({ ...currentNavState, index });
@@ -44,7 +41,7 @@ const EditProfileScreen = (props: IProps) => {
   return (
     <UTabsView currentNavState={currentNavState} onIndexChange={selectTabHandle} tabs={tabs} />
   );
-};
+}
 
 EditProfileScreen.navigationOptions = () => {
   return {
@@ -52,5 +49,3 @@ EditProfileScreen.navigationOptions = () => {
     headerRight: <HeaderRightButton />,
   };
 };
-
-export default EditProfileScreen;
