@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
   GestureResponderEvent,
@@ -10,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import ISport from '../../api/sports/Sport.type';
-import getSportIcon from '../../constants/getSportIcon';
+import { SportIcon } from '../GameCard/SportIcon';
 import Card from '../GeneralCard/index';
 
 interface IProps {
@@ -58,8 +57,8 @@ export function SportCard(props: IProps) {
           {props.image ? (
             props.image()
           ) : (
-            <Ionicons
-              name={getSportIcon(sport.id)}
+            <SportIcon
+              sportId={sport.id}
               size={params.size}
               style={styles.cardImage}
               color={props.iconColor ? props.iconColor : params.color}
