@@ -43,14 +43,16 @@ const AvatarSelect = ({ wrapperStyle, onChange, value }: IProps) => {
     const result: ImagePicker.ImagePickerResult =
       type === 'CAMERA'
         ? await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
+            quality: 0.3,
           })
         : await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
+            quality: 0.3,
           });
     if (result.cancelled) {
       return;
