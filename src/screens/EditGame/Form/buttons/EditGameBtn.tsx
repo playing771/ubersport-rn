@@ -1,4 +1,5 @@
 import React from 'react';
+import { ViewStyle } from 'react-native';
 import { EditGameMutationVariables, EDIT_GAME_GQL } from '../../../../api/games/editGameMutation';
 import { IEditGameResult } from '../../../../api/games/types';
 import { SubmitButton } from '../../../../components/buttons/SubmitButton';
@@ -10,11 +11,12 @@ import { NavigationRoot } from '../../../../navigation/roots';
 interface Props {
   variables: EditGameMutationVariables;
   disabled?: boolean;
+  style?: ViewStyle;
 }
 
 const SubmitButtonWithErrorCard = withErrorCard(SubmitButton);
 
-export function EditGameBtn({ variables, disabled }: Props) {
+export function EditGameBtn({ variables, disabled, style }: Props) {
   const { error, toggleErrorCard } = useErrorCard();
   const { navigate } = useNavigation();
 
@@ -27,13 +29,13 @@ export function EditGameBtn({ variables, disabled }: Props) {
 
     return (
       <SubmitButtonWithErrorCard
+        style={style}
         gql={EDIT_GAME_GQL}
         title="Опубликовать изменения"
         variables={variables}
         onComplete={onComplete}
         onError={toggleErrorCard}
         disabled={disabled}
-        // refetchQueries={['getUserActiveGames']} // TODO: change to using apolo cache
         error={error}
       />
     );

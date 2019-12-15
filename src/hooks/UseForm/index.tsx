@@ -12,7 +12,6 @@ export default function useForm(initialValues: ObjectMap = {}, validationMap?: O
   const [isMounted, setMounted] = useState(false);
   const [values, setValues] = formHandler;
   const [errors, setErrors] = errorHandler;
-  // console.log('useForm');
 
   useEffect(() => {
     setMounted(true);

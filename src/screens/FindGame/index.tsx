@@ -22,7 +22,7 @@ const SORTS: ObjectMap<Sort, SortType> = {
 
 // для поиска игр, фльтр по статусу доджен быть всегда "PENDING"
 
-function FindGameScreen() {
+export function FindGameScreen() {
   const { navigate } = useNavigation();
 
   // TODO: merge states in one to prevent 2 renders
@@ -98,5 +98,3 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: HEADER_BACKGROUND, paddingTop: 24 },
   contentContainer: { flex: 1, backgroundColor: '#F9F9FA' },
 });
-
-export default FindGameScreen;

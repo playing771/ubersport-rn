@@ -1,8 +1,6 @@
 import React from 'react';
 import { GestureResponderEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { IGame } from '../../api/games/types';
-import useNavigation from '../../hooks/useNavigation';
-import { NavigationRoot } from '../../navigation/roots';
 import { getFormattedDate, getFormattedTime } from '../../utils/dateUtils';
 import CardPart from '../GeneralCard/CardPart';
 import Card from '../GeneralCard/index';
@@ -23,7 +21,7 @@ const SIMPLE_CARD_AVATAR_GROUP_LIMIT = 5;
 const textColor = '#242223';
 
 export function GameDetailsCard({ game, style, onPress }: IProps) {
-  const { navigate } = useNavigation();
+  // const { navigate } = useNavigation();
 
   const cardPressHandle = (): void => {
     if (onPress) {
@@ -31,9 +29,9 @@ export function GameDetailsCard({ game, style, onPress }: IProps) {
     }
   };
 
-  const locationPressHandle = (): void => {
-    navigate(NavigationRoot.Location, { location: game.location });
-  };
+  // const locationPressHandle = (): void => {
+  //   navigate(NavigationRoot.Location, { location: game.location });
+  // };
 
   return (
     <Card wrapperStyle={[styles.card, style]} onPress={onPress ? cardPressHandle : undefined}>
