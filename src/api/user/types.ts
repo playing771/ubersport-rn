@@ -15,6 +15,7 @@ export default interface IUser {
   location: ILocation;
 }
 
+export type SocialAuth = 'GOOGLE' | 'FACEBOOK';
 export interface IUserWithToken extends IUser {
   token: string;
 }

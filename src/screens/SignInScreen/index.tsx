@@ -4,8 +4,8 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { NavigationStackOptions } from 'react-navigation-stack';
 import { CREATE_USER_GQL, ICreateUserMutationVariables } from '../../api/user/createUser';
 import emailValidate, { IExistEmail } from '../../api/user/emailValidate';
-import login, { IAuthResult } from '../../api/user/login';
-import { IUserWithToken } from '../../api/user/types';
+import { login, socialLogin, IAuthResult } from '../../api/user/login';
+import { IUserWithToken, SocialAuth } from '../../api/user/types';
 import BackButton from '../../components/buttons/BackButton';
 import ErrorCard from '../../components/ErrorCard/index';
 import withAppContext from '../../components/hocs/WithAppContext';
@@ -31,6 +31,12 @@ import UserInfoPassed from './userInfo/passed';
 interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
 
 type IActionType = 'SIGNIN' | 'SIGNUP' | undefined;
+
+export interface ISocialAuth {
+  email: string;
+  external: SocialAuth;
+  idToken: string;
+}
 
 interface IState {
   type: IActionType;
@@ -79,6 +85,14 @@ class SingInScreen extends React.Component<IProps, IState> {
     loading: false,
     badCredentials: false,
     passed: [],
+  };
+
+  socialLogin = async (data: ISocialAuth) => {
+    const { email, external = 'GOOGLE', idToken } = data;
+    const result = await socialLogin(email, external, idToken);
+    console.log('SOCIAL result', result);
+
+    this.loginHandle(result);
   };
 
   loginHandle = async (data: IAuthResult) => {
@@ -254,6 +268,7 @@ class SingInScreen extends React.Component<IProps, IState> {
                 setPassed={this.setPassed}
                 steps={steps}
                 submitHandle={this.signUp}
+                skipAndLogin={this.socialLogin}
               />
               {/* <UButton title="Тест Логин" onPress={this.testLoginHanlde} />
               <UButton title="Тест Логин2" onPress={this.testLoginHanlde2} /> */}

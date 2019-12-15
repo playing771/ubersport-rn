@@ -13,10 +13,7 @@ const GOOGLE_ANDROID_ID =
   '663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com';
 const GOOGLE_IOS_ID = '663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com';
 
-interface IProps extends IActiveStepInjectedProps {
-  // onSubmit: (index: number, data: string) => void;
-  // index: number;
-}
+interface IProps extends IActiveStepInjectedProps {}
 
 const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleGoogleAuth = async () => {
@@ -26,9 +23,10 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
       scopes: ['profile', 'email'],
     } as any);
     if (result.type === 'success') {
-      const { user } = result;
-      if (onSkip) {
-        onSkip(user);
+      const { user, idToken } = result;
+      const { email } = user;
+      if (onSkip && idToken && email) {
+        onSkip({ email, idToken, external: 'GOOGLE' });
       }
     } else {
       Alert.alert('Something go wrong');
@@ -41,8 +39,8 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
         type,
         token,
         expires,
-        permissions,
-        declinedPermissions,
+        // permissions,
+        // declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync(FB_APP_ID, {
         permissions: ['public_profile', 'first_name', 'last_name', 'email'],
       });
@@ -99,6 +97,7 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
             style={{ flex: 1, height: 42, marginTop: 12 }}
             iconSize={24}
             rounded={true}
+            disabled={true}
             icon="logo-facebook"
             backgroundColor="#3B5899"
             title="Войти с помощью Facebook"

@@ -5,6 +5,7 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 import { deepCopy } from '../../utils/helpers';
 import { BOTTOM_BIG_NOTCH } from '../AdaptiveScreen/index';
 import UWizardItem from './Item';
+import { ISocialAuth } from '../../screens/SignInScreen';
 
 export interface IUWizardStep {
   active: any;
@@ -14,10 +15,10 @@ export interface IUWizardStep {
 }
 
 type IUWizardStepOmitIndex = Omit<IUWizardStep, 'index'>;
-
+type ExternalAuthType = 'LOGIN' | 'REGISTER';
 export interface IActiveStepInjectedProps {
   onSubmit: (index: number, data?: any) => void;
-  onSkip?: (data: any) => void;
+  onSkip?: (data: ISocialAuth) => void;
   index: number;
   prevData?: any;
 }
@@ -36,6 +37,7 @@ interface IProps {
   onStepPass?: (stepIndex: number, data: any) => void;
   style?: StyleProp<ViewStyle>;
   setPassed: (passed: number[]) => void;
+  skipAndLogin: (data: any) => void;
 }
 
 interface IState {
@@ -60,16 +62,8 @@ export default class UWizard extends React.Component<IProps, IState> {
       return this.renderActiveItem(item);
     }
   };
-  handleSkip = (data: any) => {
-    const stepsDataMap: any = {
-      '0': data.email,
-      '3': {
-        name: data.givenName,
-        lastName: data.familyName,
-        login: data.email,
-      },
-    };
-    this.setState({ stepsDataMap, offset: 0 }, () => this.toggleActiveStep(0));
+  handleSkip = (data: ISocialAuth) => {
+    this.props.skipAndLogin(data);
   };
   private renderActiveItem = (item: IUWizardStep) => {
     const ActiveItemComponent = item.active; // TODO: typings!

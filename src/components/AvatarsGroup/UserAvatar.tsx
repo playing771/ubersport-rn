@@ -36,7 +36,7 @@ const UserAvatar: React.SFC<UserAvatarProps> = ({
           borderRadius={(size * 0.9) / 2}
           style={s.image}
           source={{
-            uri: `${FILES_URL}/${src}`,
+            uri: /^http/.test(src) ? src : `${FILES_URL}/${src}`,
           }}
         />
       ) : !count ? (
