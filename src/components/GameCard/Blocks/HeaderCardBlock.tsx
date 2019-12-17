@@ -18,7 +18,9 @@ export function HeaderCardBlock({ author, textColor, sportId }: IProps) {
     <View style={styles.mainContainer}>
       <UserAvatar src={author.avatar} size={USER_AVATAR_SIZE} style={styles.avatarContainer} />
       <View style={styles.textContainer}>
-        <Text style={styles.mainText}>{author.firstName + ' ' + author.lastName}</Text>
+        <Text style={styles.mainText} ellipsizeMode="tail" numberOfLines={1}>
+          {author.firstName + ' ' + author.lastName}
+        </Text>
 
         {team && <Text style={styles.subText}>{team}</Text>}
       </View>
