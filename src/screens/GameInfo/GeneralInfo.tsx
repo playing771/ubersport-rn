@@ -40,17 +40,17 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
       <Section.Item
         icon={<MaterialIcons name="public" {...ICON_PARAMS} />}
         label={'Открытая игра'}
-        labelStyle={{ color: '#5F6B8D' }}
+        labelStyle={styles.mainTextColor}
       />
       <Section.Item
         icon="ios-calendar"
         label={() => <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
-        labelStyle={{ color: '#5F6B8D' }}
+        labelStyle={styles.mainTextColor}
       />
       <Section.Item
         icon="ios-pin"
         label={game.location.address}
-        labelStyle={{ color: '#5F6B8D' }}
+        labelStyle={styles.mainTextColor}
       />
       <GameLocationStatic
         style={styles.mapContainer}
@@ -69,8 +69,8 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
       <Section.Item
         icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS} />}
         label={game.description || 'Без описания'}
-        labelStyle={{ color: '#5F6B8D' }}
-        style={{ minHeight: 140 }}
+        labelStyle={styles.mainTextColor}
+        style={styles.description}
       />
     </Section>
   );
@@ -78,6 +78,9 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
 
 const styles = StyleSheet.create({
   // titleContainer: { paddingHorizontal: 6 },
+  mainTextColor: {
+    color: '#5F6B8D',
+  },
   mainText: {
     color: '#5F6B8D',
     fontWeight: '500',
@@ -97,4 +100,5 @@ const styles = StyleSheet.create({
   },
   mapContainer: { height: 150, marginVertical: 12 },
   capacityContainer: { paddingHorizontal: 18 },
+  description: { minHeight: 140, paddingRight: 18 },
 });

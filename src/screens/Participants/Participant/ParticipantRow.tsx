@@ -15,8 +15,12 @@ function ParticipantRow({ src, nickname, dateOfBirth, lastName, firstName }: IPr
     <View style={styles.mainContainer}>
       <UserAvatar src={src} size={60} style={styles.avatarContainer} />
       <View style={styles.textContainer}>
-        <Text style={styles.mainText}>{nickname}</Text>
-        <Text style={styles.subText}>{getFullName(lastName, firstName)}</Text>
+        <Text style={styles.mainText} numberOfLines={1} ellipsizeMode="tail">
+          {nickname}
+        </Text>
+        <Text style={styles.subText} numberOfLines={1} ellipsizeMode="tail">
+          {getFullName(lastName, firstName)}
+        </Text>
       </View>
     </View>
   );

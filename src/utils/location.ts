@@ -94,8 +94,8 @@ function getFormattedAddress(gd: Location.Address): string {
 function convertLocationToExpoLocation(location: ILocation): Location.LocationData {
   return {
     coords: {
-      longitude: location.coordinates[0],
-      latitude: location.coordinates[1],
+      latitude: location.coordinates[0],
+      longitude: location.coordinates[1],
       accuracy: 29, // TODO: check ?
       altitude: 186, // TODO: check ?
       heading: 0, // TODO: check ?

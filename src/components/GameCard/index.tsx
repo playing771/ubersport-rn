@@ -113,5 +113,5 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     paddingVertical: 10,
   },
-  description: { paddingTop: 5 },
+  // description: { paddingTop: 5 },
 });

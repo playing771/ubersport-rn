@@ -47,11 +47,19 @@ export function ProfileInfo({ id }: IProps) {
       </View>
       <View style={styles.botInfo}>
         <View style={styles.infoGroup}>
-          <Text style={styles.subMinText}>{`@${nickname}`}</Text>
+          <Text
+            style={styles.subMinText}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >{`@${nickname}`}</Text>
           <SexIcon sex={sex} />
         </View>
         {(!!lastName || !!firstName) && (
-          <Text style={styles.mainText}>{`${lastName} ${firstName}`}</Text>
+          <Text
+            style={styles.mainText}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >{`${lastName} ${firstName}`}</Text>
         )}
         {dateOfBirth && <Text style={styles.subText}>{getUserAge(dateOfBirth)}</Text>}
       </View>

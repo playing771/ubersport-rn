@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 interface IProps {
   textColor: string;
@@ -25,7 +25,11 @@ const SubCardBlock = (props: IProps) => {
           {props.mainText}
         </Text>
         {props.subText && (
-          <Text numberOfLines={1} style={[styles.mainText, { color: props.textColor }]}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={[styles.mainText, { color: props.textColor }]}
+          >
             {props.subText}
           </Text>
         )}
