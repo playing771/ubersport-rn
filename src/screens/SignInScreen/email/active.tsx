@@ -9,35 +9,37 @@ import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
 
-const { extra } = Constants.manifest;
+const { extra, facebookAppId } = Constants.manifest;
 const { googleIds } = extra;
 
 interface IProps extends IActiveStepInjectedProps {}
 
 const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleGoogleAuth = async () => {
-    const result = await Google.logInAsync({
-      androidClientId: googleIds.androidClientId,
-      iosClientId: googleIds.iosClientId,
-      scopes: ['profile', 'email'],
-    } as any);
-    console.log('result.type', result.type);
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: googleIds.androidClientId,
+        iosClientId: googleIds.iosClientId,
+        scopes: ['profile', 'email'],
+      } as any);
+      console.log('result.type', result.type);
 
-    if (result.type === 'success') {
-      const { user, idToken } = result;
-      const { email } = user;
-      if (onSkip && idToken && email) {
-        onSkip({ email, idToken, external: 'GOOGLE' });
+      if (result.type === 'success') {
+        const { user, idToken } = result;
+        const { email } = user;
+        if (onSkip && idToken && email) {
+          onSkip({ email, idToken, external: 'GOOGLE' });
+        }
+      } else {
+        Alert.alert('Something go wrong');
       }
-    } else {
-      Alert.alert('Something go wrong');
+    } catch (error) {
+      console.log('error', error);
     }
   };
   const handleFacebookAuth = async () => {
-    // const facebookRedirectUrl = AuthSession.getRedirectUrl();
-
     try {
-      await Facebook.initializeAsync(FB_APP_ID, 'ubersport');
+      await Facebook.initializeAsync(facebookAppId, 'ubersport');
       const {
         type,
         token,
@@ -45,20 +47,21 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
         permissions,
         declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile', 'first_name', 'last_name', 'email'],
+        permissions: ['public_profile', 'email'],
       });
       if (type === 'success') {
         // Get the user's name using Facebook's Graph API
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        const response = await fetch(
+          `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`
+        );
+        const { email } = await response.json();
 
-        const res = await response.json();
-        console.log('res', res);
-        Alert.alert('Logged in!', `Hi ${res.name}!`);
-      } else {
-        // type === 'cancel'
+        if (onSkip && token && email) {
+          onSkip({ email, token, external: 'FACEBOOK' });
+        }
       }
     } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
+      console.log('message', message);
     }
   };
   return (
