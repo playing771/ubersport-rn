@@ -9,7 +9,8 @@ import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
 
-const { googleIds } = Constants.manifest;
+const { extra } = Constants.manifest;
+const { googleIds } = extra;
 
 interface IProps extends IActiveStepInjectedProps {}
 
