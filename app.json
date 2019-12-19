@@ -17,6 +17,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "facebookAppId": "1375931069246551",
+    "googleIds": {
+      "iosClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com",
+      "androidClientId": "663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com"
+    },
+    "android": {},
     "updates": {
       "fallbackToCacheTimeout": 0
     },

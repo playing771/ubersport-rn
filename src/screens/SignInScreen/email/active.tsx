@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
+import Constants from 'expo-constants';
 import * as Facebook from 'expo-facebook';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
@@ -8,20 +9,19 @@ import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
 
-const FB_APP_ID = '1375931069246551';
-const GOOGLE_ANDROID_ID =
-  '663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com';
-const GOOGLE_IOS_ID = '663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com';
+const { googleIds } = Constants.manifest;
 
 interface IProps extends IActiveStepInjectedProps {}
 
 const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleGoogleAuth = async () => {
     const result = await Google.logInAsync({
-      androidClientId: GOOGLE_ANDROID_ID,
-      iosClientId: GOOGLE_IOS_ID,
+      androidClientId: googleIds.androidClientId,
+      iosClientId: googleIds.iosClientId,
       scopes: ['profile', 'email'],
     } as any);
+    console.log('result.type', result.type);
+
     if (result.type === 'success') {
       const { user, idToken } = result;
       const { email } = user;
@@ -34,14 +34,16 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   };
   const handleFacebookAuth = async () => {
     // const facebookRedirectUrl = AuthSession.getRedirectUrl();
+
     try {
+      await Facebook.initializeAsync(FB_APP_ID, 'ubersport');
       const {
         type,
         token,
         expires,
-        // permissions,
-        // declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync(FB_APP_ID, {
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile', 'first_name', 'last_name', 'email'],
       });
       if (type === 'success') {
@@ -97,7 +99,6 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
             style={{ flex: 1, height: 42, marginTop: 12 }}
             iconSize={24}
             rounded={true}
-            disabled={true}
             icon="logo-facebook"
             backgroundColor="#3B5899"
             title="Войти с помощью Facebook"

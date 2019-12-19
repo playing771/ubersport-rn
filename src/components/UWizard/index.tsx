@@ -157,7 +157,7 @@ export default class UWizard extends React.Component<IProps, IState> {
         ref={ref => {
           this.listRef = ref;
         }}
-        keyboardShouldPersistTaps={true}
+        keyboardShouldPersistTaps="always"
         // extraScrollHeight={160}
         contentContainerStyle={[
           styles.mainContainer,
