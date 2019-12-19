@@ -57,7 +57,7 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
         const { email } = await response.json();
 
         if (onSkip && token && email) {
-          onSkip({ email, token, external: 'FACEBOOK' });
+          onSkip({ email, idToken: token, external: 'FACEBOOK' });
         }
       }
     } catch ({ message }) {
