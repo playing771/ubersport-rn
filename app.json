@@ -24,16 +24,6 @@
         "androidClientId": "663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com"
       }
     },
-    "android": {},
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "package": "com.fcpunlimited.ubersport",
       "permissions": [
@@ -41,6 +31,22 @@
         "ACCESS_FINE_LOCATION",
         "CAMERA"
       ]
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "comgooglemaps",
+          "uber",
+          "yandexmaps"
+        ]
+      }
     },
     "description": "Ubersport application"
   }

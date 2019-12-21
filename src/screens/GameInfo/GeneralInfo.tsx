@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { showLocation } from 'react-native-map-link';
 import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import { IGame } from '../../api/games/types';
@@ -9,7 +10,6 @@ import GameLocationStatic from '../../components/GameLocationStatic';
 import withTouch from '../../components/hocs/WIthTouch';
 import Section from '../../components/Layout/Section';
 import TimeLabel from '../EditGame/Form/Time/TimeLabel';
-import { Linking } from 'expo';
 
 interface IProps {
   game: IGame;
@@ -23,9 +23,18 @@ const ParticipantsTouchable = withTouch(Participants);
 export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
   const openGps = () => {
     const [lat, lng] = game.location.coordinates;
-    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    const url = `${scheme}${lat},${lng}`;
-    Linking.openURL(url);
+    showLocation({
+      latitude: lat,
+      longitude: lng,
+      title: game.location.address, // optional
+      googleForceLatLon: false, // optionally force GoogleMaps to use the latlon for the query instead of the title
+      alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+      // dialogTitle: 'Карта', // optional (default: 'Open in Maps')
+      // dialogMessage: 'Открыть в', // optional (default: 'What app would you like to use?')
+      cancelText: 'Отмена', // optional (default: 'Cancel')
+      // appsWhiteList: ['yandex-maps', 'google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+      // app: 'uber'  // optionally specify specific app to use
+    });
   };
   return (
     <Section>
