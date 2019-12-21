@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import { IGame } from '../../api/games/types';
 import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
 import mapStyle from '../../components/GameCard/mapStyle';
@@ -9,6 +9,7 @@ import GameLocationStatic from '../../components/GameLocationStatic';
 import withTouch from '../../components/hocs/WIthTouch';
 import Section from '../../components/Layout/Section';
 import TimeLabel from '../EditGame/Form/Time/TimeLabel';
+import { Linking } from 'expo';
 
 interface IProps {
   game: IGame;
@@ -20,6 +21,12 @@ const ICON_PARAMS = { color: '#B1B2B4', size: 20 };
 const ParticipantsTouchable = withTouch(Participants);
 
 export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
+  const openGps = () => {
+    const [lat, lng] = game.location.coordinates;
+    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+    const url = `${scheme}${lat},${lng}`;
+    Linking.openURL(url);
+  };
   return (
     <Section>
       <Section.Item
@@ -48,6 +55,7 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
         labelStyle={styles.mainTextColor}
       />
       <Section.Item
+        onPress={openGps}
         icon="ios-pin"
         label={game.location.address}
         labelStyle={styles.mainTextColor}

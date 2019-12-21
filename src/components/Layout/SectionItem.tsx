@@ -1,6 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { ReactChild } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native';
 
 // по умолченаю иконки берутся из ionicicons
 
@@ -26,6 +34,16 @@ const defaultProps = {
 };
 
 export default function UbSectionItem(props: IProps) {
+  function TouchableLabelItem() {
+    if (props.onPress && props.label) {
+      return (
+        <TouchableOpacity onPress={props.onPress}>
+          <LabelItem label={props.label} labelStyle={props.labelStyle} />
+        </TouchableOpacity>
+      );
+    }
+    return !!props.label ? <LabelItem label={props.label} labelStyle={props.labelStyle} /> : null;
+  }
   return (
     <View style={[styles.inputContainer, props.style]}>
       <View
@@ -37,7 +55,7 @@ export default function UbSectionItem(props: IProps) {
         <IconItem icon={props.icon} iconParams={props.iconParams} />
       </View>
       <View style={getLabelStyles(props.bordered)}>
-        {!!props.label && <LabelItem label={props.label} labelStyle={props.labelStyle} />}
+        <TouchableLabelItem />
       </View>
       {props.side && <View style={[styles.sideContainer, props.sideStyle]}>{props.side}</View>}
     </View>
@@ -51,16 +69,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconContainer: {
-    width: 50,
+    width: 40,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingVertical: 16,
+    paddingVertical: 13,
     // paddingBottom: 25
   },
   labelContaiener: {
     flex: 1,
     paddingVertical: 16,
-    paddingLeft: 2,
+    paddingLeft: 0,
   },
   sideContainer: {
     width: 100,
