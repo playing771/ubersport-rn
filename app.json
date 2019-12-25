@@ -4,11 +4,7 @@
     "slug": "uber-sport",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,26 +22,17 @@
     },
     "android": {
       "package": "com.fcpunlimited.ubersport",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "CAMERA"
-      ]
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"]
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "comgooglemaps",
-          "uber",
-          "yandexmaps"
-        ]
+        "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"]
       }
     },
     "description": "Ubersport application"
