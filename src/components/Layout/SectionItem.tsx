@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { ReactChild } from 'react';
+import React, { ReactChild, ReactElement } from 'react';
 import {
   StyleProp,
   StyleSheet,
   Text,
   TextStyle,
+  TouchableOpacity,
   View,
   ViewStyle,
-  TouchableOpacity,
 } from 'react-native';
 
 // по умолченаю иконки берутся из ionicicons
@@ -16,7 +16,7 @@ type IIConPosition = 'TOP' | 'BOTTOM' | 'CENTER';
 
 interface IProps extends IStyleProps {
   icon: string | JSX.Element;
-  label?: string | (() => JSX.Element);
+  label?: string | ReactElement;
   side?: ReactChild;
   onPress?: (data?: any) => void;
 }
@@ -34,7 +34,7 @@ const defaultProps = {
 };
 
 export default function UbSectionItem(props: IProps) {
-  function TouchableLabelItem() {
+  function renderLabelItem() {
     if (props.onPress && props.label) {
       return (
         <TouchableOpacity onPress={props.onPress}>
@@ -44,6 +44,7 @@ export default function UbSectionItem(props: IProps) {
     }
     return !!props.label ? <LabelItem label={props.label} labelStyle={props.labelStyle} /> : null;
   }
+
   return (
     <View style={[styles.inputContainer, props.style]}>
       <View
@@ -54,9 +55,7 @@ export default function UbSectionItem(props: IProps) {
       >
         <IconItem icon={props.icon} iconParams={props.iconParams} />
       </View>
-      <View style={getLabelStyles(props.bordered)}>
-        <TouchableLabelItem />
-      </View>
+      <View style={getLabelStyles(props.bordered)}>{renderLabelItem()}</View>
       {props.side && <View style={[styles.sideContainer, props.sideStyle]}>{props.side}</View>}
     </View>
   );
@@ -99,10 +98,10 @@ function LabelItem({
   label,
   labelStyle,
 }: {
-  label: string | (() => JSX.Element);
+  label: string | ReactElement;
   labelStyle?: StyleProp<TextStyle>;
 }) {
-  return isStringLabel(label) ? <Text style={[styles.label, labelStyle]}>{label}</Text> : label();
+  return isStringLabel(label) ? <Text style={[styles.label, labelStyle]}>{label}</Text> : label;
 }
 
 function IconItem({

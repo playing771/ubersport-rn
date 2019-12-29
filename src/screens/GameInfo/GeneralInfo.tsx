@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { showLocation } from 'react-native-map-link';
 import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { showLocation } from 'react-native-map-link';
 import { IGame } from '../../api/games/types';
 import Participants from '../../components/GameCard/Blocks/ParticipantsCardBlock';
 import mapStyle from '../../components/GameCard/mapStyle';
@@ -41,7 +41,7 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
       <Section.Item
         icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
         iconPosition="BOTTOM"
-        label={() => (
+        label={
           <View>
             <Text
               style={styles.subText}
@@ -50,7 +50,7 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
               {game.name}
             </Text>
           </View>
-        )}
+        }
         side={<SportIcon sportId={game.sport.id} />}
       />
       <Section.Item
@@ -60,7 +60,7 @@ export function GeneralGameInfo({ game, onPressParticipants }: IProps) {
       />
       <Section.Item
         icon="ios-calendar"
-        label={() => <TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
+        label={<TimeLabel dateStart={game.dateStart} dateEnd={game.dateEnd} />}
         labelStyle={styles.mainTextColor}
       />
       <Section.Item

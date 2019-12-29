@@ -36,6 +36,7 @@ const DESCRIPTION_PLACEHOLDER = 'Описание игры';
 const ICON_PARAMS = { color: '#B1B2B4', size: 20 };
 const ICON_PARAMS_SM = { color: '#B1B2B4', size: 16 };
 
+type FormDispatch = Dispatch<EditGameActions>;
 interface IProps {
   dateStart?: number;
   dateEnd?: number;
@@ -45,7 +46,7 @@ interface IProps {
   minParticipants?: number;
   maxParticipants?: number;
   ageLimit?: IAgeLimit;
-  dispatch: Dispatch<EditGameActions>;
+  dispatch: FormDispatch;
   children?: ReactNode;
 }
 
@@ -84,9 +85,11 @@ export function EditGameForm({
           // iconParams={ICON_PARAMS}
           bordered={true}
           label={
-            dateStart && dateEnd
-              ? () => <TimeLabel dateStart={dateStart} dateEnd={dateEnd} />
-              : DEFAULT_TIME_LABLE
+            dateStart && dateEnd ? (
+              <TimeLabel dateStart={dateStart} dateEnd={dateEnd} />
+            ) : (
+              DEFAULT_TIME_LABLE
+            )
           }
           modal={({ closeModal }) => (
             <EditTimeModal
@@ -102,9 +105,7 @@ export function EditGameForm({
         />
         <SectionItemWithBtn
           label={
-            location
-              ? () => <Text style={styles.mainText}>{location.address}</Text>
-              : DEFAULT_PLACE_LABLE
+            location ? <Text style={styles.mainText}>{location.address}</Text> : DEFAULT_PLACE_LABLE
           }
           icon="ios-pin"
           // iconParams={ICON_PARAMS}
@@ -114,19 +115,7 @@ export function EditGameForm({
       <Section title={GAME_PARAMS_TITLE}>
         <SectionItem
           bordered={true}
-          label={() => (
-            <View>
-              <Text style={styles.mainText}>{NAME_LABLE}</Text>
-              <TextInput
-                multiline={true}
-                style={styles.subText}
-                placeholder={NAME_PLACEHOLDER}
-                placeholderTextColor={styles.optionalText.color}
-                onChangeText={gameName => dispatch({ type: 'editGameName', payload: { gameName } })}
-                value={name}
-              />
-            </View>
-          )}
+          label={<NameLable dispatch={dispatch} name={name} />}
           icon={<MaterialCommunityIcons name="text-short" {...ICON_PARAMS} />}
         />
         <SectionItemWithModal
@@ -134,14 +123,14 @@ export function EditGameForm({
           // iconParams={ICON_PARAMS}
           labelStyle={styles.optionalText}
           bordered={true}
-          label={() => (
+          label={
             <View>
               <Text style={styles.optionalText}>{MIN_PEOPLE}</Text>
               <Text style={styles.subText}>
                 {!!minParticipants ? minParticipants : 'Без ограничений'}
               </Text>
             </View>
-          )}
+          }
           modal={api => (
             <EditPeopleCount
               value={minParticipants}
@@ -154,14 +143,14 @@ export function EditGameForm({
         />
         <SectionItemWithModal
           icon="ios-contacts"
-          label={() => (
+          label={
             <View>
               <Text style={styles.optionalText}>{MAX_PEOPLE}</Text>
               <Text style={styles.subText}>
                 {!!maxParticipants ? maxParticipants : 'Без ограничений'}
               </Text>
             </View>
-          )}
+          }
           // iconParams={ICON_PARAMS}
           labelStyle={styles.optionalText}
           bordered={true}
@@ -177,24 +166,50 @@ export function EditGameForm({
         />
         <SectionItem
           bordered={true}
-          label={() => (
-            <TextInput
-              multiline={true}
-              style={[styles.description, styles.subText, styles.noPadding]}
-              placeholder={DESCRIPTION_PLACEHOLDER}
-              placeholderTextColor={styles.optionalText.color}
-              onChangeText={gameDescription =>
-                dispatch({ type: 'editGameDescription', payload: { gameDescription } })
-              }
-              value={description}
-            />
-          )}
+          label={<DescriptionLabel description={description} dispatch={dispatch} />}
           icon={<MaterialCommunityIcons name="text" {...ICON_PARAMS_SM} />}
         />
       </Section>
 
       <View style={styles.controls}>{children}</View>
     </ScrollView>
+  );
+}
+
+function DescriptionLabel({
+  description,
+  dispatch,
+}: {
+  description: string;
+  dispatch: FormDispatch;
+}) {
+  return (
+    <TextInput
+      multiline={true}
+      style={[styles.description, styles.subText, styles.noPadding]}
+      placeholder={DESCRIPTION_PLACEHOLDER}
+      placeholderTextColor={styles.optionalText.color}
+      onChangeText={gameDescription =>
+        dispatch({ type: 'editGameDescription', payload: { gameDescription } })
+      }
+      value={description}
+    />
+  );
+}
+
+function NameLable({ dispatch, name }: { name: string; dispatch: FormDispatch }) {
+  return (
+    <View>
+      <Text style={styles.mainText}>{NAME_LABLE}</Text>
+      <TextInput
+        multiline={true}
+        style={styles.subText}
+        placeholder={NAME_PLACEHOLDER}
+        placeholderTextColor={styles.optionalText.color}
+        onChangeText={gameName => dispatch({ type: 'editGameName', payload: { gameName } })}
+        value={name}
+      />
+    </View>
   );
 }
 
