@@ -24,7 +24,7 @@
       "package": "com.fcpunlimited.ubersport",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAnS-GwAoWDEoYomro2pYXXNrgs5muqp80"
+          "apiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
         }
       },
       "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"]
