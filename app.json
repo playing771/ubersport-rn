@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "uber-sport",
+    "name": "UberSport",
     "slug": "uber-sport",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
@@ -9,13 +9,12 @@
       "android",
       "web"
     ],
-    "version": "2.0.1",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover"
     },
     "facebookAppId": "1375931069246551",
     "extra": {},
@@ -46,7 +45,8 @@
       "config": {
         "googleSignIn": {
           "reservedClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com"
-        }
+        },
+        "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
       },
       "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
@@ -58,6 +58,6 @@
         ]
       }
     },
-    "description": "Ubersport application"
+    "description": "UberSport application"
   }
 }
