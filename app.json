@@ -4,7 +4,11 @@
     "slug": "uber-sport",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,34 +17,45 @@
       "resizeMode": "cover"
     },
     "facebookAppId": "1375931069246551",
-    "extra": {
-      "googleIds": {
-        "iosClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com",
-        "androidClientId": "663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com"
-      }
-    },
+    "extra": {},
     "android": {
       "package": "com.fcpunlimited.ubersport",
       "versionCode": 2,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
+        },
+        "googleSignIn": {
+          "apiKey": "663195185664-9cd7205irs5opafld8mmvo0jr80b80ut.apps.googleusercontent.com"
         }
       },
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA"
+      ]
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com"
+        },
+        "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
+      },
       "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"]
-      },
-      "config": {
-        "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
+        "LSApplicationQueriesSchemes": [
+          "comgooglemaps",
+          "uber",
+          "yandexmaps"
+        ]
       }
     },
     "description": "UberSport application"
