@@ -38,8 +38,11 @@
       "supportsTablet": true,
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"]
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
       }
     },
-    "description": "Ubersport application"
+    "description": "UberSport application"
   }
 }
