@@ -1,10 +1,10 @@
-import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import * as Facebook from 'expo-facebook';
+import * as Google from 'expo-google-app-auth';
+import React from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
-import * as Google from 'expo-google-app-auth';
 import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
@@ -14,11 +14,15 @@ const { facebookAppId } = Constants.manifest;
 interface IProps extends IActiveStepInjectedProps {}
 
 const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
+  const config = {
+    scopes: ['profile', 'email'],
+    androidClientId: '915157576336-jets732sgki8bcjugh0f4b14bccbipug.apps.googleusercontent.com',
+    androidStandaloneAppClientId:
+      '915157576336-1s9b5icava9lrsbrliop4eu0jbpnmlfb.apps.googleusercontent.com',
+  } as any;
   const handleGoogleAuth = async () => {
     try {
-      const result = await Google.logInAsync({
-        scopes: ['profile', 'email'],
-      } as any);
+      const result = await Google.logInAsync(config);
       console.log('result.type', result.type);
 
       if (result.type === 'success') {
@@ -37,15 +41,9 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleFacebookAuth = async () => {
     try {
       await Facebook.initializeAsync(facebookAppId, 'ubersport');
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync({
+      const { type, token } = (await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile', 'email'],
-      });
+      })) as any;
       if (type === 'success') {
         // Get the user's name using Facebook's Graph API
         const response = await fetch(
