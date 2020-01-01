@@ -9,8 +9,7 @@ import UButton from '../../../components/buttons/UButton';
 import { IActiveStepInjectedProps } from '../../../components/UWizard/index';
 import SignInFormInput from '../Input';
 
-const { extra, facebookAppId } = Constants.manifest;
-const { googleIds } = extra;
+const { facebookAppId } = Constants.manifest;
 
 interface IProps extends IActiveStepInjectedProps {}
 
@@ -18,8 +17,6 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const handleGoogleAuth = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: googleIds.androidClientId,
-        iosClientId: googleIds.iosClientId,
         scopes: ['profile', 'email'],
       } as any);
       console.log('result.type', result.type);
