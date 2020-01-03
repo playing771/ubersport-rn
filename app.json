@@ -4,7 +4,11 @@
     "slug": "uber-sport",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,23 +30,33 @@
           "certificateHash": "FE363519617D1F051652645BFF5E059FE6077A3C"
         }
       },
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA"
+      ]
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "googleSignIn": {
-          "reservedClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com"
+          "reservedClientId": "915157576336-0jbedpmu82rfonb5vssd6r67cs2ni2p3.apps.googleusercontent.com"
         },
         "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
       },
       "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"]
+        "LSApplicationQueriesSchemes": [
+          "comgooglemaps",
+          "uber",
+          "yandexmaps"
+        ]
       }
     },
     "description": "UberSport application"
