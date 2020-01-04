@@ -45,7 +45,7 @@
     "ios": {
       "config": {
         "googleSignIn": {
-          "reservedClientId": "915157576336-0jbedpmu82rfonb5vssd6r67cs2ni2p3.apps.googleusercontent.com"
+          "reservedClientId": "com.googleusercontent.apps.915157576336-0jbedpmu82rfonb5vssd6r67cs2ni2p3"
         },
         "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
       },
