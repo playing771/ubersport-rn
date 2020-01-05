@@ -17,9 +17,9 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
   const config = {
     scopes: ['profile', 'email'],
     androidClientId: '915157576336-jets732sgki8bcjugh0f4b14bccbipug.apps.googleusercontent.com',
-    iosClientId: '915157576336-fekdavoul9o683cm2q6acf2a0cha7mpt.apps.googleusercontent.com',
     androidStandaloneAppClientId:
       '915157576336-1s9b5icava9lrsbrliop4eu0jbpnmlfb.apps.googleusercontent.com',
+    iosClientId: '915157576336-fekdavoul9o683cm2q6acf2a0cha7mpt.apps.googleusercontent.com',
     iosStandaloneAppClientId:
       '915157576336-0jbedpmu82rfonb5vssd6r67cs2ni2p3.apps.googleusercontent.com',
   } as any;
