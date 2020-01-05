@@ -34,10 +34,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "config": {
+        "googleMapsApiKey": "AIzaSyBt7l88TfBF_KxMd5S5CuHGj0fb44_35QM",
         "googleSignIn": {
-          "reservedClientId": "663195185664-prmlk7hjkbhkcgfmbugsfbbvfo52fos1.apps.googleusercontent.com"
-        },
-        "googleMapsApiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
+          "reservedClientId": "com.googleusercontent.apps.915157576336-0jbedpmu82rfonb5vssd6r67cs2ni2p3"
+        }
       },
       "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
