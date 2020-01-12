@@ -3,8 +3,8 @@ import { useQuery } from 'react-apollo';
 import { IEditProfileUserInfoVarialbles } from '../UserInfo/gql';
 
 export const EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY = gql`
-  query getUserFavouriteSports($id: String!) {
-    getUserFavouriteSports: getUser(id: $id) {
+  query getUserFavouriteSports {
+    getUserFavouriteSports: getAccount {
       id
       favoriteSports {
         id
@@ -24,9 +24,8 @@ export interface IEditProfileUserFavouriteSportsResult {
   };
 }
 
-export function useEditProfileFavouriteSportsQuery(variables: IEditProfileUserInfoVarialbles) {
-  return useQuery<IEditProfileUserFavouriteSportsResult, IEditProfileUserInfoVarialbles>(
-    EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY,
-    { variables }
-  );
+export function useEditProfileFavouriteSportsQuery() {
+  return useQuery<IEditProfileUserFavouriteSportsResult>(EDIT_PROFILE_USER_FAVOURITESPORTS_QUERY, {
+    fetchPolicy: 'no-cache',
+  });
 }
