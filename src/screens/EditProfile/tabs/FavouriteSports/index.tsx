@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export default function FavouriteSportsTab({ userId }: IProps) {
-  const { data, loading, error } = useEditProfileFavouriteSportsQuery({ id: userId });
+  const { data, loading, error } = useEditProfileFavouriteSportsQuery();
 
   const [newFavoriteSports, setNewFavoriteSports] = useState<number[]>([]);
 
