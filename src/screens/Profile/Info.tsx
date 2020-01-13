@@ -80,7 +80,6 @@ function getUserAge(birthday?: number): string {
 
 function SexIcon({ sex }: { sex: ISex }) {
   const isMale = sex !== 'FEMALE';
-  console.log('sex : ', sex);
   return (
     sex !== null && (
       <Ionicons
