@@ -81,7 +81,7 @@ function getUserAge(birthday?: number): string {
 function SexIcon({ sex }: { sex: ISex }) {
   const isMale = sex !== 'FEMALE';
   return (
-    sex !== null && (
+    sex && (
       <Ionicons
         name={isMale ? 'ios-male' : 'ios-female'}
         size={18}
