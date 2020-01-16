@@ -5,6 +5,7 @@ import UButton from './UButton/index';
 export interface ISwitchOption {
   label: string;
   value: string;
+  color?: string;
 }
 
 interface IProps {
@@ -35,6 +36,7 @@ export function USwitch({ label, options, onChange, initialValue = options[0].va
             onPress={handleSwitchPress}
             id={option.value}
             key={option.value}
+            color={option.color}
           />
         ))}
       </View>
@@ -45,19 +47,20 @@ export function USwitch({ label, options, onChange, initialValue = options[0].va
 interface IToggleBtnProps {
   active: boolean;
   title: string;
+  color?: string;
   onPress: (e: GestureResponderEvent, onClickId: string) => void;
   id: string;
 }
 
-const SwitchBtn = ({ active, title, onPress, id }: IToggleBtnProps) => {
+const SwitchBtn = ({ active, title, onPress, id, color = '#56BBBC' }: IToggleBtnProps) => {
   return (
     <UButton
       title={title}
       style={styles.button}
-      backgroundColor={active ? '#56BBBC' : '#F9FAFB'}
+      backgroundColor={active ? color : '#F9FAFB'}
       textStyle={active ? styles.activeTest : styles.text}
       onPress={onPress}
-      underlayColor={'#56BBBC'}
+      underlayColor={color}
       onClickId={id}
     />
   );

@@ -13,6 +13,7 @@ import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
 import { useEditProfileInfoQuery } from './gql';
 import { useUserInfoForm } from './useUserInfoForm';
+import { MAIN_TITLE_COLOR } from '../../../../constants/Colors';
 
 interface IProps {
   id: string;
@@ -111,8 +112,8 @@ export default function UserInfoTab({ id }: IProps) {
 
       <EditSex
         options={[
-          { label: 'Мужской', value: 'MALE' },
-          { label: 'Женский', value: 'FEMALE' },
+          { label: 'Мужской', value: 'MALE', color: MAIN_TITLE_COLOR },
+          { label: 'Женский', value: 'FEMALE', color: MAIN_TITLE_COLOR },
         ]}
         label="Пол"
         onChange={changeSexHandle}
