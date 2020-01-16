@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ColorPropType } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ISex } from '../../../../api/user/types';
 import { USwitch as EditSex } from '../../../../components/buttons/Switch';
 import ErrorCard from '../../../../components/ErrorCard';
@@ -13,7 +13,7 @@ import { EditProfileFormContainer as FormContainer } from '../../FormContainer';
 import { EDIT_PROFILE_MUTATION, IEditProfileVariables } from '../../gql';
 import { useEditProfileInfoQuery } from './gql';
 import { useUserInfoForm } from './useUserInfoForm';
-import Colors from '../../../../constants/Colors';
+import { MAIN_TITLE_COLOR } from '../../../../constants/Colors';
 
 interface IProps {
   id: string;
@@ -112,8 +112,8 @@ export default function UserInfoTab({ id }: IProps) {
 
       <EditSex
         options={[
-          { label: 'Мужской', value: 'MALE', color: '#56BBBC' },
-          { label: 'Женский', value: 'FEMALE', color: Colors.purle },
+          { label: 'Мужской', value: 'MALE', color: MAIN_TITLE_COLOR },
+          { label: 'Женский', value: 'FEMALE', color: MAIN_TITLE_COLOR },
         ]}
         label="Пол"
         onChange={changeSexHandle}
