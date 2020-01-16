@@ -16,7 +16,7 @@
     "extra": {},
     "android": {
       "package": "com.fcpunlimited.ubersport",
-      "versionCode": 2,
+      "versionCode": 3,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCJm3sTzxxmomATzvSBcKDeBKibltsGfl4"
