@@ -20,8 +20,8 @@ app.json
 
 # Xcode
 #
-ios/
-android/
+/ios/
+/android/
 realm-object-server/
 build/
 *.pbxuser

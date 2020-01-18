@@ -1,0 +1,5 @@
+{
+  "NSCameraUsageDescription": "Используется для возможности добавить вашу фотографию в профиль",
+  "NSLocationWhenInUseUsageDescription": "Используется для получения игр поблизости",
+  "NSLocationAlwaysAndWhenInUseUsageDescription": "Используется для получения игр поблизости"
+}
