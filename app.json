@@ -55,7 +55,7 @@
       }
     },
     "locales": {
-      "ru": "./src/locales/ios/ru.json"
+      "ru": "./src/lang/ios/ru.json"
     },
     "description": "UberSport application"
   }
