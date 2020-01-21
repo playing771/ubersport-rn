@@ -47,20 +47,29 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
     try {
       const credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          // AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
       // signed in
-      console.log('console.log(credential)', credential);
-      Alert.alert(`email: ${credential.email}  / user: ${credential.user}`);
-      // const aa = await AppleAuthentication.signOutAsync({ user: credential.user });
-      // const a = await AppleAuthentication.getCredentialStateAsync(credential.user);
+      const { user, identityToken, email, fullName } = credential;
+      if (identityToken && onSkip) {
+        onSkip({
+          idToken: identityToken,
+          email,
+          external: 'APPLE',
+          meta: {
+            id: user,
+          },
+        });
+      }
     } catch (e) {
       if (e.code === 'ERR_CANCELED') {
+        Alert.alert(`Something go wrong ${e.code}`);
         // handle that the user canceled the sign-in flow
       } else {
         // handle other errors
+        Alert.alert(`Something go wrong ${e.code} ${e.message}`);
       }
     }
   };
