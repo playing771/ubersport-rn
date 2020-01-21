@@ -4,7 +4,11 @@
     "slug": "uber-sport",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "2.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -37,8 +41,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
+      "usesAppleSignIn": true,
       "config": {
         "googleMapsApiKey": "AIzaSyBt7l88TfBF_KxMd5S5CuHGj0fb44_35QM",
         "googleSignIn": {
@@ -48,7 +55,11 @@
       "bundleIdentifier": "com.fcpunlimited.ubersport",
       "supportsTablet": true,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"],
+        "LSApplicationQueriesSchemes": [
+          "comgooglemaps",
+          "uber",
+          "yandexmaps"
+        ],
         "NSCameraUsageDescription": "Used to make avatar foto",
         "NSLocationWhenInUseUsageDescription": "Used to get games nearby",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Used to get games nearby"
