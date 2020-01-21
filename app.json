@@ -51,7 +51,8 @@
         "LSApplicationQueriesSchemes": ["comgooglemaps", "uber", "yandexmaps"],
         "NSCameraUsageDescription": "Used to make avatar foto",
         "NSLocationWhenInUseUsageDescription": "Used to get games nearby",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Used to get games nearby"
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Used to get games nearby",
+        "NSPhotoLibraryUsageDescription": "Used to get photo for avatar"
       }
     },
     "locales": {
