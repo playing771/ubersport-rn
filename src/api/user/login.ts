@@ -34,9 +34,10 @@ export async function login(email: string, password: string): Promise<IAuthResul
 }
 
 export async function socialLogin(
-  email: string,
+  email: string | null,
   external: SocialAuth,
-  idToken: string
+  idToken: string,
+  meta = {}
 ): Promise<IAuthResult> {
   try {
     const response = await fetch(`${BASE_URL}/auth/social/login`, {
@@ -49,6 +50,7 @@ export async function socialLogin(
         email,
         external,
         idToken,
+        meta,
       }),
     });
 

@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
 import React from 'react';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatedView } from 'react-native-animatable';
 import * as validator from 'validator';
@@ -40,6 +41,36 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
       }
     } catch (error) {
       console.log('error', error);
+    }
+  };
+  const handleAppleAuth = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          // AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      // signed in
+      const { user, identityToken, email, fullName } = credential;
+      if (identityToken && onSkip) {
+        onSkip({
+          idToken: identityToken,
+          email,
+          external: 'APPLE',
+          meta: {
+            id: user,
+          },
+        });
+      }
+    } catch (e) {
+      if (e.code === 'ERR_CANCELED') {
+        Alert.alert(`Something go wrong ${e.code}`);
+        // handle that the user canceled the sign-in flow
+      } else {
+        // handle other errors
+        Alert.alert(`Something go wrong ${e.code} ${e.message}`);
+      }
     }
   };
   const handleFacebookAuth = async () => {
@@ -87,16 +118,16 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
           <UButton circle={true} backgroundColor="#3B5899" style={styles.socialIcon}>
             <EvilIcons name="sc-facebook" style={styles.fbIcon} />
           </UButton>*/}
-          <UButton
-            onPress={handleGoogleAuth}
-            style={{ flex: 1, height: 42, marginTop: 6 }}
-            iconSize={24}
-            rounded={true}
-            icon="logo-google"
-            backgroundColor="#DF2A30"
-            title="Войти с помощью Google"
-            textStyle={{ fontSize: 16, fontWeight: '500' }}
+
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+            cornerRadius={5}
+            label="sdsd"
+            style={{ flex: 1, height: 42, marginTop: 12 }}
+            onPress={handleAppleAuth}
           />
+
           <UButton
             onPress={handleFacebookAuth}
             style={{ flex: 1, height: 42, marginTop: 12 }}
@@ -105,6 +136,16 @@ const SignUpActive = ({ onSubmit, index, onSkip }: IProps) => {
             icon="logo-facebook"
             backgroundColor="#3B5899"
             title="Войти с помощью Facebook"
+            textStyle={{ fontSize: 16, fontWeight: '500' }}
+          />
+          <UButton
+            onPress={handleGoogleAuth}
+            style={{ flex: 1, height: 42, marginTop: 12 }}
+            iconSize={24}
+            rounded={true}
+            icon="logo-google"
+            backgroundColor="#DF2A30"
+            title="Войти с помощью Google"
             textStyle={{ fontSize: 16, fontWeight: '500' }}
           />
         </View>

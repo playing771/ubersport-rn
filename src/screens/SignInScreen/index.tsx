@@ -33,9 +33,10 @@ interface IProps extends NavigationInjectedProps, IAppContextInjectedProp {}
 type IActionType = 'SIGNIN' | 'SIGNUP' | undefined;
 
 export interface ISocialAuth {
-  email: string;
+  email: string | null;
   external: SocialAuth;
   idToken: string;
+  meta?: object;
 }
 
 interface IState {
@@ -90,8 +91,6 @@ class SingInScreen extends React.Component<IProps, IState> {
   socialLogin = async (data: ISocialAuth) => {
     const { email, external = 'GOOGLE', idToken } = data;
     const result = await socialLogin(email, external, idToken);
-    console.log('SOCIAL result', result);
-
     this.loginHandle(result);
   };
 
