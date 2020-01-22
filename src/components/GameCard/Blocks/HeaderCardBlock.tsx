@@ -10,7 +10,7 @@ interface IProps {
   author: IAuthor;
   sportId: number;
 }
-
+//TODO: придумать дефолтное имя юзеру без имени
 export function HeaderCardBlock({ author, textColor, sportId }: IProps) {
   const styles = getStyles(textColor);
   const team = undefined;
@@ -19,7 +19,7 @@ export function HeaderCardBlock({ author, textColor, sportId }: IProps) {
       <UserAvatar src={author.avatar} size={USER_AVATAR_SIZE} style={styles.avatarContainer} />
       <View style={styles.textContainer}>
         <Text style={styles.mainText} ellipsizeMode="tail" numberOfLines={1}>
-          {author.firstName + ' ' + author.lastName}
+          {`${author.firstName || 'No'} ${author.lastName || 'Name'}`}
         </Text>
 
         {team && <Text style={styles.subText}>{team}</Text>}
