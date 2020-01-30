@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSubscription } from 'react-apollo';
 import { IGame } from '../../api/games/types';
 import IUser from '../../api/user/types';
 import ErrorCard from '../../components/ErrorCard';
@@ -7,7 +8,7 @@ import Card from '../../components/GeneralCard';
 import ULoader from '../../components/ULoader/index';
 import useAppContext from '../../hooks/useAppContext';
 import { GeneralGameInfo } from './GeneralInfo';
-import useGameInfoQuery from './gql';
+import useGameInfoQuery, { SUBSCRIBE_ONCHANGE_GAME } from './gql';
 import { InfoCard } from './InfoCard';
 import { JoinGameBtn } from './JoinGameBtn';
 
@@ -18,14 +19,23 @@ export interface IProps {
 }
 
 export default function GameDetails({ id, onPressEdit, onPressParticipants }: IProps) {
+  const [, setForForceRender] = useState<any>(null);
   const { data, loading, error } = useGameInfoQuery({ id });
+  const { data: subData } = useSubscription<any>(SUBSCRIBE_ONCHANGE_GAME, {
+    variables: { id },
+  });
+
+  useEffect(() => {
+    setForForceRender({});
+  }, [subData]);
+
   const { user } = useAppContext();
 
   if (loading) {
     return <ULoader />;
   }
   if (error) {
-    return <ErrorCard error={error} />;
+    return <ErrorCard error={error} show={true} gapped={true} />;
   }
 
   if (!data) {
@@ -49,7 +59,7 @@ export default function GameDetails({ id, onPressEdit, onPressParticipants }: IP
           />
         )}
         <Card disabled={true} wrapperStyle={styles.card}>
-          <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />
+          {game && <GeneralGameInfo game={game} onPressParticipants={onPressParticipants} />}
         </Card>
       </ScrollView>
       {!isParticipant && (
