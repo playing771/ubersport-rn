@@ -9,6 +9,29 @@ const fragments = `
   ${fullGameInfoFragment}
 `;
 
+export const SUBSCRIBE_ONCHANGE_GAME = gql`
+  # Write your query or mutation here
+  subscription onGameRoomChange($id: String!) {
+    onGameRoomUpdate(id: $id) {
+      id
+      name
+      dateEnd
+      dateStart
+      description
+      maxParticipants
+      minParticipants
+      location {
+        coordinates
+        address
+      }
+      participants {
+        id
+        email
+      }
+    }
+  }
+`;
+
 export const GET_GAME_INFO_GQL = gql`
   query getGameInfo($id: ID!) {
     game(id: $id) {
@@ -28,6 +51,7 @@ interface IGameInfoQueryResponse {
 export default function useGameInfoQuery(variables: IGameInfoQueryVariables) {
   return useQuery<IGameInfoQueryResponse, IGameInfoQueryVariables>(GET_GAME_INFO_GQL, {
     variables,
+    fetchPolicy: 'cache-and-network',
   });
 }
 
